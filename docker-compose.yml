@@ -1,0 +1,60 @@
+version: '3.7'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend.dev
+    command: sh run_backend.sh
+    restart: on-failure
+    working_dir: /app
+    ports:
+      - "8080:8080"
+      - "35729:35729"
+      - "5005:5005"
+    volumes:
+      - ./:/app
+      - ./.m2:/root/.m2
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=dev_db
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
+    networks:
+      - dev
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend.dev
+    command: sh -c "npm install --force && npm start"
+    restart: unless-stopped
+    volumes:
+      - .:/usr/src/app/:cached
+      - node_modules:/usr/src/app/frontend/node_modules
+    ports:
+      - "3000:3000"
+    networks:
+      - dev
+  db:
+    image: postgres:14.2
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=dev_db
+    volumes:
+      - postgres_database:/var/lib/postgresql/data:Z
+    ports:
+      - "5433:5432"
+    networks:
+      - dev
+
+volumes:
+  node_modules:
+  postgres_database:
+    external: true
+
+networks:
+  dev:
+    driver: bridge

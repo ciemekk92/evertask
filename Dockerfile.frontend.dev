@@ -1,0 +1,7 @@
+FROM node:16.13.0
+
+ENV HOME=/usr/src/app/frontend
+RUN mkdir -p $HOME
+WORKDIR $HOME
+
+COPY ./frontend/package.json ./frontend/package-lock.json $HOME

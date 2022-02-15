@@ -1,10 +1,10 @@
 HELP.md
+.m2/
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-
-application.properties
+frontend/node_modules/
 
 ### STS ###
 .apt_generated

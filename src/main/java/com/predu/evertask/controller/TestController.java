@@ -1,4 +1,4 @@
-package com.predu.evertask.controllers;
+package com.predu.evertask.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

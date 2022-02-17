@@ -1,23 +1,22 @@
-package com.predu.evertask.model;
+package com.predu.evertask.domain.model;
 
+import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
-import java.util.Collection;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Table(name = "users")
 @Entity
-public class User extends BaseEntity implements UserDetails {
+public class User extends BaseEntity implements UserDetails, Serializable {
 
     @Length(min = 6)
     private String username;
@@ -37,38 +36,25 @@ public class User extends BaseEntity implements UserDetails {
     private boolean enabled;
     private boolean verified;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
+    @ManyToMany
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> authorities = new HashSet<>();
 
     @Override
     public boolean isAccountNonExpired() {
-        return !expired;
+        return enabled;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return !locked;
+        return enabled;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
         return enabled;
     }
+
 }

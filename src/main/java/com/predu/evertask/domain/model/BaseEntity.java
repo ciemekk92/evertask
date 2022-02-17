@@ -1,4 +1,4 @@
-package com.predu.evertask.model;
+package com.predu.evertask.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -8,7 +8,6 @@ import com.predu.evertask.domain.mapper.UserViewMapper;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ValidationException;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.UUID;
 
 import static java.lang.String.format;
@@ -29,6 +29,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final UserEditMapper userEditMapper;
     private final UserViewMapper userViewMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public UserDto create(CreateUserRequest request) {
@@ -45,7 +46,7 @@ public class UserService implements UserDetailsService {
         }
 
         User user = userEditMapper.create(request);
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         user = userRepository.save(user);
 
@@ -60,6 +61,21 @@ public class UserService implements UserDetailsService {
         user = userRepository.save(user);
 
         return userViewMapper.toUserDto(user);
+    }
+
+    @Transactional
+    public UserDto upsert(CreateUserRequest request) {
+        Optional<User> optionalUser = userRepository.findByUsername(request.getUsername());
+
+        if (optionalUser.isEmpty()) {
+            return create(request);
+        } else {
+            UpdateUserRequest updateUserRequest = new UpdateUserRequest();
+            updateUserRequest.setFirstName(request.getFirstName());
+            updateUserRequest.setLastName(request.getLastName());
+
+            return update(optionalUser.get().getId(), updateUserRequest);
+        }
     }
 
     @Transactional

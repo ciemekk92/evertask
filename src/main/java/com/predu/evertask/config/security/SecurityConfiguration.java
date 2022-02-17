@@ -100,8 +100,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new CorsFilter(source);
     }
 
-    @Override
-    @Bean
+    @Override @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }

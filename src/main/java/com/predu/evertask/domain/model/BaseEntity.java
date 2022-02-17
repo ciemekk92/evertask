@@ -37,6 +37,6 @@ public class BaseEntity implements Serializable {
 
     @PreUpdate
     void preUpdate() {
-        createdAt = Date.from(Instant.now());
+        updatedAt = Date.from(Instant.now());
     }
 }

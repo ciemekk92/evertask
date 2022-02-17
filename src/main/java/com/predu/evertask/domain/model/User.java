@@ -1,6 +1,5 @@
 package com.predu.evertask.domain.model;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -35,6 +34,9 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     private boolean expired;
     private boolean enabled;
     private boolean verified;
+
+    @OneToMany(mappedBy = "assignee")
+    private Set<Issue> assignedIssues = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "user_roles",

@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -30,6 +31,9 @@ public class Issue extends BaseEntity {
     private int estimateStoryPoints;
     private int estimateHours;
 
+    @Length(min = 10, max = 150)
+    private String pullRequestUrl;
+
     @Enumerated(EnumType.STRING)
     @NotNull
     private IssueStatus status;
@@ -43,10 +47,25 @@ public class Issue extends BaseEntity {
     private IssuePriority priority;
 
     @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private Issue parentIssue;
+
+    @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
 
     @ManyToOne
     @JoinColumn(name = "assignee_id")
     private User assignee;
+
+    @ManyToOne
+    @JoinColumn(name = "reporter_id")
+    private User reporter;
+
+    @ManyToOne
+    @JoinColumn(name = "sprint_id")
+    private Sprint sprint;
+
+    @OneToMany(mappedBy = "parentIssue")
+    private Set<Issue> subtasks;
 }

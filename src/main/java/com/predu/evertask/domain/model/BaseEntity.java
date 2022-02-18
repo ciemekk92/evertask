@@ -22,12 +22,7 @@ public class BaseEntity implements Serializable {
     @Column(name="id", insertable = false, updatable = false, nullable = false)
     private UUID id;
 
-    @Getter
-    @Setter
     private Date createdAt;
-
-    @Getter
-    @Setter
     private Date updatedAt;
 
     @PrePersist

@@ -38,6 +38,9 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     @OneToMany(mappedBy = "assignee")
     private Set<Issue> assignedIssues = new HashSet<>();
 
+    @OneToMany(mappedBy = "reporter")
+    private Set<Issue> reportedIssues = new HashSet<>();
+
     @ManyToMany
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -58,5 +61,4 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     public boolean isCredentialsNonExpired() {
         return enabled;
     }
-
 }

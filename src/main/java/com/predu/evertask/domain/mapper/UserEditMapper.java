@@ -11,7 +11,7 @@ import static java.util.stream.Collectors.toSet;
 import static org.mapstruct.NullValueCheckStrategy.ALWAYS;
 import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
 
-@Mapper(componentModel = "spring", uses = UUIDMapper.class)
+@Mapper(componentModel = "spring", uses = UUIDMapper.class, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public abstract class UserEditMapper {
 
     @Mapping(target = "authorities", ignore = true)

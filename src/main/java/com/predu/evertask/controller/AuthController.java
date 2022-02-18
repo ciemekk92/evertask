@@ -7,7 +7,6 @@ import com.predu.evertask.domain.dto.UserDto;
 import com.predu.evertask.domain.mapper.UserViewMapper;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.service.UserService;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
@@ -41,15 +42,22 @@ public class AuthController {
     }
 
     @PostMapping("login")
-    public ResponseEntity<UserDto> login(@RequestBody @Valid AuthRequest request) {
+    public ResponseEntity<UserDto> login(@RequestBody @Valid AuthRequest request, HttpServletResponse response) {
         try {
             Authentication authenticate = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
             User user = (User) authenticate.getPrincipal();
 
+            String token = jwtTokenUtil.generateAccessToken(user);
+            Cookie cookie = new Cookie("access", token);
+
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge(7 * 24 * 60 * 60);
+
+            response.addCookie(cookie);
+
             return ResponseEntity.ok()
-                    .header(HttpHeaders.AUTHORIZATION, jwtTokenUtil.generateAccessToken(user))
                     .body(userViewMapper.toUserDto(user));
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

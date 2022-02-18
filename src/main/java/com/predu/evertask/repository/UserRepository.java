@@ -1,13 +1,10 @@
 package com.predu.evertask.repository;
 
-import com.predu.evertask.domain.dto.SearchUsersQuery;
 import com.predu.evertask.domain.exception.NotFoundException;
 import com.predu.evertask.domain.model.User;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

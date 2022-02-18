@@ -18,7 +18,7 @@ import java.util.Set;
 @Entity
 public class Sprint extends BaseEntity implements Serializable {
 
-    private int number;
+    private int ordinal;
 
     @Length(max = 1000)
     private String description;

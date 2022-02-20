@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -67,5 +68,5 @@ public class Issue extends BaseEntity {
     private Sprint sprint;
 
     @OneToMany(mappedBy = "parentIssue")
-    private Set<Issue> subtasks;
+    private Set<Issue> subtasks = new HashSet<>();
 }

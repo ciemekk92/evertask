@@ -9,7 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,5 +26,10 @@ public class Project extends BaseEntity{
     private String description;
 
     @OneToMany(mappedBy = "project")
-    private List<Issue> issues;
+    private Set<Issue> issues = new HashSet<>();
+
+    public void updateFrom(Project source) {
+        description = source.getDescription();
+        name = source.getName();
+    }
 }

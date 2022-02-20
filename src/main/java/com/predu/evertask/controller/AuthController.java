@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(path = "api/public")
+@RequestMapping(path = "api/auth")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;

@@ -52,7 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .orElseThrow(() ->
                         new UsernameNotFoundException(format("User: %s, not found", username))
                 )
-        );
+        ).passwordEncoder(passwordEncoder());
     }
 
     @Bean
@@ -78,7 +78,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 ).and();
 
         http.authorizeRequests()
-                .antMatchers("/api/public/**").permitAll()
+                .antMatchers("/api/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(

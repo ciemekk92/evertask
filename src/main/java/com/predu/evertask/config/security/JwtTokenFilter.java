@@ -1,6 +1,5 @@
 package com.predu.evertask.config.security;
 
-import com.nimbusds.jose.proc.SecurityContext;
 import com.predu.evertask.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;

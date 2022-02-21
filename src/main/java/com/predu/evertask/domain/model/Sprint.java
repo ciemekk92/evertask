@@ -2,6 +2,8 @@ package com.predu.evertask.domain.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Entity;
@@ -18,6 +20,7 @@ import java.util.Set;
 @Entity
 public class Sprint extends BaseEntity implements Serializable {
 
+    @Generated(GenerationTime.INSERT)
     private int ordinal;
 
     @Length(max = 1000)

@@ -8,10 +8,18 @@ import java.util.UUID;
 public class UUIDMapper {
 
     public String uuidToString(UUID uuid) {
+        if (uuid == null) {
+            return null;
+        }
+
         return uuid.toString();
     }
 
     public UUID stringToUUID(String string) {
+        if (string == null) {
+            return null;
+        }
+
         return UUID.fromString(string);
     }
 }

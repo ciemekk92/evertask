@@ -3,14 +3,19 @@ package com.predu.evertask.domain.model;
 import com.predu.evertask.domain.enums.IssuePriority;
 import com.predu.evertask.domain.enums.IssueStatus;
 import com.predu.evertask.domain.enums.IssueType;
+import com.predu.evertask.util.EnumTypePgSql;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
+
+@TypeDef(name = "enum_pgsql", typeClass = EnumTypePgSql.class)
 
 @Getter
 @Setter
@@ -36,14 +41,17 @@ public class Issue extends BaseEntity {
     private String pullRequestUrl;
 
     @Enumerated(EnumType.STRING)
+    @Type(type = "enum_pgsql")
     @NotNull
     private IssueStatus status;
 
     @Enumerated(EnumType.STRING)
+    @Type(type = "enum_pgsql")
     @NotNull
     private IssueType type;
 
     @Enumerated(EnumType.STRING)
+    @Type(type = "enum_pgsql")
     @NotNull
     private IssuePriority priority;
 

@@ -17,12 +17,12 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public Optional<Project> findById(UUID id) {
-        return projectRepository.findById(id);
-    }
-
     public List<Project> findAll() {
         return projectRepository.findAll();
+    }
+
+    public Optional<Project> findById(UUID id) {
+        return projectRepository.findById(id);
     }
 
     public Project save(Project toSave) {

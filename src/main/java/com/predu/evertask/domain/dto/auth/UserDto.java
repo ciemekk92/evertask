@@ -1,4 +1,4 @@
-package com.predu.evertask.domain.dto;
+package com.predu.evertask.domain.dto.auth;
 
 import lombok.Data;
 

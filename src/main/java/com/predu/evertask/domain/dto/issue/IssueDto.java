@@ -1,4 +1,4 @@
-package com.predu.evertask.domain.dto;
+package com.predu.evertask.domain.dto.issue;
 
 import lombok.Data;
 
@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-public class IssueSaveDto {
+public class IssueDto {
 
     private String id;
     private Date createdAt;
@@ -24,5 +24,5 @@ public class IssueSaveDto {
     private String assigneeId;
     private String reporterId;
     private String sprintId;
-    private Set<IssueSaveDto> subtasks = new HashSet<>();
+    private Set<IssueDto> subtasks = new HashSet<>();
 }

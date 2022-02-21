@@ -1,4 +1,4 @@
-package com.predu.evertask.domain.dto;
+package com.predu.evertask.domain.dto.issue;
 
 import lombok.Data;
 
@@ -18,5 +18,5 @@ public class IssueUpdateDto {
     private String assigneeId;
     private String reporterId;
     private String sprintId;
-    private Set<IssueSaveDto> subtasks = new HashSet<>();
+    private Set<IssueDto> subtasks = new HashSet<>();
 }

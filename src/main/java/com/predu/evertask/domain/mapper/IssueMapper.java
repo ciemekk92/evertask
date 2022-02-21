@@ -2,11 +2,11 @@ package com.predu.evertask.domain.mapper;
 
 import com.predu.evertask.annotation.IncludeAfterMapping;
 import com.predu.evertask.annotation.IncludeBeforeMapping;
-import com.predu.evertask.domain.dto.IssueSaveDto;
-import com.predu.evertask.domain.dto.IssueUpdateDto;
+import com.predu.evertask.domain.dto.issue.IssueDto;
+import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
 import com.predu.evertask.domain.model.Issue;
+import com.predu.evertask.repository.IssueRepository;
 import com.predu.evertask.repository.UserRepository;
-import com.predu.evertask.service.IssueService;
 import com.predu.evertask.service.SprintService;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public abstract class IssueMapper {
 
     @Autowired
-    private IssueService issueService;
+    protected IssueRepository issueRepository;
 
     @Autowired
     private SprintService sprintService;
@@ -38,10 +38,10 @@ public abstract class IssueMapper {
     @Mapping(source = "reporterId", target = "reporter.id")
     @Mapping(target = "sprint", ignore = true)
     @Mapping(source = "projectId", target = "project.id")
-    public abstract Issue issueSaveDtoToIssue(IssueSaveDto issueSaveDto);
+    public abstract Issue issueDtoToIssue(IssueDto issueDto);
 
-    @InheritInverseConfiguration(name = "issueSaveDtoToIssue")
-    public abstract IssueSaveDto issueToIssueSaveDto(Issue issue);
+    @InheritInverseConfiguration(name = "issueDtoToIssue")
+    public abstract IssueDto issueToIssueDto(Issue issue);
 
     @Mapping(target = "parentIssue", ignore = true)
     @Mapping(target = "assignee", ignore = true)
@@ -49,31 +49,31 @@ public abstract class IssueMapper {
     @Mapping(target = "sprint", ignore = true)
     @Mapping(target = "project", ignore = true)
     @BeanMapping(qualifiedBy = {IncludeBeforeMapping.class})
-    public abstract Issue issueUpdateDtoToIssue(IssueUpdateDto issueUpdateDto, @MappingTarget Issue issue);
+    public abstract Issue issueUpdateDtoToIssue(IssueUpdateDto issueUpdateDto);
 
     @AfterMapping
-    public void afterIssueSaveDtoToIssue(IssueSaveDto issueSaveDto, @MappingTarget Issue issue) {
-        if (!issueSaveDto.getSubtasks().isEmpty()) {
-            issueSaveDto.setSubtasks(
+    public void afterIssueSaveDtoToIssue(IssueDto issueDto, @MappingTarget Issue issue) {
+        if (!issueDto.getSubtasks().isEmpty()) {
+            issueDto.setSubtasks(
                     issue.getSubtasks()
                             .stream()
-                            .map(this::issueToIssueSaveDto)
+                            .map(this::issueToIssueDto)
                             .collect(Collectors.toSet())
             );
         }
 
-        if (issueSaveDto.getParentId() != null) {
-            issue.setParentIssue(issueService.findById(uuidMapper.stringToUUID(issueSaveDto.getParentId())).orElse(null));
+        if (issueDto.getParentId() != null) {
+            issue.setParentIssue(issueRepository.findById(uuidMapper.stringToUUID(issueDto.getParentId())).orElse(null));
         }
 
-        if (issueSaveDto.getSprintId() != null) {
-            issue.setSprint(sprintService.findById(uuidMapper.stringToUUID(issueSaveDto.getSprintId())).orElse(null));
+        if (issueDto.getSprintId() != null) {
+            issue.setSprint(sprintService.findById(uuidMapper.stringToUUID(issueDto.getSprintId())).orElse(null));
         }
     }
 
     @IncludeBeforeMapping
     @BeforeMapping
-    void beforeFlushIssue(@MappingTarget IssueSaveDto issueSaveDto, Issue issue) {
+    void beforeFlushIssue(@MappingTarget IssueDto issueDto, Issue issue) {
         entityManager.flush();
     }
 
@@ -81,7 +81,7 @@ public abstract class IssueMapper {
     @AfterMapping
     public void afterIssueUpdateDtoToIssue(IssueUpdateDto issueUpdateDto, @MappingTarget Issue issue) {
         if (issueUpdateDto.getParentId() != null) {
-            issue.setParentIssue(issueService.findById(uuidMapper.stringToUUID(issueUpdateDto.getParentId())).orElse(null));
+            issue.setParentIssue(issueRepository.findById(uuidMapper.stringToUUID(issueUpdateDto.getParentId())).orElse(null));
         }
 
         if (issueUpdateDto.getReporterId() != null) {

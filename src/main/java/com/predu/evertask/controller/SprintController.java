@@ -1,7 +1,7 @@
 package com.predu.evertask.controller;
 
-import com.predu.evertask.domain.dto.SprintSaveDto;
-import com.predu.evertask.domain.mapper.SprintMapper;
+import com.predu.evertask.domain.dto.sprint.SprintDto;
+import com.predu.evertask.domain.dto.sprint.SprintSaveDto;
 import com.predu.evertask.domain.model.Sprint;
 import com.predu.evertask.service.SprintService;
 import org.springframework.http.ResponseEntity;
@@ -19,15 +19,13 @@ import java.util.UUID;
 public class SprintController {
 
     private final SprintService sprintService;
-    private final SprintMapper sprintMapper;
 
-    public SprintController(SprintService sprintService, SprintMapper sprintMapper) {
+    public SprintController(SprintService sprintService) {
         this.sprintService = sprintService;
-        this.sprintMapper = sprintMapper;
     }
 
     @GetMapping
-    public ResponseEntity<List<Sprint>> getAllSprints() {
+    public ResponseEntity<List<SprintDto>> getAllSprints() {
         return ResponseEntity.ok(sprintService.findAll());
     }
 
@@ -39,9 +37,9 @@ public class SprintController {
     }
 
     @PostMapping
-    public ResponseEntity<Sprint> createSprint(@RequestBody @Valid SprintSaveDto toCreate) throws URISyntaxException {
-        Sprint created = sprintService.save(sprintMapper.sprintSaveDtoToSprint(toCreate));
+    public ResponseEntity<SprintSaveDto> createSprint(@RequestBody @Valid SprintSaveDto toCreate) throws URISyntaxException {
+        Sprint created = sprintService.save(toCreate);
 
-        return ResponseEntity.created(new URI("http://localhost:8080/api/sprints/" + created.getId())).body(created);
+        return ResponseEntity.created(new URI("http://localhost:8080/api/sprints/" + created.getId())).body(toCreate);
     }
 }

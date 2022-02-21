@@ -1,6 +1,7 @@
 package com.predu.evertask.controller;
 
-import com.predu.evertask.domain.dto.ProjectSaveDto;
+import com.predu.evertask.domain.dto.project.ProjectDto;
+import com.predu.evertask.domain.dto.project.ProjectSaveDto;
 import com.predu.evertask.domain.model.Project;
 import com.predu.evertask.service.ProjectService;
 import org.springframework.http.ResponseEntity;
@@ -24,22 +25,22 @@ public class ProjectController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Project>> getAllProjects() {
+    public ResponseEntity<List<ProjectDto>> getAllProjects() {
         return ResponseEntity.ok(projectService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Project> getProject(@PathVariable UUID id) {
+    public ResponseEntity<ProjectDto> getProject(@PathVariable UUID id) {
         return projectService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Project> createProject(@RequestBody @Valid ProjectSaveDto toCreate) throws URISyntaxException {
-        Project created = projectService.save(toCreate.toProject());
+    public ResponseEntity<ProjectSaveDto> createProject(@RequestBody @Valid ProjectSaveDto toCreate) throws URISyntaxException {
+        Project created = projectService.create(toCreate);
 
-        return ResponseEntity.created(new URI("http://localhost:8080/api/projects/" + created.getId())).body(created);
+        return ResponseEntity.created(new URI("http://localhost:8080/api/projects/" + created.getId())).body(toCreate);
     }
 
     @PutMapping("/{id}")
@@ -48,10 +49,7 @@ public class ProjectController {
             return ResponseEntity.notFound().build();
         }
 
-        projectService.findById(id).ifPresent(project -> {
-            project.updateFrom(toUpdate.toProject());
-            projectService.save(project);
-        });
+        projectService.findById(id).ifPresent(project -> projectService.update(toUpdate));
 
         return ResponseEntity.noContent().build();
     }

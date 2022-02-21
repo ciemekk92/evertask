@@ -1,6 +1,6 @@
 package com.predu.evertask.domain.mapper;
 
-import com.predu.evertask.domain.dto.UserDto;
+import com.predu.evertask.domain.dto.auth.UserDto;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.repository.UserRepository;
 import org.mapstruct.Mapper;

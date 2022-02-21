@@ -1,4 +1,4 @@
-package com.predu.evertask.domain.dto;
+package com.predu.evertask.domain.dto.project;
 
 import com.predu.evertask.domain.model.Project;
 import lombok.Data;

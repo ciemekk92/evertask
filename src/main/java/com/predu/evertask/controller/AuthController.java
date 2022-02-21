@@ -1,9 +1,9 @@
 package com.predu.evertask.controller;
 
 import com.predu.evertask.config.security.JwtTokenUtil;
-import com.predu.evertask.domain.dto.AuthRequest;
-import com.predu.evertask.domain.dto.CreateUserRequest;
-import com.predu.evertask.domain.dto.UserDto;
+import com.predu.evertask.domain.dto.auth.AuthRequest;
+import com.predu.evertask.domain.dto.auth.CreateUserRequest;
+import com.predu.evertask.domain.dto.auth.UserDto;
 import com.predu.evertask.domain.mapper.UserViewMapper;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.service.UserService;

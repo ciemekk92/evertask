@@ -1,8 +1,8 @@
 package com.predu.evertask.service;
 
-import com.predu.evertask.domain.dto.CreateUserRequest;
-import com.predu.evertask.domain.dto.UpdateUserRequest;
-import com.predu.evertask.domain.dto.UserDto;
+import com.predu.evertask.domain.dto.auth.CreateUserRequest;
+import com.predu.evertask.domain.dto.auth.UpdateUserRequest;
+import com.predu.evertask.domain.dto.auth.UserDto;
 import com.predu.evertask.domain.mapper.UserEditMapper;
 import com.predu.evertask.domain.mapper.UserViewMapper;
 import com.predu.evertask.domain.model.User;

@@ -1,7 +1,7 @@
 package com.predu.evertask.domain.mapper;
 
-import com.predu.evertask.domain.dto.CreateUserRequest;
-import com.predu.evertask.domain.dto.UpdateUserRequest;
+import com.predu.evertask.domain.dto.auth.CreateUserRequest;
+import com.predu.evertask.domain.dto.auth.UpdateUserRequest;
 import com.predu.evertask.domain.model.Role;
 import com.predu.evertask.domain.model.User;
 import org.mapstruct.*;

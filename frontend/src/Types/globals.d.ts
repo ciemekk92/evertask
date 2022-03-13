@@ -7,6 +7,7 @@ declare global {
   export type EmptyObject = Record<string, never>;
   export type EmptyString = '';
   export type VoidFunctionNoArgs = () => void;
+  export type UiTheme = 'light' | 'dark';
 }
 
 export {};

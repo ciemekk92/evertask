@@ -1,24 +1,28 @@
 import { createGlobalStyle } from 'styled-components';
 
 interface Theme {
-    theme: {
-        primary: string;
-        secondary: string;
-        accent: string;
-        text: string;
-    };
+  theme: {
+    primary: string;
+    primaryDark: string;
+    primaryLight: string;
+    secondary: string;
+    background: string;
+    surface: string;
+    primaryText: string;
+    secondaryText: string;
+    disabled: string;
+    disabledText: string;
+  };
 }
 
 interface Props {
-    readonly themeType: string;
+  readonly themeType: string;
 }
 
 export const GlobalStyles = createGlobalStyle<Props & Theme>`
     body {
-        background-image: url(${(props) =>
-    props.themeType === 'light' ? '/bg_light.svg' : '/bg_dark.svg'});
-        background-size: 100%, 6%;
-        color: ${(props) => props.theme.text};
+        background-color: ${(props) => props.theme.background}; 
+        color: ${(props) => props.theme.primaryText};
         font-family: Lato, sans-serif;
         
         & button {

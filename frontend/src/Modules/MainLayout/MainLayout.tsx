@@ -11,43 +11,32 @@ import { HorizontalWrapper, LayoutWrapper } from './MainLayout.styled';
 
 export const MainLayout = (): JSX.Element => {
   const renderLoggedInView = (
-    <BrowserRouter basename={'/'}>
-      <ReactRoutes>
-        <Route
-          children={() => (
-            <LayoutWrapper>
-              <AppHeader />
-              <HorizontalWrapper>
-                <AppSidebar />
-                <AppMainWindow>
-                  <GlobalErrorBoundary>
-                    <Routes />
-                  </GlobalErrorBoundary>
-                </AppMainWindow>
-              </HorizontalWrapper>
-            </LayoutWrapper>
-          )}
-        />
-      </ReactRoutes>
-    </BrowserRouter>
+    <HorizontalWrapper>
+      <AppSidebar />
+      <AppMainWindow>
+        <GlobalErrorBoundary>
+          <ReactRoutes>
+            <Routes />
+          </ReactRoutes>
+        </GlobalErrorBoundary>
+      </AppMainWindow>
+    </HorizontalWrapper>
   );
 
-  const renderLoggedOutView = (
-    <BrowserRouter basename={'/'}>
+  const renderLoggedOutView = (): JSX.Element => (
+    <GlobalErrorBoundary>
       <ReactRoutes>
-        <Route
-          children={() => (
-            <LayoutWrapper>
-              <AppHeader />
-              <GlobalErrorBoundary>
-                <Route path={'/'} element={<LandingPage />} />
-              </GlobalErrorBoundary>
-            </LayoutWrapper>
-          )}
-        />
+        <Route path={'/'} element={<LandingPage />} />
       </ReactRoutes>
-    </BrowserRouter>
+    </GlobalErrorBoundary>
   );
 
-  return renderLoggedOutView;
+  return (
+    <BrowserRouter basename={'/'}>
+      <LayoutWrapper>
+        <AppHeader />
+        {renderLoggedOutView()}
+      </LayoutWrapper>
+    </BrowserRouter>
+  );
 };

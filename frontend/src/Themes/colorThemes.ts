@@ -1,25 +1,25 @@
 export const lightTheme = {
-  primary: '#ddd',
-  secondary: '#eee',
-  accent: '#8bc34a',
-  accentLight: '#9bcb64',
-  text: '#242a32',
-  loading: '#3a3f47',
+  primary: '#3F51B5',
+  primaryDark: '#303F9F',
+  primaryLight: '#C5CAE9',
+  secondary: '#03A9F4',
+  background: '#F3F3F3',
+  surface: '#F3F3F3',
+  primaryText: '#212121',
+  secondaryText: '#757575',
   disabled: '#666',
-  disabledText: '#ccc',
-  primaryTransparent: 'rgba(221,221,221,0.6)',
-  secondaryTransparent: 'rgba(238,238,238,0.6)'
+  disabledText: '#CCC'
 };
 
 export const darkTheme = {
-  primary: '#3a3f47',
-  secondary: '#242a32',
-  accent: '#8bc34a',
-  accentLight: '#9bcb64',
-  text: '#eee',
-  loading: '#ddd',
+  primary: '#3F51B5',
+  primaryDark: '#303F9F',
+  primaryLight: '#C5CAE9',
+  background: '#121212',
+  surface: '#212121',
+  secondary: '#03A9F4',
+  primaryText: '#E1E1E1',
+  secondaryText: '#999',
   disabled: '#666',
-  disabledText: '#ccc',
-  primaryTransparent: 'rgba(58, 63, 71, 0.6)',
-  secondaryTransparent: 'rgba(36, 42, 50, 0.6)'
+  disabledText: '#CCC'
 };

@@ -12,6 +12,7 @@ export const HeaderBody = styled.nav`
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
 
   & img {
-    height: 4.5rem;
+    height: 4rem;
+    margin-top: 0.5rem;
   }
 `;

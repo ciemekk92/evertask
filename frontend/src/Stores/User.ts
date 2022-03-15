@@ -19,7 +19,7 @@ export interface UserInfo {
   lastName: string;
 }
 
-interface LoginCredentials {
+export interface LoginCredentials {
   email: string;
   password: string;
 }

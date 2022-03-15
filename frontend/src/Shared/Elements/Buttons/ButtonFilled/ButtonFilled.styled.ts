@@ -11,7 +11,7 @@ export const StyledButtonFilled = styled.button<Props>`
       ? props.theme.disabled
       : props.backgroundColor
       ? props.backgroundColor
-      : props.theme.primary};
+      : props.theme.primaryDark};
   border: none;
   font-size: 1.8rem;
   height: 3.6rem;
@@ -25,6 +25,6 @@ export const StyledButtonFilled = styled.button<Props>`
   backface-visibility: visible;
 
   &:hover {
-    background-color: ${(props) => (!props.disabled ? props.theme.secondary : null)};
+    background-color: ${(props) => (!props.disabled ? props.theme.primary : null)};
   }
 `;

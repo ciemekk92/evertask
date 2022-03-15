@@ -16,3 +16,8 @@ export const HeaderBody = styled.nav`
     margin-top: 0.5rem;
   }
 `;
+
+export const LoginContainer = styled.div`
+  display: flex;
+  margin-left: auto;
+`;

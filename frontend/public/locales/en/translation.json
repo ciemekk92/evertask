@@ -1,0 +1,12 @@
+{
+  "general": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "resetPassword": "Reset Password",
+    "email": "E-mail",
+    "password": "Password"
+  },
+  "login": {
+    "title": "Login"
+  }
+}

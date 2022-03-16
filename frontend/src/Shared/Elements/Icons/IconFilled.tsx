@@ -1,18 +1,19 @@
 import React from 'react';
 import classNames from 'classnames';
 import { ICON_SIZE } from 'Shared/constants';
+import { StyledIcon } from './Shared.styled';
 
 interface Props extends React.HTMLAttributes<HTMLSpanElement> {
   iconName: string;
   iconSize?: ICON_SIZE;
 }
 
-export const IconOutline = ({
+export const IconFilled = ({
   iconName,
   iconSize = ICON_SIZE.MEDIUM,
   ...props
 }: Props): JSX.Element => {
-  const finalClassName = classNames('material-icons-outlined', {
+  const finalClassName = classNames('material-icons', {
     'md-18': iconSize === ICON_SIZE.SMALL,
     'md-24': iconSize === ICON_SIZE.MEDIUM,
     'md-36': iconSize === ICON_SIZE.LARGE,
@@ -21,8 +22,8 @@ export const IconOutline = ({
   });
 
   return (
-    <span {...props} className={finalClassName}>
+    <StyledIcon {...props} className={finalClassName}>
       {iconName}
-    </span>
+    </StyledIcon>
   );
 };

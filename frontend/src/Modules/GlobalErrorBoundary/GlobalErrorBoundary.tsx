@@ -1,6 +1,6 @@
 import React from 'react';
 import { Heading4 } from 'Shared/Typography';
-import { IconOutline } from 'Shared/IconOutline';
+import { IconOutline } from 'Shared/Elements/Icons';
 import { ICON_SIZE } from 'Shared/constants';
 import { HorizontalPageWrapper } from 'Shared/PageWrappers';
 import { BoundaryWrapper } from './GlobalErrorBoundary.styled';

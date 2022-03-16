@@ -1,5 +1,5 @@
 import React from 'react';
-import { ButtonFilled } from 'Shared/ButtonFilled';
+import { ButtonFilled } from 'Shared/Elements/Buttons/ButtonFilled';
 import { VerticalPageWrapper } from 'Shared/PageWrappers';
 import { StyledLink } from 'Shared/StyledLink';
 import { ButtonsContainer, LandingContainer } from './LandingPage.styled';

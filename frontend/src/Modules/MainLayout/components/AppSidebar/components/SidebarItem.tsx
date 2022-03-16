@@ -1,6 +1,6 @@
 import React from 'react';
 import { ICON_SIZE } from 'Shared/constants';
-import { IconOutline } from 'Shared/IconOutline';
+import { IconOutline } from 'Shared/Elements/Icons';
 import { StyledLink } from 'Shared/StyledLink';
 import { StyledSidebarItem } from './SidebarItem.styled';
 

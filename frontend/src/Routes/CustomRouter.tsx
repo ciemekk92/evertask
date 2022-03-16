@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, RouterProps } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import { BrowserHistory, HashHistory } from 'history';
 
 interface Props {

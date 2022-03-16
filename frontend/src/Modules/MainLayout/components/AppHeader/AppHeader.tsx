@@ -1,21 +1,38 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { StyledLink } from 'Shared/StyledLink';
+import { IconButton } from 'Shared/Elements/Buttons';
 import logoLight from 'Assets/logo_light.png';
 import logoDark from 'Assets/logo_dark.png';
 
-import { HeaderBody } from './AppHeader.styled';
+import { HeaderBody, LoginContainer } from './AppHeader.styled';
 
-export const AppHeader = (): JSX.Element => {
+interface Props {
+  handleLogin: VoidFunctionNoArgs;
+  handleSignup: VoidFunctionNoArgs;
+}
+
+export const AppHeader = ({ handleLogin, handleSignup }: Props): JSX.Element => {
+  const { t } = useTranslation();
+
   return (
     <HeaderBody>
       <StyledLink to="/" replace>
         <img src={logoDark} alt="EverTask" />
       </StyledLink>
-      <div style={{ display: 'flex', marginLeft: 'auto' }}>
-        <p>Profil</p>
-        <p>Wiadomosci</p>
-        <p>Powiadomienia</p>
-      </div>
+      <LoginContainer>
+        <StyledLink to="/login" replace>
+          <IconButton onClick={handleLogin} iconName="login">
+            {t('general.login')}
+          </IconButton>
+        </StyledLink>
+        <StyledLink to="/signup" replace>
+          <IconButton onClick={handleSignup} iconName="how_to_reg">
+            {t('general.signup')}
+          </IconButton>
+        </StyledLink>
+      </LoginContainer>
     </HeaderBody>
   );
 };

@@ -4,9 +4,20 @@
     "signup": "Rejestracja",
     "resetPassword": "Zresetuj hasło",
     "email": "E-mail",
-    "password": "Hasło"
+    "password": "Hasło",
+    "back": "Wróć"
   },
   "login": {
     "title": "Logowanie"
+  },
+  "signup": {
+    "title": "Rejestracja",
+    "username": "Nazwa użytkownika",
+    "firstName": "Imię",
+    "lastName": "Nazwisko",
+    "email": "E-mail",
+    "password": "Hasło",
+    "rePassword": "Potwierdź hasło",
+    "submit": "Zarejestruj się"
   }
 }

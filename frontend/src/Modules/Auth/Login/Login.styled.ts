@@ -16,7 +16,7 @@ export const LoginWrapper = styled.div`
 
   & h3,
   h6 {
-    margin: 5rem 0;
+    margin: 2rem 0;
   }
 
   & h6 {

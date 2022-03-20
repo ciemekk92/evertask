@@ -4,9 +4,20 @@
     "signup": "Sign Up",
     "resetPassword": "Reset Password",
     "email": "E-mail",
-    "password": "Password"
+    "password": "Password",
+    "back": "Back"
   },
   "login": {
     "title": "Login"
+  },
+  "signup": {
+    "title": "Sign Up",
+    "username": "Username",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "E-mail",
+    "password": "Password",
+    "rePassword": "Confirm password",
+    "submit": "Sign up"
   }
 }

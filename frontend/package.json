@@ -59,6 +59,7 @@
     "@types/redux": "^3.6.0",
     "@types/redux-thunk": "^2.1.0",
     "@types/styled-components": "^5.1.23",
+    "jest-watch-typeahead": "^0.6.5",
     "prettier": "^2.5.1"
   }
 }

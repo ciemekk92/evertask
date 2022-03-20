@@ -4,7 +4,7 @@ import { Route, Routes as ReactRoutes } from 'react-router-dom';
 import { history, Routes, CustomRouter } from 'Routes';
 import { GlobalErrorBoundary } from 'Modules/GlobalErrorBoundary';
 import { LandingPage } from 'Modules/LandingPage';
-import { Login } from 'Modules/Auth';
+import { Login, Signup } from 'Modules/Auth';
 import { AppHeader } from './components/AppHeader/AppHeader';
 import { AppSidebar } from './components/AppSidebar/AppSidebar';
 import { AppMainWindow } from './components/AppMainWindow/AppMainWindow';
@@ -32,6 +32,7 @@ export const MainLayout = (): JSX.Element => {
       <ReactRoutes>
         <Route path={'/'} element={<LandingPage />} />
         <Route path={'/login'} element={<Login />} />
+        <Route path={'/signup'} element={<Signup />} />
       </ReactRoutes>
     </GlobalErrorBoundary>
   );

@@ -8,8 +8,8 @@ interface Props extends React.HTMLAttributes<HTMLButtonElement> {
 
 export const IconButton = ({ children, iconName, ...props }: Props): JSX.Element => {
   return (
-    <StyledButton {...props}>
-      <IconOutline iconName={iconName} />
+    <StyledButton data-testid="button_wrapper" {...props}>
+      <IconOutline data-testid="button_icon" iconName={iconName} />
       {children}
     </StyledButton>
   );

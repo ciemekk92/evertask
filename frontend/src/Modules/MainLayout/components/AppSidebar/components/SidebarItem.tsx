@@ -12,7 +12,7 @@ interface Props {
 
 export const SidebarItem = ({ name, iconName, route }: Props): JSX.Element => {
   return (
-    <StyledLink replace to={route}>
+    <StyledLink to={route}>
       <StyledSidebarItem>
         <IconOutline iconName={iconName} iconSize={ICON_SIZE.XL} />
         <p>{name}</p>

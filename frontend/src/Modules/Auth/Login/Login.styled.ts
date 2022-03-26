@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { StyledButton } from 'Shared/Elements/Buttons/IconButton/IconButton.styled';
+import { StyledLinkButton } from '../../../Shared/Elements/Buttons/ButtonLikeLink/ButtonLikeLink.styled';
 
 export const LoginWrapper = styled.div`
   text-align: center;
@@ -24,21 +26,43 @@ export const LoginWrapper = styled.div`
   }
 
   & input {
-    width: 80%;
+    width: 100%;
     margin-bottom: 2rem;
   }
+
+  & ${StyledLinkButton} {
+    align-self: flex-end;
+  }
+
+  & ${StyledButton} {
+    align-self: flex-start;
+    margin-left: 1rem;
+
+    & span {
+      margin: 0;
+    }
+  }
+`;
+
+export const InputsContainer = styled.div`
+  width: 80%;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const ButtonsContainer = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: column;
   margin-top: 5rem;
   align-items: center;
   justify-content: center;
 
   & button {
-    width: 80%;
+    width: 30%;
     margin-bottom: 2rem;
+
+    &:not(:last-child) {
+      margin-right: 1.5rem;
+    }
   }
 `;

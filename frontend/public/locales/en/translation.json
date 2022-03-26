@@ -17,7 +17,7 @@
     "lastName": "Last name",
     "email": "E-mail",
     "password": "Password",
-    "rePassword": "Confirm password",
+    "rePassword": "Password confirmation",
     "submit": "Sign up"
   }
 }

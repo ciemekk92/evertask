@@ -10,7 +10,8 @@ export const lightTheme = {
   secondaryText: '#757575',
   disabled: '#666',
   disabledText: '#CCC',
-  shadow: 'rgba(102,102,102,0.4)',
+  error: '#D33636',
+  boxShadow: 'rgba(102,102,102,0.4)',
   textShadow: 'rgba(31,31,31,0.4)'
 };
 
@@ -26,6 +27,7 @@ export const darkTheme = {
   secondaryText: '#999',
   disabled: '#666',
   disabledText: '#CCC',
+  error: '#D33636',
   boxShadow: 'rgba(31,31,31,0.4)',
   textShadow: 'rgba(0, 0, 0, 0.4)'
 };

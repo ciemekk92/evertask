@@ -18,16 +18,16 @@ export const AppHeader = ({ handleLogin, handleSignup }: Props): JSX.Element => 
 
   return (
     <HeaderBody>
-      <StyledLink to="/" replace>
+      <StyledLink to="/">
         <img src={logoDark} alt="EverTask" />
       </StyledLink>
       <LoginContainer>
-        <StyledLink to="/login" replace>
+        <StyledLink to="/login">
           <IconButton onClick={handleLogin} iconName="login">
             {t('general.login')}
           </IconButton>
         </StyledLink>
-        <StyledLink to="/signup" replace>
+        <StyledLink to="/signup">
           <IconButton onClick={handleSignup} iconName="how_to_reg">
             {t('general.signup')}
           </IconButton>

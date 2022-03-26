@@ -1,6 +1,7 @@
 package com.predu.evertask.domain.dto.auth;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -9,22 +10,24 @@ import java.util.Set;
 @Data
 public class CreateUserRequest {
 
-    @NotBlank
+    @Length(min = 6, max = 30)
     private String username;
 
     @NotBlank
+    @Length(max = 30)
     private String firstName;
 
     @NotBlank
+    @Length(max = 30)
     private String lastName;
 
     @NotBlank @Email
     private String email;
 
-    @NotBlank
+    @Length(min = 8, max = 30)
     private String password;
 
-    @NotBlank
+    @Length(min = 8, max = 30)
     private String rePassword;
 
     private Set<String> authorities;

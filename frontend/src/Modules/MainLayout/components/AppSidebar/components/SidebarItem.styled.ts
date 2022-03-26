@@ -6,7 +6,7 @@ export const StyledSidebarItem = styled.div`
   align-items: center;
   cursor: pointer;
   user-select: none;
-  transition: all 0.5s ease;
+  transition: all 0.4s ease;
 
   &:hover {
     background-color: ${(props) => props.theme.secondary};

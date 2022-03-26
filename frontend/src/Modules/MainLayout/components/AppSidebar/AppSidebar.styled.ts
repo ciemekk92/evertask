@@ -10,7 +10,7 @@ export const SidebarBody = styled.div`
   height: 100%;
   overflow: hidden;
   z-index: 1000;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
   &:hover {
     width: 24rem;
     overflow: visible;

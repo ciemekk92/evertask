@@ -10,10 +10,10 @@ export const LandingPage = (): JSX.Element => {
       <LandingContainer>
         <p>Tekst testowy</p>
         <ButtonsContainer>
-          <StyledLink replace to={'/login'}>
+          <StyledLink to={'/login'}>
             <ButtonFilled>Zaloguj</ButtonFilled>
           </StyledLink>
-          <StyledLink replace to={'/signup'}>
+          <StyledLink to={'/signup'}>
             <ButtonFilled onClick={() => null}>Zarejestruj (nie działa)</ButtonFilled>
           </StyledLink>
         </ButtonsContainer>

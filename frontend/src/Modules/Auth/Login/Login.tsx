@@ -4,13 +4,14 @@ import { useTranslation } from 'react-i18next';
 
 import { Heading3 } from 'Shared/Typography';
 import { TextInput } from 'Shared/Elements/TextInput';
-import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
+import { ButtonFilled, ButtonLikeLink, ButtonOutline, IconButton } from 'Shared/Elements/Buttons';
 import { StyledLink } from 'Shared/StyledLink';
 import { ApplicationState } from 'Stores/store';
 import { actionCreators, LoginCredentials } from 'Stores/User';
 import { updateObject } from 'Utils/updateObject';
 import { Container } from 'Hooks/useLoading';
-import { ButtonsContainer, LoginWrapper } from './Login.styled';
+import { ButtonsContainer, InputsContainer, LoginWrapper } from './Login.styled';
+import { history } from '../../../Routes';
 
 export const Login = (): JSX.Element => {
   const initialData: LoginCredentials = {
@@ -34,32 +35,31 @@ export const Login = (): JSX.Element => {
   };
 
   const handleLogin = async () => {
-    await dispatch(actionCreators.loginUser(data));
+    dispatch(actionCreators.loginUser(data));
   };
 
   return (
     <React.Fragment>
       <Container isLoading={isLoading} />
       <LoginWrapper>
+        <IconButton iconName="arrow_back" onClick={history.back} />
         <Heading3>{t('login.title')}</Heading3>
-        <TextInput name="email" placeholder={t('general.email')} onChange={onChange} />
-        <TextInput
-          type="password"
-          name="password"
-          placeholder={t('general.password')}
-          onChange={onChange}
-        />
+        <InputsContainer>
+          <TextInput name="email" placeholder={t('general.email')} onChange={onChange} />
+          <TextInput
+            type="password"
+            name="password"
+            placeholder={t('general.password')}
+            onChange={onChange}
+          />
+          <ButtonLikeLink>
+            <StyledLink to="/reset-password">{t('general.resetPassword')}</StyledLink>
+          </ButtonLikeLink>
+        </InputsContainer>
         <ButtonsContainer>
           <ButtonFilled onClick={handleLogin}>{t('general.login')}</ButtonFilled>
           <ButtonOutline>
-            <StyledLink replace to="/signup">
-              {t('general.signup')}
-            </StyledLink>
-          </ButtonOutline>
-          <ButtonOutline>
-            <StyledLink replace to="/reset-password">
-              {t('general.resetPassword')}
-            </StyledLink>
+            <StyledLink to="/signup">{t('general.signup')}</StyledLink>
           </ButtonOutline>
         </ButtonsContainer>
       </LoginWrapper>

@@ -6,7 +6,6 @@ import com.predu.evertask.domain.model.Role;
 import com.predu.evertask.domain.model.User;
 import org.mapstruct.*;
 
-
 import static java.util.stream.Collectors.toSet;
 import static org.mapstruct.NullValueCheckStrategy.ALWAYS;
 import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;

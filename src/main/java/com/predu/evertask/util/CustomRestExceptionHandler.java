@@ -1,5 +1,6 @@
 package com.predu.evertask.util;
 
+import com.predu.evertask.exception.InvalidTokenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -28,10 +29,17 @@ public class CustomRestExceptionHandler {
 
         List<String> errorMessages = result.getFieldErrors()
                 .stream()
-                .map(objectError -> objectError.getField() + ": "
-                        + messageSource.getMessage(objectError, locale))
+                .map(fieldError -> fieldError.getField() + ": "
+                        + messageSource.getMessage(fieldError, locale))
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(new RestMessage(errorMessages), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<RestMessage> handleInvalidTokenException(InvalidTokenException ex, Locale locale) {
+        String message = messageSource.getMessage("message.signup." + ex.getMessage(), null, locale);
+
+        return new ResponseEntity<>(new RestMessage(message), HttpStatus.BAD_REQUEST);
     }
 }

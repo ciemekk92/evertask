@@ -8,12 +8,7 @@ import logoDark from 'Assets/logo_dark.png';
 
 import { HeaderBody, LoginContainer } from './AppHeader.styled';
 
-interface Props {
-  handleLogin: VoidFunctionNoArgs;
-  handleSignup: VoidFunctionNoArgs;
-}
-
-export const AppHeader = ({ handleLogin, handleSignup }: Props): JSX.Element => {
+export const AppHeader = (): JSX.Element => {
   const { t } = useTranslation();
 
   return (
@@ -23,14 +18,10 @@ export const AppHeader = ({ handleLogin, handleSignup }: Props): JSX.Element => 
       </StyledLink>
       <LoginContainer>
         <StyledLink to="/login">
-          <IconButton onClick={handleLogin} iconName="login">
-            {t('general.login')}
-          </IconButton>
+          <IconButton iconName="login">{t('general.login')}</IconButton>
         </StyledLink>
         <StyledLink to="/signup">
-          <IconButton onClick={handleSignup} iconName="how_to_reg">
-            {t('general.signup')}
-          </IconButton>
+          <IconButton iconName="how_to_reg">{t('general.signup')}</IconButton>
         </StyledLink>
       </LoginContainer>
     </HeaderBody>

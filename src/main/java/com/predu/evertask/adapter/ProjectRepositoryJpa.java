@@ -9,5 +9,4 @@ import java.util.UUID;
 
 @Repository
 public interface ProjectRepositoryJpa extends ProjectRepository, JpaRepository<Project, UUID> {
-
 }

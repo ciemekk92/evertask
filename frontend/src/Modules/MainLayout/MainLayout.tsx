@@ -1,19 +1,17 @@
 import React from 'react';
 import { Route, Routes as ReactRoutes } from 'react-router-dom';
 
-import { history, Routes, CustomRouter } from 'Routes';
+import { CustomRouter, history, Routes } from 'Routes';
 import { GlobalErrorBoundary } from 'Modules/GlobalErrorBoundary';
 import { LandingPage } from 'Modules/LandingPage';
-import { Login, Signup } from 'Modules/Auth';
+import { Login, Signup, SignupConfirmation, SuccessNotification } from 'Modules/Auth';
+import { NOTIFICATION_TYPES } from 'Shared/constants';
 import { AppHeader } from './components/AppHeader/AppHeader';
 import { AppSidebar } from './components/AppSidebar/AppSidebar';
 import { AppMainWindow } from './components/AppMainWindow/AppMainWindow';
 import { HorizontalWrapper, LayoutWrapper } from './MainLayout.styled';
 
 export const MainLayout = (): JSX.Element => {
-  const handleLogin = () => {};
-  const handleSignup = () => {};
-
   const renderLoggedInView = (
     <HorizontalWrapper>
       <AppSidebar />
@@ -33,6 +31,11 @@ export const MainLayout = (): JSX.Element => {
         <Route path={'/'} element={<LandingPage />} />
         <Route path={'/login'} element={<Login />} />
         <Route path={'/signup'} element={<Signup />} />
+        <Route path={'/signup_confirmation'} element={<SignupConfirmation />} />
+        <Route
+          path={'/signup_success'}
+          element={<SuccessNotification type={NOTIFICATION_TYPES.SIGNUP} />}
+        />
       </ReactRoutes>
     </GlobalErrorBoundary>
   );
@@ -40,7 +43,7 @@ export const MainLayout = (): JSX.Element => {
   return (
     <CustomRouter basename={'/'} history={history}>
       <LayoutWrapper>
-        <AppHeader handleLogin={handleLogin} handleSignup={handleSignup} />
+        <AppHeader />
         {renderLoggedOutView()}
       </LayoutWrapper>
     </CustomRouter>

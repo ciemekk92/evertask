@@ -5,7 +5,8 @@
     "resetPassword": "Zresetuj hasło",
     "email": "E-mail",
     "password": "Hasło",
-    "back": "Wróć"
+    "back": "Wróć",
+    "mainPage": "Strona główna"
   },
   "login": {
     "title": "Logowanie"
@@ -18,6 +19,15 @@
     "email": "E-mail",
     "password": "Hasło",
     "rePassword": "Potwierdź hasło",
-    "submit": "Zarejestruj się"
+    "submit": "Zarejestruj się",
+    "successNotification": {
+      "signup": "Rejestracja zakończona powodzeniem! Pod podany adres e-mail został wysłany link aktywacyjny, użyj go, aby aktywować swoje konto.",
+      "password": "Jeżeli podany adres e-mail był prawidłowy, to Twoje hasło zostało zresetowane. Sprawdź skrzynkę odbiorczą, znajdziesz tam link pozwalający ustawić nowe hasło."
+    }
+  },
+  "signupConfirmation": {
+    "title": "Aktywacja konta",
+    "success": "Twoje konto zostało pomyślnie aktywowane!",
+    "start": "Rozpocznij korzystanie z portalu"
   }
 }

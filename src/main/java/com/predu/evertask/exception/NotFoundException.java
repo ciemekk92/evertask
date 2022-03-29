@@ -1,4 +1,4 @@
-package com.predu.evertask.domain.exception;
+package com.predu.evertask.exception;
 
 import java.util.UUID;
 

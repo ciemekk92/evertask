@@ -5,7 +5,8 @@
     "resetPassword": "Reset Password",
     "email": "E-mail",
     "password": "Password",
-    "back": "Back"
+    "back": "Back",
+    "mainPage": "Main page"
   },
   "login": {
     "title": "Login"
@@ -18,6 +19,15 @@
     "email": "E-mail",
     "password": "Password",
     "rePassword": "Password confirmation",
-    "submit": "Sign up"
+    "submit": "Sign up",
+    "successNotification": {
+      "signup": "Your signup has completed successfully. Please check your e-mail inbox, and use the activation link sent to you, to finish the registration process.",
+      "password": "If provided e-mail was correct, your password should have been reset. Please check your inbox for a link allowing you to set a new password."
+    }
+  },
+  "signupConfirmation": {
+    "title": "Account activation",
+    "success": "Your account has been successfully activated!",
+    "start": "Start using the portal"
   }
 }

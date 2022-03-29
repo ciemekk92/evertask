@@ -6,7 +6,10 @@ import com.predu.evertask.domain.dto.auth.UserDto;
 import com.predu.evertask.domain.mapper.UserEditMapper;
 import com.predu.evertask.domain.mapper.UserViewMapper;
 import com.predu.evertask.domain.model.User;
+import com.predu.evertask.domain.model.VerificationToken;
+import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.UserRepository;
+import com.predu.evertask.repository.VerificationTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,12 +30,13 @@ import static java.lang.String.format;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final VerificationTokenRepository tokenRepository;
     private final UserEditMapper userEditMapper;
     private final UserViewMapper userViewMapper;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public UserDto create(CreateUserRequest request) {
+    public User create(CreateUserRequest request) {
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new ValidationException("Username already exists.");
         }
@@ -50,7 +54,7 @@ public class UserService implements UserDetailsService {
 
         user = userRepository.save(user);
 
-        return userViewMapper.toUserDto(user);
+        return user;
     }
 
     @Transactional
@@ -64,11 +68,26 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
+    public UserDto updateEnabled(UUID id, boolean isEnabled) {
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        if (optionalUser.isEmpty()) {
+            throw new NotFoundException(User.class, id);
+        }
+
+        User user = optionalUser.get();
+        user.setEnabled(isEnabled);
+        user = userRepository.save(user);
+
+        return userViewMapper.toUserDto(user);
+    }
+
+    @Transactional
     public UserDto upsert(CreateUserRequest request) {
         Optional<User> optionalUser = userRepository.findByUsername(request.getUsername());
 
         if (optionalUser.isEmpty()) {
-            return create(request);
+            return userViewMapper.toUserDto(create(request));
         } else {
             UpdateUserRequest updateUserRequest = new UpdateUserRequest();
             updateUserRequest.setFirstName(request.getFirstName());
@@ -101,5 +120,17 @@ public class UserService implements UserDetailsService {
 
     public UserDto getUser(UUID id) {
         return userViewMapper.toUserDto(userRepository.getById(id));
+    }
+
+    @Transactional
+    public void createVerificationToken(User user, String token) {
+        VerificationToken verificationToken = new VerificationToken(token, user);
+
+        tokenRepository.save(verificationToken);
+    }
+
+    @Transactional
+    public VerificationToken getVerificationToken(String verificationToken) {
+        return tokenRepository.findByToken(verificationToken);
     }
 }

@@ -24,14 +24,14 @@ const Overlay = styled.div`
   bottom: 0;
   width: 100vw;
   height: 100vh;
-  background-color: ${(props) => props.theme.secondaryTransparent};
+  background-color: ${(props) => props.theme.surfaceTransparent};
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 15500;
 
   & circle.bg {
-    stroke: ${(props) => props.theme.loading};
+    stroke: ${(props) => props.theme.primary};
     z-index: 15501;
   }
 `;

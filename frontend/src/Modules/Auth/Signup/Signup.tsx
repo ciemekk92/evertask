@@ -50,11 +50,11 @@ export const Signup = (): JSX.Element => {
 
   const handleSignup = async () => {
     startLoading();
-    const result = await Api.post('auth/register', { ...data });
+    const result = await Api.post('auth/signup', { ...data });
 
     stopLoading();
     if (result.status === 201) {
-      history.push('/signup-success');
+      history.push('/signup_success');
     } else {
       const { messages }: { messages: string[] } = await result.json();
 

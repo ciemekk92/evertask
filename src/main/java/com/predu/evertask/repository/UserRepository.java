@@ -1,6 +1,6 @@
 package com.predu.evertask.repository;
 
-import com.predu.evertask.domain.exception.NotFoundException;
+import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.domain.model.User;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;

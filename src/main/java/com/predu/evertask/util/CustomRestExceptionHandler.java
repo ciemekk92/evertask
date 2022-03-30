@@ -38,7 +38,7 @@ public class CustomRestExceptionHandler {
 
     @ExceptionHandler(InvalidTokenException.class)
     public ResponseEntity<RestMessage> handleInvalidTokenException(InvalidTokenException ex, Locale locale) {
-        String message = messageSource.getMessage("message.signup." + ex.getMessage(), null, locale);
+        String message = messageSource.getMessage("message.token." + ex.getMessage(), null, locale);
 
         return new ResponseEntity<>(new RestMessage(message), HttpStatus.BAD_REQUEST);
     }

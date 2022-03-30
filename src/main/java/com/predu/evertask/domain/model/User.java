@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,6 +31,9 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     private String lastName;
     private String phoneNumber;
 
+    private String refreshToken;
+    private Date refreshTokenExpiryDate;
+
     private boolean locked;
     private boolean expired;
     private boolean enabled;
@@ -41,7 +45,7 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     @OneToMany(mappedBy = "reporter")
     private Set<Issue> reportedIssues = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))

@@ -22,6 +22,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findById(UUID id);
 
+    Optional<User> findByRefreshToken(String token);
+
     default User getById(UUID id) {
         Optional<User> optionalUser = findById(id);
 

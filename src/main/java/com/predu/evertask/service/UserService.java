@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ValidationException;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
@@ -65,6 +66,14 @@ public class UserService implements UserDetailsService {
         user = userRepository.save(user);
 
         return userViewMapper.toUserDto(user);
+    }
+
+    @Transactional
+    public User updateRefreshToken(User user, String token, Date expiryDate) {
+        user.setRefreshToken(token);
+        user.setRefreshTokenExpiryDate(expiryDate);
+
+        return userRepository.save(user);
     }
 
     @Transactional
@@ -120,6 +129,12 @@ public class UserService implements UserDetailsService {
 
     public UserDto getUser(UUID id) {
         return userViewMapper.toUserDto(userRepository.getById(id));
+    }
+
+    public User findByRefreshToken(String token) {
+        return userRepository
+                .findByRefreshToken(token)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
     }
 
     @Transactional

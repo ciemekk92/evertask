@@ -24,7 +24,7 @@ public class JwtTokenUtil {
 
     public String generateAccessToken(User user) {
         return Jwts.builder()
-                .setSubject(format("%s,%s", user.getId(), user.getUsername()))
+                .setSubject(format("%s", user.getId()))
                 .setIssuer(jwtConfigurationProperties.getJwtIssuer())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 15 * 60 * 1000))
@@ -39,15 +39,6 @@ public class JwtTokenUtil {
                 .getBody();
 
         return UUID.fromString(claims.getSubject().split(",")[0]);
-    }
-
-    public String getUsername(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(jwtConfigurationProperties.getJwtSecret())
-                .parseClaimsJws(token)
-                .getBody();
-
-        return claims.getSubject().split(",")[1];
     }
 
     public Date getExpirationDate(String token) {

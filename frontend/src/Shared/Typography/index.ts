@@ -1,1 +1,9 @@
-export { Heading1, Heading2, Heading3, Heading4, Heading5, Heading6 } from './Typography.styled';
+export {
+  Heading1,
+  Heading2,
+  Heading3,
+  Heading4,
+  Heading5,
+  Heading6,
+  StyledValidationMessage
+} from './Typography.styled';

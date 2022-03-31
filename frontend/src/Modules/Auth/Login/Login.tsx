@@ -2,26 +2,29 @@ import React from 'react';
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { Heading3 } from 'Shared/Typography';
+import { Heading3, StyledValidationMessage } from 'Shared/Typography';
 import { TextInput } from 'Shared/Elements/TextInput';
 import { ButtonFilled, ButtonLikeLink, ButtonOutline, IconButton } from 'Shared/Elements/Buttons';
 import { StyledLink } from 'Shared/StyledLink';
 import { ApplicationState } from 'Stores/store';
 import { actionCreators, LoginCredentials } from 'Stores/User';
 import { updateObject } from 'Utils/updateObject';
+import { isDefined } from 'Utils/isDefined';
 import { Container } from 'Hooks/useLoading';
+import { useValidation } from 'Hooks/useValidation';
+import { history } from 'Routes';
 import { ButtonsContainer, InputsContainer, LoginWrapper } from './Login.styled';
-import { history } from '../../../Routes';
 
 export const Login = (): JSX.Element => {
   const initialData: LoginCredentials = {
-    email: '',
+    username: '',
     password: ''
   };
 
   const { t } = useTranslation();
+  const { errors, saveErrors, removeError } = useValidation();
 
-  const isLoading = useSelector(
+  const isLoading: boolean = useSelector(
     (state: ApplicationState) => (state.user ? state.user.isLoading : false),
     shallowEqual
   );
@@ -31,11 +34,19 @@ export const Login = (): JSX.Element => {
   const [data, setData] = React.useState<LoginCredentials>(initialData);
 
   const onChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    if (errors.has('message')) {
+      removeError('message');
+    }
+
     setData(updateObject(data, { [target.name]: target.value }));
   };
 
   const handleLogin = async () => {
-    dispatch(actionCreators.loginUser(data));
+    const message = await dispatch(actionCreators.loginUser(data));
+
+    if (isDefined(message) && typeof message !== 'function') {
+      saveErrors(message);
+    }
   };
 
   return (
@@ -45,7 +56,7 @@ export const Login = (): JSX.Element => {
         <IconButton iconName="arrow_back" onClick={history.back} />
         <Heading3>{t('login.title')}</Heading3>
         <InputsContainer>
-          <TextInput name="email" placeholder={t('general.email')} onChange={onChange} />
+          <TextInput name="username" placeholder={t('general.username')} onChange={onChange} />
           <TextInput
             type="password"
             name="password"
@@ -55,6 +66,7 @@ export const Login = (): JSX.Element => {
           <ButtonLikeLink>
             <StyledLink to="/reset-password">{t('general.resetPassword')}</StyledLink>
           </ButtonLikeLink>
+          <StyledValidationMessage>{errors.get('message')}</StyledValidationMessage>
         </InputsContainer>
         <ButtonsContainer>
           <ButtonFilled onClick={handleLogin}>{t('general.login')}</ButtonFilled>

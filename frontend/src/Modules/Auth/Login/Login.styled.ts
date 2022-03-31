@@ -53,7 +53,7 @@ export const InputsContainer = styled.div`
 export const ButtonsContainer = styled.div`
   width: 100%;
   display: flex;
-  margin-top: 5rem;
+  margin-top: 3rem;
   align-items: center;
   justify-content: center;
 

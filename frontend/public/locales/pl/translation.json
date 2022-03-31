@@ -3,6 +3,7 @@
     "login": "Zaloguj się",
     "signup": "Rejestracja",
     "resetPassword": "Zresetuj hasło",
+    "username": "Nazwa użytkownika",
     "email": "E-mail",
     "password": "Hasło",
     "back": "Wróć",
@@ -29,5 +30,13 @@
     "title": "Aktywacja konta",
     "success": "Twoje konto zostało pomyślnie aktywowane!",
     "start": "Rozpocznij korzystanie z portalu"
+  },
+  "sidebar": {
+    "link": {
+      "dashboard": "Dashboard",
+      "calendar": "Kalendarz",
+      "sprints": "Sprinty",
+      "tasks": "Zadania"
+    }
   }
 }

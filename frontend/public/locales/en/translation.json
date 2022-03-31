@@ -3,6 +3,7 @@
     "login": "Login",
     "signup": "Sign Up",
     "resetPassword": "Reset Password",
+    "username": "Username",
     "email": "E-mail",
     "password": "Password",
     "back": "Back",
@@ -29,5 +30,13 @@
     "title": "Account activation",
     "success": "Your account has been successfully activated!",
     "start": "Start using the portal"
+  },
+  "sidebar": {
+    "link": {
+      "dashboard": "Dashboard",
+      "calendar": "Calendar",
+      "sprints": "Sprints",
+      "tasks": "Tasks"
+    }
   }
 }

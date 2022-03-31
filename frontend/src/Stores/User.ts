@@ -11,16 +11,18 @@ export interface UserState {
   isLoading: boolean;
   userInfo: UserInfo;
   accessToken: string;
+  errors: string;
 }
 
 export interface UserInfo {
   username: string;
   firstName: string;
   lastName: string;
+  email: string;
 }
 
 export interface LoginCredentials {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -36,6 +38,11 @@ interface SetUserLoadingAction {
   isLoading: boolean;
 }
 
+interface SetUserErrorsAction {
+  type: typeof ActionTypes.SET_USER_ERRORS;
+  errors: string;
+}
+
 interface SetTokenAction {
   type: typeof ActionTypes.SET_TOKEN;
   accessToken: string;
@@ -48,46 +55,92 @@ interface SetLogoutAction {
 export type UserActionTypes =
   | SetLoginInfoAction
   | SetUserLoadingAction
+  | SetUserErrorsAction
   | SetTokenAction
   | SetLogoutAction;
 
 export const actionCreators = {
   loginUser:
-    ({ email, password }: LoginCredentials): AppThunkAction<UserActionTypes> =>
+    ({ username, password }: LoginCredentials): AppThunkAction<UserActionTypes> | string =>
     async (dispatch, getState) => {
       const appState = getState();
 
-      await dispatch({
+      dispatch({
         type: ActionTypes.SET_USER_LOADING,
         isLoading: true
       });
 
       if (appState && appState.user) {
-        const result = await Api.post('auth/login', { email, password });
+        const result = await Api.postWithCredentials('auth/login', { username, password });
+        const json = await result.json();
 
         if (result.status === 200) {
-          const json = await result.json();
-
           UserModel.currentUserSubject.next({
             ...json
           });
 
+          // TODO: Development only
+          localStorage.setItem('refreshToken', json.refreshToken);
+
           dispatch({
             type: ActionTypes.SET_LOGIN_INFO,
             accessToken: json.accessToken,
-            userInfo: { ...json },
+            userInfo: {
+              firstName: json.firstName,
+              lastName: json.lastName,
+              email: json.email,
+              username: json.username
+            },
             isLoading: false
           });
+
+          setTimeout(() => {
+            dispatch(actionCreators.refresh());
+          }, 15 * 60 * 1000);
+
+          history.push('/');
         } else {
           dispatch({
             type: ActionTypes.SET_USER_LOADING,
             isLoading: false
           });
+          return json.message;
         }
+      }
+    },
+  refresh: (): AppThunkAction<UserActionTypes> => async (dispatch, getState) => {
+    const appState = getState();
 
-        history.push('/');
+    dispatch({
+      type: ActionTypes.SET_USER_LOADING,
+      isLoading: true
+    });
+
+    if (appState && appState.user) {
+      const refreshToken = localStorage.getItem('refreshToken');
+
+      if (refreshToken) {
+        const result = await Api.post(`auth/refresh?refreshToken=${refreshToken}`);
+        const json = await result.json();
+
+        if (result.status === 200) {
+          dispatch({
+            type: ActionTypes.SET_TOKEN,
+            accessToken: json.accessToken
+          });
+
+          setTimeout(() => {
+            dispatch(actionCreators.refresh());
+          }, 15 * 60 * 1000);
+        } else {
+          dispatch({
+            type: ActionTypes.SET_USER_ERRORS,
+            errors: json.message
+          });
+        }
       }
     }
+  }
 };
 
 const initialState: UserState = {
@@ -95,9 +148,11 @@ const initialState: UserState = {
   userInfo: {
     username: '',
     firstName: '',
-    lastName: ''
+    lastName: '',
+    email: ''
   },
-  accessToken: ''
+  accessToken: '',
+  errors: ''
 };
 
 export const reducer: Reducer<UserState> = (
@@ -115,12 +170,26 @@ export const reducer: Reducer<UserState> = (
       return {
         userInfo: updateObject(state.userInfo, action.userInfo),
         isLoading: false,
+        accessToken: action.accessToken,
+        errors: ''
+      };
+    case ActionTypes.SET_USER_ERRORS:
+      return {
+        ...state,
+        isLoading: false,
+        errors: action.errors
+      };
+    case ActionTypes.SET_TOKEN:
+      return {
+        ...state,
+        isLoading: false,
         accessToken: action.accessToken
       };
     case ActionTypes.SET_USER_LOADING:
       return {
         ...state,
-        isLoading: action.isLoading
+        isLoading: action.isLoading,
+        errors: ''
       };
     default:
       return state;

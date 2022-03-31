@@ -7,12 +7,14 @@ import lombok.Setter;
 @Setter
 public class UserAuthDto extends UserDto {
 
-    public UserAuthDto(UserDto userDto, String token) {
+    public UserAuthDto(UserDto userDto, String accessToken, String refreshToken) {
         super(userDto);
-        this.accessToken = token;
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
     }
 
     private String accessToken;
+    private String refreshToken;
 
     @Override
     public boolean equals(Object obj) {

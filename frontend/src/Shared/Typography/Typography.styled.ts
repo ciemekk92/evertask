@@ -31,3 +31,9 @@ export const Heading6 = styled.h6`
   font-weight: 500;
   letter-spacing: 0.15px;
 `;
+
+export const StyledValidationMessage = styled.p`
+  color: ${(props) => props.theme.error};
+  font-size: 1.7rem;
+  margin: 0.5rem 0;
+`;

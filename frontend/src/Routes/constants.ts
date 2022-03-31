@@ -6,22 +6,22 @@ export interface SidebarRoute {
 
 export const SIDEBAR_ROUTES: SidebarRoute[] = [
   {
-    name: 'Dashboard',
+    name: 'dashboard',
     iconName: 'dashboard',
     route: '/dashboard'
   },
   {
-    name: 'Kalendarz',
+    name: 'calendar',
     iconName: 'event_note',
     route: '/calendar'
   },
   {
-    name: 'Sprinty',
+    name: 'sprints',
     iconName: 'alarm_on',
     route: '/sprints'
   },
   {
-    name: 'Zadania',
+    name: 'tasks',
     iconName: 'task',
     route: '/tasks'
   }

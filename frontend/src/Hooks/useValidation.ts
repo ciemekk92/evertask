@@ -11,16 +11,21 @@ export const useValidation = () => {
     setErrors(updatedErrors);
   };
 
-  const saveErrors = (errorArr: string[]): void => {
+  const saveErrors = React.useCallback((errorsCollection: string[] | string): void => {
     let errorMap = new Map<string, string>();
-    errorArr.forEach((err: string) => {
-      const [key, value] = err.split(': ');
 
-      errorMap.set(key, value);
-    });
+    if (Array.isArray(errorsCollection)) {
+      errorsCollection.forEach((err: string) => {
+        const [key, value] = err.split(': ');
+
+        errorMap.set(key, value);
+      });
+    } else {
+      errorMap.set('message', errorsCollection);
+    }
 
     setErrors(errorMap);
-  };
+  }, []);
 
   return {
     errors,

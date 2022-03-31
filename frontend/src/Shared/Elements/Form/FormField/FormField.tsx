@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyledFieldContainer, StyledValidationMessage } from './FormField.styled';
+import { StyledValidationMessage } from 'Shared/Typography';
+import { StyledFieldContainer } from './FormField.styled';
 
 interface Props {
   isValid?: boolean;

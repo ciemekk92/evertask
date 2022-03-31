@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -41,5 +42,12 @@ public class CustomRestExceptionHandler {
         String message = messageSource.getMessage("message.token." + ex.getMessage(), null, locale);
 
         return new ResponseEntity<>(new RestMessage(message), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<RestMessage> handleBadCredentialException(BadCredentialsException ex, Locale locale) {
+        String message = messageSource.getMessage("message.auth.badCredentials", null, locale);
+
+        return new ResponseEntity<>(new RestMessage(message), HttpStatus.UNAUTHORIZED);
     }
 }

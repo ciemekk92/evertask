@@ -8,7 +8,10 @@ export interface ApplicationState {
 }
 
 export interface AppThunkAction<TAction> {
-  (dispatch: (action: TAction) => void, getState: () => ApplicationState): void;
+  (
+    dispatch: (action: TAction | AppThunkAction<TAction>) => void,
+    getState: () => ApplicationState
+  ): void;
 }
 
 const composeEnhancers = composeWithDevTools({});

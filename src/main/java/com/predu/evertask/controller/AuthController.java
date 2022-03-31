@@ -12,15 +12,13 @@ import com.predu.evertask.service.UserService;
 import com.predu.evertask.util.RandomToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -41,7 +39,7 @@ public class AuthController {
 
     @PostMapping("login")
     public ResponseEntity<UserAuthDto> login(@RequestBody @Valid AuthRequest request, HttpServletResponse response) {
-        try {
+
             Authentication authenticate = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
@@ -55,21 +53,22 @@ public class AuthController {
                     new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000L)
             );
 
-            Cookie cookie = new Cookie("refresh", refreshToken);
+            ResponseCookie cookie = ResponseCookie.from("refresh", refreshToken)
+                    .httpOnly(true)
+                    .sameSite("None")
+                    .secure(true)
+                    .path("/")
+                    .maxAge(7 * 24 * 60 * 60L)
+                    .build();
 
-            cookie.setHttpOnly(true);
-            cookie.setMaxAge(7 * 24 * 60 * 60);
-
-            response.addCookie(cookie);
+            response.addHeader("Set-Cookie", cookie.toString());
 
             UserDto userDto = userViewMapper.toUserDto(user);
-            UserAuthDto userAuthDto = new UserAuthDto(userDto, token);
 
-            return ResponseEntity.ok()
-                    .body(userAuthDto);
-        } catch (BadCredentialsException ex) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+            // TODO: For development, refresh token should be set in localStorage
+            UserAuthDto userAuthDto = new UserAuthDto(userDto, token, refreshToken);
+
+            return ResponseEntity.ok().body(userAuthDto);
     }
 
     @PostMapping("signup")
@@ -106,7 +105,7 @@ public class AuthController {
     }
 
     @PostMapping("refresh")
-    public ResponseEntity<RefreshResponseDto> refresh(@CookieValue(name = "refresh") String refreshToken) throws InvalidTokenException {
+    public ResponseEntity<RefreshResponseDto> refresh(@RequestParam("refreshToken") String refreshToken) throws InvalidTokenException {
         if (refreshToken == null) {
             throw new InvalidTokenException("tokenInvalid");
         }

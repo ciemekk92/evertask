@@ -1,7 +1,7 @@
 import { BehaviorSubject } from 'rxjs';
 import { UserInfo } from 'Stores/User';
 
-interface User extends UserInfo {
+export interface User extends UserInfo {
   accessToken: string;
 }
 
@@ -9,6 +9,7 @@ const currentUserSubject = new BehaviorSubject<User>({
   username: '',
   firstName: '',
   lastName: '',
+  email: '',
   accessToken: ''
 });
 

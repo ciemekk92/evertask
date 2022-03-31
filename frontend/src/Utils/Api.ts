@@ -21,18 +21,22 @@ const getRequestOptions = ({ body, method = 'POST', headers = {} }: RequestInit)
 
 const getJsonRequestOptions = ({
   data,
-  method = 'POST'
+  method = 'POST',
+  hasCredentials
 }: {
   data: Payload;
   method?: string;
-}): RequestInit =>
-  getRequestOptions({
+  hasCredentials?: boolean;
+}): RequestInit => {
+  return getRequestOptions({
     body: JSON.stringify(data),
     method,
     headers: {
       'Content-Type': 'application/json'
-    }
+    },
+    credentials: hasCredentials ? 'include' : 'omit'
   });
+};
 
 export const Api = {
   get: async <T extends ApiResponse>(url: string, params: Params = {}): Promise<T> =>
@@ -41,6 +45,9 @@ export const Api = {
     customFetch(getUrlWithParams(url, params), {}),
   post: async (url: string, data: Payload = {}): Promise<Response> => {
     return customFetch(url, getJsonRequestOptions({ data }));
+  },
+  postWithCredentials: async (url: string, data: Payload = {}): Promise<Response> => {
+    return customFetch(url, getJsonRequestOptions({ data, method: 'POST', hasCredentials: true }));
   },
   put: async (url: string, data: Payload = {}): Promise<Response> => {
     return customFetch(url, getJsonRequestOptions({ data, method: 'PUT' }));

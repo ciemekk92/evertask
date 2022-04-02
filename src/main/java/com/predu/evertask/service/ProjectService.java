@@ -36,6 +36,13 @@ public class ProjectService {
         return optionalProject.map(projectMapper::projectToProjectDto);
     }
 
+    public List<ProjectDto> findByOwnerId(UUID id) {
+        return projectRepository.findByOwnerId(id)
+                .stream()
+                .map(projectMapper::projectToProjectDto)
+                .collect(Collectors.toList());
+    }
+
     public Project create(ProjectSaveDto toSave) {
         return projectRepository.save(projectMapper.projectSaveDtoToProject(toSave));
     }

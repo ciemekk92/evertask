@@ -105,7 +105,7 @@ public class AuthController {
     }
 
     @PostMapping("refresh")
-    public ResponseEntity<RefreshResponseDto> refresh(@RequestParam("refreshToken") String refreshToken) throws InvalidTokenException {
+    public ResponseEntity<UserAuthDto> refresh(@RequestParam("refreshToken") String refreshToken) throws InvalidTokenException {
         if (refreshToken == null) {
             throw new InvalidTokenException("tokenInvalid");
         }
@@ -118,9 +118,12 @@ public class AuthController {
             throw new InvalidTokenException("expired");
         }
 
+        UserDto userDto = userViewMapper.toUserDto(user);
         String newAccessToken = jwtTokenUtil.generateAccessToken(user);
 
-        return ResponseEntity.status(200).body(new RefreshResponseDto(newAccessToken));
+        UserAuthDto userAuthDto = new UserAuthDto(userDto, newAccessToken, refreshToken);
+
+        return ResponseEntity.status(200).body(userAuthDto);
     }
 
     @PostMapping("logout")

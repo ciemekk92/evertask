@@ -51,6 +51,15 @@ public class User extends BaseEntity implements UserDetails, Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> authorities = new HashSet<>();
 
+    @OneToMany(mappedBy = "owner")
+    private Set<Project> ownedProjects = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "user_projects",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id"))
+    private Set<Project> projects = new HashSet<>();
+
     @Override
     public boolean isAccountNonExpired() {
         return enabled;

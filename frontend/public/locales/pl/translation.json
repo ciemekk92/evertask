@@ -10,7 +10,19 @@
     "mainPage": "Strona główna"
   },
   "login": {
-    "title": "Logowanie"
+    "title": "Logowanie",
+    "validation": {
+      "username": {
+        "minLength": "Nazwa użytkownika jest za krótka (minimum 6 znaków)",
+        "maxLength": "Nazwa użytkownika jest za długa (maksimum 30 znaków)",
+        "required": "Nazwa użytkownika jest wymagana"
+      },
+      "password": {
+        "minLength": "Hasło jest za krótkie (minimum 8 znaków)",
+        "maxLength": "Hasło jest za długie (maksimum 30 znaków)",
+        "required": "Hasło jest wymagane"
+      }
+    }
   },
   "signup": {
     "title": "Rejestracja",
@@ -21,6 +33,26 @@
     "password": "Hasło",
     "rePassword": "Potwierdź hasło",
     "submit": "Zarejestruj się",
+    "validation": {
+      "firstName": {
+        "maxLength": "Imię jest za długie (maksimum 30 znaków)",
+        "required": "Imię jest wymagane."
+      },
+      "lastName": {
+        "maxLength": "Nazwisko jest za długie (maksimum 30 znaków)",
+        "required": "Nazwisko jest wymagane."
+      },
+      "rePassword": {
+        "minLength": "Potwierdzenie hasła jest za krótkie (minimum 8 znaków)",
+        "maxLength": "Potwierdzenie hasła jest za długie (maksimum 30 znaków)",
+        "required": "Potwierdzenie hasła jest wymagane.",
+        "mustMatch": "Hasło i potwierdzenie hasła muszą być identyczne."
+      },
+      "email": {
+        "isValidEmail": "Wartość musi być prawidłowym adresem e-mail.",
+        "required": "E-mail jest wymagany"
+      }
+    },
     "successNotification": {
       "signup": "Rejestracja zakończona powodzeniem! Pod podany adres e-mail został wysłany link aktywacyjny, użyj go, aby aktywować swoje konto.",
       "password": "Jeżeli podany adres e-mail był prawidłowy, to Twoje hasło zostało zresetowane. Sprawdź skrzynkę odbiorczą, znajdziesz tam link pozwalający ustawić nowe hasło."

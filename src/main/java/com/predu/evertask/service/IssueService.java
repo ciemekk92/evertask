@@ -34,6 +34,13 @@ public class IssueService {
         return issueRepository.findById(id);
     }
 
+    public List<IssueDto> findByAssigneeId(UUID id) {
+        return issueRepository.findByAssigneeId(id)
+                .stream()
+                .map(issueMapper::issueToIssueDto)
+                .collect(Collectors.toList());
+    }
+
     public IssueDto create(IssueDto toSave) {
         issueRepository.save(issueMapper.issueDtoToIssue(toSave));
 

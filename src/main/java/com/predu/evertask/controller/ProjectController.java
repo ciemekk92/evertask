@@ -3,8 +3,10 @@ package com.predu.evertask.controller;
 import com.predu.evertask.domain.dto.project.ProjectDto;
 import com.predu.evertask.domain.dto.project.ProjectSaveDto;
 import com.predu.evertask.domain.model.Project;
+import com.predu.evertask.domain.model.User;
 import com.predu.evertask.service.ProjectService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +31,17 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.findAll());
     }
 
+    @GetMapping("/user")
+    public ResponseEntity<List<ProjectDto>> getProjectsByUser(Authentication authentication) throws IllegalAccessException {
+        if (authentication == null) {
+            throw new IllegalAccessException("No user logged in.");
+        }
+
+        User user = (User) authentication.getPrincipal();
+
+        return ResponseEntity.ok(projectService.findByOwnerId(user.getId()));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ProjectDto> getProject(@PathVariable UUID id) {
         return projectService.findById(id)
@@ -37,7 +50,15 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ResponseEntity<ProjectSaveDto> createProject(@RequestBody @Valid ProjectSaveDto toCreate) throws URISyntaxException {
+    public ResponseEntity<ProjectSaveDto> createProject(@RequestBody @Valid ProjectSaveDto toCreate,
+                                                        Authentication authentication) throws URISyntaxException, IllegalAccessException {
+        if (authentication == null) {
+            throw new IllegalAccessException("No user logged in.");
+        }
+
+        User owner = (User) authentication.getPrincipal();
+        toCreate.setOwnerId(owner.getId());
+
         Project created = projectService.create(toCreate);
 
         return ResponseEntity.created(new URI("http://localhost:8080/api/projects/" + created.getId())).body(toCreate);

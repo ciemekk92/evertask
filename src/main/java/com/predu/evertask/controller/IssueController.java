@@ -3,8 +3,10 @@ package com.predu.evertask.controller;
 import com.predu.evertask.domain.dto.issue.IssueDto;
 import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
 import com.predu.evertask.domain.model.Issue;
+import com.predu.evertask.domain.model.User;
 import com.predu.evertask.service.IssueService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +36,17 @@ public class IssueController {
         return issueService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/assigned_to_me")
+    public ResponseEntity<List<IssueDto>> getAssignedIssuesToUser(Authentication authentication) throws IllegalAccessException {
+        if (authentication == null) {
+            throw new IllegalAccessException("No user logged in.");
+        }
+
+        User user = (User) authentication.getPrincipal();
+
+        return ResponseEntity.ok(issueService.findByAssigneeId(user.getId()));
     }
 
     @PostMapping

@@ -10,6 +10,7 @@ export const HeaderBody = styled.nav`
   display: flex;
   align-items: center;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+  z-index: 1500;
 
   & img {
     height: 4rem;

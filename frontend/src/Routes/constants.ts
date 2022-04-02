@@ -8,7 +8,7 @@ export const SIDEBAR_ROUTES: SidebarRoute[] = [
   {
     name: 'dashboard',
     iconName: 'dashboard',
-    route: '/dashboard'
+    route: '/'
   },
   {
     name: 'calendar',

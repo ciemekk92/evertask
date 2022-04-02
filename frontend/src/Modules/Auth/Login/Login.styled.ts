@@ -25,9 +25,13 @@ export const LoginWrapper = styled.div`
     padding: 0 2rem;
   }
 
-  & input {
-    width: 100%;
-    margin-bottom: 2rem;
+  & form {
+    width: 80%;
+
+    & input {
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
   }
 
   & ${StyledLinkButton} {
@@ -45,7 +49,7 @@ export const LoginWrapper = styled.div`
 `;
 
 export const InputsContainer = styled.div`
-  width: 80%;
+  width: 100%;
   display: flex;
   flex-direction: column;
 `;

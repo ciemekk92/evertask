@@ -10,7 +10,19 @@
     "mainPage": "Main page"
   },
   "login": {
-    "title": "Login"
+    "title": "Login",
+    "validation": {
+      "username": {
+        "minLength": "Username is too short (minimum 6 characters)",
+        "maxLength": "Username is too long (maximum 30 characters)",
+        "required": "Username is required"
+      },
+      "password": {
+        "minLength": "Password is too short (minimum 8 characters)",
+        "maxLength": "Password is too long (maximum 30 characters)",
+        "required": "Password is required"
+      }
+    }
   },
   "signup": {
     "title": "Sign Up",
@@ -21,6 +33,26 @@
     "password": "Password",
     "rePassword": "Password confirmation",
     "submit": "Sign up",
+    "validation": {
+      "firstName": {
+        "maxLength": "Name is too long (maximum 30 characters)",
+        "required": "First name is required."
+      },
+      "lastName": {
+        "maxLength": "Last name is too long (maximum 30 characters)",
+        "required": "Last name is required."
+      },
+      "rePassword": {
+        "minLength": "Password confirmation is too short (minimum 8 characters)",
+        "maxLength": "Password confirmation is too long (maximum 30 characters)",
+        "required": "Password confirmation is required.",
+        "mustMatch": "Password and password confirmation must match."
+      },
+      "email": {
+        "isValidEmail": "Value must be a valid e-mail address.",
+        "required": "E-mail is required"
+      }
+    },
     "successNotification": {
       "signup": "Your signup has completed successfully. Please check your e-mail inbox, and use the activation link sent to you, to finish the registration process.",
       "password": "If provided e-mail was correct, your password should have been reset. Please check your inbox for a link allowing you to set a new password."
@@ -37,6 +69,15 @@
       "calendar": "Calendar",
       "sprints": "Sprints",
       "tasks": "Tasks"
+    }
+  },
+  "dashboard": {
+    "assignedIssues": {
+      "title": "Issues assigned to me"
+    },
+    "projects": {
+      "title": "My projects",
+      "add": "Create new project"
     }
   }
 }

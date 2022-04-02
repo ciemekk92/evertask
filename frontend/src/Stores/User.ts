@@ -75,8 +75,13 @@ export const actionCreators = {
         const json = await result.json();
 
         if (result.status === 200) {
+          history.push('/');
           UserModel.currentUserSubject.next({
-            ...json
+            firstName: json.firstName,
+            lastName: json.lastName,
+            email: json.email,
+            username: json.username,
+            accessToken: json.accessToken
           });
 
           // TODO: Development only
@@ -97,8 +102,6 @@ export const actionCreators = {
           setTimeout(() => {
             dispatch(actionCreators.refresh());
           }, 15 * 60 * 1000);
-
-          history.push('/');
         } else {
           dispatch({
             type: ActionTypes.SET_USER_LOADING,
@@ -121,12 +124,27 @@ export const actionCreators = {
 
       if (refreshToken) {
         const result = await Api.post(`auth/refresh?refreshToken=${refreshToken}`);
-        const json = await result.json();
+        const { firstName, lastName, email, username, accessToken, message } = await result.json();
 
         if (result.status === 200) {
+          UserModel.currentUserSubject.next({
+            firstName,
+            lastName,
+            email,
+            username,
+            accessToken
+          });
+
           dispatch({
-            type: ActionTypes.SET_TOKEN,
-            accessToken: json.accessToken
+            type: ActionTypes.SET_LOGIN_INFO,
+            accessToken,
+            userInfo: {
+              firstName,
+              lastName,
+              email,
+              username
+            },
+            isLoading: false
           });
 
           setTimeout(() => {
@@ -135,7 +153,7 @@ export const actionCreators = {
         } else {
           dispatch({
             type: ActionTypes.SET_USER_ERRORS,
-            errors: json.message
+            errors: message
           });
         }
       }

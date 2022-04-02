@@ -1,6 +1,7 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { InputField } from './InputField';
 
-export const StyledInput = styled.input`
+export const TextInput = styled(InputField)`
   height: 4.8rem;
   min-width: 24rem;
   border: 1px solid ${(props) => props.theme.primary};
@@ -14,4 +15,25 @@ export const StyledInput = styled.input`
   &::placeholder {
     color: ${(props) => props.theme.secondaryText};
   }
+
+  ${({ error }) =>
+    error &&
+    css`
+      border: 1px solid ${(props) => props.theme.error};
+      outline: none;
+
+      &:focus,
+      &:active {
+        border: 1px solid ${(props) => props.theme.error};
+        outline: none;
+      }
+    `}
+`;
+
+export const TextInputErrorMessage = styled.div`
+  color: ${(props) => props.theme.error};
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem 0.75rem;
+  white-space: pre-line;
 `;

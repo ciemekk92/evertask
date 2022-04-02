@@ -16,6 +16,8 @@ export const SidebarBody = styled.div`
     width: 24rem;
     overflow: visible;
     background-color: ${(props) => props.theme.surface};
+    box-shadow: 0.3rem 0 0.5rem rgba(0, 0, 0, 0.4);
+    //clip-path: inset(0 -15px 0 -15px);
   }
 `;
 

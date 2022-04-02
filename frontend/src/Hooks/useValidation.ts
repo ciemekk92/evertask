@@ -1,14 +1,14 @@
 import React from 'react';
 
 export const useValidation = () => {
-  const [errors, setErrors] = React.useState<Map<string, string>>(new Map());
+  const [validationErrors, setValidationErrors] = React.useState<Map<string, string>>(new Map());
 
-  const resetValidationState = () => setErrors(new Map());
+  const resetValidationState = () => setValidationErrors(new Map());
 
   const removeError = (key: string) => {
-    let updatedErrors = errors;
+    let updatedErrors = validationErrors;
     updatedErrors.delete(key);
-    setErrors(updatedErrors);
+    setValidationErrors(updatedErrors);
   };
 
   const saveErrors = React.useCallback((errorsCollection: string[] | string): void => {
@@ -24,11 +24,11 @@ export const useValidation = () => {
       errorMap.set('message', errorsCollection);
     }
 
-    setErrors(errorMap);
+    setValidationErrors(errorMap);
   }, []);
 
   return {
-    errors,
+    validationErrors,
     saveErrors,
     removeError,
     resetValidationState

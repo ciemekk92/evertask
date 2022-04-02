@@ -5,10 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +23,14 @@ public class Project extends BaseEntity{
 
     @NotBlank
     private String description;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;
+
+    @ManyToMany(mappedBy = "projects")
+    private Set<User> members = new HashSet<>();
 
     @OneToMany(mappedBy = "project")
     private Set<Issue> issues = new HashSet<>();

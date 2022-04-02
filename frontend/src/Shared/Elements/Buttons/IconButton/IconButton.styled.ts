@@ -7,7 +7,7 @@ export const StyledButton = styled.button`
   color: ${(props) => props.theme.primaryText};
   border: none;
   border-radius: 0.5rem;
-  font-size: 2rem;
+  font-size: 1.6rem;
   padding: 0.6rem 1.2rem;
   transition: all 0.4s ease;
 
@@ -21,6 +21,6 @@ export const StyledButton = styled.button`
   }
 
   &:hover {
-    background-color: ${(props) => props.theme.surfaceSecondary};
+    background-color: ${(props) => props.theme.primaryDark};
   }
 `;

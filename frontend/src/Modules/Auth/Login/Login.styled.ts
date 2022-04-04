@@ -48,12 +48,6 @@ export const LoginWrapper = styled.div`
   }
 `;
 
-export const InputsContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
 export const ButtonsContainer = styled.div`
   width: 100%;
   display: flex;

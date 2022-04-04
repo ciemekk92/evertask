@@ -111,6 +111,26 @@ export const actionCreators = {
         }
       }
     },
+  logout: (): AppThunkAction<UserActionTypes> => async (dispatch, getState) => {
+    const appState = getState();
+
+    dispatch({
+      type: ActionTypes.SET_USER_LOADING,
+      isLoading: true
+    });
+
+    if (appState && appState.user) {
+      const result = await Api.post('auth/logout');
+
+      if (result.status === 200) {
+        dispatch({
+          type: ActionTypes.SET_LOGOUT
+        });
+        localStorage.removeItem('refreshToken');
+        window.location.reload();
+      }
+    }
+  },
   refresh: (): AppThunkAction<UserActionTypes> => async (dispatch, getState) => {
     const appState = getState();
 
@@ -156,6 +176,11 @@ export const actionCreators = {
             errors: message
           });
         }
+      } else {
+        dispatch({
+          type: ActionTypes.SET_USER_LOADING,
+          isLoading: false
+        });
       }
     }
   }
@@ -190,6 +215,10 @@ export const reducer: Reducer<UserState> = (
         isLoading: false,
         accessToken: action.accessToken,
         errors: ''
+      };
+    case ActionTypes.SET_LOGOUT:
+      return {
+        ...initialState
       };
     case ActionTypes.SET_USER_ERRORS:
       return {

@@ -30,8 +30,7 @@ const Overlay = styled.div`
   align-items: center;
   z-index: 15500;
 
-  & circle.bg {
-    stroke: ${(props) => props.theme.primary};
+  & circle {
     z-index: 15501;
   }
 `;

@@ -16,7 +16,7 @@ export const Preloader = (): JSX.Element => {
         cy="50"
         r="20"
         strokeWidth="5"
-        stroke="#8bc34a"
+        stroke="#3F51B5"
         strokeDasharray="31.41592653589793 31.41592653589793"
         fill="none"
         strokeLinecap="round"

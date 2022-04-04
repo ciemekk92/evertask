@@ -2,12 +2,15 @@
   "general": {
     "login": "Login",
     "signup": "Sign Up",
+    "logout": "Log out",
     "resetPassword": "Reset Password",
     "username": "Username",
     "email": "E-mail",
     "password": "Password",
     "back": "Back",
-    "mainPage": "Main page"
+    "mainPage": "Main page",
+    "cancel": "Cancel",
+    "submit": "Submit"
   },
   "login": {
     "title": "Login",
@@ -78,6 +81,24 @@
     "projects": {
       "title": "My projects",
       "add": "Create new project"
+    }
+  },
+  "projectDialog": {
+    "title": {
+      "add": "Add new project",
+      "edit": "Edit project"
+    },
+    "name": "Project name",
+    "description": "Description",
+    "validation": {
+      "name": {
+        "minLength": "Project name is too short (minimum 3 characters)",
+        "maxLength": "Project name is too long (maximum 30 characters)",
+        "required": "Project name is required."
+      },
+      "description": {
+        "required": "Project description is required."
+      }
     }
   }
 }

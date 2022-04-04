@@ -1,9 +1,11 @@
 package com.predu.evertask.service;
 
+import com.predu.evertask.domain.dto.project.ProjectCreateDto;
 import com.predu.evertask.domain.dto.project.ProjectDto;
-import com.predu.evertask.domain.dto.project.ProjectSaveDto;
+import com.predu.evertask.domain.dto.project.ProjectUpdateDto;
 import com.predu.evertask.domain.mapper.ProjectMapper;
 import com.predu.evertask.domain.model.Project;
+import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
@@ -43,12 +45,20 @@ public class ProjectService {
                 .collect(Collectors.toList());
     }
 
-    public Project create(ProjectSaveDto toSave) {
-        return projectRepository.save(projectMapper.projectSaveDtoToProject(toSave));
+    public Project create(ProjectCreateDto toSave) {
+        return projectRepository.save(projectMapper.projectCreateDtoToProject(toSave));
     }
 
-    public Project update(ProjectSaveDto toSave) {
-        return projectRepository.save(projectMapper.projectSaveDtoToProject(toSave));
+    public Project update(UUID id, ProjectUpdateDto toSave) {
+        Optional<Project> optionalProject = projectRepository.findById(id);
+
+        if (optionalProject.isEmpty()) {
+            throw new NotFoundException("Project not found");
+        }
+
+        Project result = projectMapper.update(optionalProject.get(), toSave);
+
+        return projectRepository.save(result);
     }
 
     public boolean existsById(UUID id) {

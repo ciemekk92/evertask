@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -21,6 +22,7 @@ import java.util.Set;
 @Setter
 @Table(name = "issues")
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Issue extends BaseEntity {
 
     private int key;

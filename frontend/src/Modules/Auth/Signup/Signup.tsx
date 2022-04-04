@@ -1,16 +1,17 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Formik, Form, ErrorMessage, FormikErrors, FormikTouched, FormikProps } from 'formik';
+import { Formik, ErrorMessage, FormikErrors, FormikTouched, FormikProps } from 'formik';
 import * as Yup from 'yup';
 
 import { history } from 'Routes/history';
 import { Api } from 'Utils/Api';
 import { Heading3 } from 'Shared/Typography';
 import { TextInput, TextInputErrorMessage } from 'Shared/Elements/TextInput';
+import { Form } from 'Shared/Elements/Form';
 import { ButtonFilled, IconButton } from 'Shared/Elements/Buttons';
 import { useLoading, Container } from 'Hooks/useLoading';
 
-import { ButtonsContainer, InputsContainer, LoginWrapper } from '../Login/Login.styled';
+import { ButtonsContainer, LoginWrapper } from '../Login/Login.styled';
 
 interface SignupData {
   username: string;
@@ -101,14 +102,12 @@ export const Signup = (): JSX.Element => {
       >
         {({ errors, touched, handleSubmit, isValid }: FormikProps<SignupData>) => (
           <Form name="signup" method="POST" onSubmit={handleSubmit}>
-            <InputsContainer>
-              {renderInput(errors, touched, 'username')}
-              {renderInput(errors, touched, 'firstName')}
-              {renderInput(errors, touched, 'lastName')}
-              {renderInput(errors, touched, 'email')}
-              {renderInput(errors, touched, 'password')}
-              {renderInput(errors, touched, 'rePassword')}
-            </InputsContainer>
+            {renderInput(errors, touched, 'username')}
+            {renderInput(errors, touched, 'firstName')}
+            {renderInput(errors, touched, 'lastName')}
+            {renderInput(errors, touched, 'email')}
+            {renderInput(errors, touched, 'password')}
+            {renderInput(errors, touched, 'rePassword')}
             <ButtonsContainer>
               <ButtonFilled disabled={!isValid} type="submit">
                 {t('signup.submit')}

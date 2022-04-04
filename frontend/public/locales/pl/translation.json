@@ -2,12 +2,15 @@
   "general": {
     "login": "Zaloguj się",
     "signup": "Rejestracja",
+    "logout": "Wyloguj się",
     "resetPassword": "Zresetuj hasło",
     "username": "Nazwa użytkownika",
     "email": "E-mail",
     "password": "Hasło",
     "back": "Wróć",
-    "mainPage": "Strona główna"
+    "mainPage": "Strona główna",
+    "cancel": "Anuluj",
+    "submit": "Wyślij"
   },
   "login": {
     "title": "Logowanie",
@@ -69,6 +72,33 @@
       "calendar": "Kalendarz",
       "sprints": "Sprinty",
       "tasks": "Zadania"
+    }
+  },
+  "dashboard": {
+    "assignedIssues": {
+      "title": "Zadania przypisane do mnie"
+    },
+    "projects": {
+      "title": "Moje projekty",
+      "add": "Dodaj projekt"
+    }
+  },
+  "projectDialog": {
+    "title": {
+      "add": "Dodaj projekt",
+      "edit": "Edytuj projekt"
+    },
+    "name": "Nazwa projektu",
+    "description": "Opis projektu",
+    "validation": {
+      "name": {
+        "minLength": "Nazwa projektu jest za krótka (minimum 3 znaki)",
+        "maxLength": "Nazwa projektu jest za długa (maksimum 30 znaków)",
+        "required": "Nazwa projektu jest wymagana."
+      },
+      "description": {
+        "required": "Opis projektu jest wymagany."
+      }
     }
   }
 }

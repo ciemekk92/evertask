@@ -3,10 +3,10 @@ import { StyledDashboardColumn, StyledDashboardWrapper } from './Dashboard.style
 import { DashboardAssignedIssues, DashboardProjects } from './components';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { Project } from 'Types/Project';
+import { Issue } from 'Types/Issue';
 import { ApplicationState } from 'Stores/store';
 import { actionCreators as projectActionCreators } from 'Stores/Project';
 import { actionCreators as issueActionCreators } from 'Stores/Issue';
-import { Issue } from '../../Types/Issue';
 
 export const Dashboard = (): JSX.Element => {
   const dispatch = useDispatch();

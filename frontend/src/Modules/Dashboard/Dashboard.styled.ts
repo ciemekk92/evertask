@@ -17,6 +17,7 @@ export const StyledSectionWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  border-radius: 0.3rem;
   background-color: ${(props) => props.theme.surface};
   padding: 1rem;
 `;

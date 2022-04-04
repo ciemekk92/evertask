@@ -69,7 +69,7 @@ export const MainLayout = (): JSX.Element => {
   return (
     <CustomRouter basename={'/'} history={history}>
       <LayoutWrapper>
-        <AppHeader />
+        <AppHeader isLoggedIn={Boolean(currentUser.accessToken)} />
         {currentUser.accessToken ? renderLoggedInView() : renderLoggedOutView()}
       </LayoutWrapper>
     </CustomRouter>

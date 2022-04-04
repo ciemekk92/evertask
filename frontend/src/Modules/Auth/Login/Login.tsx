@@ -3,9 +3,7 @@ import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import {
   Formik,
-  Form,
   ErrorMessage,
-  FormikHelpers,
   FormikErrors,
   FormikTouched,
   FormikProps
@@ -14,6 +12,7 @@ import * as Yup from 'yup';
 
 import { Heading3, StyledValidationMessage } from 'Shared/Typography';
 import { TextInput, TextInputErrorMessage } from 'Shared/Elements/TextInput';
+import { Form } from 'Shared/Elements/Form';
 import { ButtonFilled, ButtonLikeLink, ButtonOutline, IconButton } from 'Shared/Elements/Buttons';
 import { StyledLink } from 'Shared/StyledLink';
 import { ApplicationState } from 'Stores/store';
@@ -22,7 +21,7 @@ import { isDefined } from 'Utils/isDefined';
 import { Container } from 'Hooks/useLoading';
 import { useValidation } from 'Hooks/useValidation';
 import { history } from 'Routes';
-import { ButtonsContainer, InputsContainer, LoginWrapper } from './Login.styled';
+import { ButtonsContainer, LoginWrapper } from './Login.styled';
 
 export const Login = (): JSX.Element => {
   const initialData: LoginCredentials = {
@@ -50,7 +49,7 @@ export const Login = (): JSX.Element => {
 
   const dispatch = useDispatch();
 
-  const onSubmit = async (values: LoginCredentials, actions: FormikHelpers<LoginCredentials>) => {
+  const onSubmit = async (values: LoginCredentials) => {
     if (validationErrors.has('message')) {
       removeError('message');
     }
@@ -95,14 +94,12 @@ export const Login = (): JSX.Element => {
         >
           {({ errors, touched, handleSubmit, isValid }: FormikProps<LoginCredentials>) => (
             <Form name="login" method="POST" onSubmit={handleSubmit}>
-              <InputsContainer>
-                {renderInput(errors, touched, 'username')}
-                {renderInput(errors, touched, 'password')}
-                <ButtonLikeLink>
-                  <StyledLink to="/reset-password">{t('general.resetPassword')}</StyledLink>
-                </ButtonLikeLink>
-                <StyledValidationMessage>{validationErrors.get('message')}</StyledValidationMessage>
-              </InputsContainer>
+              {renderInput(errors, touched, 'username')}
+              {renderInput(errors, touched, 'password')}
+              <ButtonLikeLink>
+                <StyledLink to="/reset-password">{t('general.resetPassword')}</StyledLink>
+              </ButtonLikeLink>
+              <StyledValidationMessage>{validationErrors.get('message')}</StyledValidationMessage>
               <ButtonsContainer>
                 <ButtonFilled disabled={!isValid} type="submit">
                   {t('general.login')}

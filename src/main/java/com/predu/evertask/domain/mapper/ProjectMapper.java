@@ -1,7 +1,8 @@
 package com.predu.evertask.domain.mapper;
 
+import com.predu.evertask.domain.dto.project.ProjectCreateDto;
 import com.predu.evertask.domain.dto.project.ProjectDto;
-import com.predu.evertask.domain.dto.project.ProjectSaveDto;
+import com.predu.evertask.domain.dto.project.ProjectUpdateDto;
 import com.predu.evertask.domain.model.Project;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.repository.UserRepository;
@@ -16,15 +17,17 @@ public abstract class ProjectMapper {
 
     @Mapping(target = "issues", ignore = true)
     @Mapping(target = "owner", ignore = true)
-    public abstract Project projectSaveDtoToProject(ProjectSaveDto projectSaveDto);
+    public abstract Project projectCreateDtoToProject(ProjectCreateDto projectCreateDto);
 
-    @InheritInverseConfiguration(name = "projectSaveDtoToProject")
-    public abstract ProjectSaveDto projectToProjectSaveDto(Project project);
+    public abstract Project update(@MappingTarget Project project, ProjectUpdateDto projectUpdateDto);
+
+    @InheritInverseConfiguration(name = "projectCreateDtoToProject")
+    public abstract ProjectCreateDto projectToProjectCreateDto(Project project);
 
     public abstract ProjectDto projectToProjectDto(Project project);
 
     @AfterMapping
-    protected void afterProjectSaveDtoToProject(ProjectSaveDto dto, @MappingTarget Project project) {
+    protected void afterProjectCreateDtoToProject(ProjectCreateDto dto, @MappingTarget Project project) {
         if (dto.getOwnerId() != null) {
             User owner = userRepository.getById(dto.getOwnerId());
 

@@ -5,8 +5,10 @@ import lombok.Setter;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -18,6 +20,7 @@ import java.util.Set;
 @Setter
 @Table(name = "sprints")
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Sprint extends BaseEntity implements Serializable {
 
     @Generated(GenerationTime.INSERT)

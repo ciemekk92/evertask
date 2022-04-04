@@ -8,15 +8,25 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @Setter
 @Table(name = "users")
 @Entity
-public class User extends BaseEntity implements UserDetails, Serializable {
+public class User implements UserDetails, Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id", insertable = false, updatable = false, nullable = false)
+    private UUID id;
+
+    private Date createdAt;
+    private Date updatedAt;
 
     @Length(min = 6)
     private String username;
@@ -73,5 +83,15 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     @Override
     public boolean isCredentialsNonExpired() {
         return enabled;
+    }
+
+    @PrePersist
+    void prePersist() {
+        createdAt = Date.from(Instant.now());
+    }
+
+    @PreUpdate
+    void preUpdate() {
+        updatedAt = Date.from(Instant.now());
     }
 }

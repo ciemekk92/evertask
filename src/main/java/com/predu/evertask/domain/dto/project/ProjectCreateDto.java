@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.UUID;
 
 @Data
-public class ProjectSaveDto {
+public class ProjectCreateDto {
 
     @Length(min = 3, max = 30)
     private String name;

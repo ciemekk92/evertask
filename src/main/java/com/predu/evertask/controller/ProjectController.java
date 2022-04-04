@@ -1,7 +1,8 @@
 package com.predu.evertask.controller;
 
 import com.predu.evertask.domain.dto.project.ProjectDto;
-import com.predu.evertask.domain.dto.project.ProjectSaveDto;
+import com.predu.evertask.domain.dto.project.ProjectCreateDto;
+import com.predu.evertask.domain.dto.project.ProjectUpdateDto;
 import com.predu.evertask.domain.model.Project;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.service.ProjectService;
@@ -50,8 +51,8 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ResponseEntity<ProjectSaveDto> createProject(@RequestBody @Valid ProjectSaveDto toCreate,
-                                                        Authentication authentication) throws URISyntaxException, IllegalAccessException {
+    public ResponseEntity<ProjectCreateDto> createProject(@RequestBody @Valid ProjectCreateDto toCreate,
+                                                          Authentication authentication) throws URISyntaxException, IllegalAccessException {
         if (authentication == null) {
             throw new IllegalAccessException("No user logged in.");
         }
@@ -65,12 +66,12 @@ public class ProjectController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateProject(@RequestBody @Valid ProjectSaveDto toUpdate, @PathVariable UUID id) {
+    public ResponseEntity<Void> updateProject(@RequestBody @Valid ProjectUpdateDto toUpdate, @PathVariable UUID id) {
         if (!projectService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
 
-        projectService.findById(id).ifPresent(project -> projectService.update(toUpdate));
+        projectService.findById(id).ifPresent(project -> projectService.update(id, toUpdate));
 
         return ResponseEntity.noContent().build();
     }

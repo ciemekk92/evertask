@@ -108,6 +108,7 @@ export const Signup = (): JSX.Element => {
             {renderInput(errors, touched, 'email')}
             {renderInput(errors, touched, 'password')}
             {renderInput(errors, touched, 'rePassword')}
+            {}
             <ButtonsContainer>
               <ButtonFilled disabled={!isValid} type="submit">
                 {t('signup.submit')}

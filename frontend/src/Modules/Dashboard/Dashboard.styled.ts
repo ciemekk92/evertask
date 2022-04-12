@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { StyledLink } from '../../Shared/StyledLink';
 
 export const StyledDashboardWrapper = styled.div`
   display: flex;
@@ -19,11 +20,21 @@ export const StyledSectionWrapper = styled.div`
   width: 100%;
   border-radius: 0.3rem;
   background-color: ${(props) => props.theme.surface};
-  padding: 1rem;
+  padding: 2rem;
+
+  & ${StyledLink} {
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+  }
 `;
 
 export const StyledSectionRow = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
+`;
+
+export const StyledHeaderRow = styled(StyledSectionRow)`
+  height: 4rem;
 `;

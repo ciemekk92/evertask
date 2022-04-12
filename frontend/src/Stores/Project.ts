@@ -52,7 +52,35 @@ export const actionCreators = {
         });
       }
     }
-  }
+  },
+  getCurrentProject:
+    (id: Id): AppThunkAction<ProjectActionTypes> =>
+    async (dispatch, getState) => {
+      const appState = getState();
+
+      dispatch({
+        type: ActionTypes.SET_PROJECT_LOADING,
+        isLoading: true
+      });
+
+      if (appState && appState.project) {
+        const result = await Api.get(`projects/${id}`);
+
+        if (result.status === 200) {
+          const json = await result.json();
+
+          dispatch({
+            type: ActionTypes.SET_CURRENT_PROJECT,
+            currentProject: json
+          });
+        } else {
+          dispatch({
+            type: ActionTypes.SET_PROJECT_LOADING,
+            isLoading: false
+          });
+        }
+      }
+    }
 };
 
 const initialState: ProjectState = {
@@ -61,6 +89,7 @@ const initialState: ProjectState = {
     name: '',
     description: '',
     createdAt: '',
+    lastUpdatedAt: '',
     id: ''
   },
   userProjects: []

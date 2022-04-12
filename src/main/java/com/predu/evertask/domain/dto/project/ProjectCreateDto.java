@@ -17,6 +17,7 @@ public class ProjectCreateDto {
     private String description;
 
     private UUID ownerId;
+    private UUID organisationId;
 
     public Project toProject() {
         var result = new Project();

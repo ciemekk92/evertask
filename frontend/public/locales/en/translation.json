@@ -76,11 +76,14 @@
   },
   "dashboard": {
     "assignedIssues": {
-      "title": "Issues assigned to me"
+      "title": "Issues assigned to me",
+      "noIssues": "There are no issues assigned to you. Enjoy your free time! :)"
     },
     "projects": {
       "title": "My projects",
-      "add": "Create new project"
+      "add": "Create new project",
+      "updatedAt": "Updated at",
+      "notUpdated": "Not updated yet"
     }
   },
   "projectDialog": {

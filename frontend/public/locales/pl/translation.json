@@ -76,11 +76,15 @@
   },
   "dashboard": {
     "assignedIssues": {
-      "title": "Zadania przypisane do mnie"
+      "title": "Zadania przypisane do mnie",
+      "noIssues": "Nie masz zadań przydzielonych do siebie. Ciesz się czasem wolnym! :)"
+
     },
     "projects": {
       "title": "Moje projekty",
-      "add": "Dodaj projekt"
+      "add": "Dodaj projekt",
+      "updatedAt": "Zaktualizowany",
+      "notUpdated": "Nigdy nie aktualizowany"
     }
   },
   "projectDialog": {

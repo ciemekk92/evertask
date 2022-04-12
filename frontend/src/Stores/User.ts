@@ -144,37 +144,45 @@ export const actionCreators = {
 
       if (refreshToken) {
         const result = await Api.post(`auth/refresh?refreshToken=${refreshToken}`);
-        const { firstName, lastName, email, username, accessToken, message } = await result.json();
 
-        if (result.status === 200) {
-          UserModel.currentUserSubject.next({
-            firstName,
-            lastName,
-            email,
-            username,
-            accessToken
-          });
-
+        if (result.status === 401) {
           dispatch({
-            type: ActionTypes.SET_LOGIN_INFO,
-            accessToken,
-            userInfo: {
+            type: ActionTypes.SET_USER_LOADING,
+            isLoading: false
+          });
+        } else {
+          const { firstName, lastName, email, username, accessToken, message } =
+            await result.json();
+          if (result.status === 200) {
+            UserModel.currentUserSubject.next({
               firstName,
               lastName,
               email,
-              username
-            },
-            isLoading: false
-          });
+              username,
+              accessToken
+            });
 
-          setTimeout(() => {
-            dispatch(actionCreators.refresh());
-          }, 15 * 60 * 1000);
-        } else {
-          dispatch({
-            type: ActionTypes.SET_USER_ERRORS,
-            errors: message
-          });
+            dispatch({
+              type: ActionTypes.SET_LOGIN_INFO,
+              accessToken,
+              userInfo: {
+                firstName,
+                lastName,
+                email,
+                username
+              },
+              isLoading: false
+            });
+
+            setTimeout(() => {
+              dispatch(actionCreators.refresh());
+            }, 15 * 60 * 1000);
+          } else {
+            dispatch({
+              type: ActionTypes.SET_USER_ERRORS,
+              errors: message
+            });
+          }
         }
       } else {
         dispatch({

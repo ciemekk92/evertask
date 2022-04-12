@@ -27,7 +27,9 @@ public class BaseEntity implements Serializable {
     @Column(name="id", insertable = false, updatable = false, nullable = false)
     private UUID id;
 
+    @Column(updatable = false)
     private Date createdAt;
+
     private Date updatedAt;
 
     @CreatedBy

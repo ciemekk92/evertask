@@ -5,7 +5,7 @@ import { ICON_SIZE } from 'Shared/constants';
 import { HorizontalPageWrapper } from 'Shared/PageWrappers';
 import { BoundaryWrapper } from './GlobalErrorBoundary.styled';
 
-interface Props {}
+interface Props extends React.ComponentProps<Unrestricted> {}
 
 interface State {
   hasError: boolean;

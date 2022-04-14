@@ -42,6 +42,13 @@ public class Project extends BaseEntity {
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
 
+    @OneToMany
+    @JoinTable(
+            name = "project_admins",
+            joinColumns = {@JoinColumn(name = "project_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id", unique = true)})
+    private Set<User> projectAdmins = new HashSet<>();
+
     public void updateFrom(Project source) {
         description = source.getDescription();
         name = source.getName();

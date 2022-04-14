@@ -10,6 +10,22 @@ CREATE TABLE organisations
     description TEXT
 );
 
+DROP TABLE IF EXISTS organisation_admins;
+CREATE TABLE organisation_admins
+(
+    organisation_id UUID REFERENCES organisations (id),
+    user_id         UUID REFERENCES users (id) UNIQUE,
+    CONSTRAINT organisation_admins_pk PRIMARY KEY (organisation_id, user_id)
+);
+
+DROP TABLE IF EXISTS project_admins;
+CREATE TABLE project_admins
+(
+    project_id UUID REFERENCES projects (id),
+    user_id    UUID REFERENCES users (id) UNIQUE,
+    CONSTRAINT project_admins_pk PRIMARY KEY (project_id, user_id)
+);
+
 ALTER TABLE projects
     ADD COLUMN organisation_id UUID NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
     ADD FOREIGN KEY (organisation_id) REFERENCES organisations (id);

@@ -11,4 +11,6 @@ public interface ProjectRepository extends BaseRepository<Project, UUID> {
     List<Project> findByOwnerId(UUID ownerId);
 
     List<Project> findByOwner(User owner);
+
+    Project getById(UUID id);
 }

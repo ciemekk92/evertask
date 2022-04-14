@@ -24,6 +24,13 @@ public class Organisation extends BaseEntity {
     @OneToMany(mappedBy = "organisation")
     private Set<User> members = new HashSet<>();
 
+    @OneToMany
+    @JoinTable(
+        name = "organisation_admins",
+        joinColumns = {@JoinColumn(name = "organisation_id")},
+        inverseJoinColumns = {@JoinColumn(name = "user_id", unique = true)})
+    private Set<User> organisationAdmins = new HashSet<>();
+
     @OneToMany(mappedBy = "organisation")
     private Set<Project> projects = new HashSet<>();
 }

@@ -10,13 +10,16 @@ CREATE TABLE organisations
     description TEXT
 );
 
-CREATE TABLE user_organisations
-(
-    user_id         UUID REFERENCES users (id),
-    organisation_id UUID REFERENCES organisations (id),
-    CONSTRAINT user_organisations_pk PRIMARY KEY (user_id, organisation_id)
-);
-
 ALTER TABLE projects
     ADD COLUMN organisation_id UUID NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
     ADD FOREIGN KEY (organisation_id) REFERENCES organisations (id);
+
+ALTER TABLE users
+    ADD COLUMN organisation_id UUID,
+    ADD FOREIGN KEY (organisation_id) REFERENCES organisations (id);
+
+INSERT INTO roles (id, authority)
+VALUES (gen_random_uuid(), 'ROLE_USER'),
+       (gen_random_uuid(), 'ROLE_ADMIN'),
+       (gen_random_uuid(), 'ROLE_PROJECT_ADMIN'),
+       (gen_random_uuid(), 'ROLE_ORGANISATION_ADMIN');

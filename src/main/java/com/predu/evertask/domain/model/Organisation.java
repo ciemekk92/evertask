@@ -21,7 +21,7 @@ public class Organisation extends BaseEntity {
 
     private String description;
 
-    @ManyToMany(mappedBy = "organisations")
+    @OneToMany(mappedBy = "organisation")
     private Set<User> members = new HashSet<>();
 
     @OneToMany(mappedBy = "organisation")

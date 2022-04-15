@@ -1,7 +1,10 @@
 package com.predu.evertask.controller;
 
 import com.predu.evertask.config.security.JwtTokenUtil;
-import com.predu.evertask.domain.dto.auth.*;
+import com.predu.evertask.domain.dto.auth.AuthRequest;
+import com.predu.evertask.domain.dto.auth.CreateUserRequest;
+import com.predu.evertask.domain.dto.auth.UserAuthDto;
+import com.predu.evertask.domain.dto.auth.UserDto;
 import com.predu.evertask.domain.mapper.UserViewMapper;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.domain.model.VerificationToken;
@@ -66,7 +69,7 @@ public class AuthController {
             UserDto userDto = userViewMapper.toUserDto(user);
 
             // TODO: For development, refresh token should be set in localStorage
-            UserAuthDto userAuthDto = new UserAuthDto(userDto, token, refreshToken);
+            UserAuthDto userAuthDto = new UserAuthDto(userDto, token, refreshToken, user.getAuthorities());
 
             return ResponseEntity.ok().body(userAuthDto);
     }
@@ -98,7 +101,6 @@ public class AuthController {
         }
 
         UserDto result = userService.updateEnabled(user.getId(), true);
-
         verificationTokenRepository.delete(verificationToken);
 
         return ResponseEntity.status(200).body(result);
@@ -121,7 +123,7 @@ public class AuthController {
         UserDto userDto = userViewMapper.toUserDto(user);
         String newAccessToken = jwtTokenUtil.generateAccessToken(user);
 
-        UserAuthDto userAuthDto = new UserAuthDto(userDto, newAccessToken, refreshToken);
+        UserAuthDto userAuthDto = new UserAuthDto(userDto, newAccessToken, refreshToken, user.getAuthorities());
 
         return ResponseEntity.status(200).body(userAuthDto);
     }

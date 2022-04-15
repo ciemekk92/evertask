@@ -24,6 +24,9 @@ public class Organisation extends BaseEntity {
     @OneToMany(mappedBy = "organisation")
     private Set<User> members = new HashSet<>();
 
+    @OneToMany(mappedBy = "organisation")
+    private Set<OrganisationInvitation> organisationInvitations = new HashSet<>();
+
     @OneToMany
     @JoinTable(
         name = "organisation_admins",

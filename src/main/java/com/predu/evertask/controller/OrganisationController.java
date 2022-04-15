@@ -1,12 +1,15 @@
 package com.predu.evertask.controller;
 
+import com.predu.evertask.annotation.IsUnassignedUserOrAdmin;
 import com.predu.evertask.domain.dto.organisation.OrganisationCreateDto;
 import com.predu.evertask.domain.dto.organisation.OrganisationDto;
 import com.predu.evertask.domain.mapper.OrganisationMapper;
 import com.predu.evertask.domain.model.Organisation;
+import com.predu.evertask.domain.model.User;
 import com.predu.evertask.service.OrganisationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,9 +40,21 @@ public class OrganisationController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @IsUnassignedUserOrAdmin
     @PostMapping
-    public ResponseEntity<OrganisationCreateDto> createOrganisation(@RequestBody @Valid OrganisationCreateDto toCreate) throws URISyntaxException {
-        Organisation created = organisationService.create(toCreate);
+    public ResponseEntity<OrganisationCreateDto> createOrganisation(@RequestBody @Valid OrganisationCreateDto toCreate,
+                                                                    Authentication authentication)
+            throws URISyntaxException, IllegalAccessException {
+
+        if (authentication == null) {
+            throw new IllegalAccessException("No user logged in.");
+        }
+
+        User user = (User) authentication.getPrincipal();
+
+        /* TODO: If user is not admin, change his role to organisation admin */
+
+        Organisation created = organisationService.create(toCreate, user);
 
         return ResponseEntity
                 .created(new URI("http://localhost:8080/api/organisations/" + created.getId()))

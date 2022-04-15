@@ -7,6 +7,7 @@ import com.predu.evertask.domain.mapper.ProjectMapper;
 import com.predu.evertask.domain.model.Project;
 import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.ProjectRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,16 +15,12 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
-
-    public ProjectService(ProjectRepository projectRepository, ProjectMapper projectMapper) {
-        this.projectRepository = projectRepository;
-        this.projectMapper = projectMapper;
-    }
 
     public List<ProjectDto> findAll() {
         return projectRepository.findAll()

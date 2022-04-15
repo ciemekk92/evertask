@@ -104,5 +104,15 @@
         "required": "Opis projektu jest wymagany."
       }
     }
+  },
+  "unassignedUserPage": {
+    "title": "Obecnie nie jesteś członkiem żadnej organizacji.",
+    "content": "Nic straconego! Poniżej możesz stworzyć nową organizację lub przejrzeć zaproszenia do już istniejących. Pamiętaj że możesz być członkiem tylko jednej organizacji.",
+    "createNewOrganisation": "Stwórz nową organizację",
+    "invitationsTitle": "Zaproszenia"
+  },
+  "organisationForm": {
+    "name": "Nazwa organizacji",
+    "description": "Opis"
   }
 }

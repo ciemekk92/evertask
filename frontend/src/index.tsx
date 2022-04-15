@@ -12,13 +12,11 @@ import './index.css';
 const container = document.getElementById('root');
 const root = createRoot(container!);
 const app = (
-  <React.StrictMode>
-    <React.Suspense fallback="Loading...">
-      <Provider store={store}>
-        <Main />
-      </Provider>
-    </React.Suspense>
-  </React.StrictMode>
+  <React.Suspense fallback="Loading...">
+    <Provider store={store}>
+      <Main />
+    </Provider>
+  </React.Suspense>
 );
 
 root.render(app);

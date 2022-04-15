@@ -103,5 +103,15 @@
         "required": "Project description is required."
       }
     }
+  },
+  "unassignedUserPage": {
+    "title": "Currently you're not a member of any organisation.",
+    "content": "But worry not! Below you can create your own organisation, or see the invitations from the existing ones. Remember, that you can only be a member of one organisation at a time.",
+    "createNewOrganisation": "Create new organisation",
+    "invitationsTitle": "Organisation invitations"
+  },
+  "organisationForm": {
+    "name": "Organisation name",
+    "description": "Description"
   }
 }

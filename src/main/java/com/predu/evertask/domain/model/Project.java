@@ -38,7 +38,7 @@ public class Project extends BaseEntity {
     private Set<Issue> issues = new HashSet<>();
 
     @NotNull
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
 

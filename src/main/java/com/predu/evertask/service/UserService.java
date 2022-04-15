@@ -5,9 +5,11 @@ import com.predu.evertask.domain.dto.auth.UpdateUserRequest;
 import com.predu.evertask.domain.dto.auth.UserDto;
 import com.predu.evertask.domain.mapper.UserEditMapper;
 import com.predu.evertask.domain.mapper.UserViewMapper;
+import com.predu.evertask.domain.model.Role;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.domain.model.VerificationToken;
 import com.predu.evertask.exception.NotFoundException;
+import com.predu.evertask.repository.RoleRepository;
 import com.predu.evertask.repository.UserRepository;
 import com.predu.evertask.repository.VerificationTokenRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ValidationException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static java.lang.String.format;
 
@@ -31,6 +30,7 @@ import static java.lang.String.format;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final VerificationTokenRepository tokenRepository;
     private final UserEditMapper userEditMapper;
     private final UserViewMapper userViewMapper;
@@ -46,12 +46,12 @@ public class UserService implements UserDetailsService {
             throw new ValidationException("Passwords don't match.");
         }
 
-        if (request.getAuthorities() == null) {
-            request.setAuthorities(new HashSet<>());
-        }
-
         User user = userEditMapper.create(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleRepository.findByAuthority(Role.ROLE_UNASSIGNED_USER));
+        user.setAuthorities(roles);
 
         user = userRepository.save(user);
 

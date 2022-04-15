@@ -4,14 +4,14 @@ import com.predu.evertask.domain.dto.organisation.OrganisationCreateDto;
 import com.predu.evertask.domain.dto.organisation.OrganisationDto;
 import com.predu.evertask.domain.mapper.OrganisationMapper;
 import com.predu.evertask.domain.model.Organisation;
+import com.predu.evertask.domain.model.User;
 import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.OrganisationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import javax.transaction.Transactional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -32,8 +32,13 @@ public class OrganisationService {
         return organisationRepository.findById(id);
     }
 
-    public Organisation create(OrganisationCreateDto toSave) {
-        return organisationRepository.save(organisationMapper.organisationCreateDtoToOrganisation(toSave));
+    @Transactional
+    public Organisation create(OrganisationCreateDto toSave, User user) {
+        Organisation organisation = organisationMapper.organisationCreateDtoToOrganisation(toSave);
+
+        organisation.setOrganisationAdmins(Set.of(user));
+
+        return organisationRepository.save(organisation);
     }
 
     public Organisation update(UUID id, OrganisationDto toUpdate) {

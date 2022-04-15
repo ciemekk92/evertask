@@ -81,7 +81,8 @@ export const actionCreators = {
             lastName: json.lastName,
             email: json.email,
             username: json.username,
-            accessToken: json.accessToken
+            accessToken: json.accessToken,
+            authorities: json.authorities
           });
 
           // TODO: Development only
@@ -151,7 +152,7 @@ export const actionCreators = {
             isLoading: false
           });
         } else {
-          const { firstName, lastName, email, username, accessToken, message } =
+          const { firstName, lastName, email, username, accessToken, authorities, message } =
             await result.json();
           if (result.status === 200) {
             UserModel.currentUserSubject.next({
@@ -159,7 +160,8 @@ export const actionCreators = {
               lastName,
               email,
               username,
-              accessToken
+              accessToken,
+              authorities
             });
 
             dispatch({
@@ -176,7 +178,7 @@ export const actionCreators = {
 
             setTimeout(() => {
               dispatch(actionCreators.refresh());
-            }, 15 * 60 * 1000);
+            }, 0.9 * 15 * 60 * 1000);
           } else {
             dispatch({
               type: ActionTypes.SET_USER_ERRORS,

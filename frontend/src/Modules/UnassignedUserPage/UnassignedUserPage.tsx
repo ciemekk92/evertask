@@ -1,10 +1,14 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Heading5, Heading6 } from 'Shared/Typography';
 import { OrganisationForm } from 'Shared/Forms/OrganisationForm';
 import { Container, useLoading } from 'Hooks/useLoading';
 import { OrganisationPayload } from 'Types/Organisation';
 import { Api } from 'Utils/Api';
+import { actionCreators as userActionCreators } from 'Stores/User';
+import { actionCreators as invitationsActionCreators } from 'Stores/OrganisationInvitation';
+
 import {
   StyledFormContainer,
   StyledHorizontalContainer,
@@ -14,7 +18,12 @@ import {
 
 export const UnassignedUserPage = (): JSX.Element => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const { isLoading, startLoading, stopLoading } = useLoading();
+
+  React.useEffect(() => {
+    dispatch(invitationsActionCreators.getUserInvitations());
+  }, []);
 
   const handleCreatingOrganisation = async (data: OrganisationPayload) => {
     startLoading();
@@ -23,7 +32,7 @@ export const UnassignedUserPage = (): JSX.Element => {
 
     stopLoading();
     if (result.status === 201) {
-      // TODO: Refresh user data, to get his new role as organisation admin
+      dispatch(userActionCreators.refresh());
     }
   };
 

@@ -2,9 +2,11 @@ package com.predu.evertask.repository;
 
 import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.domain.model.User;
+import lombok.NonNull;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,7 +26,15 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findByRefreshToken(String token);
 
-    default User getById(UUID id) {
+    @Query(value =
+            "SELECT * FROM users u " +
+                    "INNER JOIN user_roles ur ON u.id = ur.user_id " +
+                    "INNER JOIN roles r ON ur.role_id = r.id " +
+                    "WHERE (u.username ~ ?1 OR u.email ~ ?2) AND r.authority = 'ROLE_UNASSIGNED_USER'", nativeQuery = true)
+    List<User> findUnassignedByUsernameOrEmail(String username, String email);
+
+    @NonNull
+    default User getById(@NonNull UUID id) {
         Optional<User> optionalUser = findById(id);
 
         if (optionalUser.isEmpty()) {

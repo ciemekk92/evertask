@@ -69,6 +69,7 @@
   "sidebar": {
     "link": {
       "dashboard": "Dashboard",
+      "myOrganisation": "My organisation",
       "calendar": "Calendar",
       "sprints": "Sprints",
       "tasks": "Tasks"
@@ -112,6 +113,13 @@
   },
   "organisationForm": {
     "name": "Organisation name",
-    "description": "Description"
+    "description": "Description",
+    "validation": {
+      "name": {
+        "minLength": "Organisation name is too short (minimum 6 characters)",
+        "maxLength": "Organisation name is too long (maximum 50 characters)",
+        "required": "Organisation name is required"
+      }
+    }
   }
 }

@@ -4,9 +4,12 @@ import com.predu.evertask.domain.dto.organisation.OrganisationCreateDto;
 import com.predu.evertask.domain.dto.organisation.OrganisationDto;
 import com.predu.evertask.domain.mapper.OrganisationMapper;
 import com.predu.evertask.domain.model.Organisation;
+import com.predu.evertask.domain.model.Role;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.OrganisationRepository;
+import com.predu.evertask.repository.RoleRepository;
+import com.predu.evertask.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,8 @@ public class OrganisationService {
 
     private final OrganisationRepository organisationRepository;
     private final OrganisationMapper organisationMapper;
+    private final RoleRepository roleRepository;
+    private final UserRepository userRepository;
 
     public List<OrganisationDto> findAll() {
         return organisationRepository.findAll()
@@ -38,7 +43,17 @@ public class OrganisationService {
 
         organisation.setOrganisationAdmins(Set.of(user));
 
-        return organisationRepository.save(organisation);
+        organisation = organisationRepository.save(organisation);
+
+        if (user.getAuthorities().stream().noneMatch(role -> role.getAuthority().equals(Role.ROLE_ADMIN))) {
+            Role role = roleRepository.findByAuthority(Role.ROLE_ORGANISATION_ADMIN);
+            user.setAuthorities(Set.of(role));
+        }
+
+        user.setOrganisation(organisation);
+        userRepository.save(user);
+
+        return organisation;
     }
 
     public Organisation update(UUID id, OrganisationDto toUpdate) {

@@ -102,7 +102,7 @@ export const actionCreators = {
 
           setTimeout(() => {
             dispatch(actionCreators.refresh());
-          }, 15 * 60 * 1000);
+          }, 0.9 * 15 * 60 * 1000);
         } else {
           dispatch({
             type: ActionTypes.SET_USER_LOADING,

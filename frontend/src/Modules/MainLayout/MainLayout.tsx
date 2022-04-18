@@ -9,9 +9,11 @@ import { Login, Signup, SignupConfirmation, SuccessNotification } from 'Modules/
 import { Dashboard } from 'Modules/Dashboard';
 import { ProjectPage } from 'Modules/ProjectPage';
 import { UnassignedUserPage } from 'Modules/UnassignedUserPage';
+import { OrganisationPage } from 'Modules/OrganisationPage';
 import { User, UserModel } from 'Models/UserModel';
 import { actionCreators } from 'Stores/User';
 import { NOTIFICATION_TYPES } from 'Shared/constants';
+import { PermissionCheck } from 'Utils/PermissionCheck';
 import { AppHeader } from './components/AppHeader/AppHeader';
 import { AppSidebar } from './components/AppSidebar/AppSidebar';
 import { AppMainWindow } from './components/AppMainWindow/AppMainWindow';
@@ -41,7 +43,7 @@ export const MainLayout = (): JSX.Element => {
     }
   }, []);
 
-  const renderForUserWithRole = (): JSX.Element => (
+  const renderForAssignedUser = (): JSX.Element => (
     <React.Fragment>
       <AppSidebar />
       <AppMainWindow>
@@ -49,13 +51,14 @@ export const MainLayout = (): JSX.Element => {
           <ReactRoutes>
             <Route path={'/'} element={<Dashboard />} />
             <Route path={'/project/:id'} element={<ProjectPage />} />
+            <Route path={'/organisation'} element={<OrganisationPage />} />
           </ReactRoutes>
         </GlobalErrorBoundary>
       </AppMainWindow>
     </React.Fragment>
   );
 
-  const renderForUserWithNoRole = (): JSX.Element => (
+  const renderForUnassignedUser = (): JSX.Element => (
     <AppMainWindow>
       <GlobalErrorBoundary>
         <ReactRoutes>
@@ -67,7 +70,9 @@ export const MainLayout = (): JSX.Element => {
 
   const renderLoggedInView = (): JSX.Element => (
     <HorizontalWrapper>
-      {currentUser.authorities.length ? renderForUserWithRole() : renderForUserWithNoRole()}
+      {currentUser.authorities.some(PermissionCheck.isUnassignedUser)
+        ? renderForUnassignedUser()
+        : renderForAssignedUser()}
     </HorizontalWrapper>
   );
 

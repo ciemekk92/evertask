@@ -28,5 +28,7 @@ export const StyledSidebarItem = styled.div`
   & p {
     font-size: 1.8rem;
     margin-left: 1rem;
+    word-break: keep-all;
+    white-space: nowrap;
   }
 `;

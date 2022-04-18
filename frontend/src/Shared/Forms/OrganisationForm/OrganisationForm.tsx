@@ -23,9 +23,9 @@ export const OrganisationForm = ({ handleSubmit }: Props): JSX.Element => {
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
-      .min(6, t('login.validation.username.minLength'))
-      .max(50, t('login.validation.username.maxLength'))
-      .required(t('login.validation.username.required')),
+      .min(6, t('organisationForm.validation.name.minLength'))
+      .max(50, t('organisationForm.validation.name.maxLength'))
+      .required(t('organisationForm.validation.name.required')),
     description: Yup.string()
   });
 

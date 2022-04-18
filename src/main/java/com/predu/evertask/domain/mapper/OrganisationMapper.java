@@ -2,6 +2,7 @@ package com.predu.evertask.domain.mapper;
 
 import com.predu.evertask.domain.dto.organisation.OrganisationCreateDto;
 import com.predu.evertask.domain.dto.organisation.OrganisationDto;
+import com.predu.evertask.domain.dto.organisation.OrganisationInfoDto;
 import com.predu.evertask.domain.model.Organisation;
 import com.predu.evertask.repository.OrganisationRepository;
 import org.mapstruct.InheritInverseConfiguration;
@@ -26,4 +27,6 @@ public abstract class OrganisationMapper {
     @Mapping(target = "members", ignore = true)
     @Mapping(target = "projects", ignore = true)
     public abstract Organisation organisationCreateDtoToOrganisation(OrganisationCreateDto organisationCreateDto);
+
+    public abstract OrganisationInfoDto organisationToOrganisationInfoDto(Organisation organisation);
 }

@@ -33,7 +33,8 @@ zarządzanie projektami w metodologiach Agile i Kanban.
 `spring.datasource.password` i `spring.jpa.hibernate.ddl-auto`. Właściwości te są wprowadzane jako zmienne
 środowiskowe Dockera.
 - W katalogu głównym uruchomić komendę `docker-compose build`, a następnie `docker-compose up`
-- Zarówno frontend jak i backend powinny być uruchomione, można korzystać z aplikacji pod adresem `http://localhost:3000`
+- Zarówno frontend jak i backend powinny być uruchomione, można korzystać z aplikacji pod adresem `http://localhost:3000`,
+backend jest dostępny pod adresem `http://localhost:8080`
 
 ### 2. Bez Dockera
 #### 2.1 Backend

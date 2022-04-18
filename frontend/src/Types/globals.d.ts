@@ -8,6 +8,14 @@ declare global {
   export type EmptyString = '';
   export type VoidFunctionNoArgs = () => void;
   export type UiTheme = 'light' | 'dark';
+  export type IdentifiedEntity = {
+    id: Id;
+  };
+  export type AuditedEntity = {
+    id: Id;
+    createdAt: string;
+    updatedAt: Nullable<string>;
+  };
 }
 
 export {};

@@ -69,6 +69,7 @@
   "sidebar": {
     "link": {
       "dashboard": "Dashboard",
+      "myOrganisation": "Moja organizacja",
       "calendar": "Kalendarz",
       "sprints": "Sprinty",
       "tasks": "Zadania"
@@ -113,6 +114,13 @@
   },
   "organisationForm": {
     "name": "Nazwa organizacji",
-    "description": "Opis"
+    "description": "Opis",
+    "validation": {
+      "name": {
+        "minLength": "Nazwa organizacji jest za krótka (minimum 6 znaków)",
+        "maxLength": "Nazwa organizacji jest za długa (maksimum 50 znaków)",
+        "required": "Nazwa organizacji jest wymagana"
+      }
+    }
   }
 }

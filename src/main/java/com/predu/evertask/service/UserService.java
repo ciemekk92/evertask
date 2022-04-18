@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ValidationException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -36,6 +37,13 @@ public class UserService implements UserDetailsService {
     private final UserViewMapper userViewMapper;
     private final PasswordEncoder passwordEncoder;
 
+    public List<UserDto> getUnassignedUsers(String query) {
+        return userRepository.findUnassignedByUsernameOrEmail(query, query)
+                .stream()
+                .map(userViewMapper::toUserDto)
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public User create(CreateUserRequest request) {
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
@@ -49,9 +57,8 @@ public class UserService implements UserDetailsService {
         User user = userEditMapper.create(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        Set<Role> roles = new HashSet<>();
-        roles.add(roleRepository.findByAuthority(Role.ROLE_UNASSIGNED_USER));
-        user.setAuthorities(roles);
+        Role role = roleRepository.findByAuthority(Role.ROLE_UNASSIGNED_USER);
+        user.setAuthorities(Set.of(role));
 
         user = userRepository.save(user);
 

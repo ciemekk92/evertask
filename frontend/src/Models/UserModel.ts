@@ -1,5 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
-import { UserInfo } from 'Stores/User';
+import { UserInfo } from 'Types/User';
 import { USER_ROLES } from 'Shared/constants';
 
 export interface User extends UserInfo {

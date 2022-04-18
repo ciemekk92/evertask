@@ -111,6 +111,15 @@
     "createNewOrganisation": "Create new organisation",
     "invitationsTitle": "Organisation invitations"
   },
+  "organisationPage": {
+    "title": "My organisation",
+    "info": {
+      "name": "Name:",
+      "description": "Description:",
+      "createdAt": "Created at:",
+      "updatedAt": "Updated at:"
+    }
+  },
   "organisationForm": {
     "name": "Organisation name",
     "description": "Description",

@@ -3,6 +3,8 @@ package com.predu.evertask.service;
 import com.predu.evertask.domain.dto.organisation.OrganisationCreateDto;
 import com.predu.evertask.domain.dto.organisation.OrganisationDto;
 import com.predu.evertask.domain.mapper.OrganisationMapper;
+import com.predu.evertask.domain.mapper.ProjectMapper;
+import com.predu.evertask.domain.mapper.UserViewMapper;
 import com.predu.evertask.domain.model.Organisation;
 import com.predu.evertask.domain.model.Role;
 import com.predu.evertask.domain.model.User;
@@ -23,6 +25,8 @@ public class OrganisationService {
 
     private final OrganisationRepository organisationRepository;
     private final OrganisationMapper organisationMapper;
+    private final UserViewMapper userViewMapper;
+    private final ProjectMapper projectMapper;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
 
@@ -35,6 +39,15 @@ public class OrganisationService {
 
     public Optional<Organisation> findById(UUID id) {
         return organisationRepository.findById(id);
+    }
+
+    @Transactional
+    public OrganisationDto getUserOrganisation(UUID id) {
+        User user = userRepository.getById(id);
+
+        OrganisationDto organisation = organisationMapper.organisationToOrganisationDto(user.getOrganisation());
+
+        return organisation;
     }
 
     @Transactional

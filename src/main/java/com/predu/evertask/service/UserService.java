@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ValidationException;
@@ -37,6 +38,7 @@ public class UserService implements UserDetailsService {
     private final UserViewMapper userViewMapper;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
     public List<UserDto> getUnassignedUsers(String query) {
         return userRepository.findUnassignedByUsernameOrEmail(query, query)
                 .stream()

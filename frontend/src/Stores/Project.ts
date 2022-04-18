@@ -89,6 +89,7 @@ const initialState: ProjectState = {
     name: '',
     description: '',
     createdAt: '',
+    updatedAt: null,
     lastUpdatedAt: '',
     id: ''
   },

@@ -1,7 +1,5 @@
-export interface Project {
-  id: Id;
-  createdAt: string;
+export type Project = AuditedEntity & {
   lastUpdatedAt: string;
   name: string;
   description: string;
-}
+};

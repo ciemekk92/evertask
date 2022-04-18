@@ -4,6 +4,8 @@ import { isDefined } from 'Utils/isDefined';
 import { updateObject } from 'Utils/updateObject';
 import { UserModel } from 'Models/UserModel';
 import { history } from 'Routes';
+import { Organisation } from 'Types/Organisation';
+import { UserInfo } from 'Types/User';
 import { AppThunkAction } from './store';
 import { ActionTypes } from './constants';
 
@@ -11,14 +13,8 @@ export interface UserState {
   isLoading: boolean;
   userInfo: UserInfo;
   accessToken: string;
+  organisation: Organisation;
   errors: string;
-}
-
-export interface UserInfo {
-  username: string;
-  firstName: string;
-  lastName: string;
-  email: string;
 }
 
 export interface LoginCredentials {
@@ -38,6 +34,11 @@ interface SetUserLoadingAction {
   isLoading: boolean;
 }
 
+interface SetUserOrganisationAction {
+  type: typeof ActionTypes.SET_USER_ORGANISATION;
+  organisation: Organisation;
+}
+
 interface SetUserErrorsAction {
   type: typeof ActionTypes.SET_USER_ERRORS;
   errors: string;
@@ -55,6 +56,7 @@ interface SetLogoutAction {
 export type UserActionTypes =
   | SetLoginInfoAction
   | SetUserLoadingAction
+  | SetUserOrganisationAction
   | SetUserErrorsAction
   | SetTokenAction
   | SetLogoutAction;
@@ -193,6 +195,27 @@ export const actionCreators = {
         });
       }
     }
+  },
+  getOrganisation: (): AppThunkAction<UserActionTypes> => async (dispatch, getState) => {
+    const appState = getState();
+
+    dispatch({
+      type: ActionTypes.SET_USER_LOADING,
+      isLoading: true
+    });
+
+    if (appState && appState.user) {
+      const result = await Api.get('user/organisation');
+
+      if (result.status === 200) {
+        const json = await result.json();
+
+        dispatch({
+          type: ActionTypes.SET_USER_ORGANISATION,
+          organisation: json
+        });
+      }
+    }
   }
 };
 
@@ -203,6 +226,15 @@ const initialState: UserState = {
     firstName: '',
     lastName: '',
     email: ''
+  },
+  organisation: {
+    id: '',
+    name: '',
+    description: '',
+    createdAt: '',
+    updatedAt: null,
+    projects: [],
+    members: []
   },
   accessToken: '',
   errors: ''
@@ -221,15 +253,20 @@ export const reducer: Reducer<UserState> = (
   switch (action.type) {
     case ActionTypes.SET_LOGIN_INFO:
       return {
+        ...state,
         userInfo: updateObject(state.userInfo, action.userInfo),
         isLoading: false,
         accessToken: action.accessToken,
         errors: ''
       };
-    case ActionTypes.SET_LOGOUT:
+    case ActionTypes.SET_USER_ORGANISATION:
       return {
-        ...initialState
+        ...state,
+        isLoading: false,
+        organisation: action.organisation
       };
+    case ActionTypes.SET_LOGOUT:
+      return initialState;
     case ActionTypes.SET_USER_ERRORS:
       return {
         ...state,

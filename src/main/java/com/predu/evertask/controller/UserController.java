@@ -1,10 +1,14 @@
 package com.predu.evertask.controller;
 
+import com.predu.evertask.annotation.IsNotUnassignedUser;
 import com.predu.evertask.annotation.IsOrganisationAdminOrAdmin;
+import com.predu.evertask.annotation.IsUnassignedUser;
 import com.predu.evertask.domain.dto.auth.UserDto;
+import com.predu.evertask.domain.dto.organisation.OrganisationDto;
 import com.predu.evertask.domain.dto.organisation.OrganisationInvitationDto;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.service.OrganisationInvitationService;
+import com.predu.evertask.service.OrganisationService;
 import com.predu.evertask.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +27,12 @@ import java.util.UUID;
 public class UserController {
 
     private final OrganisationInvitationService organisationInvitationService;
+    private final OrganisationService organisationService;
     private final UserService userService;
 
+    @IsUnassignedUser
     @GetMapping("/organisation_invitations")
-    public ResponseEntity<List<OrganisationInvitationDto>> getOrganisationInvitations(Authentication authentication) throws IllegalAccessException {
+    public ResponseEntity<List<OrganisationInvitationDto>> getUserOrganisationInvitations(Authentication authentication) throws IllegalAccessException {
         if (authentication == null) {
             throw new IllegalAccessException("No user logged in.");
         }
@@ -34,6 +40,18 @@ public class UserController {
         UUID userId = ((User) authentication.getPrincipal()).getId();
 
         return ResponseEntity.ok(organisationInvitationService.findAllByUser(userId));
+    }
+
+    @IsNotUnassignedUser
+    @GetMapping("/organisation")
+    public ResponseEntity<OrganisationDto> getUserOrganisation(Authentication authentication) throws IllegalAccessException {
+        if (authentication == null) {
+            throw new IllegalAccessException("No user logged in.");
+        }
+
+        User user = (User) authentication.getPrincipal();
+
+        return ResponseEntity.ok(organisationService.getUserOrganisation(user.getId()));
     }
 
     @IsOrganisationAdminOrAdmin

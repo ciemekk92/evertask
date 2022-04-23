@@ -1,17 +1,15 @@
 package com.predu.evertask.domain.dto.issue;
 
-import lombok.Data;
+import com.predu.evertask.domain.dto.BaseDto;
+import lombok.*;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
-public class IssueDto {
+@Getter
+@Setter
+public class IssueDto extends BaseDto {
 
-    private String id;
-    private Date createdAt;
-    private Date updatedAt;
     private String title;
     private int estimateStoryPoints;
     private int estimateHours;

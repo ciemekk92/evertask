@@ -14,7 +14,7 @@ export const StyledButtonFilled = styled.button<Props>`
       : props.theme.primaryDark};
   border: none;
   font-size: 1.8rem;
-  height: 3.6rem;
+  min-height: 3.6rem;
   min-width: 20rem;
   padding: 0 0.5rem;
   border-radius: 0.5rem;

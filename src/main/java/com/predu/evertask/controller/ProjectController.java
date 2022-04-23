@@ -62,7 +62,9 @@ public class ProjectController {
 
         Project created = projectService.create(toCreate);
 
-        return ResponseEntity.created(new URI("http://localhost:8080/api/projects/" + created.getId())).body(toCreate);
+        return ResponseEntity
+                .created(new URI("http://localhost:8080/api/projects/" + created.getId()))
+                .body(toCreate);
     }
 
     @PutMapping("/{id}")

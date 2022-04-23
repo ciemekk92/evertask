@@ -18,7 +18,7 @@ import java.util.Set;
 @Entity
 @Table(name = "projects")
 @EntityListeners(AuditingEntityListener.class)
-public class Project extends BaseEntity{
+public class Project extends BaseEntity {
 
     @Length(min = 3, max = 30)
     private String name;
@@ -36,6 +36,18 @@ public class Project extends BaseEntity{
 
     @OneToMany(mappedBy = "project")
     private Set<Issue> issues = new HashSet<>();
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "organisation_id")
+    private Organisation organisation;
+
+    @OneToMany
+    @JoinTable(
+            name = "project_admins",
+            joinColumns = {@JoinColumn(name = "project_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id", unique = true)})
+    private Set<User> projectAdmins = new HashSet<>();
 
     public void updateFrom(Project source) {
         description = source.getDescription();

@@ -8,7 +8,7 @@ export const TextInput = styled(InputField)`
   border: 1px solid ${(props) => props.theme.primary};
   background-color: ${(props) => props.theme.surface};
   color: ${(props) => props.theme.primaryText};
-  border-radius: 0.5rem;
+  border-radius: 0.3rem;
   padding: 0.5rem 1rem;
   font-size: 1.8rem;
   outline: none;

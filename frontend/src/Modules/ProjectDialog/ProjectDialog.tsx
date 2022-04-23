@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next';
 import { Formik, FormikProps } from 'formik';
 import * as Yup from 'yup';
 
+import { useLoading } from 'Hooks/useLoading';
 import { LoadingModalDialog } from 'Shared/LoadingModalDialog';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
 import { Form, FormField } from 'Shared/Elements/Form';
-import { useLoading } from 'Hooks/useLoading';
 import { TextInput } from 'Shared/Elements/TextInput';
 import { TextArea } from 'Shared/Elements/TextArea';
 import { Api } from 'Utils/Api';
@@ -42,14 +42,10 @@ export const ProjectDialog = ({ mode, handleClose }: Props): JSX.Element => {
     description: Yup.string().required(t('projectDialog.validation.description.required'))
   });
 
-  const renderFooter = (isSubmitDisabled: boolean): JSX.Element => (
-    <React.Fragment>
-      <ButtonOutline onClick={handleClose}>{t('general.cancel')}</ButtonOutline>
-      <ButtonFilled type="submit" disabled={isSubmitDisabled}>
-        {t('general.submit')}
-      </ButtonFilled>
-    </React.Fragment>
-  );
+  const onCancel = (e: React.MouseEvent) => {
+    e.preventDefault();
+    handleClose();
+  };
 
   const onSubmit = async (values: ProjectData) => {
     startLoading();
@@ -62,6 +58,15 @@ export const ProjectDialog = ({ mode, handleClose }: Props): JSX.Element => {
       dispatch(actionCreators.getUserProjects());
     }
   };
+
+  const renderFooter = (isSubmitDisabled: boolean): JSX.Element => (
+    <React.Fragment>
+      <ButtonOutline onClick={onCancel}>{t('general.cancel')}</ButtonOutline>
+      <ButtonFilled type="submit" disabled={isSubmitDisabled}>
+        {t('general.submit')}
+      </ButtonFilled>
+    </React.Fragment>
+  );
 
   return (
     <Formik

@@ -9,12 +9,12 @@ export const VerticalPageWrapper = styled.div<WrapperProps>`
   flex-direction: column;
   justify-content: center;
   align-items: ${(props) => (props.alignItems ? props.alignItems : 'center')};
-  padding: 1rem;
+  padding: 2rem;
 `;
 
 export const HorizontalPageWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem;
+  padding: 2rem;
 `;

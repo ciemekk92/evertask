@@ -11,6 +11,11 @@ export const SIDEBAR_ROUTES: SidebarRoute[] = [
     route: '/'
   },
   {
+    name: 'myOrganisation',
+    iconName: 'groups',
+    route: '/organisation'
+  },
+  {
     name: 'calendar',
     iconName: 'event_note',
     route: '/calendar'

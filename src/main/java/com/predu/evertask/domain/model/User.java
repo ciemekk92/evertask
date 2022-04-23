@@ -61,6 +61,13 @@ public class User implements UserDetails, Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> authorities = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "organisation_id")
+    private Organisation organisation;
+
+    @OneToMany(mappedBy = "user")
+    private Set<OrganisationInvitation> organisationInvitations = new HashSet<>();
+
     @OneToMany(mappedBy = "owner")
     private Set<Project> ownedProjects = new HashSet<>();
 

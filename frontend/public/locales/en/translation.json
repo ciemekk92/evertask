@@ -69,6 +69,7 @@
   "sidebar": {
     "link": {
       "dashboard": "Dashboard",
+      "myOrganisation": "My organisation",
       "calendar": "Calendar",
       "sprints": "Sprints",
       "tasks": "Tasks"
@@ -76,11 +77,14 @@
   },
   "dashboard": {
     "assignedIssues": {
-      "title": "Issues assigned to me"
+      "title": "Issues assigned to me",
+      "noIssues": "There are no issues assigned to you. Enjoy your free time! :)"
     },
     "projects": {
       "title": "My projects",
-      "add": "Create new project"
+      "add": "Create new project",
+      "updatedAt": "Updated at",
+      "notUpdated": "Not updated yet"
     }
   },
   "projectDialog": {
@@ -98,6 +102,33 @@
       },
       "description": {
         "required": "Project description is required."
+      }
+    }
+  },
+  "unassignedUserPage": {
+    "title": "Currently you're not a member of any organisation.",
+    "content": "But worry not! Below you can create your own organisation, or see the invitations from the existing ones. Remember, that you can only be a member of one organisation at a time.",
+    "createNewOrganisation": "Create new organisation",
+    "invitationsTitle": "Organisation invitations"
+  },
+  "organisationPage": {
+    "title": "My organisation",
+    "members": "Organisation members",
+    "info": {
+      "name": "Name:",
+      "description": "Description:",
+      "createdAt": "Created at:",
+      "updatedAt": "Updated at:"
+    }
+  },
+  "organisationForm": {
+    "name": "Organisation name",
+    "description": "Description",
+    "validation": {
+      "name": {
+        "minLength": "Organisation name is too short (minimum 6 characters)",
+        "maxLength": "Organisation name is too long (maximum 50 characters)",
+        "required": "Organisation name is required"
       }
     }
   }

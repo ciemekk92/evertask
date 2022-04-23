@@ -28,7 +28,8 @@ import static java.lang.String.format;
 @EnableGlobalMethodSecurity(
         securedEnabled = true,
         jsr250Enabled = true,
-        prePostEnabled = true
+        prePostEnabled = true,
+        proxyTargetClass = true
 )
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 

@@ -21,6 +21,9 @@ public class Role implements GrantedAuthority {
 
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
     public static final String ROLE_USER = "ROLE_USER";
+    public static final String ROLE_UNASSIGNED_USER = "ROLE_UNASSIGNED_USER";
+    public static final String ROLE_ORGANISATION_ADMIN = "ROLE_ORGANISATION_ADMIN";
+    public static final String ROLE_PROJECT_ADMIN = "ROLE_PROJECT_ADMIN";
 
     private String authority;
 

@@ -5,9 +5,11 @@ import com.predu.evertask.domain.dto.auth.UpdateUserRequest;
 import com.predu.evertask.domain.dto.auth.UserDto;
 import com.predu.evertask.domain.mapper.UserEditMapper;
 import com.predu.evertask.domain.mapper.UserViewMapper;
+import com.predu.evertask.domain.model.Role;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.domain.model.VerificationToken;
 import com.predu.evertask.exception.NotFoundException;
+import com.predu.evertask.repository.RoleRepository;
 import com.predu.evertask.repository.UserRepository;
 import com.predu.evertask.repository.VerificationTokenRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +18,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ValidationException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -31,10 +32,19 @@ import static java.lang.String.format;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final VerificationTokenRepository tokenRepository;
     private final UserEditMapper userEditMapper;
     private final UserViewMapper userViewMapper;
     private final PasswordEncoder passwordEncoder;
+
+    @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
+    public List<UserDto> getUnassignedUsers(String query) {
+        return userRepository.findUnassignedByUsernameOrEmail(query, query)
+                .stream()
+                .map(userViewMapper::toUserDto)
+                .collect(Collectors.toList());
+    }
 
     @Transactional
     public User create(CreateUserRequest request) {
@@ -46,12 +56,11 @@ public class UserService implements UserDetailsService {
             throw new ValidationException("Passwords don't match.");
         }
 
-        if (request.getAuthorities() == null) {
-            request.setAuthorities(new HashSet<>());
-        }
-
         User user = userEditMapper.create(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        Role role = roleRepository.findByAuthority(Role.ROLE_UNASSIGNED_USER);
+        user.setAuthorities(Set.of(role));
 
         user = userRepository.save(user);
 

@@ -9,6 +9,7 @@ export const TextArea = styled(AreaField)`
   background-color: ${(props) => props.theme.surface};
   color: ${(props) => props.theme.primaryText};
   padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
   font-size: 1.8rem;
   font-family: Lato, sans-serif;
   outline: none;

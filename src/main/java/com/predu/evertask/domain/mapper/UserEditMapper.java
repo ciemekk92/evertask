@@ -21,18 +21,6 @@ public abstract class UserEditMapper {
     public abstract void update(UpdateUserRequest request, @MappingTarget User user);
 
     @AfterMapping
-    protected void afterCreate(CreateUserRequest request, @MappingTarget User user) {
-        if (request.getAuthorities() != null) {
-            user.setAuthorities(
-                    request.getAuthorities()
-                            .stream()
-                            .map(Role::new)
-                            .collect(toSet())
-            );
-        }
-    }
-
-    @AfterMapping
     protected void afterUpdate(UpdateUserRequest request, @MappingTarget User user) {
         if (request.getAuthorities() != null) {
             user.setAuthorities(

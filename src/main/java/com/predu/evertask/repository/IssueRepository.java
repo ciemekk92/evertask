@@ -8,4 +8,6 @@ import java.util.UUID;
 public interface IssueRepository extends BaseRepository<Issue, UUID> {
 
     List<Issue> findByAssigneeId(UUID assigneeId);
+
+    Issue findTopByOrderByUpdatedAtDesc();
 }

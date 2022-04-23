@@ -69,6 +69,7 @@
   "sidebar": {
     "link": {
       "dashboard": "Dashboard",
+      "myOrganisation": "Moja organizacja",
       "calendar": "Kalendarz",
       "sprints": "Sprinty",
       "tasks": "Zadania"
@@ -76,11 +77,15 @@
   },
   "dashboard": {
     "assignedIssues": {
-      "title": "Zadania przypisane do mnie"
+      "title": "Zadania przypisane do mnie",
+      "noIssues": "Nie masz zadań przydzielonych do siebie. Ciesz się czasem wolnym! :)"
+
     },
     "projects": {
       "title": "Moje projekty",
-      "add": "Dodaj projekt"
+      "add": "Dodaj projekt",
+      "updatedAt": "Zaktualizowany",
+      "notUpdated": "Nigdy nie aktualizowany"
     }
   },
   "projectDialog": {
@@ -98,6 +103,33 @@
       },
       "description": {
         "required": "Opis projektu jest wymagany."
+      }
+    }
+  },
+  "unassignedUserPage": {
+    "title": "Obecnie nie jesteś członkiem żadnej organizacji.",
+    "content": "Nic straconego! Poniżej możesz stworzyć nową organizację lub przejrzeć zaproszenia do już istniejących. Pamiętaj że możesz być członkiem tylko jednej organizacji.",
+    "createNewOrganisation": "Stwórz nową organizację",
+    "invitationsTitle": "Zaproszenia"
+  },
+  "organisationPage": {
+    "title": "Moja organizacja",
+    "members": "Członkowie organizacji",
+    "info": {
+      "name": "Nazwa organizacji:",
+      "description": "Opis:",
+      "createdAt": "Stworzono:",
+      "updatedAt": "Zaktualizowano:"
+    }
+  },
+  "organisationForm": {
+    "name": "Nazwa organizacji",
+    "description": "Opis",
+    "validation": {
+      "name": {
+        "minLength": "Nazwa organizacji jest za krótka (minimum 6 znaków)",
+        "maxLength": "Nazwa organizacji jest za długa (maksimum 50 znaków)",
+        "required": "Nazwa organizacji jest wymagana"
       }
     }
   }

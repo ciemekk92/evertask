@@ -11,7 +11,7 @@ import {
 interface Props {
   label: string;
   name: string;
-  children: React.ReactElement;
+  children: React.ReactNode;
 }
 
 export const FormField = ({ label, name, children }: Props): JSX.Element => {

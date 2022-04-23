@@ -5,6 +5,7 @@ import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
 import com.predu.evertask.domain.model.Issue;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.service.IssueService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -16,15 +17,12 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("api/issues")
 public class IssueController {
 
     private final IssueService issueService;
-
-    public IssueController(IssueService issueService) {
-        this.issueService = issueService;
-    }
 
     @GetMapping
     public ResponseEntity<List<IssueDto>> getAllIssues() {

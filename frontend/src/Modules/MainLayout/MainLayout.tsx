@@ -7,13 +7,17 @@ import { GlobalErrorBoundary } from 'Modules/GlobalErrorBoundary';
 import { LandingPage } from 'Modules/LandingPage';
 import { Login, Signup, SignupConfirmation, SuccessNotification } from 'Modules/Auth';
 import { Dashboard } from 'Modules/Dashboard';
+import { ProjectPage } from 'Modules/ProjectPage';
+import { UnassignedUserPage } from 'Modules/UnassignedUserPage';
+import { OrganisationPage } from 'Modules/OrganisationPage';
+import { User, UserModel } from 'Models/UserModel';
+import { actionCreators } from 'Stores/User';
 import { NOTIFICATION_TYPES } from 'Shared/constants';
+import { PermissionCheck } from 'Utils/PermissionCheck';
 import { AppHeader } from './components/AppHeader/AppHeader';
 import { AppSidebar } from './components/AppSidebar/AppSidebar';
 import { AppMainWindow } from './components/AppMainWindow/AppMainWindow';
 import { HorizontalWrapper, LayoutWrapper } from './MainLayout.styled';
-import { User, UserModel } from 'Models/UserModel';
-import { actionCreators } from '../../Stores/User';
 
 export const MainLayout = (): JSX.Element => {
   const [currentUser, setCurrentUser] = React.useState<User>({
@@ -21,7 +25,8 @@ export const MainLayout = (): JSX.Element => {
     firstName: '',
     lastName: '',
     username: '',
-    accessToken: ''
+    accessToken: '',
+    authorities: []
   });
 
   const dispatch = useDispatch();
@@ -38,16 +43,36 @@ export const MainLayout = (): JSX.Element => {
     }
   }, []);
 
-  const renderLoggedInView = (): JSX.Element => (
-    <HorizontalWrapper>
+  const renderForAssignedUser = (): JSX.Element => (
+    <React.Fragment>
       <AppSidebar />
       <AppMainWindow>
         <GlobalErrorBoundary>
           <ReactRoutes>
             <Route path={'/'} element={<Dashboard />} />
+            <Route path={'/project/:id'} element={<ProjectPage />} />
+            <Route path={'/organisation'} element={<OrganisationPage />} />
           </ReactRoutes>
         </GlobalErrorBoundary>
       </AppMainWindow>
+    </React.Fragment>
+  );
+
+  const renderForUnassignedUser = (): JSX.Element => (
+    <AppMainWindow>
+      <GlobalErrorBoundary>
+        <ReactRoutes>
+          <Route path={'/'} element={<UnassignedUserPage />} />
+        </ReactRoutes>
+      </GlobalErrorBoundary>
+    </AppMainWindow>
+  );
+
+  const renderLoggedInView = (): JSX.Element => (
+    <HorizontalWrapper>
+      {currentUser.authorities.some(PermissionCheck.isUnassignedUser)
+        ? renderForUnassignedUser()
+        : renderForAssignedUser()}
     </HorizontalWrapper>
   );
 

@@ -1,14 +1,14 @@
 package com.predu.evertask.domain.dto.sprint;
 
-import lombok.Data;
+import com.predu.evertask.domain.dto.BaseDto;
+import lombok.*;
 
 import java.util.Date;
 
-@Data
-public class SprintDto {
+@Getter
+@Setter
+public class SprintDto extends BaseDto {
 
-    private String id;
-    private Date createdAt;
     private String description;
     private Date startDate;
     private Date finishDate;

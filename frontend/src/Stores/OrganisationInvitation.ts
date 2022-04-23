@@ -8,11 +8,17 @@ import { AppThunkAction } from './store';
 export interface OrganisationInvitationState {
   isLoading: boolean;
   userInvitations: OrganisationInvitation[];
+  allInvitations: OrganisationInvitation[];
 }
 
 interface SetUserInvitationsAction {
   type: typeof ActionTypes.SET_USER_ORGANISATION_INVITATIONS;
   userInvitations: OrganisationInvitation[];
+}
+
+interface SetAllOrganisationInvitationsAction {
+  type: typeof ActionTypes.SET_ALL_ORGANISATION_INVITATIONS;
+  allInvitations: OrganisationInvitation[];
 }
 
 interface SetOrganisationInvitationLoadingAction {
@@ -22,6 +28,7 @@ interface SetOrganisationInvitationLoadingAction {
 
 export type OrganisationInvitationActionTypes =
   | SetUserInvitationsAction
+  | SetAllOrganisationInvitationsAction
   | SetOrganisationInvitationLoadingAction;
 
 export const actionCreators = {
@@ -46,12 +53,36 @@ export const actionCreators = {
           });
         }
       }
+    },
+  getAllInvitationsForOrganisation:
+    (id: Id): AppThunkAction<OrganisationInvitationActionTypes> =>
+    async (dispatch, getState) => {
+      const appState = getState();
+
+      dispatch({
+        type: ActionTypes.SET_ORGANISATION_INVITATIONS_LOADING,
+        isLoading: true
+      });
+
+      if (appState && appState.organisationInvitation) {
+        const result = await Api.get(`organisations/${id}/invitations`);
+
+        if (result.status === 200) {
+          const json = await result.json();
+
+          dispatch({
+            type: ActionTypes.SET_ALL_ORGANISATION_INVITATIONS,
+            allInvitations: json
+          });
+        }
+      }
     }
 };
 
 const initialState: OrganisationInvitationState = {
   isLoading: false,
-  userInvitations: []
+  userInvitations: [],
+  allInvitations: []
 };
 
 export const reducer: Reducer<OrganisationInvitationState> = (
@@ -70,6 +101,12 @@ export const reducer: Reducer<OrganisationInvitationState> = (
         ...state,
         isLoading: false,
         userInvitations: action.userInvitations
+      };
+    case ActionTypes.SET_ALL_ORGANISATION_INVITATIONS:
+      return {
+        ...state,
+        isLoading: false,
+        allInvitations: action.allInvitations
       };
     case ActionTypes.SET_ORGANISATION_INVITATIONS_LOADING:
       return {

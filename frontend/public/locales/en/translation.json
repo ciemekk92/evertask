@@ -113,6 +113,7 @@
   },
   "organisationPage": {
     "title": "My organisation",
+    "members": "Organisation members",
     "info": {
       "name": "Name:",
       "description": "Description:",

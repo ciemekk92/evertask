@@ -114,6 +114,7 @@
   },
   "organisationPage": {
     "title": "Moja organizacja",
+    "members": "Członkowie organizacji",
     "info": {
       "name": "Nazwa organizacji:",
       "description": "Opis:",

@@ -38,22 +38,32 @@ public class UserService implements UserDetailsService {
     private final UserViewMapper userViewMapper;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     public List<UserDto> getUnassignedUsers(String query) {
-        return userRepository.findUnassignedByUsernameOrEmail(query, query)
-                .stream()
+        List<User> userList;
+        if (query == null) {
+            userList = userRepository.findUnassigned();
+        } else {
+            userList = userRepository.findUnassignedByUsernameOrEmail(query, query);
+        }
+
+        return userList.stream()
                 .map(userViewMapper::toUserDto)
                 .collect(Collectors.toList());
     }
 
     @Transactional
     public User create(CreateUserRequest request) {
-        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
-            throw new ValidationException("Username already exists.");
+        if (usernameExists(request.getUsername())) {
+            throw new ValidationException("usernameExists");
+        }
+
+        if (emailExists(request.getEmail())) {
+            throw new ValidationException("emailTaken");
         }
 
         if (!request.getPassword().equals(request.getRePassword())) {
-            throw new ValidationException("Passwords don't match.");
+            throw new ValidationException("passwordsMatch");
         }
 
         User user = userEditMapper.create(request);
@@ -134,6 +144,10 @@ public class UserService implements UserDetailsService {
 
     public boolean usernameExists(String username) {
         return userRepository.findByUsername(username).isPresent();
+    }
+
+    public boolean emailExists(String email) {
+        return userRepository.findByEmail(email).isPresent();
     }
 
     public UserDto getUser(UUID id) {

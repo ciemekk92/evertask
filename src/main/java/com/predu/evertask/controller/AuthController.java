@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -75,7 +76,8 @@ public class AuthController {
     }
 
     @PostMapping("signup")
-    public ResponseEntity<UserDto> signup(@RequestBody @Valid CreateUserRequest request, HttpServletRequest servletRequest) {
+    public ResponseEntity<UserDto> signup(@RequestBody @Valid CreateUserRequest request, HttpServletRequest servletRequest)
+        throws ValidationException {
 
         User user = userService.create(request);
 

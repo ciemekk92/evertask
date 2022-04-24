@@ -1,7 +1,7 @@
 package com.predu.evertask.controller;
 
 import com.predu.evertask.annotation.IsAdmin;
-import com.predu.evertask.annotation.IsOrganisationAdminOrAdmin;
+import com.predu.evertask.annotation.IsCurrentOrganisationAdminOrAdmin;
 import com.predu.evertask.annotation.IsUnassignedUserOrAdmin;
 import com.predu.evertask.domain.dto.organisation.InviteUserRequest;
 import com.predu.evertask.domain.dto.organisation.OrganisationCreateDto;
@@ -48,7 +48,7 @@ public class OrganisationController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @IsOrganisationAdminOrAdmin
+    @IsCurrentOrganisationAdminOrAdmin
     @GetMapping("/{id}/invitations")
     public ResponseEntity<List<OrganisationInvitationDto>> getInvitationsForOrganisation(@PathVariable UUID id) {
         return ResponseEntity.ok(invitationService.findAllByOrganisation(id));
@@ -73,7 +73,7 @@ public class OrganisationController {
                 .body(toCreate);
     }
 
-    @IsOrganisationAdminOrAdmin
+    @IsCurrentOrganisationAdminOrAdmin
     @PostMapping("/{id}/invite_user")
     public ResponseEntity<Void> inviteUser(@RequestBody @Valid InviteUserRequest request, @PathVariable UUID id, HttpServletRequest servletRequest) {
         UUID userId = request.getUserId();
@@ -82,7 +82,7 @@ public class OrganisationController {
         return ResponseEntity.status(201).build();
     }
 
-    @IsOrganisationAdminOrAdmin
+    @IsCurrentOrganisationAdminOrAdmin
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateOrganisation(@RequestBody @Valid OrganisationDto toUpdate, @PathVariable UUID id) {
         if (!organisationService.existsById(id)) {
@@ -94,7 +94,7 @@ public class OrganisationController {
         return ResponseEntity.noContent().build();
     }
 
-    @IsOrganisationAdminOrAdmin
+    @IsCurrentOrganisationAdminOrAdmin
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOrganisation(@PathVariable UUID id) {
         if (!organisationService.existsById(id)) {

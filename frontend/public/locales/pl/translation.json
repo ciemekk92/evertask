@@ -115,9 +115,12 @@
   "organisationPage": {
     "title": "Moja organizacja",
     "members": "Członkowie organizacji",
+    "projects": "Projekty",
+    "noProjects": "Brak stworzonych projektów",
+    "invitations": "Oczekujące zaproszenia",
+    "noInvitations": "Brak oczekujących zaproszeń",
+    "inviteMember": "Zaproś użytkownika",
     "info": {
-      "name": "Nazwa organizacji:",
-      "description": "Opis:",
       "createdAt": "Stworzono:",
       "updatedAt": "Zaktualizowano:"
     }
@@ -132,5 +135,9 @@
         "required": "Nazwa organizacji jest wymagana"
       }
     }
+  },
+  "inviteMemberDialog": {
+    "title": "Zaproś użytkownika do organizacji",
+    "noUsers": "Brak nieprzydzielonych użytkowników"
   }
 }

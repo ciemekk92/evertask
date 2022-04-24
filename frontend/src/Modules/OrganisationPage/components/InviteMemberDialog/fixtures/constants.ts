@@ -1,0 +1,3 @@
+export enum INVITE_MEMBER_DIALOG_MODES {
+  ADD = 'ADD'
+}

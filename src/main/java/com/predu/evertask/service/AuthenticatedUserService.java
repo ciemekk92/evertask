@@ -52,4 +52,20 @@ public class AuthenticatedUserService {
                 .contains(value))
                 .isPresent();
     }
+
+    public boolean isOrganisationMember(UUID id) {
+        String username = ((User)SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal())
+                .getUsername();
+
+        Optional<User> user = userRepository.findByUsername(username);
+        Organisation organisation = organisationRepository.getById(id);
+
+        return user.filter(value -> organisation
+                .getMembers()
+                .contains(value))
+                .isPresent();
+    }
 }

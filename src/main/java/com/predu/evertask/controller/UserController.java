@@ -56,7 +56,7 @@ public class UserController {
 
     @IsOrganisationAdminOrAdmin
     @GetMapping("/unassigned")
-    public ResponseEntity<List<UserDto>> getUnassignedUsersByUsernameOrEmail(@RequestParam String query) {
+    public ResponseEntity<List<UserDto>> getUnassignedUsersByUsernameOrEmail(@RequestParam(required = false) String query) {
         return ResponseEntity.ok(userService.getUnassignedUsers(query));
     }
 }

@@ -1,7 +1,14 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Organisation } from 'Types/Organisation';
-import { StyledInfoContent, StyledInfoField, StyledInfoLabel } from './InfoSection.styled';
+import { Heading6 } from 'Shared/Typography';
+import {
+  StyledDescriptionField,
+  StyledInfoContent,
+  StyledInfoField,
+  StyledInfoLabel
+} from './InfoSection.styled';
+import { StyledWrapper, StyledHeaderRow } from '../../OrganisationPage.styled';
 
 interface Props {
   organisationData: Organisation;
@@ -11,15 +18,11 @@ export const InfoSection = ({ organisationData }: Props): JSX.Element => {
   const { t } = useTranslation();
 
   return (
-    <React.Fragment>
-      <StyledInfoField>
-        <StyledInfoLabel>{t('organisationPage.info.name')}</StyledInfoLabel>
-        <StyledInfoContent>{organisationData.name}</StyledInfoContent>
-      </StyledInfoField>
-      <StyledInfoField>
-        <StyledInfoLabel>{t('organisationPage.info.description')}</StyledInfoLabel>
-        <StyledInfoContent>{organisationData.description}</StyledInfoContent>
-      </StyledInfoField>
+    <StyledWrapper>
+      <StyledHeaderRow>
+        <Heading6>{organisationData.name}</Heading6>
+      </StyledHeaderRow>
+      <StyledDescriptionField>{organisationData.description}</StyledDescriptionField>
       <StyledInfoField>
         <StyledInfoLabel>{t('organisationPage.info.createdAt')}</StyledInfoLabel>
         <StyledInfoContent>
@@ -34,6 +37,6 @@ export const InfoSection = ({ organisationData }: Props): JSX.Element => {
           </StyledInfoContent>
         </StyledInfoField>
       )}
-    </React.Fragment>
+    </StyledWrapper>
   );
 };

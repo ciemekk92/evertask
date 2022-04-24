@@ -32,9 +32,11 @@ export const StyledSectionWrapper = styled.div`
 export const StyledSectionRow = styled.div`
   display: flex;
   justify-content: space-between;
+  padding-bottom: 1rem;
   margin-bottom: 1rem;
 `;
 
 export const StyledHeaderRow = styled(StyledSectionRow)`
   height: 4rem;
+  border-bottom: 1px solid ${(props) => props.theme.primary};
 `;

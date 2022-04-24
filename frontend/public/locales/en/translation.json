@@ -114,9 +114,12 @@
   "organisationPage": {
     "title": "My organisation",
     "members": "Organisation members",
+    "projects": "Projects",
+    "noProjects": "No projects created yet",
+    "invitations": "Pending invitations",
+    "noInvitations": "No pending invitations",
+    "inviteMember": "Invite user",
     "info": {
-      "name": "Name:",
-      "description": "Description:",
       "createdAt": "Created at:",
       "updatedAt": "Updated at:"
     }
@@ -131,5 +134,9 @@
         "required": "Organisation name is required"
       }
     }
+  },
+  "inviteMemberDialog": {
+    "title": "Invite organisation member",
+    "noUsers": "No unassigned users"
   }
 }

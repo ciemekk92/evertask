@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.validation.ValidationException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -49,5 +50,12 @@ public class CustomRestExceptionHandler {
         String message = messageSource.getMessage("message.auth.badCredentials", null, locale);
 
         return new ResponseEntity<>(new RestMessage(message), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<RestMessage> handleValidationException(ValidationException ex, Locale locale) {
+        String message = messageSource.getMessage("message.validation." + ex.getMessage(), null, locale);
+
+        return new ResponseEntity<>(new RestMessage(message), HttpStatus.BAD_REQUEST);
     }
 }

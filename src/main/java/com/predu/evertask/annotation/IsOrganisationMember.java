@@ -7,8 +7,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-@PreAuthorize("hasAnyRole('ROLE_ORGANISATION_ADMIN', 'ROLE_ADMIN')")
-public @interface IsOrganisationAdminOrAdmin {
+@PreAuthorize("(hasAnyRole('ROLE_ORGANISATION_ADMIN', 'ROLE_PROJECT_ADMIN', 'ROLE_USER') " +
+        "&& @authenticatedUserService.isOrganisationMember(#id)) " +
+        "|| hasRole('ROLE_ADMIN')")
+public @interface IsOrganisationMember
+{
 }

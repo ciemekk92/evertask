@@ -45,9 +45,7 @@ public class OrganisationService {
     public OrganisationDto getUserOrganisation(UUID id) {
         User user = userRepository.getById(id);
 
-        OrganisationDto organisation = organisationMapper.organisationToOrganisationDto(user.getOrganisation());
-
-        return organisation;
+        return organisationMapper.organisationToOrganisationDto(user.getOrganisation());
     }
 
     @Transactional

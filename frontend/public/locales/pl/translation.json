@@ -10,7 +10,10 @@
     "back": "Wróć",
     "mainPage": "Strona główna",
     "cancel": "Anuluj",
-    "submit": "Wyślij"
+    "submit": "Wyślij",
+    "accept": "Zaakceptuj",
+    "decline": "Odrzuć",
+    "sentAt": "Wysłane: "
   },
   "login": {
     "title": "Logowanie",

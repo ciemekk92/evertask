@@ -24,16 +24,16 @@ public class Organisation extends BaseEntity {
     @OneToMany(mappedBy = "organisation")
     private Set<User> members = new HashSet<>();
 
-    @OneToMany(mappedBy = "organisation")
+    @OneToMany(mappedBy = "organisation", cascade = CascadeType.REMOVE)
     private Set<OrganisationInvitation> organisationInvitations = new HashSet<>();
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
         name = "organisation_admins",
         joinColumns = {@JoinColumn(name = "organisation_id")},
         inverseJoinColumns = {@JoinColumn(name = "user_id", unique = true)})
     private Set<User> organisationAdmins = new HashSet<>();
 
-    @OneToMany(mappedBy = "organisation")
+    @OneToMany(mappedBy = "organisation", cascade = CascadeType.REMOVE)
     private Set<Project> projects = new HashSet<>();
 }

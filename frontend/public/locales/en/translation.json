@@ -10,7 +10,10 @@
     "back": "Back",
     "mainPage": "Main page",
     "cancel": "Cancel",
-    "submit": "Submit"
+    "submit": "Submit",
+    "accept": "Accept",
+    "decline": "Decline",
+    "sentAt": "Sent at:"
   },
   "login": {
     "title": "Login",

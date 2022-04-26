@@ -2,11 +2,9 @@ package com.predu.evertask.controller;
 
 import com.predu.evertask.annotation.IsAdmin;
 import com.predu.evertask.annotation.IsCurrentOrganisationAdminOrAdmin;
+import com.predu.evertask.annotation.IsUnassignedUser;
 import com.predu.evertask.annotation.IsUnassignedUserOrAdmin;
-import com.predu.evertask.domain.dto.organisation.InviteUserRequest;
-import com.predu.evertask.domain.dto.organisation.OrganisationCreateDto;
-import com.predu.evertask.domain.dto.organisation.OrganisationDto;
-import com.predu.evertask.domain.dto.organisation.OrganisationInvitationDto;
+import com.predu.evertask.domain.dto.organisation.*;
 import com.predu.evertask.domain.mapper.OrganisationMapper;
 import com.predu.evertask.domain.model.Organisation;
 import com.predu.evertask.domain.model.User;
@@ -58,11 +56,7 @@ public class OrganisationController {
     @PostMapping
     public ResponseEntity<OrganisationCreateDto> createOrganisation(@RequestBody @Valid OrganisationCreateDto toCreate,
                                                                     Authentication authentication)
-            throws URISyntaxException, IllegalAccessException {
-
-        if (authentication == null) {
-            throw new IllegalAccessException("No user logged in.");
-        }
+            throws URISyntaxException {
 
         User user = (User) authentication.getPrincipal();
 
@@ -80,6 +74,26 @@ public class OrganisationController {
         invitationService.create(userId, id, servletRequest.getLocale());
 
         return ResponseEntity.status(201).build();
+    }
+
+    @IsUnassignedUser
+    @PostMapping("/{organisationId}/accept_invitation")
+    public ResponseEntity<Void> acceptInvitation(@PathVariable UUID organisationId, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+
+        invitationService.acceptInvitation(organisationId, user.getId());
+
+        return ResponseEntity.ok().build();
+    }
+
+    @IsUnassignedUser
+    @PostMapping("/{organisationId}/decline_invitation")
+    public ResponseEntity<Void> declineInvitation(@PathVariable UUID organisationId, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+
+        invitationService.declineInvitation(organisationId, user.getId());
+
+        return ResponseEntity.ok().build();
     }
 
     @IsCurrentOrganisationAdminOrAdmin

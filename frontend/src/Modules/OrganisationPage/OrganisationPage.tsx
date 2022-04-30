@@ -10,6 +10,7 @@ import { ApplicationState } from 'Stores/store';
 import { actionCreators as userActionCreators } from 'Stores/User';
 import { actionCreators as invitationActionCreators } from 'Stores/OrganisationInvitation';
 import { Organisation, OrganisationInvitation } from 'Types/Organisation';
+import { Api } from 'Utils/Api';
 import {
   InfoSection,
   InvitationsSection,
@@ -20,13 +21,15 @@ import {
 import { INVITE_MEMBER_DIALOG_MODES } from './components/InviteMemberDialog/fixtures';
 
 import { StyledHorizontalContainer, StyledSectionContainer } from './OrganisationPage.styled';
+import { ProjectDialog } from '../ProjectDialog/ProjectDialog';
+import { PROJECT_DIALOG_MODES } from '../ProjectDialog/fixtures';
 
 export const OrganisationPage = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { isOpen, dialogMode, handleOpen, handleClose } = useDialog<INVITE_MEMBER_DIALOG_MODES>(
-    INVITE_MEMBER_DIALOG_MODES.ADD
-  );
+
+  const inviteDialogConfig = useDialog<INVITE_MEMBER_DIALOG_MODES>(INVITE_MEMBER_DIALOG_MODES.ADD);
+  const projectDialogConfig = useDialog<PROJECT_DIALOG_MODES>(PROJECT_DIALOG_MODES.ADD);
 
   const isUserOrganisationAdmin = [USER_ROLES.ROLE_ORGANISATION_ADMIN, USER_ROLES.ROLE_ADMIN].some(
     (role: USER_ROLES) => UserModel.currentUserValue.authorities.includes(role)
@@ -51,8 +54,24 @@ export const OrganisationPage = (): JSX.Element => {
     }
   }, [organisationData?.id]);
 
-  const handleOpeningInviteDialog = () => {
-    handleOpen(INVITE_MEMBER_DIALOG_MODES.ADD);
+  const handleOpeningInviteDialog = (): void => {
+    inviteDialogConfig.handleOpen(INVITE_MEMBER_DIALOG_MODES.ADD);
+  };
+
+  const handleOpeningAddProject = () => {
+    projectDialogConfig.handleOpen(PROJECT_DIALOG_MODES.ADD);
+  };
+
+  const handleRevokingInvitation = (id: Id) => async () => {
+    if (organisationData) {
+      const result = await Api.post(`organisations/${organisationData.id}/revoke_invitation`, {
+        userId: id
+      });
+
+      if (result.status === 200) {
+        dispatch(invitationActionCreators.getAllInvitationsForOrganisation(organisationData.id));
+      }
+    }
   };
 
   const renderOrganisationInfo = (): Nullable<JSX.Element> => {
@@ -65,7 +84,12 @@ export const OrganisationPage = (): JSX.Element => {
 
   const renderProjects = (): Nullable<JSX.Element> => {
     if (organisationData) {
-      return <ProjectsSection projectsData={organisationData.projects} />;
+      return (
+        <ProjectsSection
+          projectsData={organisationData.projects}
+          handleOpeningAddProject={handleOpeningAddProject}
+        />
+      );
     }
 
     return null;
@@ -85,12 +109,37 @@ export const OrganisationPage = (): JSX.Element => {
         <InvitationsSection
           invitationsData={invitationsData}
           handleOpeningInviteDialog={handleOpeningInviteDialog}
+          handleRevokingInvitation={handleRevokingInvitation}
         />
       );
     }
 
     return null;
   };
+
+  const renderDialogs = (): JSX.Element => (
+    <React.Fragment>
+      <DialogComponent
+        isOpen={inviteDialogConfig.isOpen}
+        handleClose={inviteDialogConfig.handleClose}
+      >
+        <InviteMemberDialog
+          mode={inviteDialogConfig.dialogMode}
+          handleClose={inviteDialogConfig.handleClose}
+          organisationId={organisationData?.id}
+        />
+      </DialogComponent>
+      <DialogComponent
+        isOpen={projectDialogConfig.isOpen}
+        handleClose={projectDialogConfig.handleClose}
+      >
+        <ProjectDialog
+          mode={projectDialogConfig.dialogMode}
+          handleClose={projectDialogConfig.handleClose}
+        />
+      </DialogComponent>
+    </React.Fragment>
+  );
 
   return (
     <VerticalPageWrapper alignItems="unset">
@@ -105,13 +154,7 @@ export const OrganisationPage = (): JSX.Element => {
           {renderInvitations()}
         </StyledSectionContainer>
       </StyledHorizontalContainer>
-      <DialogComponent isOpen={isOpen} handleClose={handleClose}>
-        <InviteMemberDialog
-          mode={dialogMode}
-          handleClose={handleClose}
-          organisationId={organisationData?.id}
-        />
-      </DialogComponent>
+      {renderDialogs()}
     </VerticalPageWrapper>
   );
 };

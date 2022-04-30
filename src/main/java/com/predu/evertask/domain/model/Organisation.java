@@ -27,7 +27,7 @@ public class Organisation extends BaseEntity {
     @OneToMany(mappedBy = "organisation", cascade = CascadeType.REMOVE)
     private Set<OrganisationInvitation> organisationInvitations = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.MERGE, orphanRemoval = true)
     @JoinTable(
         name = "organisation_admins",
         joinColumns = {@JoinColumn(name = "organisation_id")},

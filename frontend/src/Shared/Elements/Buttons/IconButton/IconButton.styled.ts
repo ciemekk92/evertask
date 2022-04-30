@@ -20,6 +20,10 @@ export const StyledButton = styled.button`
     cursor: pointer;
   }
 
+  & p {
+    margin-bottom: 0.3rem;
+  }
+
   &:hover {
     background-color: ${(props) => props.theme.primaryDark};
   }

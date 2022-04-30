@@ -9,10 +9,12 @@ import { StyledWrapper, StyledHeaderRow } from '../../OrganisationPage.styled';
 interface Props {
   invitationsData: OrganisationInvitation[];
   handleOpeningInviteDialog: VoidFunctionNoArgs;
+  handleRevokingInvitation: (id: Id) => () => Promise<void>;
 }
 
 export const InvitationsSection = ({
   invitationsData,
+  handleRevokingInvitation,
   handleOpeningInviteDialog
 }: Props): JSX.Element => {
   const { t } = useTranslation();
@@ -20,7 +22,11 @@ export const InvitationsSection = ({
   const renderInvitations = (): JSX.Element[] | JSX.Element => {
     if (invitationsData.length) {
       return invitationsData.map((invitation: OrganisationInvitation) => (
-        <InvitationPanel key={invitation.id} invitation={invitation} />
+        <InvitationPanel
+          handleRevokingInvitation={handleRevokingInvitation(invitation.user.id)}
+          key={invitation.id}
+          invitation={invitation}
+        />
       ));
     }
 

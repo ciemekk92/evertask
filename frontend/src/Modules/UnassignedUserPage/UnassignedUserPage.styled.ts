@@ -53,4 +53,8 @@ export const StyledInvitationsContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 50%;
+
+  & > p {
+    font-size: 1.6rem;
+  }
 `;

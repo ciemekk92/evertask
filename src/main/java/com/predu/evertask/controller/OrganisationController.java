@@ -69,7 +69,10 @@ public class OrganisationController {
 
     @IsCurrentOrganisationAdminOrAdmin
     @PostMapping("/{id}/invite_user")
-    public ResponseEntity<Void> inviteUser(@RequestBody @Valid InviteUserRequest request, @PathVariable UUID id, HttpServletRequest servletRequest) {
+    public ResponseEntity<Void> inviteUser(@RequestBody @Valid InviteUserRequest request,
+                                           @PathVariable UUID id,
+                                           HttpServletRequest servletRequest) {
+
         UUID userId = request.getUserId();
         invitationService.create(userId, id, servletRequest.getLocale());
 
@@ -78,7 +81,9 @@ public class OrganisationController {
 
     @IsUnassignedUser
     @PostMapping("/{organisationId}/accept_invitation")
-    public ResponseEntity<Void> acceptInvitation(@PathVariable UUID organisationId, Authentication authentication) {
+    public ResponseEntity<Void> acceptInvitation(@PathVariable UUID organisationId,
+                                                 Authentication authentication) {
+
         User user = (User) authentication.getPrincipal();
 
         invitationService.acceptInvitation(organisationId, user.getId());
@@ -88,10 +93,21 @@ public class OrganisationController {
 
     @IsUnassignedUser
     @PostMapping("/{organisationId}/decline_invitation")
-    public ResponseEntity<Void> declineInvitation(@PathVariable UUID organisationId, Authentication authentication) {
+    public ResponseEntity<Void> declineInvitation(@PathVariable UUID organisationId,
+                                                  Authentication authentication) {
         User user = (User) authentication.getPrincipal();
 
         invitationService.declineInvitation(organisationId, user.getId());
+
+        return ResponseEntity.ok().build();
+    }
+
+    @IsCurrentOrganisationAdminOrAdmin
+    @PostMapping("/{organisationId}/revoke_invitation")
+    public ResponseEntity<Void> revokeInvitation(@PathVariable UUID organisationId,
+                                                 @RequestBody @Valid InviteUserRequest request) {
+
+        invitationService.declineInvitation(organisationId, request.getUserId());
 
         return ResponseEntity.ok().build();
     }

@@ -39,21 +39,31 @@ const getJsonRequestOptions = ({
   });
 };
 
-export const Api = {
-  get: async <T extends ApiResponse>(url: string, params: Params = {}): Promise<T> =>
-    customFetch(getUrlWithParams(url, params), {}),
-  getFull: async <T extends ApiResponse>(url: string, params: Params = {}): Promise<T> =>
-    customFetch(getUrlWithParams(url, params), {}),
-  post: async (url: string, data: Payload = {}): Promise<Response> => {
+export class Api {
+  public static get = async <T extends ApiResponse>(url: string, params: Params = {}): Promise<T> =>
+    customFetch(getUrlWithParams(url, params), {});
+
+  public static getFull = async <T extends ApiResponse>(
+    url: string,
+    params: Params = {}
+  ): Promise<T> => customFetch(getUrlWithParams(url, params), {});
+
+  public static post = async (url: string, data: Payload = {}): Promise<Response> => {
     return customFetch(url, getJsonRequestOptions({ data, method: 'POST' }));
-  },
-  postWithCredentials: async (url: string, data: Payload = {}): Promise<Response> => {
+  };
+
+  public static postWithCredentials = async (
+    url: string,
+    data: Payload = {}
+  ): Promise<Response> => {
     return customFetch(url, getJsonRequestOptions({ data, method: 'POST', hasCredentials: true }));
-  },
-  put: async (url: string, data: Payload = {}): Promise<Response> => {
+  };
+
+  public static put = async (url: string, data: Payload = {}): Promise<Response> => {
     return customFetch(url, getJsonRequestOptions({ data, method: 'PUT' }));
-  },
-  delete: async (url: string, data: Payload = {}): Promise<Response> => {
+  };
+
+  public static delete = async (url: string, data: Payload = {}): Promise<Response> => {
     return customFetch(url, getJsonRequestOptions({ data, method: 'DELETE' }));
-  }
-};
+  };
+}

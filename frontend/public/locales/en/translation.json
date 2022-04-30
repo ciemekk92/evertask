@@ -85,7 +85,6 @@
     },
     "projects": {
       "title": "My projects",
-      "add": "Create new project",
       "updatedAt": "Updated at",
       "notUpdated": "Not updated yet"
     }
@@ -112,16 +111,19 @@
     "title": "Currently you're not a member of any organisation.",
     "content": "But worry not! Below you can create your own organisation, or see the invitations from the existing ones. Remember, that you can only be a member of one organisation at a time.",
     "createNewOrganisation": "Create new organisation",
-    "invitationsTitle": "Organisation invitations"
+    "invitationsTitle": "Organisation invitations",
+    "noInvitations": "No invitations received."
   },
   "organisationPage": {
     "title": "My organisation",
     "members": "Organisation members",
     "projects": "Projects",
+    "addProject": "Add new project",
     "noProjects": "No projects created yet",
     "invitations": "Pending invitations",
     "noInvitations": "No pending invitations",
     "inviteMember": "Invite user",
+    "revokeInvitation": "Revoke invitation",
     "info": {
       "createdAt": "Created at:",
       "updatedAt": "Updated at:"

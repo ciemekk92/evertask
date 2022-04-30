@@ -8,11 +8,13 @@ import {
   OrganisationInvitationState,
   reducer as organisationInvitationReducer
 } from './OrganisationInvitation';
+import { OrganisationState, reducer as organisationReducer } from './Organisation';
 
 export interface ApplicationState {
   user: UserState | undefined;
   project: ProjectState | undefined;
   issue: IssueState | undefined;
+  organisation: OrganisationState | undefined;
   organisationInvitation: OrganisationInvitationState | undefined;
 }
 
@@ -28,6 +30,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   project: projectReducer,
   issue: issueReducer,
+  organisation: organisationReducer,
   organisationInvitation: organisationInvitationReducer
 });
 

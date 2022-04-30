@@ -9,6 +9,7 @@ import { Heading3 } from 'Shared/Typography';
 import { TextInput, TextInputErrorMessage } from 'Shared/Elements/TextInput';
 import { Form } from 'Shared/Elements/Form';
 import { ButtonFilled, IconButton } from 'Shared/Elements/Buttons';
+import { ErrorField } from 'Shared/Elements/ErrorField';
 import { useLoading, Container } from 'Hooks/useLoading';
 
 import { ButtonsContainer, LoginWrapper } from '../Login/Login.styled';
@@ -34,6 +35,7 @@ export const Signup = (): JSX.Element => {
 
   const { isLoading, startLoading, stopLoading } = useLoading();
   const { t } = useTranslation();
+  const [error, setError] = React.useState<string>('');
 
   const validationSchema = Yup.object().shape({
     username: Yup.string()
@@ -67,6 +69,9 @@ export const Signup = (): JSX.Element => {
     stopLoading();
     if (result.status === 201) {
       history.push('/signup_success');
+    } else {
+      const { message } = await result.json();
+      setError(message);
     }
   };
 
@@ -108,6 +113,7 @@ export const Signup = (): JSX.Element => {
             {renderInput(errors, touched, 'email')}
             {renderInput(errors, touched, 'password')}
             {renderInput(errors, touched, 'rePassword')}
+            <ErrorField error={error} />
             <ButtonsContainer>
               <ButtonFilled disabled={!isValid} type="submit">
                 {t('signup.submit')}

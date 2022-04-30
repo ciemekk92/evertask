@@ -13,9 +13,9 @@ public class BaseDto {
 
     private String id;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss Z")
     private Date createdAt;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss Z")
     private Date updatedAt;
 }

@@ -10,7 +10,10 @@
     "back": "Wróć",
     "mainPage": "Strona główna",
     "cancel": "Anuluj",
-    "submit": "Wyślij"
+    "submit": "Wyślij",
+    "accept": "Zaakceptuj",
+    "decline": "Odrzuć",
+    "sentAt": "Wysłane: "
   },
   "login": {
     "title": "Logowanie",
@@ -79,11 +82,9 @@
     "assignedIssues": {
       "title": "Zadania przypisane do mnie",
       "noIssues": "Nie masz zadań przydzielonych do siebie. Ciesz się czasem wolnym! :)"
-
     },
     "projects": {
       "title": "Moje projekty",
-      "add": "Dodaj projekt",
       "updatedAt": "Zaktualizowany",
       "notUpdated": "Nigdy nie aktualizowany"
     }
@@ -110,14 +111,20 @@
     "title": "Obecnie nie jesteś członkiem żadnej organizacji.",
     "content": "Nic straconego! Poniżej możesz stworzyć nową organizację lub przejrzeć zaproszenia do już istniejących. Pamiętaj że możesz być członkiem tylko jednej organizacji.",
     "createNewOrganisation": "Stwórz nową organizację",
-    "invitationsTitle": "Zaproszenia"
+    "invitationsTitle": "Zaproszenia",
+    "noInvitations": "Brak otrzymanych zaproszeń"
   },
   "organisationPage": {
     "title": "Moja organizacja",
     "members": "Członkowie organizacji",
+    "projects": "Projekty",
+    "addProject": "Dodaj projekt",
+    "noProjects": "Brak stworzonych projektów",
+    "invitations": "Oczekujące zaproszenia",
+    "noInvitations": "Brak oczekujących zaproszeń",
+    "inviteMember": "Zaproś użytkownika",
+    "revokeInvitation": "Anuluj zaproszenie",
     "info": {
-      "name": "Nazwa organizacji:",
-      "description": "Opis:",
       "createdAt": "Stworzono:",
       "updatedAt": "Zaktualizowano:"
     }
@@ -132,5 +139,9 @@
         "required": "Nazwa organizacji jest wymagana"
       }
     }
+  },
+  "inviteMemberDialog": {
+    "title": "Zaproś użytkownika do organizacji",
+    "noUsers": "Brak nieprzydzielonych użytkowników"
   }
 }

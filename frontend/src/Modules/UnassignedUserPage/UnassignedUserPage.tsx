@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Heading5, Heading6 } from 'Shared/Typography';
 import { OrganisationForm } from 'Shared/Forms/OrganisationForm';
@@ -15,11 +15,18 @@ import {
   StyledInvitationsContainer,
   StyledPageWrapper
 } from './UnassignedUserPage.styled';
+import { ApplicationState } from '../../Stores/store';
+import { InvitationPanel } from './components';
 
 export const UnassignedUserPage = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { isLoading, startLoading, stopLoading } = useLoading();
+  const userInvitations = useSelector(
+    (state: ApplicationState) =>
+      state.organisationInvitation ? state.organisationInvitation.userInvitations : [],
+    shallowEqual
+  );
 
   React.useEffect(() => {
     dispatch(invitationsActionCreators.getUserInvitations());
@@ -36,6 +43,38 @@ export const UnassignedUserPage = (): JSX.Element => {
     }
   };
 
+  const handleSendingInvitationResponseFactory =
+    (organisationId: Id, shouldAccept: boolean) => async () => {
+      startLoading();
+      const result = await Api.post(
+        `organisations/${organisationId}/${shouldAccept ? 'accept' : 'decline'}_invitation`
+      );
+
+      if (result.status === 200) {
+        if (shouldAccept) {
+          dispatch(userActionCreators.refresh());
+        } else {
+          dispatch(invitationsActionCreators.getUserInvitations());
+        }
+      }
+
+      stopLoading();
+    };
+
+  const renderInvitations = (): JSX.Element[] | JSX.Element => {
+    if (userInvitations.length) {
+      return userInvitations.map((invitation) => (
+        <InvitationPanel
+          handleSendingInvitationResponse={handleSendingInvitationResponseFactory}
+          key={invitation.id}
+          invitation={invitation}
+        />
+      ));
+    }
+
+    return <p>{t('unassignedUserPage.noInvitations')}</p>;
+  };
+
   return (
     <StyledPageWrapper>
       <Container isLoading={isLoading} />
@@ -48,6 +87,7 @@ export const UnassignedUserPage = (): JSX.Element => {
         </StyledFormContainer>
         <StyledInvitationsContainer>
           <Heading6>{t('unassignedUserPage.invitationsTitle')}</Heading6>
+          {renderInvitations()}
         </StyledInvitationsContainer>
       </StyledHorizontalContainer>
     </StyledPageWrapper>

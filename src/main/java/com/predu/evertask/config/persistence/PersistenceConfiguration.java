@@ -1,4 +1,4 @@
-package com.predu.evertask.config;
+package com.predu.evertask.config.persistence;
 
 import com.predu.evertask.util.SecurityAuditorAware;
 import org.springframework.context.annotation.Bean;

@@ -130,6 +130,7 @@ export const actionCreators = {
           type: ActionTypes.SET_LOGOUT
         });
         localStorage.removeItem('refreshToken');
+        history.push('/');
         window.location.reload();
       }
     }

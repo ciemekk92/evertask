@@ -26,12 +26,23 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findByRefreshToken(String token);
 
-    @Query(value =
-            "SELECT * FROM users u " +
+    @Query(value = "SELECT * FROM users u " +
                     "INNER JOIN user_roles ur ON u.id = ur.user_id " +
                     "INNER JOIN roles r ON ur.role_id = r.id " +
-                    "WHERE (u.username ~ ?1 OR u.email ~ ?2) AND r.authority = 'ROLE_UNASSIGNED_USER'", nativeQuery = true)
+                    "WHERE (u.username ~ ?1 OR u.email ~ ?2) AND r.authority = 'ROLE_UNASSIGNED_USER' " +
+                    "AND u.id NOT IN " +
+                    "(SELECT DISTINCT oi.user_id " +
+                    "FROM organisation_invitations oi)", nativeQuery = true)
     List<User> findUnassignedByUsernameOrEmail(String username, String email);
+
+    @Query(value = "SELECT * FROM users u " +
+            "INNER JOIN user_roles ur ON u.id = ur.user_id " +
+            "INNER JOIN roles r ON ur.role_id = r.id " +
+            "WHERE r.authority = 'ROLE_UNASSIGNED_USER' " +
+            "AND u.id NOT IN " +
+            "(SELECT DISTINCT oi.user_id " +
+            "FROM organisation_invitations oi)", nativeQuery = true)
+    List<User> findUnassigned();
 
     @NonNull
     default User getById(@NonNull UUID id) {
@@ -49,4 +60,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     }
 
     Optional<User> findByUsername(String username);
+
+    Optional<User> findByEmail(String email);
 }

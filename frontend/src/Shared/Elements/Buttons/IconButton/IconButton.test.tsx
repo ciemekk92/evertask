@@ -14,9 +14,9 @@ describe('IconButton', () => {
 
   test('renders outlined icon', () => {
     render(<IconButton iconName="login">TEST</IconButton>);
-    const parent = screen.getByTestId('button_wrapper');
+    const parent = screen.getByRole('button');
 
-    expect(within(parent).getByTestId('button_icon')).not.toBeNull();
+    expect(within(parent).getByRole('presentation')).not.toBeNull();
   });
 
   test("doesn't throw errors to the console", () => {

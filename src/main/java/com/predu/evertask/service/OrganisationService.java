@@ -3,20 +3,20 @@ package com.predu.evertask.service;
 import com.predu.evertask.domain.dto.organisation.OrganisationCreateDto;
 import com.predu.evertask.domain.dto.organisation.OrganisationDto;
 import com.predu.evertask.domain.mapper.OrganisationMapper;
-import com.predu.evertask.domain.mapper.ProjectMapper;
-import com.predu.evertask.domain.mapper.UserViewMapper;
 import com.predu.evertask.domain.model.Organisation;
 import com.predu.evertask.domain.model.Role;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.OrganisationRepository;
-import com.predu.evertask.repository.RoleRepository;
 import com.predu.evertask.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -25,10 +25,8 @@ public class OrganisationService {
 
     private final OrganisationRepository organisationRepository;
     private final OrganisationMapper organisationMapper;
-    private final UserViewMapper userViewMapper;
-    private final ProjectMapper projectMapper;
-    private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final RoleService roleService;
 
     public List<OrganisationDto> findAll() {
         return organisationRepository.findAll()
@@ -56,13 +54,14 @@ public class OrganisationService {
 
         organisation = organisationRepository.save(organisation);
 
+        User changedUser = user;
+
         if (user.getAuthorities().stream().noneMatch(role -> role.getAuthority().equals(Role.ROLE_ADMIN))) {
-            Role role = roleRepository.findByAuthority(Role.ROLE_ORGANISATION_ADMIN);
-            user.setAuthorities(Set.of(role));
+            changedUser = roleService.addRoleToUser(user.getId(), Role.ROLE_ORGANISATION_ADMIN);
         }
 
-        user.setOrganisation(organisation);
-        userRepository.save(user);
+        changedUser.setOrganisation(organisation);
+        roleService.persistUser(user);
 
         return organisation;
     }

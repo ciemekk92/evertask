@@ -1,7 +1,8 @@
 package com.predu.evertask.controller;
 
-import com.predu.evertask.domain.dto.project.ProjectDto;
+import com.predu.evertask.annotation.IsOrganisationAdminOrAdmin;
 import com.predu.evertask.domain.dto.project.ProjectCreateDto;
+import com.predu.evertask.domain.dto.project.ProjectDto;
 import com.predu.evertask.domain.dto.project.ProjectUpdateDto;
 import com.predu.evertask.domain.model.Project;
 import com.predu.evertask.domain.model.User;
@@ -32,17 +33,6 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.findAll());
     }
 
-    @GetMapping("/user")
-    public ResponseEntity<List<ProjectDto>> getProjectsByUser(Authentication authentication) throws IllegalAccessException {
-        if (authentication == null) {
-            throw new IllegalAccessException("No user logged in.");
-        }
-
-        User user = (User) authentication.getPrincipal();
-
-        return ResponseEntity.ok(projectService.findByOwnerId(user.getId()));
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<ProjectDto> getProject(@PathVariable UUID id) {
         return projectService.findById(id)
@@ -50,6 +40,7 @@ public class ProjectController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @IsOrganisationAdminOrAdmin
     @PostMapping
     public ResponseEntity<ProjectCreateDto> createProject(@RequestBody @Valid ProjectCreateDto toCreate,
                                                           Authentication authentication) throws URISyntaxException, IllegalAccessException {
@@ -58,9 +49,8 @@ public class ProjectController {
         }
 
         User owner = (User) authentication.getPrincipal();
-        toCreate.setOwnerId(owner.getId());
 
-        Project created = projectService.create(toCreate);
+        Project created = projectService.create(toCreate, owner);
 
         return ResponseEntity
                 .created(new URI("http://localhost:8080/api/projects/" + created.getId()))

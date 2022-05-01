@@ -5,6 +5,8 @@ import { IconButton } from 'Shared/Elements/Buttons';
 import { Project } from 'Types/Project';
 import { StyledWrapper, StyledHeaderRow } from '../../OrganisationPage.styled';
 import { StyledProjectPanel } from './ProjectsSection.styled';
+import { PermissionCheck } from '../../../../Utils/PermissionCheck';
+import { UserModel } from '../../../../Models/UserModel';
 
 interface Props {
   projectsData: Project[];
@@ -24,13 +26,25 @@ export const ProjectsSection = ({ projectsData, handleOpeningAddProject }: Props
     return <p>{t('organisationPage.noProjects')}</p>;
   };
 
+  const currentUser = UserModel.currentUserValue;
+
+  const renderAddProjectButton = (): Nullable<JSX.Element> => {
+    if (currentUser.authorities.some((role) => PermissionCheck.isOrganisationAdmin(role))) {
+      return (
+        <IconButton iconName="add" onClick={handleOpeningAddProject}>
+          {t('organisationPage.addProject')}
+        </IconButton>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <StyledWrapper>
       <StyledHeaderRow>
         <Heading6>{t('organisationPage.projects')}</Heading6>
-        <IconButton iconName="add" onClick={handleOpeningAddProject}>
-          {t('organisationPage.addProject')}
-        </IconButton>
+        {renderAddProjectButton()}
       </StyledHeaderRow>
       {renderProjects()}
     </StyledWrapper>

@@ -68,9 +68,6 @@ public class User implements UserDetails, Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private Set<OrganisationInvitation> organisationInvitations = new HashSet<>();
 
-    @OneToMany(mappedBy = "owner")
-    private Set<Project> ownedProjects = new HashSet<>();
-
     @ManyToMany
     @JoinTable(name = "user_projects",
             joinColumns = @JoinColumn(name = "user_id"),

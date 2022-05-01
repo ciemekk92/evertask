@@ -26,11 +26,6 @@ public class Project extends BaseEntity {
     @NotBlank
     private String description;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private User owner;
-
     @ManyToMany(mappedBy = "projects")
     private Set<User> members = new HashSet<>();
 

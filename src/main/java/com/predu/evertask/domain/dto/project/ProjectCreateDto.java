@@ -5,7 +5,6 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
-import java.util.UUID;
 
 @Data
 public class ProjectCreateDto {
@@ -15,9 +14,6 @@ public class ProjectCreateDto {
 
     @NotBlank
     private String description;
-
-    private UUID ownerId;
-    private UUID organisationId;
 
     public Project toProject() {
         var result = new Project();

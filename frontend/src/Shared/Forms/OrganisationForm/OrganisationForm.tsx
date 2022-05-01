@@ -7,16 +7,15 @@ import { TextInput } from 'Shared/Elements/TextInput';
 import { TextArea } from 'Shared/Elements/TextArea';
 import { ButtonFilled } from 'Shared/Elements/Buttons';
 import { FormField } from 'Shared/Elements/Form';
-import { OrganisationPayload } from 'Types/Organisation';
 
 interface Props {
-  handleSubmit: (values: OrganisationPayload) => Promise<void>;
+  handleSubmit: (values: Organisation.OrganisationPayload) => Promise<void>;
 }
 
 export const OrganisationForm = ({ handleSubmit }: Props): JSX.Element => {
   const { t } = useTranslation();
 
-  const initialData: OrganisationPayload = {
+  const initialData: Organisation.OrganisationPayload = {
     name: '',
     description: ''
   };
@@ -36,7 +35,12 @@ export const OrganisationForm = ({ handleSubmit }: Props): JSX.Element => {
       initialValues={initialData}
       onSubmit={handleSubmit}
     >
-      {({ errors, touched, handleSubmit, isValid }: FormikProps<OrganisationPayload>) => (
+      {({
+        errors,
+        touched,
+        handleSubmit,
+        isValid
+      }: FormikProps<Organisation.OrganisationPayload>) => (
         <Form name="organisation" method="POST" onSubmit={handleSubmit}>
           <FormField label={t('organisationForm.name')} name="name">
             <TextInput

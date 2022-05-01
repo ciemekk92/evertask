@@ -1,5 +1,4 @@
 import { Action, Reducer } from 'redux';
-import { OrganisationInvitation } from 'Types/Organisation';
 import { Api } from 'Utils/Api';
 import { isDefined } from 'Utils/isDefined';
 import { ActionTypes } from './constants';
@@ -7,18 +6,18 @@ import { AppThunkAction } from './store';
 
 export interface OrganisationInvitationState {
   isLoading: boolean;
-  userInvitations: OrganisationInvitation[];
-  allInvitations: OrganisationInvitation[];
+  userInvitations: Organisation.OrganisationInvitation[];
+  allInvitations: Organisation.OrganisationInvitation[];
 }
 
 interface SetUserInvitationsAction {
   type: typeof ActionTypes.SET_USER_ORGANISATION_INVITATIONS;
-  userInvitations: OrganisationInvitation[];
+  userInvitations: Organisation.OrganisationInvitation[];
 }
 
 interface SetAllOrganisationInvitationsAction {
   type: typeof ActionTypes.SET_ALL_ORGANISATION_INVITATIONS;
-  allInvitations: OrganisationInvitation[];
+  allInvitations: Organisation.OrganisationInvitation[];
 }
 
 interface SetOrganisationInvitationLoadingAction {

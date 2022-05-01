@@ -2,12 +2,11 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Heading6 } from 'Shared/Typography';
 import { StyledLink } from 'Shared/StyledLink';
-import { Project } from 'Types/Project';
 import { StyledHeaderRow, StyledSectionWrapper } from '../../Dashboard.styled';
 import { StyledProjectPanel } from './DashboardProjects.styled';
 
 interface Props {
-  data: Project[];
+  data: Project.ProjectEntity[];
 }
 
 export const DashboardProjects = ({ data }: Props): JSX.Element => {
@@ -26,7 +25,7 @@ export const DashboardProjects = ({ data }: Props): JSX.Element => {
   };
 
   const renderProjectPanels = () => {
-    return data.map((project: Project) => (
+    return data.map((project: Project.ProjectEntity) => (
       <StyledLink key={project.id} to={`project/${project.id}`}>
         <StyledProjectPanel>
           <p>{project.name}</p>

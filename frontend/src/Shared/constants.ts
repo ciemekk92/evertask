@@ -6,6 +6,11 @@ export enum USER_ROLES {
   ROLE_UNASSIGNED_USER = 'ROLE_UNASSIGNED_USER'
 }
 
+export enum PROJECT_METHODOLOGIES {
+  KANBAN = 'KANBAN',
+  AGILE = 'AGILE'
+}
+
 export enum NOTIFICATION_TYPES {
   SIGNUP = 'signup',
   PASSWORD = 'password'

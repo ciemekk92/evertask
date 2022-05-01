@@ -57,11 +57,12 @@ public class OrganisationService {
         User changedUser = user;
 
         if (user.getAuthorities().stream().noneMatch(role -> role.getAuthority().equals(Role.ROLE_ADMIN))) {
-            changedUser = roleService.addRoleToUser(user.getId(), Role.ROLE_ORGANISATION_ADMIN);
+            changedUser = roleService.addRoleToUser(changedUser.getId(), Role.ROLE_ORGANISATION_ADMIN);
+            changedUser = roleService.removeRoleFromUser(changedUser.getId(), Role.ROLE_UNASSIGNED_USER);
         }
 
         changedUser.setOrganisation(organisation);
-        roleService.persistUser(user);
+        roleService.persistUser(changedUser);
 
         return organisation;
     }

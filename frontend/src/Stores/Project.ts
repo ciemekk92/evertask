@@ -1,24 +1,25 @@
 import { Action, Reducer } from 'redux';
-import { Project } from 'Types/Project';
 import { Api } from 'Utils/Api';
+import { PROJECT_METHODOLOGIES } from 'Shared/constants';
 import { isDefined } from 'Utils/isDefined';
+import { Project } from 'Types/Project';
 import { ActionTypes } from './constants';
 import { AppThunkAction } from './store';
 
 export interface ProjectState {
   isLoading: boolean;
-  userProjects: Project[];
-  currentProject: Project;
+  userProjects: Project.ProjectEntity[];
+  currentProject: Project.ProjectEntity;
 }
 
 interface SetUserProjectsAction {
   type: typeof ActionTypes.SET_USER_PROJECTS;
-  userProjects: Project[];
+  userProjects: Project.ProjectEntity[];
 }
 
 interface SetCurrentProjectAction {
   type: typeof ActionTypes.SET_CURRENT_PROJECT;
-  currentProject: Project;
+  currentProject: Project.ProjectEntity;
 }
 
 interface SetProjectLoadingAction {
@@ -88,6 +89,8 @@ const initialState: ProjectState = {
   currentProject: {
     name: '',
     description: '',
+    code: '',
+    methodology: PROJECT_METHODOLOGIES.KANBAN,
     createdAt: '',
     updatedAt: null,
     lastUpdatedAt: '',

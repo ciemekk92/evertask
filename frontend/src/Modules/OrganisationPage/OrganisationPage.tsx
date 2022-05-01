@@ -9,7 +9,6 @@ import { UserModel } from 'Models/UserModel';
 import { ApplicationState } from 'Stores/store';
 import { actionCreators as userActionCreators } from 'Stores/User';
 import { actionCreators as invitationActionCreators } from 'Stores/OrganisationInvitation';
-import { Organisation, OrganisationInvitation } from 'Types/Organisation';
 import { Api } from 'Utils/Api';
 import {
   InfoSection,
@@ -39,11 +38,11 @@ export const OrganisationPage = (): JSX.Element => {
     dispatch(userActionCreators.getOrganisation());
   }, []);
 
-  const organisationData: Nullable<Organisation> = useSelector((state: ApplicationState) =>
-    state.user ? state.user.organisation : null
+  const organisationData: Nullable<Organisation.OrganisationEntity> = useSelector(
+    (state: ApplicationState) => (state.user ? state.user.organisation : null)
   );
 
-  const invitationsData: Nullable<OrganisationInvitation[]> = useSelector(
+  const invitationsData: Nullable<Organisation.OrganisationInvitation[]> = useSelector(
     (state: ApplicationState) =>
       state.organisationInvitation ? state.organisationInvitation.allInvitations : null
   );

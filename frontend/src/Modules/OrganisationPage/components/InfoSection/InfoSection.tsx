@@ -1,6 +1,5 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Organisation } from 'Types/Organisation';
 import { Heading6 } from 'Shared/Typography';
 import {
   StyledDescriptionField,
@@ -11,7 +10,7 @@ import {
 import { StyledWrapper, StyledHeaderRow } from '../../OrganisationPage.styled';
 
 interface Props {
-  organisationData: Organisation;
+  organisationData: Organisation.OrganisationEntity;
 }
 
 export const InfoSection = ({ organisationData }: Props): JSX.Element => {

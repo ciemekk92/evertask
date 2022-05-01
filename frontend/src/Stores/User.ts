@@ -4,16 +4,14 @@ import { isDefined } from 'Utils/isDefined';
 import { updateObject } from 'Utils/updateObject';
 import { UserModel } from 'Models/UserModel';
 import { history } from 'Routes';
-import { Organisation } from 'Types/Organisation';
-import { UserInfo } from 'Types/User';
 import { AppThunkAction } from './store';
 import { ActionTypes } from './constants';
 
 export interface UserState {
   isLoading: boolean;
-  userInfo: UserInfo;
+  userInfo: User.UserInfo;
   accessToken: string;
-  organisation: Organisation;
+  organisation: Organisation.OrganisationEntity;
   errors: string;
 }
 
@@ -24,7 +22,7 @@ export interface LoginCredentials {
 
 interface SetLoginInfoAction {
   type: typeof ActionTypes.SET_LOGIN_INFO;
-  userInfo: UserInfo;
+  userInfo: User.UserInfo;
   accessToken: string;
   isLoading: boolean;
 }
@@ -36,7 +34,7 @@ interface SetUserLoadingAction {
 
 interface SetUserOrganisationAction {
   type: typeof ActionTypes.SET_USER_ORGANISATION;
-  organisation: Organisation;
+  organisation: Organisation.OrganisationEntity;
 }
 
 interface SetUserErrorsAction {

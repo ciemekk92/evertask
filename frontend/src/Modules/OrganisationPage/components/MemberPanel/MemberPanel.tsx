@@ -1,9 +1,8 @@
 import React from 'react';
-import { User } from 'Types/User';
 import { StyledNameLabel, StyledPanelContainer } from './MemberPanel.styled';
 
 interface Props {
-  user: User;
+  user: User.UserEntity;
 }
 
 export const MemberPanel = ({ user }: Props): JSX.Element => {

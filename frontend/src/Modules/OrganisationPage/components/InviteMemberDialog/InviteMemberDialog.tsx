@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { actionCreators as organisationActionCreators } from 'Stores/Organisation';
 import { actionCreators as invitationsActionCreators } from 'Stores/OrganisationInvitation';
 import { ApplicationState } from 'Stores/store';
-import { User } from 'Types/User';
 import { Api } from 'Utils/Api';
 import { useLoading } from 'Hooks/useLoading';
 import { LoadingModalDialog } from 'Shared/LoadingModalDialog';
@@ -87,7 +86,7 @@ export const InviteMemberDialog = ({ handleClose, organisationId }: Props): JSX.
     </React.Fragment>
   );
 
-  const radioFieldFactory = (user: User): JSX.Element => (
+  const radioFieldFactory = (user: User.UserEntity): JSX.Element => (
     <RadioField
       id={user.id}
       key={user.id}

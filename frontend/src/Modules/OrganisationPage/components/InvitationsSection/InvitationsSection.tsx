@@ -2,12 +2,11 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Heading6 } from 'Shared/Typography';
 import { IconButton } from 'Shared/Elements/Buttons';
-import { OrganisationInvitation } from 'Types/Organisation';
 import { InvitationPanel } from '../';
 import { StyledWrapper, StyledHeaderRow } from '../../OrganisationPage.styled';
 
 interface Props {
-  invitationsData: OrganisationInvitation[];
+  invitationsData: Organisation.OrganisationInvitation[];
   handleOpeningInviteDialog: VoidFunctionNoArgs;
   handleRevokingInvitation: (id: Id) => () => Promise<void>;
 }
@@ -21,7 +20,7 @@ export const InvitationsSection = ({
 
   const renderInvitations = (): JSX.Element[] | JSX.Element => {
     if (invitationsData.length) {
-      return invitationsData.map((invitation: OrganisationInvitation) => (
+      return invitationsData.map((invitation: Organisation.OrganisationInvitation) => (
         <InvitationPanel
           handleRevokingInvitation={handleRevokingInvitation(invitation.user.id)}
           key={invitation.id}

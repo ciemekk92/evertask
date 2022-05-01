@@ -12,8 +12,8 @@ interface Props {
 export const RadioField = ({ id, label, checked, onClick }: Props): JSX.Element => {
   return (
     <StyledContainer onClick={onClick}>
-      <StyledRadio type="radio" id={id} checked={checked} onChange={noop} />
       <StyledLabel htmlFor={id}>{label}</StyledLabel>
+      <StyledRadio type="radio" id={id} checked={checked} onChange={noop} />
       <StyledCheck />
     </StyledContainer>
   );

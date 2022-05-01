@@ -8,7 +8,7 @@ export const StyledCheck = styled.div`
   border: 3px solid #aaa;
   transition: border 0.25s ease;
   z-index: 5;
-  left: 1rem;
+  right: 1rem;
   border-radius: 100%;
 
   &::before {
@@ -65,5 +65,5 @@ export const StyledLabel = styled.label`
   font-size: 1.6rem;
   height: 3rem;
   z-index: 9;
-  margin: 0.7rem 2rem 0 auto;
+  margin: 0.7rem auto 0 0.7rem;
 `;

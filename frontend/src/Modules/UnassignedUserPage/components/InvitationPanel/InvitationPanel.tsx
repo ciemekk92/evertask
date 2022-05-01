@@ -2,7 +2,6 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { IconButton } from 'Shared/Elements/Buttons';
-import { OrganisationInvitation } from 'Types/Organisation';
 import {
   StyledButtonContainer,
   StyledDate,
@@ -11,7 +10,7 @@ import {
 } from './InvitationPanel.styled';
 
 interface Props {
-  invitation: OrganisationInvitation;
+  invitation: Organisation.OrganisationInvitation;
   handleSendingInvitationResponse: (
     organisationId: Id,
     shouldAccept: boolean

@@ -2,15 +2,15 @@ import React from 'react';
 import { StyledDashboardColumn, StyledDashboardWrapper } from './Dashboard.styled';
 import { DashboardAssignedIssues, DashboardProjects } from './components';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { Project } from 'Types/Project';
 import { Issue } from 'Types/Issue';
+import { Project } from 'Types/Project';
 import { ApplicationState } from 'Stores/store';
 import { actionCreators as projectActionCreators } from 'Stores/Project';
 import { actionCreators as issueActionCreators } from 'Stores/Issue';
 
 export const Dashboard = (): JSX.Element => {
   const dispatch = useDispatch();
-  const userProjects: Project[] = useSelector(
+  const userProjects: Project.ProjectEntity[] = useSelector(
     (state: ApplicationState) => (state.project ? state.project.userProjects : []),
     shallowEqual
   );

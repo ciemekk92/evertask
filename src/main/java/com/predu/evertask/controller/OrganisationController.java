@@ -104,10 +104,10 @@ public class OrganisationController {
 
     @IsCurrentOrganisationAdminOrAdmin
     @PostMapping("/{organisationId}/revoke_invitation")
-    public ResponseEntity<Void> revokeInvitation(@PathVariable UUID organisationId,
+    public ResponseEntity<Void> revokeInvitation(@PathVariable("organisationId") UUID id,
                                                  @RequestBody @Valid InviteUserRequest request) {
 
-        invitationService.declineInvitation(organisationId, request.getUserId());
+        invitationService.declineInvitation(id, request.getUserId());
 
         return ResponseEntity.ok().build();
     }

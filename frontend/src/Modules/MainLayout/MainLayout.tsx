@@ -10,7 +10,7 @@ import { Dashboard } from 'Modules/Dashboard';
 import { ProjectPage } from 'Modules/ProjectPage';
 import { UnassignedUserPage } from 'Modules/UnassignedUserPage';
 import { OrganisationPage } from 'Modules/OrganisationPage';
-import { User, UserModel } from 'Models/UserModel';
+import { UserModel, IUserModel } from 'Models/UserModel';
 import { actionCreators } from 'Stores/User';
 import { NOTIFICATION_TYPES } from 'Shared/constants';
 import { PermissionCheck } from 'Utils/PermissionCheck';
@@ -20,7 +20,7 @@ import { AppMainWindow } from './components/AppMainWindow/AppMainWindow';
 import { HorizontalWrapper, LayoutWrapper } from './MainLayout.styled';
 
 export const MainLayout = (): JSX.Element => {
-  const [currentUser, setCurrentUser] = React.useState<User>({
+  const [currentUser, setCurrentUser] = React.useState<IUserModel>({
     email: '',
     firstName: '',
     lastName: '',
@@ -32,7 +32,7 @@ export const MainLayout = (): JSX.Element => {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    UserModel.currentUser.subscribe((user: User) => {
+    UserModel.currentUser.subscribe((user: IUserModel) => {
       setCurrentUser(user);
     });
   }, [UserModel.currentUser]);

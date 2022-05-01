@@ -1,13 +1,12 @@
 import { BehaviorSubject } from 'rxjs';
-import { UserInfo } from 'Types/User';
 import { USER_ROLES } from 'Shared/constants';
 
-export interface User extends UserInfo {
+export interface IUserModel extends User.UserInfo {
   accessToken: string;
   authorities: USER_ROLES[];
 }
 
-const currentUserSubject = new BehaviorSubject<User>({
+const currentUserSubject = new BehaviorSubject<IUserModel>({
   username: '',
   firstName: '',
   lastName: '',

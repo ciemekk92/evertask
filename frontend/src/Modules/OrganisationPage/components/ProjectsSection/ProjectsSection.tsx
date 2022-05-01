@@ -2,14 +2,13 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Heading6 } from 'Shared/Typography';
 import { IconButton } from 'Shared/Elements/Buttons';
-import { Project } from 'Types/Project';
+import { PermissionCheck } from 'Utils/PermissionCheck';
+import { UserModel } from 'Models/UserModel';
 import { StyledWrapper, StyledHeaderRow } from '../../OrganisationPage.styled';
 import { StyledProjectPanel } from './ProjectsSection.styled';
-import { PermissionCheck } from '../../../../Utils/PermissionCheck';
-import { UserModel } from '../../../../Models/UserModel';
 
 interface Props {
-  projectsData: Project[];
+  projectsData: Project.ProjectEntity[];
   handleOpeningAddProject: VoidFunctionNoArgs;
 }
 
@@ -18,7 +17,7 @@ export const ProjectsSection = ({ projectsData, handleOpeningAddProject }: Props
 
   const renderProjects = (): JSX.Element[] | JSX.Element => {
     if (projectsData.length) {
-      return projectsData.map((project: Project) => (
+      return projectsData.map((project: Project.ProjectEntity) => (
         <StyledProjectPanel key={project.id}>{project.name}</StyledProjectPanel>
       ));
     }

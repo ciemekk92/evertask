@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { FormikRadioField } from './FormikRadioField';
 
 export const StyledCheck = styled.div`
   display: block;
@@ -29,7 +30,7 @@ export const StyledContainer = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-  width: 100%;
+  min-width: 13rem;
   height: 4rem;
 
   &:hover label {
@@ -41,7 +42,7 @@ export const StyledContainer = styled.div`
   }
 `;
 
-export const StyledRadio = styled.input`
+const RadioStyles = css`
   position: absolute;
   visibility: hidden;
 
@@ -56,6 +57,14 @@ export const StyledRadio = styled.input`
   &:checked ~ label {
     color: ${(props) => props.theme.primary};
   }
+`;
+
+export const StyledRadio = styled.input`
+  ${RadioStyles};
+`;
+
+export const StyledFormikRadio = styled(FormikRadioField)`
+  ${RadioStyles};
 `;
 
 export const StyledLabel = styled.label`

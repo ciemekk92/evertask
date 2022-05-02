@@ -53,7 +53,7 @@ public class Project extends BaseEntity {
     @JoinTable(
             name = "project_admins",
             joinColumns = {@JoinColumn(name = "project_id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_id", unique = true)})
+            inverseJoinColumns = {@JoinColumn(name = "user_id")})
     private Set<User> projectAdmins = new HashSet<>();
 
     public void updateFrom(Project source) {

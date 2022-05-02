@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Heading6 } from 'Shared/Typography';
 import { IconButton } from 'Shared/Elements/Buttons';
+import { MethodologyBadge } from 'Shared/MethodologyBadge';
 import { PermissionCheck } from 'Utils/PermissionCheck';
 import { Project } from 'Types/Project';
 import { UserModel } from 'Models/UserModel';
@@ -19,7 +20,10 @@ export const ProjectsSection = ({ projectsData, handleOpeningAddProject }: Props
   const renderProjects = (): JSX.Element[] | JSX.Element => {
     if (projectsData.length) {
       return projectsData.map((project: Project.ProjectEntity) => (
-        <StyledProjectPanel key={project.id}>{project.name}</StyledProjectPanel>
+        <StyledProjectPanel key={project.id}>
+          <MethodologyBadge label={project.methodology} />
+          {project.name}
+        </StyledProjectPanel>
       ));
     }
 

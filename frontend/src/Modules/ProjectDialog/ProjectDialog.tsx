@@ -15,6 +15,7 @@ import { Api } from 'Utils/Api';
 import { actionCreators } from 'Stores/Project';
 import { StyledDialogContent } from './ProjectDialog.styled';
 import { RadioField } from '../../Shared/Elements/RadioField';
+import { FormikRadio } from '../../Shared/Elements/RadioField/RadioField';
 
 interface Props {
   mode: 'ADD' | 'EDIT';
@@ -48,7 +49,9 @@ export const ProjectDialog = ({ mode, handleClose }: Props): JSX.Element => {
     code: Yup.string()
       .min(2, t('projectDialog.validation.code.minLength'))
       .max(6, t('projectDialog.validation.code.maxLength'))
+      .matches(/^[A-ZŻŹĆĄŚĘŁÓŃ]+$/, t('projectDialog.validation.code.matches'))
       .required(t('projectDialog.validation.code.required')),
+    methodology: Yup.string(),
     description: Yup.string().required(t('projectDialog.validation.description.required'))
   });
 
@@ -85,7 +88,7 @@ export const ProjectDialog = ({ mode, handleClose }: Props): JSX.Element => {
       initialValues={initialData}
       onSubmit={onSubmit}
     >
-      {({ errors, touched, handleSubmit, isValid }: FormikProps<ProjectData>) => (
+      {({ errors, touched, handleSubmit, isValid, setFieldValue }: FormikProps<ProjectData>) => (
         <Form name="project" method="POST" onSubmit={handleSubmit}>
           <LoadingModalDialog
             isLoading={isLoading}
@@ -109,12 +112,20 @@ export const ProjectDialog = ({ mode, handleClose }: Props): JSX.Element => {
                   type="text"
                 />
               </FormField>
-              <div>
-                <FormField name="methodology" label={t('projectDialog.methodology')}>
-                  <RadioField id="KANBAN" label={t('projectDialog.kanban')} checked={} onClick={} />
-                  <RadioField id="AGILE" label={t('projectDialog.agile')} checked={} onClick={} />
-                </FormField>
-              </div>
+              <FormField name="methodology" label={t('projectDialog.methodology')}>
+                <FormikRadio
+                  name="methodology"
+                  value={PROJECT_METHODOLOGIES.KANBAN}
+                  label={t('projectDialog.kanban')}
+                  handleClick={setFieldValue}
+                />
+                <FormikRadio
+                  name="methodology"
+                  value={PROJECT_METHODOLOGIES.AGILE}
+                  label={t('projectDialog.agile')}
+                  handleClick={setFieldValue}
+                />
+              </FormField>
               <FormField name="description" label={t('projectDialog.description')}>
                 <TextArea
                   valid={!errors.description && touched.description}

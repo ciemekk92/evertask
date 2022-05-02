@@ -96,11 +96,21 @@
     },
     "name": "Project name",
     "description": "Description",
+    "code": "Project code",
+    "methodology": "Methodology",
+    "kanban": "Kanban",
+    "agile": "Agile",
     "validation": {
       "name": {
         "minLength": "Project name is too short (minimum 3 characters)",
         "maxLength": "Project name is too long (maximum 30 characters)",
         "required": "Project name is required."
+      },
+      "code": {
+        "minLength": "Project code is too short (minimum 2 characters)",
+        "maxLength": "Project code is too long (maximum 6 characters)",
+        "matches": "Project code must be uppercase",
+        "required": "Project code is required."
       },
       "description": {
         "required": "Project description is required."

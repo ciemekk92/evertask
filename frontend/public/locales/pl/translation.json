@@ -96,11 +96,21 @@
     },
     "name": "Nazwa projektu",
     "description": "Opis projektu",
+    "code": "Kod projektu",
+    "methodology": "Metodologia",
+    "kanban": "Kanban",
+    "agile": "Agile",
     "validation": {
       "name": {
         "minLength": "Nazwa projektu jest za krótka (minimum 3 znaki)",
         "maxLength": "Nazwa projektu jest za długa (maksimum 30 znaków)",
         "required": "Nazwa projektu jest wymagana."
+      },
+      "code": {
+        "minLength": "Kod projektu jest za krótki (minimum 2 znaki)",
+        "maxLength": "Kod projektu jest za długi (maksimum 6 znaków)",
+        "matches": "Kod projektu musi się składać z dużych liter",
+        "required": "Kod projektu jest wymagany."
       },
       "description": {
         "required": "Opis projektu jest wymagany."

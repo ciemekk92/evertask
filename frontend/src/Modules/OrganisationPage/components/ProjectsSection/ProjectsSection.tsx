@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Heading6 } from 'Shared/Typography';
 import { IconButton } from 'Shared/Elements/Buttons';
 import { PermissionCheck } from 'Utils/PermissionCheck';
+import { Project } from 'Types/Project';
 import { UserModel } from 'Models/UserModel';
 import { StyledWrapper, StyledHeaderRow } from '../../OrganisationPage.styled';
 import { StyledProjectPanel } from './ProjectsSection.styled';

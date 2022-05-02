@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Heading6 } from 'Shared/Typography';
 import { StyledLink } from 'Shared/StyledLink';
+import { Project } from 'Types/Project';
 import { StyledHeaderRow, StyledSectionWrapper } from '../../Dashboard.styled';
 import { StyledProjectPanel } from './DashboardProjects.styled';
 

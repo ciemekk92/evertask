@@ -10,8 +10,8 @@ import { actionCreators as issueActionCreators } from 'Stores/Issue';
 
 export const Dashboard = (): JSX.Element => {
   const dispatch = useDispatch();
-  const userProjects: Project.ProjectEntity[] = useSelector(
-    (state: ApplicationState) => (state.project ? state.project.userProjects : []),
+  const organisationProjects: Project.ProjectEntity[] = useSelector(
+    (state: ApplicationState) => (state.project ? state.project.organisationProjects : []),
     shallowEqual
   );
 
@@ -21,14 +21,14 @@ export const Dashboard = (): JSX.Element => {
   );
 
   React.useEffect(() => {
-    dispatch(projectActionCreators.getUserProjects());
+    dispatch(projectActionCreators.getOrganisationsProjects());
     dispatch(issueActionCreators.getAssignedIssues());
   }, []);
 
   return (
     <StyledDashboardWrapper>
       <StyledDashboardColumn>
-        <DashboardProjects data={userProjects} />
+        <DashboardProjects data={organisationProjects} />
       </StyledDashboardColumn>
       <StyledDashboardColumn>
         <DashboardAssignedIssues data={assignedIssues} />

@@ -69,13 +69,17 @@
     "success": "Twoje konto zostało pomyślnie aktywowane!",
     "start": "Rozpocznij korzystanie z portalu"
   },
+  "header": {
+    "currentProject": "Wybrany projekt"
+  },
   "sidebar": {
     "link": {
       "dashboard": "Dashboard",
       "myOrganisation": "Moja organizacja",
-      "calendar": "Kalendarz",
-      "sprints": "Sprinty",
-      "tasks": "Zadania"
+      "projects": "Projekty",
+      "activeSprint": "Aktywny sprint",
+      "backlog": "Backlog",
+      "statistics": "Statystyki"
     }
   },
   "dashboard": {
@@ -84,7 +88,7 @@
       "noIssues": "Nie masz zadań przydzielonych do siebie. Ciesz się czasem wolnym! :)"
     },
     "projects": {
-      "title": "Moje projekty",
+      "title": "Projekty organizacji",
       "updatedAt": "Zaktualizowany",
       "notUpdated": "Nigdy nie aktualizowany"
     }
@@ -153,5 +157,13 @@
   "inviteMemberDialog": {
     "title": "Zaproś użytkownika do organizacji",
     "noUsers": "Brak nieprzydzielonych użytkowników"
+  },
+  "projectPage": {
+    "infoTitle": "Informacje",
+    "name": "Nazwa: ",
+    "createdAt": "Stworzony: ",
+    "code": "Kod projektu: ",
+    "methodology": "Metodologia: ",
+    "description": "Opis projektu: "
   }
 }

@@ -2,7 +2,11 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { DialogComponent, useDialog } from 'Hooks/useDialog';
-import { VerticalPageWrapper } from 'Shared/PageWrappers';
+import {
+  VerticalPageWrapper,
+  StyledHorizontalContainer,
+  StyledSectionContainer
+} from 'Shared/PageWrappers';
 import { Heading5 } from 'Shared/Typography';
 import { USER_ROLES } from 'Shared/constants';
 import { UserModel } from 'Models/UserModel';
@@ -11,7 +15,7 @@ import { actionCreators as userActionCreators } from 'Stores/User';
 import { actionCreators as invitationActionCreators } from 'Stores/OrganisationInvitation';
 import { Api } from 'Utils/Api';
 import {
-  InfoSection,
+  OrganisationInfoSection,
   InvitationsSection,
   InviteMemberDialog,
   MembersSection,
@@ -19,7 +23,6 @@ import {
 } from './components';
 import { INVITE_MEMBER_DIALOG_MODES } from './components/InviteMemberDialog/fixtures';
 
-import { StyledHorizontalContainer, StyledSectionContainer } from './OrganisationPage.styled';
 import { ProjectDialog } from '../ProjectDialog/ProjectDialog';
 import { PROJECT_DIALOG_MODES } from '../ProjectDialog/fixtures';
 
@@ -75,7 +78,7 @@ export const OrganisationPage = (): JSX.Element => {
 
   const renderOrganisationInfo = (): Nullable<JSX.Element> => {
     if (organisationData) {
-      return <InfoSection organisationData={organisationData} />;
+      return <OrganisationInfoSection organisationData={organisationData} />;
     }
 
     return null;

@@ -69,13 +69,17 @@
     "success": "Your account has been successfully activated!",
     "start": "Start using the portal"
   },
+  "header": {
+    "currentProject": "Current project"
+  },
   "sidebar": {
     "link": {
       "dashboard": "Dashboard",
       "myOrganisation": "My organisation",
-      "calendar": "Calendar",
-      "sprints": "Sprints",
-      "tasks": "Tasks"
+      "projects": "Projects",
+      "activeSprint": "Active sprint",
+      "backlog": "Backlog",
+      "statistics": "Statistics"
     }
   },
   "dashboard": {
@@ -84,7 +88,7 @@
       "noIssues": "There are no issues assigned to you. Enjoy your free time! :)"
     },
     "projects": {
-      "title": "My projects",
+      "title": "Organisation projects",
       "updatedAt": "Updated at",
       "notUpdated": "Not updated yet"
     }
@@ -153,5 +157,13 @@
   "inviteMemberDialog": {
     "title": "Invite organisation member",
     "noUsers": "No unassigned users"
+  },
+  "projectPage": {
+    "infoTitle": "Project information",
+    "name": "Name: ",
+    "createdAt": "Created at: ",
+    "code": "Project code: ",
+    "methodology": "Methodology: ",
+    "description": "Description: "
   }
 }

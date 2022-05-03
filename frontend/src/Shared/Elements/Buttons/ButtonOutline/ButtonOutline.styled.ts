@@ -8,8 +8,10 @@ interface Props {
 export const StyledButtonOutline = styled(StyledButtonFilled)<Props>`
   background-color: transparent;
   border: 2px solid ${(props) => props.theme.primaryDark};
+  color: ${(props) => props.theme.primaryText};
 
   &:hover {
     border-color: ${(props) => props.theme.primary};
+    color: ${(props) => props.theme.textOnPrimary};
   }
 `;

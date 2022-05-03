@@ -4,6 +4,7 @@ export const StyledInfoField = styled.div`
   display: flex;
   width: 100%;
   padding: 1rem;
+  align-items: center;
 
   &:not(:last-child) {
     margin-bottom: 1rem;
@@ -20,7 +21,3 @@ export const StyledInfoLabel = styled.div`
 `;
 
 export const StyledInfoContent = styled.div``;
-export const StyledDescriptionField = styled.div`
-  padding: 1rem;
-  font-size: 1.8rem;
-`;

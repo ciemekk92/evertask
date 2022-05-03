@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Routes as ReactRoutes } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-
 import { CustomRouter, history } from 'Routes';
 import { GlobalErrorBoundary } from 'Modules/GlobalErrorBoundary';
 import { LandingPage } from 'Modules/LandingPage';

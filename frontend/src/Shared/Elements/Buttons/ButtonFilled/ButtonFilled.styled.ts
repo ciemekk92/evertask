@@ -18,7 +18,7 @@ export const StyledButtonFilled = styled.button<Props>`
   min-width: 20rem;
   padding: 0 0.5rem;
   border-radius: 0.5rem;
-  color: ${(props) => (props.disabled ? props.theme.disabledText : props.theme.primaryText)};
+  color: ${(props) => (props.disabled ? props.theme.disabledText : props.theme.textOnPrimary)};
   box-shadow: 0 0.3rem 0.4rem rgba(0, 0, 0, 0.3);
   transition: all 0.4s ease;
   cursor: pointer;
@@ -26,5 +26,6 @@ export const StyledButtonFilled = styled.button<Props>`
 
   &:hover {
     background-color: ${(props) => (!props.disabled ? props.theme.primary : null)};
+    color: ${(props) => props.theme.textOnPrimary};
   }
 `;

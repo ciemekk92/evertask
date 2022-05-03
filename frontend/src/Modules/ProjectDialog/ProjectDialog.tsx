@@ -11,11 +11,10 @@ import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
 import { Form, FormField } from 'Shared/Elements/Form';
 import { TextInput } from 'Shared/Elements/TextInput';
 import { TextArea } from 'Shared/Elements/TextArea';
+import { FormikRadio } from 'Shared/Elements/RadioField/RadioField';
 import { Api } from 'Utils/Api';
-import { actionCreators } from 'Stores/Project';
+import { actionCreators } from 'Stores/User';
 import { StyledDialogContent } from './ProjectDialog.styled';
-import { RadioField } from '../../Shared/Elements/RadioField';
-import { FormikRadio } from '../../Shared/Elements/RadioField/RadioField';
 
 interface Props {
   mode: 'ADD' | 'EDIT';
@@ -68,7 +67,7 @@ export const ProjectDialog = ({ mode, handleClose }: Props): JSX.Element => {
     if (result.status === 201) {
       handleClose();
       stopLoading();
-      dispatch(actionCreators.getUserProjects());
+      dispatch(actionCreators.getOrganisation());
     }
   };
 

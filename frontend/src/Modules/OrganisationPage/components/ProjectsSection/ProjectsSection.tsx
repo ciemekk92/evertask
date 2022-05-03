@@ -2,12 +2,11 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Heading6 } from 'Shared/Typography';
 import { IconButton } from 'Shared/Elements/Buttons';
-import { MethodologyBadge } from 'Shared/MethodologyBadge';
+import { ProjectPanel } from 'Shared/ProjectPanel';
+import { StyledSectionHeaderRow, StyledSectionWrapper } from 'Shared/PageWrappers';
 import { PermissionCheck } from 'Utils/PermissionCheck';
 import { Project } from 'Types/Project';
 import { UserModel } from 'Models/UserModel';
-import { StyledWrapper, StyledHeaderRow } from '../../OrganisationPage.styled';
-import { StyledProjectPanel } from './ProjectsSection.styled';
 
 interface Props {
   projectsData: Project.ProjectEntity[];
@@ -20,10 +19,7 @@ export const ProjectsSection = ({ projectsData, handleOpeningAddProject }: Props
   const renderProjects = (): JSX.Element[] | JSX.Element => {
     if (projectsData.length) {
       return projectsData.map((project: Project.ProjectEntity) => (
-        <StyledProjectPanel key={project.id}>
-          <MethodologyBadge label={project.methodology} />
-          {project.name}
-        </StyledProjectPanel>
+        <ProjectPanel key={project.id} project={project} />
       ));
     }
 
@@ -45,12 +41,12 @@ export const ProjectsSection = ({ projectsData, handleOpeningAddProject }: Props
   };
 
   return (
-    <StyledWrapper>
-      <StyledHeaderRow>
+    <StyledSectionWrapper>
+      <StyledSectionHeaderRow>
         <Heading6>{t('organisationPage.projects')}</Heading6>
         {renderAddProjectButton()}
-      </StyledHeaderRow>
+      </StyledSectionHeaderRow>
       {renderProjects()}
-    </StyledWrapper>
+    </StyledSectionWrapper>
   );
 };

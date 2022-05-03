@@ -2,8 +2,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Heading6 } from 'Shared/Typography';
 import { IconButton } from 'Shared/Elements/Buttons';
+import { StyledSectionHeaderRow, StyledSectionWrapper } from 'Shared/PageWrappers';
 import { InvitationPanel } from '../';
-import { StyledWrapper, StyledHeaderRow } from '../../OrganisationPage.styled';
 
 interface Props {
   invitationsData: Organisation.OrganisationInvitation[];
@@ -33,14 +33,14 @@ export const InvitationsSection = ({
   };
 
   return (
-    <StyledWrapper>
-      <StyledHeaderRow>
+    <StyledSectionWrapper>
+      <StyledSectionHeaderRow>
         <Heading6>{t('organisationPage.invitations')}</Heading6>
         <IconButton iconName="add" onClick={handleOpeningInviteDialog}>
           {t('organisationPage.inviteMember')}
         </IconButton>
-      </StyledHeaderRow>
+      </StyledSectionHeaderRow>
       {renderInvitations()}
-    </StyledWrapper>
+    </StyledSectionWrapper>
   );
 };

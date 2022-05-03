@@ -39,6 +39,13 @@ public class ProjectService {
         return optionalProject.map(projectMapper::projectToProjectDto);
     }
 
+    public List<ProjectDto> findAllByOrganisation(UUID organisationId) {
+        return projectRepository.findAllByOrganisationId(organisationId)
+                .stream()
+                .map(projectMapper::projectToProjectDto)
+                .collect(Collectors.toList());
+    }
+
     public Project create(ProjectCreateDto toSave, User user) {
         Project project = projectMapper.projectCreateDtoToProject(toSave);
 

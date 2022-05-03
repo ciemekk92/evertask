@@ -16,18 +16,23 @@ export const SIDEBAR_ROUTES: SidebarRoute[] = [
     route: '/organisation'
   },
   {
-    name: 'calendar',
-    iconName: 'event_note',
-    route: '/calendar'
+    name: 'projects',
+    iconName: 'description',
+    route: '/projects'
   },
   {
-    name: 'sprints',
-    iconName: 'alarm_on',
-    route: '/sprints'
+    name: 'activeSprint',
+    iconName: 'library_add_check',
+    route: '/active_sprint'
   },
   {
-    name: 'tasks',
+    name: 'backlog',
     iconName: 'task',
-    route: '/tasks'
+    route: '/backlog'
+  },
+  {
+    name: 'statistics',
+    iconName: 'analytics',
+    route: '/statistics'
   }
 ];

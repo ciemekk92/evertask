@@ -1,5 +1,6 @@
 package com.predu.evertask.controller;
 
+import com.predu.evertask.annotation.IsNotUnassignedUser;
 import com.predu.evertask.annotation.IsOrganisationAdminOrAdmin;
 import com.predu.evertask.domain.dto.project.ProjectCreateDto;
 import com.predu.evertask.domain.dto.project.ProjectDto;
@@ -40,13 +41,20 @@ public class ProjectController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @IsNotUnassignedUser
+    @GetMapping("/organisation")
+    public ResponseEntity<List<ProjectDto>> getUserOrganisationProjects(Authentication authentication) {
+
+        User user = (User) authentication.getPrincipal();
+
+        return ResponseEntity.ok(projectService
+                .findAllByOrganisation(user.getOrganisation().getId()));
+    }
+
     @IsOrganisationAdminOrAdmin
     @PostMapping
     public ResponseEntity<ProjectCreateDto> createProject(@RequestBody @Valid ProjectCreateDto toCreate,
                                                           Authentication authentication) throws URISyntaxException, IllegalAccessException {
-        if (authentication == null) {
-            throw new IllegalAccessException("No user logged in.");
-        }
 
         User owner = (User) authentication.getPrincipal();
 

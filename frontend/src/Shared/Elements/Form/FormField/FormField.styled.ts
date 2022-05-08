@@ -20,7 +20,18 @@ export const StyledLabelAndInputContainer = styled.div`
   }
 `;
 
+export const StyledChildrenContainer = styled.div`
+  width: 100%;
+  display: flex;
+
+  & > div {
+    &:not(:last-child) {
+      margin-right: 1.5rem;
+    }
+  }
+`;
+
 export const StyledFormLabel = styled.p`
   font-size: 1.6rem;
-  width: 18rem;
+  min-width: 18rem;
 `;

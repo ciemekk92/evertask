@@ -5,13 +5,15 @@ import { Formik, FormikProps } from 'formik';
 import * as Yup from 'yup';
 
 import { useLoading } from 'Hooks/useLoading';
+import { PROJECT_METHODOLOGIES } from 'Shared/constants';
 import { LoadingModalDialog } from 'Shared/LoadingModalDialog';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
 import { Form, FormField } from 'Shared/Elements/Form';
 import { TextInput } from 'Shared/Elements/TextInput';
 import { TextArea } from 'Shared/Elements/TextArea';
+import { FormikRadio } from 'Shared/Elements/RadioField/RadioField';
 import { Api } from 'Utils/Api';
-import { actionCreators } from 'Stores/Project';
+import { actionCreators } from 'Stores/User';
 import { StyledDialogContent } from './ProjectDialog.styled';
 
 interface Props {
@@ -22,12 +24,16 @@ interface Props {
 interface ProjectData {
   name: string;
   description: string;
+  code: string;
+  methodology: PROJECT_METHODOLOGIES;
 }
 
 export const ProjectDialog = ({ mode, handleClose }: Props): JSX.Element => {
   const initialData: ProjectData = {
     name: '',
-    description: ''
+    description: '',
+    code: '',
+    methodology: PROJECT_METHODOLOGIES.KANBAN
   };
 
   const { t } = useTranslation();
@@ -39,6 +45,12 @@ export const ProjectDialog = ({ mode, handleClose }: Props): JSX.Element => {
       .min(3, t('projectDialog.validation.name.minLength'))
       .max(30, t('projectDialog.validation.name.maxLength'))
       .required(t('projectDialog.validation.name.required')),
+    code: Yup.string()
+      .min(2, t('projectDialog.validation.code.minLength'))
+      .max(6, t('projectDialog.validation.code.maxLength'))
+      .matches(/^[A-ZŻŹĆĄŚĘŁÓŃ]+$/, t('projectDialog.validation.code.matches'))
+      .required(t('projectDialog.validation.code.required')),
+    methodology: Yup.string(),
     description: Yup.string().required(t('projectDialog.validation.description.required'))
   });
 
@@ -54,9 +66,10 @@ export const ProjectDialog = ({ mode, handleClose }: Props): JSX.Element => {
 
     if (result.status === 201) {
       handleClose();
-      stopLoading();
-      dispatch(actionCreators.getUserProjects());
+      dispatch(actionCreators.getOrganisation());
     }
+
+    stopLoading();
   };
 
   const renderFooter = (isSubmitDisabled: boolean): JSX.Element => (
@@ -75,7 +88,7 @@ export const ProjectDialog = ({ mode, handleClose }: Props): JSX.Element => {
       initialValues={initialData}
       onSubmit={onSubmit}
     >
-      {({ errors, touched, handleSubmit, isValid }: FormikProps<ProjectData>) => (
+      {({ errors, touched, handleSubmit, isValid, setFieldValue }: FormikProps<ProjectData>) => (
         <Form name="project" method="POST" onSubmit={handleSubmit}>
           <LoadingModalDialog
             isLoading={isLoading}
@@ -91,7 +104,29 @@ export const ProjectDialog = ({ mode, handleClose }: Props): JSX.Element => {
                   type="text"
                 />
               </FormField>
-              <FormField label={t('projectDialog.description')} name="description">
+              <FormField name="code" label={t('projectDialog.code')}>
+                <TextInput
+                  valid={!errors.code && touched.code}
+                  error={errors.code && touched.code}
+                  name="code"
+                  type="text"
+                />
+              </FormField>
+              <FormField name="methodology" label={t('projectDialog.methodology')}>
+                <FormikRadio
+                  name="methodology"
+                  value={PROJECT_METHODOLOGIES.KANBAN}
+                  label={t('projectDialog.kanban')}
+                  handleClick={setFieldValue}
+                />
+                <FormikRadio
+                  name="methodology"
+                  value={PROJECT_METHODOLOGIES.AGILE}
+                  label={t('projectDialog.agile')}
+                  handleClick={setFieldValue}
+                />
+              </FormField>
+              <FormField name="description" label={t('projectDialog.description')}>
                 <TextArea
                   valid={!errors.description && touched.description}
                   error={errors.description && touched.description}

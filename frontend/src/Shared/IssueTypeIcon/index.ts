@@ -1,0 +1,1 @@
+export { IssueTypeIcon } from './IssueTypeIcon';

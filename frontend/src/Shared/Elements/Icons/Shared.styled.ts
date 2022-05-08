@@ -1,5 +1,11 @@
 import styled from 'styled-components';
+import React from 'react';
 
-export const StyledIcon = styled.span`
+interface IconProps extends React.HTMLAttributes<HTMLSpanElement> {
+  readonly iconColor?: string;
+}
+
+export const StyledIcon = styled.span<IconProps>`
   cursor: default;
+  color: ${(props) => (props.iconColor ? props.iconColor : 'inherit')};
 `;

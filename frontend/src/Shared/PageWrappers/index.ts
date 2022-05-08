@@ -1,1 +1,8 @@
-export { HorizontalPageWrapper, VerticalPageWrapper } from './PageWrappers.styled';
+export {
+  HorizontalPageWrapper,
+  VerticalPageWrapper,
+  StyledHorizontalContainer,
+  StyledSectionContainer,
+  StyledSectionHeaderRow,
+  StyledSectionWrapper
+} from './PageWrappers.styled';

@@ -1,13 +1,17 @@
-import { Project } from '../Project';
-import { User } from '../User';
-
-export type OrganisationPayload = {
-  name: string;
-  description: string;
-};
-
-export type Organisation = AuditedEntity &
-  OrganisationPayload & {
-    projects: Project[];
-    members: User[];
+declare namespace Organisation {
+  export type OrganisationPayload = {
+    name: string;
+    description: string;
   };
+
+  export type OrganisationEntity = AuditedEntity &
+    OrganisationPayload & {
+      projects: Project.ProjectEntity[];
+      members: User.UserEntity[];
+    };
+
+  export type OrganisationInvitation = AuditedEntity & {
+    organisation: OrganisationEntity;
+    user: User.UserEntity;
+  };
+}

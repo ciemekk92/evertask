@@ -3,6 +3,7 @@ import { ErrorMessage } from 'formik';
 import { TextInputErrorMessage } from 'Shared/Elements/TextInput';
 
 import {
+  StyledChildrenContainer,
   StyledFieldContainer,
   StyledFormLabel,
   StyledLabelAndInputContainer
@@ -19,7 +20,7 @@ export const FormField = ({ label, name, children }: Props): JSX.Element => {
     <StyledFieldContainer>
       <StyledLabelAndInputContainer>
         <StyledFormLabel>{label}</StyledFormLabel>
-        {children}
+        <StyledChildrenContainer>{children}</StyledChildrenContainer>
       </StyledLabelAndInputContainer>
       <ErrorMessage name={name}>
         {(msg: string) => <TextInputErrorMessage>{msg}</TextInputErrorMessage>}

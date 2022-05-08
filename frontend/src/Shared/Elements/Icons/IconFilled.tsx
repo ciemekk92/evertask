@@ -6,6 +6,7 @@ import { StyledIcon } from './Shared.styled';
 interface Props extends React.HTMLAttributes<HTMLSpanElement> {
   iconName: string;
   iconSize?: ICON_SIZE;
+  iconColor?: string;
 }
 
 export const IconFilled = ({

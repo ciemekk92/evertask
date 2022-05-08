@@ -31,8 +31,8 @@ public class IssueService {
         return issueRepository.findById(id);
     }
 
-    public List<IssueDto> findByAssigneeId(UUID id) {
-        return issueRepository.findByAssigneeId(id)
+    public List<IssueDto> findAllByAssigneeId(UUID id) {
+        return issueRepository.findAllByAssigneeId(id)
                 .stream()
                 .map(issueMapper::issueToIssueDto)
                 .collect(Collectors.toList());

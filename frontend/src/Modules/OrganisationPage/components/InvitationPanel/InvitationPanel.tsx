@@ -1,11 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from 'Shared/Elements/Buttons';
-import { OrganisationInvitation } from 'Types/Organisation';
 import { StyledInfoContainer, StyledPanelContainer } from './InvitationPanel.styled';
 
 interface Props {
-  invitation: OrganisationInvitation;
+  invitation: Organisation.OrganisationInvitation;
   handleRevokingInvitation: VoidFunctionNoArgs;
 }
 

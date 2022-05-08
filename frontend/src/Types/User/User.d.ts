@@ -1,8 +1,10 @@
-export interface UserInfo {
-  username: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-}
+declare namespace User {
+  export interface UserInfo {
+    username: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  }
 
-export type User = IdentifiedEntity & UserInfo;
+  export type UserEntity = IdentifiedEntity & UserInfo;
+}

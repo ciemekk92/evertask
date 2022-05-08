@@ -1,0 +1,1 @@
+export { MethodologyBadge } from './MethodologyBadge';

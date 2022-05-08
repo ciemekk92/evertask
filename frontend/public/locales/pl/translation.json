@@ -13,7 +13,16 @@
     "submit": "Wyślij",
     "accept": "Zaakceptuj",
     "decline": "Odrzuć",
-    "sentAt": "Wysłane: "
+    "sentAt": "Wysłane: ",
+    "updatedAt": "Zaktualizowany",
+    "notUpdated": "Nigdy nie aktualizowany",
+    "issueType": {
+      "BUG": "Bug",
+      "EPIC": "Epic",
+      "STORY": "Story",
+      "TASK": "Zadanie",
+      "SUBTASK": "Podzadanie"
+    }
   },
   "login": {
     "title": "Logowanie",
@@ -69,13 +78,17 @@
     "success": "Twoje konto zostało pomyślnie aktywowane!",
     "start": "Rozpocznij korzystanie z portalu"
   },
+  "header": {
+    "currentProject": "Wybrany projekt"
+  },
   "sidebar": {
     "link": {
       "dashboard": "Dashboard",
       "myOrganisation": "Moja organizacja",
-      "calendar": "Kalendarz",
-      "sprints": "Sprinty",
-      "tasks": "Zadania"
+      "projects": "Projekty",
+      "activeSprint": "Aktywny sprint",
+      "backlog": "Backlog",
+      "statistics": "Statystyki"
     }
   },
   "dashboard": {
@@ -84,9 +97,7 @@
       "noIssues": "Nie masz zadań przydzielonych do siebie. Ciesz się czasem wolnym! :)"
     },
     "projects": {
-      "title": "Moje projekty",
-      "updatedAt": "Zaktualizowany",
-      "notUpdated": "Nigdy nie aktualizowany"
+      "title": "Projekty organizacji"
     }
   },
   "projectDialog": {
@@ -96,11 +107,21 @@
     },
     "name": "Nazwa projektu",
     "description": "Opis projektu",
+    "code": "Kod projektu",
+    "methodology": "Metodologia",
+    "kanban": "Kanban",
+    "agile": "Agile",
     "validation": {
       "name": {
         "minLength": "Nazwa projektu jest za krótka (minimum 3 znaki)",
         "maxLength": "Nazwa projektu jest za długa (maksimum 30 znaków)",
         "required": "Nazwa projektu jest wymagana."
+      },
+      "code": {
+        "minLength": "Kod projektu jest za krótki (minimum 2 znaki)",
+        "maxLength": "Kod projektu jest za długi (maksimum 6 znaków)",
+        "matches": "Kod projektu musi się składać z dużych liter",
+        "required": "Kod projektu jest wymagany."
       },
       "description": {
         "required": "Opis projektu jest wymagany."
@@ -143,5 +164,49 @@
   "inviteMemberDialog": {
     "title": "Zaproś użytkownika do organizacji",
     "noUsers": "Brak nieprzydzielonych użytkowników"
+  },
+  "projectPage": {
+    "infoTitle": "Informacje",
+    "activeMembers": "Aktywni użytkownicy",
+    "name": "Nazwa: ",
+    "createdAt": "Stworzony: ",
+    "code": "Kod projektu: ",
+    "methodology": "Metodologia: ",
+    "description": "Opis projektu: ",
+    "sprints": "Sprinty",
+    "noSprints": "Brak stworzonych sprintów.",
+    "noIssues": "Brak stworzonych zadań.",
+    "lastIssues": "Najnowsze zadania",
+    "addSprint": "Dodaj sprint"
+  },
+  "priorityBadge": {
+    "label": {
+      "ASAP": "ASAP",
+      "VERY_HIGH": "B. WYSOKI",
+      "HIGH": "WYSOKI",
+      "MEDIUM": "ŚREDNI",
+      "LOW": "NISKI"
+    }
+  },
+  "sprintDialog": {
+    "startDate": "Data początkowa",
+    "finishDate": "Data końcowa",
+    "description": "Opis sprintu",
+    "title": {
+      "add": "Dodaj nowy sprint",
+      "edit": "Edytuj sprint"
+    },
+    "validation": {
+      "description": {
+        "required": "Opis sprintu jest wymagany"
+      },
+      "startDate": {
+        "required": "Data początkowa jest wymagana"
+      },
+      "finishDate": {
+        "min": "Data końcowa nie może być datą wcześniejszą niż początkowa",
+        "required": "Data końcowa jest wymagana"
+      }
+    }
   }
 }

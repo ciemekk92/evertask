@@ -2,25 +2,27 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { DialogComponent, useDialog } from 'Hooks/useDialog';
-import { VerticalPageWrapper } from 'Shared/PageWrappers';
+import {
+  VerticalPageWrapper,
+  StyledHorizontalContainer,
+  StyledSectionContainer
+} from 'Shared/PageWrappers';
 import { Heading5 } from 'Shared/Typography';
 import { USER_ROLES } from 'Shared/constants';
 import { UserModel } from 'Models/UserModel';
 import { ApplicationState } from 'Stores/store';
 import { actionCreators as userActionCreators } from 'Stores/User';
 import { actionCreators as invitationActionCreators } from 'Stores/OrganisationInvitation';
-import { Organisation, OrganisationInvitation } from 'Types/Organisation';
 import { Api } from 'Utils/Api';
 import {
-  InfoSection,
-  InvitationsSection,
+  OrganisationInfoSection,
+  OrganisationInvitationsSection,
   InviteMemberDialog,
-  MembersSection,
+  OrganisationMembersSection,
   ProjectsSection
 } from './components';
 import { INVITE_MEMBER_DIALOG_MODES } from './components/InviteMemberDialog/fixtures';
 
-import { StyledHorizontalContainer, StyledSectionContainer } from './OrganisationPage.styled';
 import { ProjectDialog } from '../ProjectDialog/ProjectDialog';
 import { PROJECT_DIALOG_MODES } from '../ProjectDialog/fixtures';
 
@@ -39,11 +41,11 @@ export const OrganisationPage = (): JSX.Element => {
     dispatch(userActionCreators.getOrganisation());
   }, []);
 
-  const organisationData: Nullable<Organisation> = useSelector((state: ApplicationState) =>
-    state.user ? state.user.organisation : null
+  const organisationData: Nullable<Organisation.OrganisationEntity> = useSelector(
+    (state: ApplicationState) => (state.user ? state.user.organisation : null)
   );
 
-  const invitationsData: Nullable<OrganisationInvitation[]> = useSelector(
+  const invitationsData: Nullable<Organisation.OrganisationInvitation[]> = useSelector(
     (state: ApplicationState) =>
       state.organisationInvitation ? state.organisationInvitation.allInvitations : null
   );
@@ -76,7 +78,7 @@ export const OrganisationPage = (): JSX.Element => {
 
   const renderOrganisationInfo = (): Nullable<JSX.Element> => {
     if (organisationData) {
-      return <InfoSection organisationData={organisationData} />;
+      return <OrganisationInfoSection organisationData={organisationData} />;
     }
 
     return null;
@@ -97,7 +99,7 @@ export const OrganisationPage = (): JSX.Element => {
 
   const renderOrganisationMembers = (): Nullable<JSX.Element> => {
     if (organisationData) {
-      return <MembersSection membersData={organisationData.members} />;
+      return <OrganisationMembersSection membersData={organisationData.members} />;
     }
 
     return null;
@@ -106,7 +108,7 @@ export const OrganisationPage = (): JSX.Element => {
   const renderInvitations = (): Nullable<JSX.Element> => {
     if (invitationsData && isUserOrganisationAdmin) {
       return (
-        <InvitationsSection
+        <OrganisationInvitationsSection
           invitationsData={invitationsData}
           handleOpeningInviteDialog={handleOpeningInviteDialog}
           handleRevokingInvitation={handleRevokingInvitation}

@@ -7,7 +7,9 @@ import java.util.UUID;
 
 public interface IssueRepository extends BaseRepository<Issue, UUID> {
 
-    List<Issue> findByAssigneeId(UUID assigneeId);
+    List<Issue> findAllByAssigneeId(UUID assigneeId);
+
+    List<Issue> findTop10ByProjectIdOrderByCreatedAtDesc(UUID projectId);
 
     Issue findTopByOrderByUpdatedAtDesc();
 }

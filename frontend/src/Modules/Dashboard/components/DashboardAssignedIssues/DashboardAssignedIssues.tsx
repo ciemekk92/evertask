@@ -6,7 +6,7 @@ import { StyledHeaderRow, StyledSectionWrapper } from 'Modules/Dashboard/Dashboa
 import { StyledEmptyListMessage } from './DashboardAssignedIssues.styled';
 
 interface Props {
-  data: Issue[];
+  data: Issue.IssueEntity[];
 }
 
 export const DashboardAssignedIssues = ({ data }: Props): JSX.Element => {

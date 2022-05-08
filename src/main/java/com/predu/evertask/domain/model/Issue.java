@@ -33,9 +33,6 @@ public class Issue extends BaseEntity {
     @Column(name = "hidden", nullable = false)
     private boolean hidden = false;
 
-    @Column(name = "done", nullable = false)
-    private boolean done = false;
-
     private int estimateStoryPoints;
     private int estimateHours;
 

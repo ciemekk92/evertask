@@ -1,0 +1,1 @@
+export { IssuePanel } from './IssuePanel';

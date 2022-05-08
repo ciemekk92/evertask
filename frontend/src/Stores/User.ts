@@ -4,16 +4,15 @@ import { isDefined } from 'Utils/isDefined';
 import { updateObject } from 'Utils/updateObject';
 import { UserModel } from 'Models/UserModel';
 import { history } from 'Routes';
-import { Organisation } from 'Types/Organisation';
-import { UserInfo } from 'Types/User';
 import { AppThunkAction } from './store';
 import { ActionTypes } from './constants';
+import { actionCreators as projectActionCreators, ProjectActionTypes } from './Project';
 
 export interface UserState {
   isLoading: boolean;
-  userInfo: UserInfo;
+  userInfo: User.UserInfo;
   accessToken: string;
-  organisation: Organisation;
+  organisation: Organisation.OrganisationEntity;
   errors: string;
 }
 
@@ -24,7 +23,7 @@ export interface LoginCredentials {
 
 interface SetLoginInfoAction {
   type: typeof ActionTypes.SET_LOGIN_INFO;
-  userInfo: UserInfo;
+  userInfo: User.UserInfo;
   accessToken: string;
   isLoading: boolean;
 }
@@ -36,7 +35,7 @@ interface SetUserLoadingAction {
 
 interface SetUserOrganisationAction {
   type: typeof ActionTypes.SET_USER_ORGANISATION;
-  organisation: Organisation;
+  organisation: Organisation.OrganisationEntity;
 }
 
 interface SetUserErrorsAction {
@@ -63,7 +62,10 @@ export type UserActionTypes =
 
 export const actionCreators = {
   loginUser:
-    ({ username, password }: LoginCredentials): AppThunkAction<UserActionTypes> | string =>
+    ({
+      username,
+      password
+    }: LoginCredentials): AppThunkAction<UserActionTypes | ProjectActionTypes> | string =>
     async (dispatch, getState) => {
       const appState = getState();
 
@@ -135,68 +137,71 @@ export const actionCreators = {
       }
     }
   },
-  refresh: (): AppThunkAction<UserActionTypes> => async (dispatch, getState) => {
-    const appState = getState();
+  refresh:
+    (): AppThunkAction<UserActionTypes | ProjectActionTypes> => async (dispatch, getState) => {
+      const appState = getState();
 
-    dispatch({
-      type: ActionTypes.SET_USER_LOADING,
-      isLoading: true
-    });
+      dispatch({
+        type: ActionTypes.SET_USER_LOADING,
+        isLoading: true
+      });
 
-    if (appState && appState.user) {
-      const refreshToken = localStorage.getItem('refreshToken');
+      if (appState && appState.user) {
+        const refreshToken = localStorage.getItem('refreshToken');
 
-      if (refreshToken) {
-        const result = await Api.post(`auth/refresh?refreshToken=${refreshToken}`);
+        if (refreshToken) {
+          const result = await Api.post(`auth/refresh?refreshToken=${refreshToken}`);
 
-        if (result.status === 401) {
+          if (result.status === 401) {
+            dispatch({
+              type: ActionTypes.SET_USER_LOADING,
+              isLoading: false
+            });
+          } else {
+            const { firstName, lastName, email, username, accessToken, authorities, message } =
+              await result.json();
+            if (result.status === 200) {
+              UserModel.currentUserSubject.next({
+                firstName,
+                lastName,
+                email,
+                username,
+                accessToken,
+                authorities
+              });
+
+              dispatch({
+                type: ActionTypes.SET_LOGIN_INFO,
+                accessToken,
+                userInfo: {
+                  firstName,
+                  lastName,
+                  email,
+                  username
+                },
+                isLoading: false
+              });
+
+              dispatch(projectActionCreators.getOrganisationsProjects());
+
+              setTimeout(() => {
+                dispatch(actionCreators.refresh());
+              }, 0.9 * 15 * 60 * 1000);
+            } else {
+              dispatch({
+                type: ActionTypes.SET_USER_ERRORS,
+                errors: message
+              });
+            }
+          }
+        } else {
           dispatch({
             type: ActionTypes.SET_USER_LOADING,
             isLoading: false
           });
-        } else {
-          const { firstName, lastName, email, username, accessToken, authorities, message } =
-            await result.json();
-          if (result.status === 200) {
-            UserModel.currentUserSubject.next({
-              firstName,
-              lastName,
-              email,
-              username,
-              accessToken,
-              authorities
-            });
-
-            dispatch({
-              type: ActionTypes.SET_LOGIN_INFO,
-              accessToken,
-              userInfo: {
-                firstName,
-                lastName,
-                email,
-                username
-              },
-              isLoading: false
-            });
-
-            setTimeout(() => {
-              dispatch(actionCreators.refresh());
-            }, 0.9 * 15 * 60 * 1000);
-          } else {
-            dispatch({
-              type: ActionTypes.SET_USER_ERRORS,
-              errors: message
-            });
-          }
         }
-      } else {
-        dispatch({
-          type: ActionTypes.SET_USER_LOADING,
-          isLoading: false
-        });
       }
-    }
-  },
+    },
   getOrganisation: (): AppThunkAction<UserActionTypes> => async (dispatch, getState) => {
     const appState = getState();
 

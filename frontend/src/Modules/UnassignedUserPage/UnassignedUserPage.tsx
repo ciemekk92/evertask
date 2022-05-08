@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { Heading5, Heading6 } from 'Shared/Typography';
 import { OrganisationForm } from 'Shared/Forms/OrganisationForm';
 import { Container, useLoading } from 'Hooks/useLoading';
-import { OrganisationPayload } from 'Types/Organisation';
 import { Api } from 'Utils/Api';
 import { actionCreators as userActionCreators } from 'Stores/User';
 import { actionCreators as invitationsActionCreators } from 'Stores/OrganisationInvitation';
@@ -32,7 +31,7 @@ export const UnassignedUserPage = (): JSX.Element => {
     dispatch(invitationsActionCreators.getUserInvitations());
   }, []);
 
-  const handleCreatingOrganisation = async (data: OrganisationPayload) => {
+  const handleCreatingOrganisation = async (data: Organisation.OrganisationPayload) => {
     startLoading();
 
     const result = await Api.post('organisations', data);

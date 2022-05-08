@@ -13,7 +13,16 @@
     "submit": "Submit",
     "accept": "Accept",
     "decline": "Decline",
-    "sentAt": "Sent at:"
+    "sentAt": "Sent at:",
+    "updatedAt": "Updated at",
+    "notUpdated": "Not updated yet",
+    "issueType": {
+      "BUG": "Bug",
+      "EPIC": "Epic",
+      "STORY": "Story",
+      "TASK": "Task",
+      "SUBTASK": "Subtask"
+    }
   },
   "login": {
     "title": "Login",
@@ -69,13 +78,17 @@
     "success": "Your account has been successfully activated!",
     "start": "Start using the portal"
   },
+  "header": {
+    "currentProject": "Current project"
+  },
   "sidebar": {
     "link": {
       "dashboard": "Dashboard",
       "myOrganisation": "My organisation",
-      "calendar": "Calendar",
-      "sprints": "Sprints",
-      "tasks": "Tasks"
+      "projects": "Projects",
+      "activeSprint": "Active sprint",
+      "backlog": "Backlog",
+      "statistics": "Statistics"
     }
   },
   "dashboard": {
@@ -84,9 +97,7 @@
       "noIssues": "There are no issues assigned to you. Enjoy your free time! :)"
     },
     "projects": {
-      "title": "My projects",
-      "updatedAt": "Updated at",
-      "notUpdated": "Not updated yet"
+      "title": "Organisation projects"
     }
   },
   "projectDialog": {
@@ -96,11 +107,21 @@
     },
     "name": "Project name",
     "description": "Description",
+    "code": "Project code",
+    "methodology": "Methodology",
+    "kanban": "Kanban",
+    "agile": "Agile",
     "validation": {
       "name": {
         "minLength": "Project name is too short (minimum 3 characters)",
         "maxLength": "Project name is too long (maximum 30 characters)",
         "required": "Project name is required."
+      },
+      "code": {
+        "minLength": "Project code is too short (minimum 2 characters)",
+        "maxLength": "Project code is too long (maximum 6 characters)",
+        "matches": "Project code must be uppercase",
+        "required": "Project code is required."
       },
       "description": {
         "required": "Project description is required."
@@ -143,5 +164,49 @@
   "inviteMemberDialog": {
     "title": "Invite organisation member",
     "noUsers": "No unassigned users"
+  },
+  "projectPage": {
+    "infoTitle": "Project information",
+    "activeMembers": "Active members",
+    "name": "Name: ",
+    "createdAt": "Created at: ",
+    "code": "Project code: ",
+    "methodology": "Methodology: ",
+    "description": "Description: ",
+    "sprints": "Sprints",
+    "noSprints": "No sprints created yet.",
+    "noIssues": "No issues created yet",
+    "lastIssues": "Newest issues",
+    "addSprint": "Add sprint"
+  },
+  "priorityBadge": {
+    "label": {
+      "ASAP": "ASAP",
+      "VERY_HIGH": "V. HIGH",
+      "HIGH": "HIGH",
+      "MEDIUM": "MEDIUM",
+      "LOW": "LOW"
+    }
+  },
+  "sprintDialog": {
+    "startDate": "Start date",
+    "finishDate": "Finish date",
+    "description": "Description",
+    "title": {
+      "add": "Add new sprint",
+      "edit": "Edit sprint"
+    },
+    "validation": {
+      "description": {
+        "required": "Sprint description is required"
+      },
+      "startDate": {
+        "required": "Start date is required"
+      },
+      "finishDate": {
+        "min": "Finish date cannot be set earlier than start date",
+        "required": "Finish date is required"
+      }
+    }
   }
 }

@@ -9,6 +9,7 @@ import logoLight from 'Assets/logo_light.png';
 import logoDark from 'Assets/logo_dark.png';
 
 import { HeaderBody, LoginContainer } from './AppHeader.styled';
+import { CurrentProjectField } from '../../../CurrentProjectField';
 
 interface Props {
   isLoggedIn: boolean;
@@ -33,9 +34,12 @@ export const AppHeader = ({ isLoggedIn }: Props): JSX.Element => {
     </React.Fragment>
   );
   const renderMenuLoggedIn = () => (
-    <IconButton onClick={handleLogout} iconName="logout">
-      {t('general.logout')}
-    </IconButton>
+    <React.Fragment>
+      <CurrentProjectField />
+      <IconButton onClick={handleLogout} iconName="logout">
+        {t('general.logout')}
+      </IconButton>
+    </React.Fragment>
   );
 
   return (

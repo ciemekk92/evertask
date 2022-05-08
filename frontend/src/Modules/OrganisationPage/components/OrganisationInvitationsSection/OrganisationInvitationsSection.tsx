@@ -2,17 +2,16 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Heading6 } from 'Shared/Typography';
 import { IconButton } from 'Shared/Elements/Buttons';
-import { OrganisationInvitation } from 'Types/Organisation';
+import { StyledSectionHeaderRow, StyledSectionWrapper } from 'Shared/PageWrappers';
 import { InvitationPanel } from '../';
-import { StyledWrapper, StyledHeaderRow } from '../../OrganisationPage.styled';
 
 interface Props {
-  invitationsData: OrganisationInvitation[];
+  invitationsData: Organisation.OrganisationInvitation[];
   handleOpeningInviteDialog: VoidFunctionNoArgs;
   handleRevokingInvitation: (id: Id) => () => Promise<void>;
 }
 
-export const InvitationsSection = ({
+export const OrganisationInvitationsSection = ({
   invitationsData,
   handleRevokingInvitation,
   handleOpeningInviteDialog
@@ -21,7 +20,7 @@ export const InvitationsSection = ({
 
   const renderInvitations = (): JSX.Element[] | JSX.Element => {
     if (invitationsData.length) {
-      return invitationsData.map((invitation: OrganisationInvitation) => (
+      return invitationsData.map((invitation: Organisation.OrganisationInvitation) => (
         <InvitationPanel
           handleRevokingInvitation={handleRevokingInvitation(invitation.user.id)}
           key={invitation.id}
@@ -34,14 +33,14 @@ export const InvitationsSection = ({
   };
 
   return (
-    <StyledWrapper>
-      <StyledHeaderRow>
+    <StyledSectionWrapper>
+      <StyledSectionHeaderRow>
         <Heading6>{t('organisationPage.invitations')}</Heading6>
         <IconButton iconName="add" onClick={handleOpeningInviteDialog}>
           {t('organisationPage.inviteMember')}
         </IconButton>
-      </StyledHeaderRow>
+      </StyledSectionHeaderRow>
       {renderInvitations()}
-    </StyledWrapper>
+    </StyledSectionWrapper>
   );
 };

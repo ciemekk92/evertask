@@ -44,7 +44,7 @@ public class IssueController {
 
         User user = (User) authentication.getPrincipal();
 
-        return ResponseEntity.ok(issueService.findByAssigneeId(user.getId()));
+        return ResponseEntity.ok(issueService.findAllByAssigneeId(user.getId()));
     }
 
     @PostMapping

@@ -1,5 +1,4 @@
 import { Action, Reducer } from 'redux';
-import { User } from 'Types/User';
 import { Api } from 'Utils/Api';
 import { isDefined } from 'Utils/isDefined';
 import { ActionTypes } from './constants';
@@ -7,12 +6,12 @@ import { AppThunkAction } from './store';
 
 export interface OrganisationState {
   isLoading: boolean;
-  unassignedUsers: User[];
+  unassignedUsers: User.UserEntity[];
 }
 
 interface SetUnassignedUsersAction {
   type: typeof ActionTypes.SET_UNASSIGNED_USERS;
-  unassignedUsers: User[];
+  unassignedUsers: User.UserEntity[];
 }
 
 interface SetOrganisationLoadingAction {

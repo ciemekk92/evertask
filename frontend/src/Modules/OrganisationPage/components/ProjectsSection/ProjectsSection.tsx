@@ -2,12 +2,13 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Heading6 } from 'Shared/Typography';
 import { IconButton } from 'Shared/Elements/Buttons';
+import { ProjectPanel } from 'Shared/ProjectPanel';
+import { StyledSectionHeaderRow, StyledSectionWrapper } from 'Shared/PageWrappers';
+import { PermissionCheck } from 'Utils/PermissionCheck';
 import { Project } from 'Types/Project';
-import { StyledWrapper, StyledHeaderRow } from '../../OrganisationPage.styled';
-import { StyledProjectPanel } from './ProjectsSection.styled';
 
 interface Props {
-  projectsData: Project[];
+  projectsData: Project.ProjectEntity[];
   handleOpeningAddProject: VoidFunctionNoArgs;
 }
 
@@ -16,23 +17,33 @@ export const ProjectsSection = ({ projectsData, handleOpeningAddProject }: Props
 
   const renderProjects = (): JSX.Element[] | JSX.Element => {
     if (projectsData.length) {
-      return projectsData.map((project: Project) => (
-        <StyledProjectPanel key={project.id}>{project.name}</StyledProjectPanel>
+      return projectsData.map((project: Project.ProjectEntity) => (
+        <ProjectPanel key={project.id} project={project} />
       ));
     }
 
     return <p>{t('organisationPage.noProjects')}</p>;
   };
 
-  return (
-    <StyledWrapper>
-      <StyledHeaderRow>
-        <Heading6>{t('organisationPage.projects')}</Heading6>
+  const renderAddProjectButton = (): Nullable<JSX.Element> => {
+    if (PermissionCheck.isOrganisationAdmin) {
+      return (
         <IconButton iconName="add" onClick={handleOpeningAddProject}>
           {t('organisationPage.addProject')}
         </IconButton>
-      </StyledHeaderRow>
+      );
+    }
+
+    return null;
+  };
+
+  return (
+    <StyledSectionWrapper>
+      <StyledSectionHeaderRow>
+        <Heading6>{t('organisationPage.projects')}</Heading6>
+        {renderAddProjectButton()}
+      </StyledSectionHeaderRow>
       {renderProjects()}
-    </StyledWrapper>
+    </StyledSectionWrapper>
   );
 };

@@ -27,7 +27,7 @@ export const SingleSelectDropdown = ({ options, onChange, value }: Props): JSX.E
 
   React.useEffect(() => {
     setSelectedLabel(options.find((option) => option.value === value)?.label ?? '');
-  }, [value]);
+  }, [options, value]);
 
   const toggleOpen = () => setIsOpen(!isOpen);
 

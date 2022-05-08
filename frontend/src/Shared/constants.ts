@@ -16,6 +16,32 @@ export enum NOTIFICATION_TYPES {
   PASSWORD = 'password'
 }
 
+export enum ISSUE_STATUS {
+  TO_DO = 'TO_DO',
+  ON_HOLD = 'ON_HOLD',
+  IN_PROGRESS = 'IN_PROGRESS',
+  CODE_REVIEW = 'CODE_REVIEW',
+  TESTING = 'TESTING',
+  COMPLETED = 'COMPLETED',
+  ACCEPTED = 'ACCEPTED'
+}
+
+export enum ISSUE_TYPE {
+  EPIC = 'EPIC',
+  STORY = 'STORY',
+  BUG = 'BUG',
+  TASK = BUG,
+  SUBTASK = 'SUBTASK'
+}
+
+export enum ISSUE_PRIORITY {
+  ASAP = 'ASAP',
+  VERY_HIGH = 'VERY_HIGH',
+  HIGH = 'HIGH',
+  MEDIUM = 'MEDIUM',
+  LOW = 'LOW'
+}
+
 export enum ICON_SIZE {
   SMALL = 18,
   MEDIUM = 24,
@@ -23,5 +49,3 @@ export enum ICON_SIZE {
   XL = 48,
   XXL = 96
 }
-
-export const EMAIL_PATTERN = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;

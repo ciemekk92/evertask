@@ -66,9 +66,10 @@ export const ProjectDialog = ({ mode, handleClose }: Props): JSX.Element => {
 
     if (result.status === 201) {
       handleClose();
-      stopLoading();
       dispatch(actionCreators.getOrganisation());
     }
+
+    stopLoading();
   };
 
   const renderFooter = (isSubmitDisabled: boolean): JSX.Element => (

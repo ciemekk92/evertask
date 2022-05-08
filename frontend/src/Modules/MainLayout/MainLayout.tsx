@@ -69,9 +69,7 @@ export const MainLayout = (): JSX.Element => {
 
   const renderLoggedInView = (): JSX.Element => (
     <HorizontalWrapper>
-      {currentUser.authorities.some(PermissionCheck.isUnassignedUser)
-        ? renderForUnassignedUser()
-        : renderForAssignedUser()}
+      {PermissionCheck.isUnassignedUser ? renderForUnassignedUser() : renderForAssignedUser()}
     </HorizontalWrapper>
   );
 

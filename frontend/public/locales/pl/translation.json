@@ -13,7 +13,16 @@
     "submit": "Wyślij",
     "accept": "Zaakceptuj",
     "decline": "Odrzuć",
-    "sentAt": "Wysłane: "
+    "sentAt": "Wysłane: ",
+    "updatedAt": "Zaktualizowany",
+    "notUpdated": "Nigdy nie aktualizowany",
+    "issueType": {
+      "BUG": "Bug",
+      "EPIC": "Epic",
+      "STORY": "Story",
+      "TASK": "Zadanie",
+      "SUBTASK": "Podzadanie"
+    }
   },
   "login": {
     "title": "Logowanie",
@@ -88,9 +97,7 @@
       "noIssues": "Nie masz zadań przydzielonych do siebie. Ciesz się czasem wolnym! :)"
     },
     "projects": {
-      "title": "Projekty organizacji",
-      "updatedAt": "Zaktualizowany",
-      "notUpdated": "Nigdy nie aktualizowany"
+      "title": "Projekty organizacji"
     }
   },
   "projectDialog": {
@@ -160,10 +167,46 @@
   },
   "projectPage": {
     "infoTitle": "Informacje",
+    "activeMembers": "Aktywni użytkownicy",
     "name": "Nazwa: ",
     "createdAt": "Stworzony: ",
     "code": "Kod projektu: ",
     "methodology": "Metodologia: ",
-    "description": "Opis projektu: "
+    "description": "Opis projektu: ",
+    "sprints": "Sprinty",
+    "noSprints": "Brak stworzonych sprintów.",
+    "noIssues": "Brak stworzonych zadań.",
+    "lastIssues": "Najnowsze zadania",
+    "addSprint": "Dodaj sprint"
+  },
+  "priorityBadge": {
+    "label": {
+      "ASAP": "ASAP",
+      "VERY_HIGH": "B. WYSOKI",
+      "HIGH": "WYSOKI",
+      "MEDIUM": "ŚREDNI",
+      "LOW": "NISKI"
+    }
+  },
+  "sprintDialog": {
+    "startDate": "Data początkowa",
+    "finishDate": "Data końcowa",
+    "description": "Opis sprintu",
+    "title": {
+      "add": "Dodaj nowy sprint",
+      "edit": "Edytuj sprint"
+    },
+    "validation": {
+      "description": {
+        "required": "Opis sprintu jest wymagany"
+      },
+      "startDate": {
+        "required": "Data początkowa jest wymagana"
+      },
+      "finishDate": {
+        "min": "Data końcowa nie może być datą wcześniejszą niż początkowa",
+        "required": "Data końcowa jest wymagana"
+      }
+    }
   }
 }

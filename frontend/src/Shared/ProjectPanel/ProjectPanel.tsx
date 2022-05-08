@@ -16,16 +16,16 @@ export const ProjectPanel = ({ project }: Props): JSX.Element => {
     if (updatedAt) {
       return (
         <p>
-          {t('dashboard.projects.updatedAt')}: {new Date(updatedAt).toLocaleString()}
+          {t('general.updatedAt')}: {new Date(updatedAt).toLocaleString()}
         </p>
       );
     }
 
-    return <p>{t('dashboard.projects.notUpdated')}</p>;
+    return <p>{t('general.notUpdated')}</p>;
   };
 
   return (
-    <StyledLink key={project.id} to={`/project/${project.id}`}>
+    <StyledLink to={`/project/${project.id}`}>
       <StyledProjectPanel>
         <MethodologyBadge label={project.methodology} />
         <StyledProjectName>{project.name}</StyledProjectName>

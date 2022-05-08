@@ -6,7 +6,6 @@ import { ProjectPanel } from 'Shared/ProjectPanel';
 import { StyledSectionHeaderRow, StyledSectionWrapper } from 'Shared/PageWrappers';
 import { PermissionCheck } from 'Utils/PermissionCheck';
 import { Project } from 'Types/Project';
-import { UserModel } from 'Models/UserModel';
 
 interface Props {
   projectsData: Project.ProjectEntity[];
@@ -26,10 +25,8 @@ export const ProjectsSection = ({ projectsData, handleOpeningAddProject }: Props
     return <p>{t('organisationPage.noProjects')}</p>;
   };
 
-  const currentUser = UserModel.currentUserValue;
-
   const renderAddProjectButton = (): Nullable<JSX.Element> => {
-    if (currentUser.authorities.some((role) => PermissionCheck.isOrganisationAdmin(role))) {
+    if (PermissionCheck.isOrganisationAdmin) {
       return (
         <IconButton iconName="add" onClick={handleOpeningAddProject}>
           {t('organisationPage.addProject')}

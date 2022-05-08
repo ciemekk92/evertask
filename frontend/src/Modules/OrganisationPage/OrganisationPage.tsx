@@ -16,9 +16,9 @@ import { actionCreators as invitationActionCreators } from 'Stores/OrganisationI
 import { Api } from 'Utils/Api';
 import {
   OrganisationInfoSection,
-  InvitationsSection,
+  OrganisationInvitationsSection,
   InviteMemberDialog,
-  MembersSection,
+  OrganisationMembersSection,
   ProjectsSection
 } from './components';
 import { INVITE_MEMBER_DIALOG_MODES } from './components/InviteMemberDialog/fixtures';
@@ -99,7 +99,7 @@ export const OrganisationPage = (): JSX.Element => {
 
   const renderOrganisationMembers = (): Nullable<JSX.Element> => {
     if (organisationData) {
-      return <MembersSection membersData={organisationData.members} />;
+      return <OrganisationMembersSection membersData={organisationData.members} />;
     }
 
     return null;
@@ -108,7 +108,7 @@ export const OrganisationPage = (): JSX.Element => {
   const renderInvitations = (): Nullable<JSX.Element> => {
     if (invitationsData && isUserOrganisationAdmin) {
       return (
-        <InvitationsSection
+        <OrganisationInvitationsSection
           invitationsData={invitationsData}
           handleOpeningInviteDialog={handleOpeningInviteDialog}
           handleRevokingInvitation={handleRevokingInvitation}

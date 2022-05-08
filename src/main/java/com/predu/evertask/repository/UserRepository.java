@@ -27,12 +27,12 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByRefreshToken(String token);
 
     @Query(value = "SELECT * FROM users u " +
-                    "INNER JOIN user_roles ur ON u.id = ur.user_id " +
-                    "INNER JOIN roles r ON ur.role_id = r.id " +
-                    "WHERE (u.username ~ ?1 OR u.email ~ ?2) AND r.authority = 'ROLE_UNASSIGNED_USER' " +
-                    "AND u.id NOT IN " +
-                    "(SELECT DISTINCT oi.user_id " +
-                    "FROM organisation_invitations oi)", nativeQuery = true)
+            "INNER JOIN user_roles ur ON u.id = ur.user_id " +
+            "INNER JOIN roles r ON ur.role_id = r.id " +
+            "WHERE (u.username ~ ?1 OR u.email ~ ?2) AND r.authority = 'ROLE_UNASSIGNED_USER' " +
+            "AND u.id NOT IN " +
+            "(SELECT DISTINCT oi.user_id " +
+            "FROM organisation_invitations oi)", nativeQuery = true)
     List<User> findUnassignedByUsernameOrEmail(String username, String email);
 
     @Query(value = "SELECT * FROM users u " +
@@ -43,6 +43,17 @@ public interface UserRepository extends JpaRepository<User, UUID> {
             "(SELECT DISTINCT oi.user_id " +
             "FROM organisation_invitations oi)", nativeQuery = true)
     List<User> findUnassigned();
+
+    @Query(value = "SELECT * FROM users u " +
+            "INNER JOIN projects p ON u.organisation_id = p.organisation_id " +
+            "LEFT JOIN issues i ON p.id = i.project_id " +
+            "WHERE p.id = ?1 " +
+            "AND u.id IN (SELECT p.created_by FROM projects p UNION ALL " +
+            "SELECT p.modified_by FROM projects p UNION ALL " +
+            "SELECT i.assignee_id FROM issues i UNION ALL " +
+            "SELECT i.created_by FROM issues i UNION ALL " +
+            "SELECT i.modified_by FROM issues i)", nativeQuery = true)
+    List<User> findActiveProjectMembers(UUID projectId);
 
     @NonNull
     default User getById(@NonNull UUID id) {

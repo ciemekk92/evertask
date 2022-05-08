@@ -56,6 +56,9 @@ public class Project extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "user_id")})
     private Set<User> projectAdmins = new HashSet<>();
 
+    @OneToMany(mappedBy = "project")
+    private Set<Sprint> sprints = new HashSet<>();
+
     public void updateFrom(Project source) {
         description = source.getDescription();
         name = source.getName();

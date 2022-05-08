@@ -7,18 +7,18 @@ import { ActionTypes } from './constants';
 
 export interface IssueState {
   isLoading: boolean;
-  assignedIssues: Issue[];
-  projectIssues: Issue[];
+  assignedIssues: Issue.IssueEntity[];
+  projectIssues: Issue.IssueEntity[];
 }
 
 interface SetAssignedIssuesAction {
   type: typeof ActionTypes.SET_ASSIGNED_ISSUES;
-  assignedIssues: Issue[];
+  assignedIssues: Issue.IssueEntity[];
 }
 
 interface SetProjectIssuesAction {
   type: typeof ActionTypes.SET_PROJECT_ISSUES;
-  projectIssues: Issue[];
+  projectIssues: Issue.IssueEntity[];
 }
 
 interface SetIssueLoadingAction {

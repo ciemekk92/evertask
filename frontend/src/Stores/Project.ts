@@ -3,6 +3,7 @@ import { Api } from 'Utils/Api';
 import { isDefined } from 'Utils/isDefined';
 import { PROJECT_METHODOLOGIES } from 'Shared/constants';
 import { Project } from 'Types/Project';
+import { Issue } from 'Types/Issue';
 import { CurrentProjectModel } from 'Models/CurrentProjectModel';
 import { ActionTypes } from './constants';
 import { AppThunkAction } from './store';
@@ -11,6 +12,9 @@ export interface ProjectState {
   isLoading: boolean;
   organisationProjects: Project.ProjectEntity[];
   selectedProject: Project.ProjectEntity;
+  activeMembers: User.UserEntity[];
+  sprints: Sprint.SprintEntity[];
+  lastIssues: Issue.IssueEntity[];
 }
 
 interface SetOrganisationProjectsAction {
@@ -23,6 +27,21 @@ interface SetSelectedProjectAction {
   selectedProject: Project.ProjectEntity;
 }
 
+interface SetActiveProjectMembersAction {
+  type: typeof ActionTypes.SET_ACTIVE_PROJECT_MEMBERS;
+  activeMembers: User.UserEntity[];
+}
+
+interface SetProjectSprints {
+  type: typeof ActionTypes.SET_PROJECT_SPRINTS;
+  sprints: Sprint.SprintEntity[];
+}
+
+interface SetProjectLastIssues {
+  type: typeof ActionTypes.SET_PROJECT_LAST_ISSUES;
+  lastIssues: Issue.IssueEntity[];
+}
+
 interface SetProjectLoadingAction {
   type: typeof ActionTypes.SET_PROJECT_LOADING;
   isLoading: boolean;
@@ -31,6 +50,9 @@ interface SetProjectLoadingAction {
 export type ProjectActionTypes =
   | SetOrganisationProjectsAction
   | SetSelectedProjectAction
+  | SetActiveProjectMembersAction
+  | SetProjectSprints
+  | SetProjectLastIssues
   | SetProjectLoadingAction;
 
 export const actionCreators = {
@@ -87,6 +109,90 @@ export const actionCreators = {
           });
         }
       }
+    },
+  getActiveMembers:
+    (id: Id): AppThunkAction<ProjectActionTypes> =>
+    async (dispatch, getState) => {
+      const appState = getState();
+
+      dispatch({
+        type: ActionTypes.SET_PROJECT_LOADING,
+        isLoading: true
+      });
+
+      if (appState && appState.project) {
+        const result = await Api.get(`projects/${id}/active_members`);
+
+        if (result.status === 200) {
+          const json = await result.json();
+
+          dispatch({
+            type: ActionTypes.SET_ACTIVE_PROJECT_MEMBERS,
+            activeMembers: json
+          });
+        } else {
+          dispatch({
+            type: ActionTypes.SET_PROJECT_LOADING,
+            isLoading: false
+          });
+        }
+      }
+    },
+  getSprints:
+    (id: Id): AppThunkAction<ProjectActionTypes> =>
+    async (dispatch, getState) => {
+      const appState = getState();
+
+      dispatch({
+        type: ActionTypes.SET_PROJECT_LOADING,
+        isLoading: true
+      });
+
+      if (appState && appState.project) {
+        const result = await Api.get(`projects/${id}/sprints`);
+
+        if (result.status === 200) {
+          const json = await result.json();
+
+          dispatch({
+            type: ActionTypes.SET_PROJECT_SPRINTS,
+            sprints: json
+          });
+        } else {
+          dispatch({
+            type: ActionTypes.SET_PROJECT_LOADING,
+            isLoading: false
+          });
+        }
+      }
+    },
+  getLastIssues:
+    (id: Id): AppThunkAction<ProjectActionTypes> =>
+    async (dispatch, getState) => {
+      const appState = getState();
+
+      dispatch({
+        type: ActionTypes.SET_PROJECT_LOADING,
+        isLoading: true
+      });
+
+      if (appState && appState.project) {
+        const result = await Api.get(`projects/${id}/last_issues`);
+
+        if (result.status === 200) {
+          const json = await result.json();
+
+          dispatch({
+            type: ActionTypes.SET_PROJECT_LAST_ISSUES,
+            lastIssues: json
+          });
+        } else {
+          dispatch({
+            type: ActionTypes.SET_PROJECT_LOADING,
+            isLoading: false
+          });
+        }
+      }
     }
 };
 
@@ -102,7 +208,10 @@ const initialState: ProjectState = {
     lastUpdatedAt: '',
     id: ''
   },
-  organisationProjects: []
+  organisationProjects: [],
+  activeMembers: [],
+  sprints: [],
+  lastIssues: []
 };
 
 export const reducer: Reducer<ProjectState> = (
@@ -127,6 +236,24 @@ export const reducer: Reducer<ProjectState> = (
         ...state,
         isLoading: false,
         organisationProjects: action.organisationProjects
+      };
+    case ActionTypes.SET_ACTIVE_PROJECT_MEMBERS:
+      return {
+        ...state,
+        isLoading: false,
+        activeMembers: action.activeMembers
+      };
+    case ActionTypes.SET_PROJECT_SPRINTS:
+      return {
+        ...state,
+        isLoading: false,
+        sprints: action.sprints
+      };
+    case ActionTypes.SET_PROJECT_LAST_ISSUES:
+      return {
+        ...state,
+        isLoading: false,
+        lastIssues: action.lastIssues
       };
     case ActionTypes.SET_PROJECT_LOADING:
       return {

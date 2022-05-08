@@ -1,4 +1,5 @@
 export const lightTheme = {
+  colorScheme: 'light',
   primary: '#3F51B5',
   primaryDark: '#303F9F',
   primaryLight: '#C5CAE9',
@@ -18,6 +19,7 @@ export const lightTheme = {
 };
 
 export const darkTheme = {
+  colorScheme: 'dark',
   primary: '#3F51B5',
   primaryDark: '#303F9F',
   primaryLight: '#C5CAE9',

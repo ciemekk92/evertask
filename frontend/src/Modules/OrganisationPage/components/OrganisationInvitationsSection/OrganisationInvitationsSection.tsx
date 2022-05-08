@@ -11,7 +11,7 @@ interface Props {
   handleRevokingInvitation: (id: Id) => () => Promise<void>;
 }
 
-export const InvitationsSection = ({
+export const OrganisationInvitationsSection = ({
   invitationsData,
   handleRevokingInvitation,
   handleOpeningInviteDialog

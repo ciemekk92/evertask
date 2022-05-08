@@ -13,7 +13,16 @@
     "submit": "Submit",
     "accept": "Accept",
     "decline": "Decline",
-    "sentAt": "Sent at:"
+    "sentAt": "Sent at:",
+    "updatedAt": "Updated at",
+    "notUpdated": "Not updated yet",
+    "issueType": {
+      "BUG": "Bug",
+      "EPIC": "Epic",
+      "STORY": "Story",
+      "TASK": "Task",
+      "SUBTASK": "Subtask"
+    }
   },
   "login": {
     "title": "Login",
@@ -88,9 +97,7 @@
       "noIssues": "There are no issues assigned to you. Enjoy your free time! :)"
     },
     "projects": {
-      "title": "Organisation projects",
-      "updatedAt": "Updated at",
-      "notUpdated": "Not updated yet"
+      "title": "Organisation projects"
     }
   },
   "projectDialog": {
@@ -160,10 +167,46 @@
   },
   "projectPage": {
     "infoTitle": "Project information",
+    "activeMembers": "Active members",
     "name": "Name: ",
     "createdAt": "Created at: ",
     "code": "Project code: ",
     "methodology": "Methodology: ",
-    "description": "Description: "
+    "description": "Description: ",
+    "sprints": "Sprints",
+    "noSprints": "No sprints created yet.",
+    "noIssues": "No issues created yet",
+    "lastIssues": "Newest issues",
+    "addSprint": "Add sprint"
+  },
+  "priorityBadge": {
+    "label": {
+      "ASAP": "ASAP",
+      "VERY_HIGH": "V. HIGH",
+      "HIGH": "HIGH",
+      "MEDIUM": "MEDIUM",
+      "LOW": "LOW"
+    }
+  },
+  "sprintDialog": {
+    "startDate": "Start date",
+    "finishDate": "Finish date",
+    "description": "Description",
+    "title": {
+      "add": "Add new sprint",
+      "edit": "Edit sprint"
+    },
+    "validation": {
+      "description": {
+        "required": "Sprint description is required"
+      },
+      "startDate": {
+        "required": "Start date is required"
+      },
+      "finishDate": {
+        "min": "Finish date cannot be set earlier than start date",
+        "required": "Finish date is required"
+      }
+    }
   }
 }

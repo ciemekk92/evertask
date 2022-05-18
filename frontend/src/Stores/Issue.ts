@@ -50,9 +50,42 @@ export const actionCreators = {
           type: ActionTypes.SET_ASSIGNED_ISSUES,
           assignedIssues: json
         });
+      } else {
+        dispatch({
+          type: ActionTypes.SET_ISSUE_LOADING,
+          isLoading: false
+        });
       }
     }
-  }
+  },
+  getCurrentIssues:
+    (projectId: Id): AppThunkAction<IssueActionTypes> =>
+    async (dispatch, getState) => {
+      const appState = getState();
+
+      dispatch({
+        type: ActionTypes.SET_ISSUE_LOADING,
+        isLoading: true
+      });
+
+      if (appState && appState.issue) {
+        const result = await Api.get('issues/...');
+
+        if (result.status === 200) {
+          const json = await result.json();
+
+          dispatch({
+            type: ActionTypes.SET_PROJECT_ISSUES,
+            projectIssues: json
+          });
+        } else {
+          dispatch({
+            type: ActionTypes.SET_ISSUE_LOADING,
+            isLoading: false
+          });
+        }
+      }
+    }
 };
 
 const initialState: IssueState = {

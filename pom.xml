@@ -121,7 +121,6 @@
             <version>1.4.2.Final</version>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -166,8 +165,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.5.1</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>17</source>
+                    <target>17</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
@@ -184,5 +183,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

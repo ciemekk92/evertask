@@ -136,6 +136,13 @@ public class UserService implements UserDetailsService {
         return userViewMapper.toUserDto(user);
     }
 
+    public List<UserDto> getProjectActiveMembers(UUID projectId) {
+        return userRepository.findActiveProjectMembers(projectId)
+                .stream()
+                .map(userViewMapper::toUserDto)
+                .collect(Collectors.toList());
+    }
+
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository
                 .findByUsername(username)

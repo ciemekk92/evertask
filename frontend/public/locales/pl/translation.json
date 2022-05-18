@@ -24,6 +24,10 @@
       "SUBTASK": "Podzadanie"
     }
   },
+  "error": {
+    "title": "Ups! Coś poszło nie tak :(",
+    "content": "Spróbuj odświeżyć stronę, jeśli to nie pomoże, skontaktuj się z administratorem strony."
+  },
   "login": {
     "title": "Logowanie",
     "validation": {
@@ -86,7 +90,7 @@
       "dashboard": "Dashboard",
       "myOrganisation": "Moja organizacja",
       "projects": "Projekty",
-      "activeSprint": "Aktywny sprint",
+      "board": "Tablica",
       "backlog": "Backlog",
       "statistics": "Statystyki"
     }
@@ -208,5 +212,9 @@
         "required": "Data końcowa jest wymagana"
       }
     }
+  },
+  "board": {
+    "title": "Tablica {{methodology}}",
+    "noCurrentSprint": "Zadania nie są wyświetlane, ponieważ żaden sprint nie jest w trakcie."
   }
 }

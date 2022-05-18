@@ -8,10 +8,7 @@ import com.predu.evertask.repository.IssueRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -24,7 +21,21 @@ public class IssueService {
         return issueRepository.findAll()
                 .stream()
                 .map(issueMapper::issueToIssueDto)
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    public List<IssueDto> findAllByProjectId(UUID projectId) {
+        return issueRepository.findAllByProjectId(projectId)
+                .stream()
+                .map(issueMapper::issueToIssueDto)
+                .toList();
+    }
+
+    public List<IssueDto> getProjectLastIssues(UUID projectId) {
+        return issueRepository.findTop10ByProjectIdOrderByCreatedAtDesc(projectId)
+                .stream()
+                .map(issueMapper::issueToIssueDto)
+                .toList();
     }
 
     public Optional<Issue> findById(UUID id) {
@@ -35,7 +46,7 @@ public class IssueService {
         return issueRepository.findAllByAssigneeId(id)
                 .stream()
                 .map(issueMapper::issueToIssueDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public IssueDto create(IssueDto toSave) {
@@ -46,6 +57,22 @@ public class IssueService {
 
     public Issue update(IssueUpdateDto toUpdate) {
         return issueRepository.save(issueMapper.issueUpdateDtoToIssue(toUpdate));
+    }
+
+    public Map<String, List<IssueDto>> mapIssuesByStatus(List<IssueDto> issues) {
+        Map<String, List<IssueDto>> map = new HashMap<>();
+
+        issues.forEach(issue -> {
+            var list = map.get(issue.getStatus());
+            if (list == null) {
+                list = new ArrayList<>();
+            }
+
+            list.add(issue);
+            map.put(issue.getStatus(), list);
+        });
+
+        return map;
     }
 
     public boolean existsById(UUID id) {

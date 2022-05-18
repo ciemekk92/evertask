@@ -1,4 +1,5 @@
 import React from 'react';
+import { Translation } from 'react-i18next';
 import { Heading4 } from 'Shared/Typography';
 import { IconOutline } from 'Shared/Elements/Icons';
 import { ICON_SIZE } from 'Shared/constants';
@@ -19,22 +20,24 @@ export class GlobalErrorBoundary extends React.Component<Props, State> {
     };
   }
 
-  static getDerivedStateFromError(_error: Error) {
+  private static getDerivedStateFromError(_error: Error) {
     return { hasError: true };
   }
 
-  render() {
+  public render() {
     if (this.state.hasError) {
       return (
-        <BoundaryWrapper>
-          <HorizontalPageWrapper>
-            <IconOutline iconName="warning" iconSize={ICON_SIZE.XXL} />
-            <Heading4>Ups! Coś poszło nie tak :(</Heading4>
-          </HorizontalPageWrapper>
-          <p>
-            Spróbuj odświeżyć stronę, jeśli to nie pomoże, skontaktuj się z administratorem strony.
-          </p>
-        </BoundaryWrapper>
+        <Translation>
+          {(t) => (
+            <BoundaryWrapper>
+              <HorizontalPageWrapper>
+                <IconOutline iconName="warning" iconSize={ICON_SIZE.XXL} />
+                <Heading4>{t('error.title')}</Heading4>
+              </HorizontalPageWrapper>
+              <p>{t('error.content')}</p>
+            </BoundaryWrapper>
+          )}
+        </Translation>
       );
     }
 

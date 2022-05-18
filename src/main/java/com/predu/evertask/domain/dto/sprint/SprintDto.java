@@ -9,6 +9,7 @@ import java.util.Date;
 @Setter
 public class SprintDto extends BaseDto {
 
+    private String id;
     private int ordinal;
     private String description;
     private Date startDate;

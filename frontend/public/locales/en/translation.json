@@ -24,6 +24,10 @@
       "SUBTASK": "Subtask"
     }
   },
+  "error": {
+    "title": "Oops! Something went wrong! :(",
+    "content": "Try refreshing the page, if it doesn't help, please contact page administrator."
+  },
   "login": {
     "title": "Login",
     "validation": {
@@ -86,7 +90,7 @@
       "dashboard": "Dashboard",
       "myOrganisation": "My organisation",
       "projects": "Projects",
-      "activeSprint": "Active sprint",
+      "board": "Board",
       "backlog": "Backlog",
       "statistics": "Statistics"
     }
@@ -208,5 +212,9 @@
         "required": "Finish date is required"
       }
     }
+  },
+  "board": {
+    "title": "{{methodology}} board",
+    "noCurrentSprint": "The board is empty, because there is no sprint currently active."
   }
 }

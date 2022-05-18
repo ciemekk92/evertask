@@ -12,7 +12,7 @@ interface Props {
 export const ProjectLastIssuesSection = ({ issuesData }: Props): JSX.Element => {
   const { t } = useTranslation();
 
-  const renderLastIssues = (): JSX.Element | JSX.Element[] => {
+  const renderLastIssues = React.useCallback((): JSX.Element | JSX.Element[] => {
     if (!issuesData.length) {
       return <p>{t('projectPage.noIssues')}</p>;
     }
@@ -20,7 +20,7 @@ export const ProjectLastIssuesSection = ({ issuesData }: Props): JSX.Element => 
     return issuesData.map((issue: Issue.IssueEntity) => (
       <IssuePanel key={issue.id} issue={issue} />
     ));
-  };
+  }, [issuesData, t]);
 
   return (
     <StyledSectionWrapper>

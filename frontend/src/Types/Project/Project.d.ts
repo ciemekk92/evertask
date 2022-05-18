@@ -7,5 +7,6 @@ declare namespace Project {
     description: string;
     code: string;
     methodology: PROJECT_METHODOLOGIES;
+    currentSprint: Nullable<Sprint.SprintEntity>;
   };
 }

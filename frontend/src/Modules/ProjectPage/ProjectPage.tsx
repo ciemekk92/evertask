@@ -48,24 +48,26 @@ export const ProjectPage = (): Nullable<JSX.Element> => {
     return null;
   }
 
-  const handleOpeningAddSprint = () => {
+  const handleOpeningAddSprint = (): void => {
     sprintDialogConfig.handleOpen(SPRINT_DIALOG_MODES.ADD);
   };
 
-  const renderProjectInfo = () => <ProjectInfoSection project={projectState.selectedProject} />;
+  const renderProjectInfo = (): JSX.Element => (
+    <ProjectInfoSection project={projectState.selectedProject} />
+  );
 
-  const renderMembersSection = () => (
+  const renderMembersSection = (): JSX.Element => (
     <ProjectActiveMembersSection membersData={projectState.activeMembers} />
   );
 
-  const renderSprintsSection = () => (
+  const renderSprintsSection = (): JSX.Element => (
     <ProjectSprintsSection
       sprintsData={projectState.sprints}
       handleOpeningAddSprint={handleOpeningAddSprint}
     />
   );
 
-  const renderLastIssuesSection = () => (
+  const renderLastIssuesSection = (): JSX.Element => (
     <ProjectLastIssuesSection issuesData={projectState.lastIssues} />
   );
 

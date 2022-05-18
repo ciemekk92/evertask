@@ -44,7 +44,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
             "FROM organisation_invitations oi)", nativeQuery = true)
     List<User> findUnassigned();
 
-    @Query(value = "SELECT * FROM users u " +
+    @Query(value = "SELECT DISTINCT ON(u.id) * FROM users u " +
             "INNER JOIN projects p ON u.organisation_id = p.organisation_id " +
             "LEFT JOIN issues i ON p.id = i.project_id " +
             "WHERE p.id = ?1 " +

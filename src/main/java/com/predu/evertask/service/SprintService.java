@@ -27,7 +27,14 @@ public class SprintService {
         return sprintRepository.findAll()
                 .stream()
                 .map(sprintMapper::sprintToSprintDto)
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    public List<SprintDto> getProjectSprints(UUID projectId) {
+        return sprintRepository.findAllByProjectIdOrderByOrdinalDesc(projectId)
+                .stream()
+                .map(sprintMapper::sprintToSprintDto)
+                .toList();
     }
 
     public Optional<Sprint> findById(UUID id) {

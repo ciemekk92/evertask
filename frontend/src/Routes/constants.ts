@@ -21,9 +21,9 @@ export const SIDEBAR_ROUTES: SidebarRoute[] = [
     route: '/projects'
   },
   {
-    name: 'activeSprint',
+    name: 'board',
     iconName: 'library_add_check',
-    route: '/active_sprint'
+    route: '/board'
   },
   {
     name: 'backlog',

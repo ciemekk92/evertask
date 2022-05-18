@@ -10,7 +10,11 @@ import com.predu.evertask.domain.dto.project.ProjectUpdateDto;
 import com.predu.evertask.domain.dto.sprint.SprintDto;
 import com.predu.evertask.domain.model.Project;
 import com.predu.evertask.domain.model.User;
+import com.predu.evertask.service.IssueService;
 import com.predu.evertask.service.ProjectService;
+import com.predu.evertask.service.SprintService;
+import com.predu.evertask.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -20,17 +24,18 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("api/projects")
 public class ProjectController {
 
     private final ProjectService projectService;
-
-    public ProjectController(ProjectService projectService) {
-        this.projectService = projectService;
-    }
+    private final IssueService issueService;
+    private final SprintService sprintService;
+    private final UserService userService;
 
     @GetMapping
     public ResponseEntity<List<ProjectDto>> getAllProjects() {
@@ -57,14 +62,14 @@ public class ProjectController {
     @IsNotUnassignedUser
     @GetMapping("/{id}/active_members")
     public ResponseEntity<List<UserDto>> getProjectActiveMembers(@PathVariable UUID id) {
-        var members = projectService.getProjectActiveMembers(id);
+        var members = userService.getProjectActiveMembers(id);
         return ResponseEntity.ok(members);
     }
 
     @IsNotUnassignedUser
     @GetMapping("/{id}/sprints")
     public ResponseEntity<List<SprintDto>> getProjectSprints(@PathVariable UUID id) {
-        var sprints = projectService.getProjectSprints(id);
+        var sprints = sprintService.getProjectSprints(id);
 
         return ResponseEntity.ok(sprints);
     }
@@ -72,7 +77,15 @@ public class ProjectController {
     @IsNotUnassignedUser
     @GetMapping("/{id}/last_issues")
     public ResponseEntity<List<IssueDto>> getProjectLastIssues(@PathVariable UUID id) {
-        var issues = projectService.getProjectLastIssues(id);
+        var issues = issueService.getProjectLastIssues(id);
+
+        return ResponseEntity.ok(issues);
+    }
+
+    @IsNotUnassignedUser
+    @GetMapping("/{id}/current_issues")
+    public ResponseEntity<Map<String, List<IssueDto>>> getProjectCurrentIssues(@PathVariable UUID id) {
+        var issues = issueService.mapIssuesByStatus(issueService.findAllByProjectId(id));
 
         return ResponseEntity.ok(issues);
     }
@@ -80,7 +93,7 @@ public class ProjectController {
     @IsOrganisationAdminOrAdmin
     @PostMapping
     public ResponseEntity<ProjectCreateDto> createProject(@RequestBody @Valid ProjectCreateDto toCreate,
-                                                          Authentication authentication) throws URISyntaxException, IllegalAccessException {
+                                                          Authentication authentication) throws URISyntaxException {
 
         User owner = (User) authentication.getPrincipal();
 

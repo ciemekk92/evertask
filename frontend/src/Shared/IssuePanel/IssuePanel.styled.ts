@@ -1,12 +1,14 @@
 import styled from 'styled-components';
-import { StyledIcon } from '../Elements/Icons/Shared.styled';
+import { StyledIcon } from 'Shared/Elements/Icons/Shared.styled';
 import { StyledPriorityBadge } from '../PriorityBadge/PriorityBadge.styled';
 
 export const StyledIssuePanel = styled.div`
   display: flex;
+  align-items: center;
   padding: 0.8rem 1.2rem;
   background-color: ${(props) => props.theme.surfaceSecondary};
   border-radius: 0.3rem;
+  margin-bottom: 0.5rem;
   font-size: 1.6rem;
   transition: all 0.4s ease;
   cursor: pointer;

@@ -28,7 +28,7 @@ interface SetSelectedProjectAction {
 }
 
 interface SetActiveProjectMembersAction {
-  type: typeof ActionTypes.SET_ACTIVE_PROJECT_MEMBERS;
+  type: typeof ActionTypes.SET_PROJECT_ACTIVE_MEMBERS;
   activeMembers: User.UserEntity[];
 }
 
@@ -127,7 +127,7 @@ export const actionCreators = {
           const json = await result.json();
 
           dispatch({
-            type: ActionTypes.SET_ACTIVE_PROJECT_MEMBERS,
+            type: ActionTypes.SET_PROJECT_ACTIVE_MEMBERS,
             activeMembers: json
           });
         } else {
@@ -238,7 +238,7 @@ export const reducer: Reducer<ProjectState> = (
         isLoading: false,
         organisationProjects: action.organisationProjects
       };
-    case ActionTypes.SET_ACTIVE_PROJECT_MEMBERS:
+    case ActionTypes.SET_PROJECT_ACTIVE_MEMBERS:
       return {
         ...state,
         isLoading: false,

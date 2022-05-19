@@ -38,6 +38,13 @@ public class IssueService {
                 .toList();
     }
 
+    public List<IssueDto> findAllBySprintId(UUID sprintId) {
+        return issueRepository.findAllBySprintId(sprintId)
+                .stream()
+                .map(issueMapper::issueToIssueDto)
+                .toList();
+    }
+
     public Optional<Issue> findById(UUID id) {
         return issueRepository.findById(id);
     }

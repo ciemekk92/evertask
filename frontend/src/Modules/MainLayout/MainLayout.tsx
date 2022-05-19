@@ -17,6 +17,7 @@ import { NOTIFICATION_TYPES } from 'Shared/constants';
 import { PermissionCheck } from 'Utils/PermissionCheck';
 import { AppHeader, AppMainWindow, AppSidebar } from './components';
 import { HorizontalWrapper, LayoutWrapper } from './MainLayout.styled';
+import { SprintPage } from '../SprintPage';
 
 export const MainLayout = (): JSX.Element => {
   const [currentUser, setCurrentUser] = React.useState<IUserModel>({
@@ -50,6 +51,7 @@ export const MainLayout = (): JSX.Element => {
           <ReactRoutes>
             <Route path={'/'} element={<Dashboard />} />
             <Route path={'/project/:id'} element={<ProjectPage />} />
+            <Route path={'/sprint/:id'} element={<SprintPage />} />
             <Route path={'/board'} element={<Board />} />
             <Route path={'/backlog'} element={<Backlog />} />
             <Route path={'/organisation'} element={<OrganisationPage />} />

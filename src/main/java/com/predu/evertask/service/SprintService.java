@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class SprintService {
@@ -37,8 +36,10 @@ public class SprintService {
                 .toList();
     }
 
-    public Optional<Sprint> findById(UUID id) {
-        return sprintRepository.findById(id);
+    public Optional<SprintDto> findById(UUID id) {
+        Optional<Sprint> sprint = sprintRepository.findById(id);
+
+        return sprint.map(sprintMapper::sprintToSprintDto);
     }
 
     public Sprint save(SprintSaveDto toSave) {

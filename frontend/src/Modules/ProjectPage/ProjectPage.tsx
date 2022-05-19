@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { ApplicationState } from 'Stores/store';
 import { actionCreators, ProjectState } from 'Stores/Project';
 import {
@@ -22,15 +22,12 @@ import { SPRINT_DIALOG_MODES } from '../SprintDialog/fixtures';
 import { SprintDialog } from '../SprintDialog';
 import { StyledHeaderWrapper } from './ProjectPage.styled';
 
-type Params = {
-  id: Id;
-};
-
 export const ProjectPage = (): Nullable<JSX.Element> => {
-  const params = useParams<Params>();
+  const params = useParams<RouterParams>();
   const dispatch = useDispatch();
-  const projectState: Nullable<ProjectState> = useSelector((state: ApplicationState) =>
-    state.project ? state.project : null
+  const projectState: Nullable<ProjectState> = useSelector(
+    (state: ApplicationState) => (state.project ? state.project : null),
+    shallowEqual
   );
 
   const sprintDialogConfig = useDialog<SPRINT_DIALOG_MODES>(SPRINT_DIALOG_MODES.ADD);

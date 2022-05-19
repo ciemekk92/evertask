@@ -12,6 +12,8 @@ public interface IssueRepository extends BaseRepository<Issue, UUID> {
 
     List<Issue> findAllByProjectId(UUID projectId);
 
+    List<Issue> findAllBySprintId(UUID sprintId);
+
     List<Issue> findTop10ByProjectIdOrderByCreatedAtDesc(UUID projectId);
 
     Optional<Issue> findTopByOrderByUpdatedAtDesc();

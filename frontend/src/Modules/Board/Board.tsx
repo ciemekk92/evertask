@@ -5,25 +5,45 @@ import { DragDropContext } from 'react-beautiful-dnd';
 
 import { VerticalPageWrapper } from 'Shared/PageWrappers';
 import { Heading5 } from 'Shared/Typography';
-import { ISSUE_STATUS } from 'Shared/constants';
+import { ISSUE_STATUS, PROJECT_METHODOLOGIES } from 'Shared/constants';
 import { CurrentProjectModel } from 'Models/CurrentProjectModel';
 import { capitalizeFirstLetter } from 'Utils/capitalizeFirstLetter';
+import { Project } from 'Types/Project';
 import { actionCreators } from 'Stores/Issue';
 import { BoardColumn } from './components';
-import { StyledDragDropContextContainer, StyledListGrid } from './Board.styled';
+import {
+  StyledDragDropContextContainer,
+  StyledListGrid,
+  StyledMessageContainer
+} from './Board.styled';
 
 export const Board = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
-  const { currentProjectValue } = CurrentProjectModel;
-
-  const boardTitle = t('board.title', {
-    methodology: capitalizeFirstLetter(currentProjectValue.methodology)
+  const [currentProject, setCurrentProject] = React.useState<Project.ProjectEntity>({
+    id: '',
+    createdAt: '',
+    updatedAt: null,
+    lastUpdatedAt: '',
+    name: '',
+    code: '',
+    methodology: PROJECT_METHODOLOGIES.KANBAN,
+    description: '',
+    currentSprint: null
   });
 
   React.useEffect(() => {
-    dispatch(actionCreators.getCurrentIssues(currentProjectValue.id));
+    CurrentProjectModel.currentProject.subscribe((project: Project.ProjectEntity) => {
+      setCurrentProject(project);
+    });
+  }, [CurrentProjectModel.currentProject]);
+
+  const boardTitle = t('board.title', {
+    methodology: capitalizeFirstLetter(currentProject.methodology)
+  });
+
+  React.useEffect(() => {
+    dispatch(actionCreators.getCurrentIssues(currentProject.id));
   }, []);
 
   const onDragEnd = () => {};
@@ -43,11 +63,11 @@ export const Board = () => {
   };
 
   const renderContent = (): JSX.Element => {
-    if (currentProjectValue.currentSprint) {
+    if (currentProject.currentSprint) {
       return renderBoard();
     }
 
-    return <p>{t('board.noCurrentSprint')}</p>;
+    return <StyledMessageContainer>{t('board.noCurrentSprint')}</StyledMessageContainer>;
   };
 
   return (

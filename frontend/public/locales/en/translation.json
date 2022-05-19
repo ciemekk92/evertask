@@ -11,6 +11,7 @@
     "mainPage": "Main page",
     "cancel": "Cancel",
     "submit": "Submit",
+    "edit": "Edit",
     "accept": "Accept",
     "decline": "Decline",
     "sentAt": "Sent at:",
@@ -212,6 +213,13 @@
         "required": "Finish date is required"
       }
     }
+  },
+  "sprintPage": {
+    "infoTitle": "Information",
+    "createdAt": "Created at: ",
+    "startDate": "Start date: ",
+    "finishDate": "Finish date: ",
+    "description": "Description: "
   },
   "board": {
     "title": "{{methodology}} board",

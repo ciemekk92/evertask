@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ValidationException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -49,7 +48,7 @@ public class UserService implements UserDetailsService {
 
         return userList.stream()
                 .map(userViewMapper::toUserDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Transactional
@@ -140,7 +139,14 @@ public class UserService implements UserDetailsService {
         return userRepository.findActiveProjectMembers(projectId)
                 .stream()
                 .map(userViewMapper::toUserDto)
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    public List<UserDto> getSprintActiveMembers(UUID sprintId) {
+        return userRepository.findActiveSprintMembers(sprintId)
+                .stream()
+                .map(userViewMapper::toUserDto)
+                .toList();
     }
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

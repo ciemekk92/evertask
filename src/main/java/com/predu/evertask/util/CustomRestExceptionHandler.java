@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.validation.ValidationException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Locale;
 
 @ControllerAdvice
 public class CustomRestExceptionHandler {
@@ -33,7 +33,7 @@ public class CustomRestExceptionHandler {
                 .stream()
                 .map(fieldError -> fieldError.getField() + ": "
                         + messageSource.getMessage(fieldError, locale))
-                .collect(Collectors.toList());
+                .toList();
 
         return new ResponseEntity<>(new RestMessage(errorMessages), HttpStatus.BAD_REQUEST);
     }

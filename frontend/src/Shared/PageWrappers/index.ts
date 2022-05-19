@@ -2,6 +2,7 @@ export {
   HorizontalPageWrapper,
   VerticalPageWrapper,
   StyledHorizontalContainer,
+  StyledVerticalContainer,
   StyledSectionContainer,
   StyledSectionHeaderRow,
   StyledSectionWrapper

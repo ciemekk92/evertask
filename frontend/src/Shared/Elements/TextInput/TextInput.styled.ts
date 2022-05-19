@@ -10,7 +10,7 @@ export const TextInput = styled(InputField)`
   color: ${(props) => props.theme.primaryText};
   border-radius: 0.3rem;
   padding: 0.5rem 1rem;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   outline: none;
 
   &::placeholder {
@@ -22,7 +22,7 @@ export const TextInput = styled(InputField)`
 
 export const TextInputErrorMessage = styled.div`
   color: ${(props) => props.theme.error};
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   margin-bottom: 1rem;
   padding: 0.5rem 0.75rem;
   white-space: pre-line;

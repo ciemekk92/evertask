@@ -1,17 +1,18 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import { SingleSelectDropdown } from 'Shared/Elements/SingleSelectDropdown';
-import { StyledFieldContainer, StyledLabel } from './CurrentProjectField.styled';
 import { ApplicationState } from 'Stores/store';
 import { Project } from 'Types/Project';
-import { CurrentProjectModel } from '../../Models/CurrentProjectModel';
+import { CurrentProjectModel } from 'Models/CurrentProjectModel';
+import { StyledFieldContainer, StyledLabel } from './CurrentProjectField.styled';
 
 export const CurrentProjectField = () => {
   const [currentProjectValue, setCurrentProjectValue] = React.useState<Id>('');
   const { t } = useTranslation();
-  const organisationProjects = useSelector((state: ApplicationState) =>
-    state.project ? state.project.organisationProjects : []
+  const organisationProjects = useSelector(
+    (state: ApplicationState) => (state.project ? state.project.organisationProjects : []),
+    shallowEqual
   );
 
   React.useEffect(() => {

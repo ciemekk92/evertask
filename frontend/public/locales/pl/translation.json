@@ -11,6 +11,7 @@
     "mainPage": "Strona główna",
     "cancel": "Anuluj",
     "submit": "Wyślij",
+    "edit": "Edytuj",
     "accept": "Zaakceptuj",
     "decline": "Odrzuć",
     "sentAt": "Wysłane: ",
@@ -213,8 +214,15 @@
       }
     }
   },
+  "sprintPage": {
+    "infoTitle": "Informacje",
+    "createdAt": "Stworzony: ",
+    "startDate": "Data rozpoczęcia: ",
+    "finishDate": "Data zakończenia: ",
+    "description": "Opis: "
+  },
   "board": {
     "title": "Tablica {{methodology}}",
-    "noCurrentSprint": "Zadania nie są wyświetlane, ponieważ żaden sprint nie jest w trakcie."
+    "noCurrentSprint": "Zadania nie są wyświetlane, ponieważ żaden sprint nie został rozpoczęty."
   }
 }

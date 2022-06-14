@@ -62,14 +62,14 @@ public class ProjectService {
         return project;
     }
 
-    public Project update(UUID id, ProjectUpdateDto toSave) {
+    public Project update(UUID id, ProjectUpdateDto toUpdate) {
         Optional<Project> optionalProject = projectRepository.findById(id);
 
         if (optionalProject.isEmpty()) {
             throw new NotFoundException("Project not found");
         }
 
-        Project result = projectMapper.update(optionalProject.get(), toSave);
+        Project result = projectMapper.update(optionalProject.get(), toUpdate);
 
         return projectRepository.save(result);
     }

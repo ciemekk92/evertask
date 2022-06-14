@@ -4,5 +4,6 @@ declare namespace Sprint {
     description: string;
     startDate: string;
     finishDate: string;
+    projectId: Id;
   };
 }

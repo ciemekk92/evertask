@@ -2,8 +2,10 @@ package com.predu.evertask.service;
 
 import com.predu.evertask.domain.dto.sprint.SprintDto;
 import com.predu.evertask.domain.dto.sprint.SprintSaveDto;
+import com.predu.evertask.domain.dto.sprint.SprintUpdateDto;
 import com.predu.evertask.domain.mapper.SprintMapper;
 import com.predu.evertask.domain.model.Sprint;
+import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.SprintRepository;
 import org.springframework.stereotype.Service;
 
@@ -42,8 +44,20 @@ public class SprintService {
         return sprint.map(sprintMapper::sprintToSprintDto);
     }
 
-    public Sprint save(SprintSaveDto toSave) {
+    public Sprint create(SprintSaveDto toSave) {
         return sprintRepository.save(sprintMapper.sprintSaveDtoToSprint(toSave));
+    }
+
+    public Sprint update(UUID id, SprintUpdateDto toUpdate) {
+        Optional<Sprint> optionalSprint = sprintRepository.findById(id);
+
+        if (optionalSprint.isEmpty()) {
+            throw new NotFoundException("Sprint not found");
+        }
+
+        Sprint result = sprintMapper.update(optionalSprint.get(), toUpdate);
+
+        return sprintRepository.save(result);
     }
 
     public boolean existsById(UUID id) {

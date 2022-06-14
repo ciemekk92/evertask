@@ -136,7 +136,8 @@ const initialState: SprintState = {
     ordinal: 0,
     description: '',
     startDate: '',
-    finishDate: ''
+    finishDate: '',
+    projectId: ''
   }
 };
 

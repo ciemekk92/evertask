@@ -8,9 +8,10 @@ import { ButtonFilled } from '../../../../Shared/Elements/Buttons';
 
 interface Props {
   sprint: Sprint.SprintEntity;
+  onEditClick: VoidFunctionNoArgs;
 }
 
-export const SprintInfoSection = ({ sprint }: Props): Nullable<JSX.Element> => {
+export const SprintInfoSection = ({ sprint, onEditClick }: Props): Nullable<JSX.Element> => {
   const { t } = useTranslation();
 
   if (!sprint.id) {
@@ -21,7 +22,7 @@ export const SprintInfoSection = ({ sprint }: Props): Nullable<JSX.Element> => {
     <StyledSectionWrapper>
       <StyledSectionHeaderRow>
         <Heading6>{t('sprintPage.infoTitle')}</Heading6>
-        <ButtonFilled>{t('general.edit')}</ButtonFilled>
+        <ButtonFilled onClick={onEditClick}>{t('general.edit')}</ButtonFilled>
       </StyledSectionHeaderRow>
       <InfoField label={t('sprintPage.createdAt')} value={formatDate(sprint.createdAt)} />
       <InfoField label={t('sprintPage.startDate')} value={formatDate(sprint.startDate)} />

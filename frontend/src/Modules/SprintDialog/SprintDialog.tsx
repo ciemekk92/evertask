@@ -11,7 +11,8 @@ import { TextArea } from 'Shared/Elements/TextArea';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
 import { Api } from 'Utils/Api';
 import { formatDate } from 'Utils/formatDate';
-import { actionCreators } from 'Stores/Project';
+import { actionCreators as projectActionCreators } from 'Stores/Project';
+import { actionCreators as sprintActionCreators } from 'Stores/Sprint';
 import { SPRINT_DIALOG_MODES } from './fixtures';
 import { StyledDialogContent } from './SprintDialog.styled';
 
@@ -19,6 +20,7 @@ interface Props {
   mode: SPRINT_DIALOG_MODES;
   handleClose: VoidFunctionNoArgs;
   projectId: Id;
+  sprintId?: Id;
 }
 
 interface SprintData {
@@ -27,16 +29,30 @@ interface SprintData {
   finishDate: string;
 }
 
-export const SprintDialog = ({ mode, handleClose, projectId }: Props): JSX.Element => {
-  const initialData: SprintData = {
+export const SprintDialog = ({ mode, handleClose, projectId, sprintId }: Props): JSX.Element => {
+  const [initialData, setInitialData] = React.useState<SprintData>({
     description: '',
     startDate: formatDate(new Date()),
     finishDate: formatDate(new Date())
-  };
+  });
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { isLoading, startLoading, stopLoading } = useLoading();
+
+  React.useEffect(() => {
+    if (sprintId && mode === SPRINT_DIALOG_MODES.EDIT) {
+      Api.get(`sprints/${sprintId}`)
+        .then((response) => response.json())
+        .then((data: SprintData) =>
+          setInitialData({
+            description: data.description,
+            startDate: formatDate(data.startDate),
+            finishDate: formatDate(data.finishDate)
+          })
+        );
+    }
+  }, [sprintId, mode]);
 
   const validationSchema = Yup.object().shape({
     description: Yup.string().required(t('sprintDialog.validation.description.required')),
@@ -54,11 +70,22 @@ export const SprintDialog = ({ mode, handleClose, projectId }: Props): JSX.Eleme
   const onSubmit = async (values: SprintData) => {
     startLoading();
 
-    const result = await Api.post('sprints', { ...values, projectId });
+    let result: Response;
 
-    if (result.status === 201) {
-      handleClose();
-      dispatch(actionCreators.getSprints(projectId));
+    console.log({ projectId, sprintId });
+
+    if (projectId) {
+      if (!sprintId) {
+        result = await Api.post('sprints', { ...values, projectId });
+      } else {
+        result = await Api.put(`sprints/${sprintId}`, { ...values });
+      }
+
+      if ([201, 204].includes(result.status)) {
+        handleClose();
+        dispatch(projectActionCreators.getSprints(projectId));
+        sprintId && dispatch(sprintActionCreators.getSelectedSprint(sprintId));
+      }
     }
 
     stopLoading();
@@ -79,6 +106,7 @@ export const SprintDialog = ({ mode, handleClose, projectId }: Props): JSX.Eleme
       validationSchema={validationSchema}
       initialValues={initialData}
       onSubmit={onSubmit}
+      enableReinitialize
     >
       {({ errors, touched, handleSubmit, isValid }: FormikProps<SprintData>) => (
         <Form name="sprint" method="POST" onSubmit={handleSubmit}>

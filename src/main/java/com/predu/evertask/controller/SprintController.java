@@ -4,6 +4,7 @@ import com.predu.evertask.domain.dto.auth.UserDto;
 import com.predu.evertask.domain.dto.issue.IssueDto;
 import com.predu.evertask.domain.dto.sprint.SprintDto;
 import com.predu.evertask.domain.dto.sprint.SprintSaveDto;
+import com.predu.evertask.domain.dto.sprint.SprintUpdateDto;
 import com.predu.evertask.domain.model.Sprint;
 import com.predu.evertask.service.IssueService;
 import com.predu.evertask.service.SprintService;
@@ -52,8 +53,19 @@ public class SprintController {
 
     @PostMapping
     public ResponseEntity<SprintSaveDto> createSprint(@RequestBody @Valid SprintSaveDto toCreate) throws URISyntaxException {
-        Sprint created = sprintService.save(toCreate);
+        Sprint created = sprintService.create(toCreate);
 
         return ResponseEntity.created(new URI("http://localhost:8080/api/sprints/" + created.getId())).body(toCreate);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateSprint(@RequestBody @Valid SprintUpdateDto toUpdate, @PathVariable UUID id) {
+        if (!sprintService.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        sprintService.findById(id).ifPresent(sprint -> sprintService.update(id, toUpdate));
+
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,22 +1,23 @@
 import React from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import { useTranslation } from 'react-i18next';
-import { VerticalPageWrapper, StyledHorizontalContainer } from 'Shared/PageWrappers';
+import { StyledHorizontalContainer, VerticalPageWrapper } from 'Shared/PageWrappers';
 import { Heading5 } from 'Shared/Typography';
 import { Container } from 'Hooks/useLoading';
 import { ApplicationState } from 'Stores/store';
 import { isDefined } from 'Utils/isDefined';
 import { actionCreators, SprintState } from 'Stores/Sprint';
+import { DialogComponent, useDialog } from 'Hooks/useDialog';
 import { SprintInfoSection } from './components';
+import { SprintDialog } from '../SprintDialog';
+import { SPRINT_DIALOG_MODES } from '../SprintDialog/fixtures';
 import {
   StyledHeaderWrapper,
-  StyledSmallSectionContainer,
-  StyledLargeSectionContainer
+  StyledLargeSectionContainer,
+  StyledSmallSectionContainer
 } from './SprintPage.styled';
 
 export const SprintPage = (): Nullable<JSX.Element> => {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
   const params = useParams<RouterParams>();
 
@@ -24,6 +25,8 @@ export const SprintPage = (): Nullable<JSX.Element> => {
     (state: ApplicationState) => (state.sprint ? state.sprint : null),
     shallowEqual
   );
+
+  const sprintDialogConfig = useDialog<SPRINT_DIALOG_MODES>(SPRINT_DIALOG_MODES.ADD);
 
   React.useEffect(() => {
     if (isDefined(params.id)) {
@@ -37,8 +40,12 @@ export const SprintPage = (): Nullable<JSX.Element> => {
     return null;
   }
 
+  const handleEditingSprint = () => {
+    sprintDialogConfig.handleOpen(SPRINT_DIALOG_MODES.EDIT);
+  };
+
   const renderSprintInfo = (): JSX.Element => (
-    <SprintInfoSection sprint={sprintState.selectedSprint} />
+    <SprintInfoSection onEditClick={handleEditingSprint} sprint={sprintState.selectedSprint} />
   );
 
   return (
@@ -51,6 +58,17 @@ export const SprintPage = (): Nullable<JSX.Element> => {
         <StyledSmallSectionContainer>{renderSprintInfo()}</StyledSmallSectionContainer>
         <StyledLargeSectionContainer></StyledLargeSectionContainer>
       </StyledHorizontalContainer>
+      <DialogComponent
+        isOpen={sprintDialogConfig.isOpen}
+        handleClose={sprintDialogConfig.handleClose}
+      >
+        <SprintDialog
+          mode={SPRINT_DIALOG_MODES.EDIT}
+          handleClose={sprintDialogConfig.handleClose}
+          sprintId={params.id}
+          projectId={sprintState.selectedSprint.projectId}
+        />
+      </DialogComponent>
     </VerticalPageWrapper>
   );
 };

@@ -11,12 +11,15 @@
     "mainPage": "Strona główna",
     "cancel": "Anuluj",
     "submit": "Wyślij",
+    "view": "Zobacz",
     "edit": "Edytuj",
     "accept": "Zaakceptuj",
     "decline": "Odrzuć",
     "sentAt": "Wysłane: ",
     "updatedAt": "Zaktualizowany",
     "notUpdated": "Nigdy nie aktualizowany",
+    "active": "Aktywny",
+    "setActive": "Aktywuj",
     "issueType": {
       "BUG": "Bug",
       "EPIC": "Epic",
@@ -182,7 +185,8 @@
     "noSprints": "Brak stworzonych sprintów.",
     "noIssues": "Brak stworzonych zadań.",
     "lastIssues": "Najnowsze zadania",
-    "addSprint": "Dodaj sprint"
+    "addSprint": "Dodaj sprint",
+    "setActiveSprintConfirmation": "Czy na pewno chcesz ustawić ten sprint jako aktywny? Ta operacja zmieni zawartość tablicy."
   },
   "priorityBadge": {
     "label": {
@@ -224,5 +228,8 @@
   "board": {
     "title": "Tablica {{methodology}}",
     "noCurrentSprint": "Zadania nie są wyświetlane, ponieważ żaden sprint nie został rozpoczęty."
+  },
+  "confirmationDialog": {
+    "header": "Na pewno?"
   }
 }

@@ -11,12 +11,15 @@
     "mainPage": "Main page",
     "cancel": "Cancel",
     "submit": "Submit",
+    "view": "View",
     "edit": "Edit",
     "accept": "Accept",
     "decline": "Decline",
     "sentAt": "Sent at:",
     "updatedAt": "Updated at",
     "notUpdated": "Not updated yet",
+    "active": "Active",
+    "setActive": "Set active",
     "issueType": {
       "BUG": "Bug",
       "EPIC": "Epic",
@@ -182,7 +185,8 @@
     "noSprints": "No sprints created yet.",
     "noIssues": "No issues created yet",
     "lastIssues": "Newest issues",
-    "addSprint": "Add sprint"
+    "addSprint": "Add sprint",
+    "setActiveSprintConfirmation": "Are you sure you want to set this sprint as current? This operation will change the content of the board."
   },
   "priorityBadge": {
     "label": {
@@ -224,5 +228,8 @@
   "board": {
     "title": "{{methodology}} board",
     "noCurrentSprint": "The board is empty, because there is no sprint currently active."
+  },
+  "confirmationDialog": {
+    "header": "Are you sure?"
   }
 }

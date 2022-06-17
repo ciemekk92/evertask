@@ -10,7 +10,7 @@ import { DateInput } from 'Shared/Elements/DateInput';
 import { TextArea } from 'Shared/Elements/TextArea';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
 import { Api } from 'Utils/Api';
-import { formatDate } from 'Utils/formatDate';
+import { formatDateForInput } from 'Utils/formatDate';
 import { actionCreators as projectActionCreators } from 'Stores/Project';
 import { actionCreators as sprintActionCreators } from 'Stores/Sprint';
 import { SPRINT_DIALOG_MODES } from './fixtures';
@@ -32,8 +32,8 @@ interface SprintData {
 export const SprintDialog = ({ mode, handleClose, projectId, sprintId }: Props): JSX.Element => {
   const [initialData, setInitialData] = React.useState<SprintData>({
     description: '',
-    startDate: formatDate(new Date()),
-    finishDate: formatDate(new Date())
+    startDate: formatDateForInput(new Date()),
+    finishDate: formatDateForInput(new Date())
   });
 
   const { t } = useTranslation();
@@ -47,8 +47,8 @@ export const SprintDialog = ({ mode, handleClose, projectId, sprintId }: Props):
         .then((data: SprintData) =>
           setInitialData({
             description: data.description,
-            startDate: formatDate(data.startDate),
-            finishDate: formatDate(data.finishDate)
+            startDate: formatDateForInput(data.startDate),
+            finishDate: formatDateForInput(data.finishDate)
           })
         );
     }
@@ -68,11 +68,8 @@ export const SprintDialog = ({ mode, handleClose, projectId, sprintId }: Props):
   };
 
   const onSubmit = async (values: SprintData) => {
-    startLoading();
-
     let result: Response;
-
-    console.log({ projectId, sprintId });
+    startLoading();
 
     if (projectId) {
       if (!sprintId) {

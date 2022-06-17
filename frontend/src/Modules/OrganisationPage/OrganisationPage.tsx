@@ -14,6 +14,8 @@ import { ApplicationState } from 'Stores/store';
 import { actionCreators as userActionCreators } from 'Stores/User';
 import { actionCreators as invitationActionCreators } from 'Stores/OrganisationInvitation';
 import { Api } from 'Utils/Api';
+import { ProjectDialog } from '../ProjectDialog';
+import { PROJECT_DIALOG_MODES } from '../ProjectDialog/fixtures';
 import {
   OrganisationInfoSection,
   OrganisationInvitationsSection,
@@ -22,9 +24,6 @@ import {
   ProjectsSection
 } from './components';
 import { INVITE_MEMBER_DIALOG_MODES } from './components/InviteMemberDialog/fixtures';
-
-import { ProjectDialog } from '../ProjectDialog/ProjectDialog';
-import { PROJECT_DIALOG_MODES } from '../ProjectDialog/fixtures';
 
 export const OrganisationPage = (): JSX.Element => {
   const { t } = useTranslation();

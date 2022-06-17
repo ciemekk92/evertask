@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { StyledSectionHeaderRow, StyledSectionWrapper } from 'Shared/PageWrappers';
 import { Heading6 } from 'Shared/Typography';
 import { InfoField } from 'Shared/Elements/InfoField';
-import { formatDate } from 'Utils/formatDate';
-import { ButtonFilled } from '../../../../Shared/Elements/Buttons';
+import { ButtonFilled } from 'Shared/Elements/Buttons';
+import { formatDateForDisplay } from 'Utils/formatDate';
 
 interface Props {
   sprint: Sprint.SprintEntity;
@@ -24,9 +24,12 @@ export const SprintInfoSection = ({ sprint, onEditClick }: Props): Nullable<JSX.
         <Heading6>{t('sprintPage.infoTitle')}</Heading6>
         <ButtonFilled onClick={onEditClick}>{t('general.edit')}</ButtonFilled>
       </StyledSectionHeaderRow>
-      <InfoField label={t('sprintPage.createdAt')} value={formatDate(sprint.createdAt)} />
-      <InfoField label={t('sprintPage.startDate')} value={formatDate(sprint.startDate)} />
-      <InfoField label={t('sprintPage.finishDate')} value={formatDate(sprint.finishDate)} />
+      <InfoField label={t('sprintPage.createdAt')} value={formatDateForDisplay(sprint.createdAt)} />
+      <InfoField label={t('sprintPage.startDate')} value={formatDateForDisplay(sprint.startDate)} />
+      <InfoField
+        label={t('sprintPage.finishDate')}
+        value={formatDateForDisplay(sprint.finishDate)}
+      />
       <InfoField label={t('sprintPage.description')} value={sprint.description} />
     </StyledSectionWrapper>
   );

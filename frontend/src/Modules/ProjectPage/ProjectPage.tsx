@@ -4,19 +4,19 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { ApplicationState } from 'Stores/store';
 import { actionCreators, ProjectState } from 'Stores/Project';
 import {
-  VerticalPageWrapper,
   StyledHorizontalContainer,
-  StyledSectionContainer
+  StyledSectionContainer,
+  VerticalPageWrapper
 } from 'Shared/PageWrappers';
 import { Heading5 } from 'Shared/Typography';
 import { isDefined } from 'Utils/isDefined';
 import { Container } from 'Hooks/useLoading';
 import { DialogComponent, useDialog } from 'Hooks/useDialog';
 import {
-  ProjectInfoSection,
   ProjectActiveMembersSection,
-  ProjectSprintsSection,
-  ProjectLastIssuesSection
+  ProjectInfoSection,
+  ProjectLastIssuesSection,
+  ProjectSprintsSection
 } from './components';
 import { SPRINT_DIALOG_MODES } from '../SprintDialog/fixtures';
 import { SprintDialog } from '../SprintDialog';
@@ -49,6 +49,10 @@ export const ProjectPage = (): Nullable<JSX.Element> => {
     sprintDialogConfig.handleOpen(SPRINT_DIALOG_MODES.ADD);
   };
 
+  const handleOpeningEditSprint = (): void => {
+    sprintDialogConfig.handleOpen(SPRINT_DIALOG_MODES.EDIT);
+  };
+
   const renderProjectInfo = (): JSX.Element => (
     <ProjectInfoSection project={projectState.selectedProject} />
   );
@@ -61,6 +65,8 @@ export const ProjectPage = (): Nullable<JSX.Element> => {
     <ProjectSprintsSection
       sprintsData={projectState.sprints}
       handleOpeningAddSprint={handleOpeningAddSprint}
+      handleOpeningEditSprint={handleOpeningEditSprint}
+      activeSprintId={projectState.selectedProject.currentSprint?.id}
     />
   );
 

@@ -11,7 +11,7 @@ const currentProjectSubject = new BehaviorSubject<Project.ProjectEntity>({
   code: '',
   methodology: PROJECT_METHODOLOGIES.KANBAN,
   description: '',
-  currentSprint: null
+  activeSprint: null
 });
 
 export const CurrentProjectModel = {

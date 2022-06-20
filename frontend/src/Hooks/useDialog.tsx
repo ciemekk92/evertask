@@ -15,7 +15,10 @@ export function useDialog<T extends DialogModes>(initialMode: T) {
   const [dialogMode, setDialogMode] = React.useState<T>(initialMode);
   const [params, setParams] = React.useState<Params>({});
 
-  const handleClose = () => setIsOpen(false);
+  const handleClose = () => {
+    setParams({});
+    setIsOpen(false);
+  };
 
   const handleOpen = (openMode: T, newParams?: Params) => {
     if (newParams) {

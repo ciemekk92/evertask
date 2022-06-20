@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Api } from 'Utils/Api';
 import { PermissionCheck } from 'Utils/PermissionCheck';
 import { DialogComponent, useDialog } from 'Hooks/useDialog';
 import { CONFIRMATION_DIALOG_MODES, ConfirmationDialog } from 'Shared/ConfirmationDialog';
@@ -11,15 +12,19 @@ import { ProjectSprintPanel } from '..';
 interface Props {
   sprintsData: Sprint.SprintEntity[];
   handleOpeningAddSprint: VoidFunctionNoArgs;
-  handleOpeningEditSprint: VoidFunctionNoArgs;
+  handleOpeningEditSprint: (id: Id) => VoidFunctionNoArgs;
+  projectId: Id;
   activeSprintId?: Id;
+  handleRefreshingProjectState: (id: Id) => void;
 }
 
 export const ProjectSprintsSection = ({
   sprintsData,
   handleOpeningAddSprint,
   handleOpeningEditSprint,
-  activeSprintId
+  projectId,
+  activeSprintId,
+  handleRefreshingProjectState
 }: Props): JSX.Element => {
   const { t } = useTranslation();
   const confirmationDialogConfig = useDialog<CONFIRMATION_DIALOG_MODES>(
@@ -58,8 +63,15 @@ export const ProjectSprintsSection = ({
     return null;
   };
 
-  // TODO - HERE NEXT
-  const handleActivatingSprint = () => {};
+  const handleActivatingSprint = async () => {
+    const result = await Api.put(`projects/${projectId}/set_current_sprint`, {
+      ...confirmationDialogConfig.params
+    });
+
+    if (result.status === 204) {
+      handleRefreshingProjectState(projectId);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -75,7 +87,6 @@ export const ProjectSprintsSection = ({
         handleClose={confirmationDialogConfig.handleClose}
       >
         <ConfirmationDialog
-          message={t('')}
           handleClose={confirmationDialogConfig.handleClose}
           handleConfirm={handleActivatingSprint}
         />

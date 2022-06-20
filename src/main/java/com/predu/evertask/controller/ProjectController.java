@@ -2,11 +2,13 @@ package com.predu.evertask.controller;
 
 import com.predu.evertask.annotation.IsNotUnassignedUser;
 import com.predu.evertask.annotation.IsOrganisationAdminOrAdmin;
+import com.predu.evertask.annotation.IsProjectAdminOrAdmin;
 import com.predu.evertask.domain.dto.auth.UserDto;
 import com.predu.evertask.domain.dto.issue.IssueDto;
 import com.predu.evertask.domain.dto.project.ProjectCreateDto;
 import com.predu.evertask.domain.dto.project.ProjectDto;
 import com.predu.evertask.domain.dto.project.ProjectUpdateDto;
+import com.predu.evertask.domain.dto.project.SetCurrentSprintDto;
 import com.predu.evertask.domain.dto.sprint.SprintDto;
 import com.predu.evertask.domain.model.Project;
 import com.predu.evertask.domain.model.User;
@@ -88,6 +90,15 @@ public class ProjectController {
         var issues = issueService.mapIssuesByStatus(issueService.findAllByProjectId(id));
 
         return ResponseEntity.ok(issues);
+    }
+
+    @IsProjectAdminOrAdmin
+    @PutMapping("/{id}/set_current_sprint")
+    public ResponseEntity<Void> setProjectsCurrentSprint(@PathVariable UUID id,
+                                                         @RequestBody @Valid SetCurrentSprintDto dto) {
+        projectService.setProjectsCurrentSprint(id, dto);
+
+        return ResponseEntity.noContent().build();
     }
 
     @IsOrganisationAdminOrAdmin

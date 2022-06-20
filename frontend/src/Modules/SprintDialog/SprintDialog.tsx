@@ -72,7 +72,7 @@ export const SprintDialog = ({ mode, handleClose, projectId, sprintId }: Props):
     startLoading();
 
     if (projectId) {
-      if (!sprintId) {
+      if (!sprintId && mode === SPRINT_DIALOG_MODES.ADD) {
         result = await Api.post('sprints', { ...values, projectId });
       } else {
         result = await Api.put(`sprints/${sprintId}`, { ...values });

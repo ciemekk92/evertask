@@ -206,7 +206,7 @@ const initialState: ProjectState = {
     createdAt: '',
     updatedAt: null,
     lastUpdatedAt: '',
-    currentSprint: null,
+    activeSprint: null,
     id: ''
   },
   organisationProjects: [],

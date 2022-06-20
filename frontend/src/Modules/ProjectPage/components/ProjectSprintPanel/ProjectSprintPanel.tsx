@@ -1,20 +1,15 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDialog, DialogComponent } from 'Hooks/useDialog';
-import { StyledLink } from 'Shared/StyledLink';
+import { useNavigate } from 'react-router-dom';
 import { LabelBadge } from 'Shared/LabelBadge';
-import { IconButton } from 'Shared/Elements/Buttons';
+import { DropdownMenu } from 'Shared/Elements/DropdownMenu';
 import { formatDateForDisplay } from 'Utils/formatDate';
-import {
-  StyledButtonContainer,
-  StyledDateLabel,
-  StyledSprintPanel
-} from './ProjectSprintPanel.styled';
+import { StyledDateLabel, StyledSprintPanel } from './ProjectSprintPanel.styled';
 
 interface Props {
   sprint: Sprint.SprintEntity;
   isActive: boolean;
-  handleOpeningEditSprint: VoidFunctionNoArgs;
+  handleOpeningEditSprint: (id: Id) => VoidFunctionNoArgs;
   handleOpeningActivationConfirmation: VoidFunctionNoArgs;
 }
 
@@ -25,6 +20,7 @@ export const ProjectSprintPanel = ({
   handleOpeningActivationConfirmation
 }: Props): JSX.Element => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const renderUpdatedAtDate = (updatedAt: Nullable<string>): JSX.Element => {
     if (updatedAt) {
@@ -38,25 +34,29 @@ export const ProjectSprintPanel = ({
     return <StyledDateLabel>{t('general.notUpdated')}</StyledDateLabel>;
   };
 
-  const renderButtons = () => {
-    return (
-      <StyledButtonContainer>
-        {!isActive && (
-          <IconButton
-            onClick={handleOpeningActivationConfirmation}
-            iconName="keyboard_double_arrow_left"
-          >
-            {t('general.setActive')}
-          </IconButton>
-        )}
-        <StyledLink to={`/sprint/${sprint.id}`}>
-          <IconButton iconName="visibility">{t('general.view')}</IconButton>
-        </StyledLink>
-        <IconButton onClick={handleOpeningEditSprint} iconName="edit">
-          {t('general.edit')}
-        </IconButton>
-      </StyledButtonContainer>
-    );
+  const getDropdownOptions = () => {
+    const options = [
+      {
+        label: t('general.view'),
+        onClick: () => navigate(`/sprint/${sprint.id}`),
+        iconName: 'visibility'
+      },
+      {
+        label: t('general.edit'),
+        onClick: handleOpeningEditSprint(sprint.id),
+        iconName: 'edit'
+      }
+    ];
+
+    if (!isActive) {
+      options.push({
+        label: t('general.setActive'),
+        onClick: handleOpeningActivationConfirmation,
+        iconName: 'keyboard_double_arrow_left'
+      });
+    }
+
+    return options;
   };
 
   return (
@@ -64,7 +64,7 @@ export const ProjectSprintPanel = ({
       <p>{`Sprint ${sprint.ordinal}`}</p>
       {isActive && <LabelBadge label={t('general.active')} />}
       {renderUpdatedAtDate(sprint.updatedAt)}
-      {renderButtons()}
+      <DropdownMenu options={getDropdownOptions()} />
     </StyledSprintPanel>
   );
 };

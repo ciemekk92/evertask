@@ -14,4 +14,5 @@ export const Badge = styled.div`
   align-items: center;
   cursor: default;
   box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
 `;

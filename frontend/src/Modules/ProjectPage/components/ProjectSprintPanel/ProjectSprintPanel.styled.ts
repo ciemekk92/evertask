@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Badge } from 'Shared/LabelBadge/LabelBadge.styled';
 
 export const StyledSprintPanel = styled.div`
   display: flex;
@@ -19,6 +20,10 @@ export const StyledSprintPanel = styled.div`
 
   &:not(:last-child) {
     margin-bottom: 1rem;
+  }
+
+  & ${Badge} {
+    margin-left: 1rem;
   }
 `;
 

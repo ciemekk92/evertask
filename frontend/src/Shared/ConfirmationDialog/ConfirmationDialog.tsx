@@ -6,9 +6,9 @@ import { useLoading } from 'Hooks/useLoading';
 import { StyledDialogContent } from './ConfirmationDialog.styled';
 
 interface Props {
-  message: string;
+  message?: string;
   handleClose: VoidFunctionNoArgs;
-  handleConfirm: VoidFunctionNoArgs;
+  handleConfirm: VoidFunctionNoArgs | (() => Promise<boolean>);
 }
 
 export const ConfirmationDialog = ({ message, handleClose, handleConfirm }: Props): JSX.Element => {
@@ -20,10 +20,17 @@ export const ConfirmationDialog = ({ message, handleClose, handleConfirm }: Prop
     handleClose();
   };
 
+  const onSubmit = async () => {
+    startLoading();
+    await handleConfirm();
+    stopLoading();
+    handleClose();
+  };
+
   const renderFooter = () => (
     <React.Fragment>
       <ButtonOutline onClick={onCancel}>{t('general.no')}</ButtonOutline>
-      <ButtonFilled onClick={handleConfirm}>{t('general.yes')}</ButtonFilled>
+      <ButtonFilled onClick={onSubmit}>{t('general.yes')}</ButtonFilled>
     </React.Fragment>
   );
 
@@ -33,7 +40,7 @@ export const ConfirmationDialog = ({ message, handleClose, handleConfirm }: Prop
       header={t('confirmationDialog.header')}
       footer={renderFooter()}
     >
-      <StyledDialogContent>{message}</StyledDialogContent>
+      {message && <StyledDialogContent>{message}</StyledDialogContent>}
     </LoadingModalDialog>
   );
 };

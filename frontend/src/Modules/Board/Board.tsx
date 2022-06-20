@@ -29,7 +29,7 @@ export const Board = () => {
     code: '',
     methodology: PROJECT_METHODOLOGIES.KANBAN,
     description: '',
-    currentSprint: null
+    activeSprint: null
   });
 
   React.useEffect(() => {
@@ -63,7 +63,7 @@ export const Board = () => {
   };
 
   const renderContent = (): JSX.Element => {
-    if (currentProject.currentSprint) {
+    if (currentProject.activeSprint) {
       return renderBoard();
     }
 

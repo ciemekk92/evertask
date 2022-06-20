@@ -32,14 +32,21 @@ export const ProjectPage = (): Nullable<JSX.Element> => {
 
   const sprintDialogConfig = useDialog<SPRINT_DIALOG_MODES>(SPRINT_DIALOG_MODES.ADD);
 
+  const handleRefreshingProjectState = React.useCallback(
+    (id: Id) => {
+      dispatch(actionCreators.getSelectedProject(id));
+      dispatch(actionCreators.getActiveMembers(id));
+      dispatch(actionCreators.getSprints(id));
+      dispatch(actionCreators.getLastIssues(id));
+    },
+    [dispatch]
+  );
+
   React.useEffect(() => {
     if (isDefined(params.id)) {
-      dispatch(actionCreators.getSelectedProject(params.id));
-      dispatch(actionCreators.getActiveMembers(params.id));
-      dispatch(actionCreators.getSprints(params.id));
-      dispatch(actionCreators.getLastIssues(params.id));
+      handleRefreshingProjectState(params.id);
     }
-  }, [params.id, dispatch]);
+  }, [params.id, handleRefreshingProjectState]);
 
   if (!projectState || !params.id) {
     return null;
@@ -49,8 +56,8 @@ export const ProjectPage = (): Nullable<JSX.Element> => {
     sprintDialogConfig.handleOpen(SPRINT_DIALOG_MODES.ADD);
   };
 
-  const handleOpeningEditSprint = (): void => {
-    sprintDialogConfig.handleOpen(SPRINT_DIALOG_MODES.EDIT);
+  const handleOpeningEditSprint = (id: Id) => (): void => {
+    sprintDialogConfig.handleOpen(SPRINT_DIALOG_MODES.EDIT, { sprintId: id });
   };
 
   const renderProjectInfo = (): JSX.Element => (
@@ -66,7 +73,9 @@ export const ProjectPage = (): Nullable<JSX.Element> => {
       sprintsData={projectState.sprints}
       handleOpeningAddSprint={handleOpeningAddSprint}
       handleOpeningEditSprint={handleOpeningEditSprint}
-      activeSprintId={projectState.selectedProject.currentSprint?.id}
+      activeSprintId={projectState.selectedProject.activeSprint?.id}
+      projectId={projectState.selectedProject.id}
+      handleRefreshingProjectState={handleRefreshingProjectState}
     />
   );
 
@@ -98,6 +107,7 @@ export const ProjectPage = (): Nullable<JSX.Element> => {
           mode={sprintDialogConfig.dialogMode}
           handleClose={sprintDialogConfig.handleClose}
           projectId={params.id}
+          sprintId={sprintDialogConfig.params.sprintId}
         />
       </DialogComponent>
     </VerticalPageWrapper>

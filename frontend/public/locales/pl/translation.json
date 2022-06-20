@@ -20,6 +20,8 @@
     "notUpdated": "Nigdy nie aktualizowany",
     "active": "Aktywny",
     "setActive": "Aktywuj",
+    "yes": "Tak",
+    "no": "Nie",
     "issueType": {
       "BUG": "Bug",
       "EPIC": "Epic",

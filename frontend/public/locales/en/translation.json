@@ -20,6 +20,8 @@
     "notUpdated": "Not updated yet",
     "active": "Active",
     "setActive": "Set active",
+    "yes": "Yes",
+    "no": "No",
     "issueType": {
       "BUG": "Bug",
       "EPIC": "Epic",

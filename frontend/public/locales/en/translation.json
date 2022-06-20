@@ -231,6 +231,9 @@
     "title": "{{methodology}} board",
     "noCurrentSprint": "The board is empty, because there is no sprint currently active."
   },
+  "backlog": {
+    "title": "Backlog"
+  },
   "confirmationDialog": {
     "header": "Are you sure?"
   }

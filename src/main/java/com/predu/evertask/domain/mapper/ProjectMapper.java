@@ -36,8 +36,8 @@ public abstract class ProjectMapper {
 
     @AfterMapping
     protected void afterProjectToProjectDto(Project project, @MappingTarget ProjectDto dto) {
-        Optional<Issue> topByOrderByUpdatedAtDesc = issueRepository.findTopByOrderByUpdatedAtDesc();
-        Optional<Issue> topByOrderByCreatedAtDesc = issueRepository.findTopByOrderByCreatedAtDesc();
+        Optional<Issue> topByOrderByUpdatedAtDesc = issueRepository.findTopByProjectIdOrderByUpdatedAtDesc(project.getId());
+        Optional<Issue> topByOrderByCreatedAtDesc = issueRepository.findTopByProjectIdOrderByCreatedAtDesc(project.getId());
 
         if (topByOrderByUpdatedAtDesc.isEmpty() || topByOrderByCreatedAtDesc.isEmpty()) {
             dto.setLastUpdatedAt(project.getUpdatedAt());

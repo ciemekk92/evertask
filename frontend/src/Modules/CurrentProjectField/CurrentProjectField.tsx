@@ -21,7 +21,15 @@ export const CurrentProjectField = () => {
     });
   }, [CurrentProjectModel.currentProject]);
 
-  const handleSelectingCurrentProject = (value: string) => {};
+  const handleSelectingCurrentProject = (value: string) => {
+    const project = organisationProjects.find(
+      (project: Project.ProjectEntity) => project.id === value
+    );
+    if (project) {
+      CurrentProjectModel.currentProjectSubject.next(project);
+      setCurrentProjectValue(project.id);
+    }
+  };
 
   const mappedProjects = organisationProjects.map((project: Project.ProjectEntity) => ({
     value: project.id,

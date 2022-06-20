@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Heading6 } from 'Shared/Typography';
+import { IssuePanel } from 'Shared/IssuePanel';
 import { Issue } from 'Types/Issue';
 import { StyledHeaderRow, StyledSectionWrapper } from 'Modules/Dashboard/Dashboard.styled';
 import { StyledEmptyListMessage } from './DashboardAssignedIssues.styled';
@@ -16,7 +17,8 @@ export const DashboardAssignedIssues = ({ data }: Props): JSX.Element => {
     <StyledEmptyListMessage>{t('dashboard.assignedIssues.noIssues')}</StyledEmptyListMessage>
   );
 
-  const renderIssues = () => data.map((issue) => <p key={issue.id}>{issue.title}</p>);
+  const renderIssues = () =>
+    data.map((issue: Issue.IssueEntity) => <IssuePanel key={issue.id} issue={issue} />);
 
   const renderData = (): JSX.Element | JSX.Element[] =>
     data.length ? renderIssues() : renderNoIssuesMessage();

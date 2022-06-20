@@ -71,7 +71,7 @@ export const actionCreators = {
         if (result.status === 200) {
           const json = await result.json();
 
-          if (json.length) {
+          if (json.length && !CurrentProjectModel.currentProjectValue.id) {
             CurrentProjectModel.currentProjectSubject.next(json[0]);
           }
 

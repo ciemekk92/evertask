@@ -231,6 +231,9 @@
     "title": "Tablica {{methodology}}",
     "noCurrentSprint": "Zadania nie są wyświetlane, ponieważ żaden sprint nie został rozpoczęty."
   },
+  "backlog": {
+    "title": "Backlog"
+  },
   "confirmationDialog": {
     "header": "Na pewno?"
   }

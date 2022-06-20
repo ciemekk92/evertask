@@ -54,7 +54,7 @@ export const Board = () => {
         <DragDropContext onDragEnd={onDragEnd}>
           <StyledListGrid>
             {Object.values(ISSUE_STATUS).map((status: string) => (
-              <BoardColumn key={status} label={status} elements={[]} />
+              <BoardColumn key={status} label={status.replaceAll('_', ' ')} elements={[]} />
             ))}
           </StyledListGrid>
         </DragDropContext>

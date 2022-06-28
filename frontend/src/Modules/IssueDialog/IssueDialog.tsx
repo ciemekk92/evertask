@@ -49,8 +49,16 @@ export const IssueDialog = ({ mode, handleClose }: Props) => {
   const { isLoading, startLoading, stopLoading } = useLoading();
 
   const validationSchema = Yup.object().shape({
-    title: Yup.string().min(6).max(50).required(),
-    description: Yup.string().max(1000)
+    title: Yup.string()
+      .min(6, t('issueDialog.validation.title.minLength'))
+      .max(50, t('issueDialog.validation.title.maxLength'))
+      .required(t('issueDialog.validation.title.required')),
+    description: Yup.string().max(1000, t('issueDialog.validation.description.maxLength')),
+    status: Yup.string(),
+    pullRequestUrl: Yup.string().when('status', {
+      is: 'CODE_REVIEW',
+      then: Yup.string().required(t('issueDialog.validation.pullRequestUrl.required'))
+    })
   });
 
   const onCancel = (e: React.MouseEvent) => {
@@ -98,7 +106,7 @@ export const IssueDialog = ({ mode, handleClose }: Props) => {
         <Form name="issue" method="POST" onSubmit={handleSubmit}>
           <LoadingModalDialog
             isLoading={isLoading}
-            header={t(`issueDialog.title.${mode.toLowerCase()}`)}
+            header={t(`issueDialog.header.${mode.toLowerCase()}`)}
             footer={renderFooter(isValid)}
           >
             <StyledDialogContent>
@@ -131,6 +139,14 @@ export const IssueDialog = ({ mode, handleClose }: Props) => {
                   error={errors.estimateHours && touched.estimateHours}
                   name="estimateHours"
                   type="number"
+                />
+              </FormField>
+              <FormField label={t('issueDialog.pullRequestUrl')} name="pullRequestUrl">
+                <TextInput
+                  valid={!errors.pullRequestUrl && touched.pullRequestUrl}
+                  error={errors.pullRequestUrl && touched.pullRequestUrl}
+                  name="pullRequestUrl"
+                  type="text"
                 />
               </FormField>
               <FormField label={t('issueDialog.description')} name="description">

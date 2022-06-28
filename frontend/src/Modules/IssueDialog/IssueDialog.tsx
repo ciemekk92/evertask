@@ -7,14 +7,14 @@ import { Form, FormField } from 'Shared/Elements/Form';
 import { TextInput } from 'Shared/Elements/TextInput';
 import { TextArea } from 'Shared/Elements/TextArea';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
+import { SingleSelectDropdown } from 'Shared/Elements/SingleSelectDropdown';
 import { LoadingModalDialog } from 'Shared/LoadingModalDialog';
 import { ISSUE_PRIORITY, ISSUE_STATUS, ISSUE_TYPE } from 'Shared/constants';
 import { useLoading } from 'Hooks/useLoading';
 import { Api } from 'Utils/Api';
 import { ISSUE_DIALOG_MODES } from './fixtures';
-import { StyledDialogContent } from './IssueDialog.styled';
-import { SingleSelectDropdown } from '../../Shared/Elements/SingleSelectDropdown';
 import { mapIssueTypesToDropdownOptions } from './helpers';
+import { StyledDialogContent } from './IssueDialog.styled';
 
 interface Props {
   mode: ISSUE_DIALOG_MODES;

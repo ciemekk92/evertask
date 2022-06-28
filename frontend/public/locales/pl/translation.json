@@ -23,6 +23,8 @@
     "yes": "Tak",
     "no": "Nie",
     "storyPoints": "Punkty story",
+    "issueStatus": "Status zadania",
+    "issuePriority": "Priorytet zadania",
     "issueType": {
       "BUG": "Bug",
       "EPIC": "Epic",

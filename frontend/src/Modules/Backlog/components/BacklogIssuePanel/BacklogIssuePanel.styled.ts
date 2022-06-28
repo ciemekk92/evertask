@@ -18,7 +18,7 @@ export const StyledDraggablePanel = styled.div<DraggableProps>`
   transition: all 0.4s ease;
 
   & span,
-  & ${StyledPriorityBadge} {
+  & ${StyledPriorityBadge}, & ${StyledBadge} {
     margin-right: 1rem;
   }
 

@@ -23,6 +23,8 @@
     "yes": "Yes",
     "no": "No",
     "storyPoints": "Story points",
+    "issueStatus": "Issue status",
+    "issuePriority": "Issue priority",
     "issueType": {
       "BUG": "Bug",
       "EPIC": "Epic",

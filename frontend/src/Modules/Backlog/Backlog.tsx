@@ -52,13 +52,13 @@ export const Backlog = (): Nullable<JSX.Element> => {
   }
 
   const renderSprints = (): Nullable<JSX.Element[]> => {
-    if (CurrentProjectModel.currentProjectValue.methodology === PROJECT_METHODOLOGIES.KANBAN) {
-      return null;
+    if (CurrentProjectModel.currentProjectValue.methodology === PROJECT_METHODOLOGIES.AGILE) {
+      return projectState.notCompletedSprints.map((sprint: Sprint.SprintIssuesEntity) => (
+        <SprintSection key={sprint.id} sprint={sprint} />
+      ));
     }
 
-    return projectState.notCompletedSprints.map((sprint: Sprint.SprintIssuesEntity) => (
-      <SprintSection key={sprint.id} sprint={sprint} />
-    ));
+    return null;
   };
 
   const onDragEnd = async (result: DropResult): Promise<void> => {

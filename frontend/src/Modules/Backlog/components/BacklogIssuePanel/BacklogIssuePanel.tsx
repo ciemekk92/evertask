@@ -5,6 +5,7 @@ import { CurrentProjectModel } from 'Models/CurrentProjectModel';
 import { PriorityBadge } from 'Shared/PriorityBadge';
 import { StoryPointBadge } from 'Shared/StoryPointBadge';
 import { IssueTypeIcon } from 'Shared/IssueTypeIcon';
+import { StatusBadge } from 'Shared/StatusBadge';
 import { StyledDraggablePanel, StyledIssueTitle } from './BacklogIssuePanel.styled';
 
 interface Props {
@@ -31,6 +32,7 @@ export const BacklogIssuePanel = ({ issue, index }: Props): JSX.Element => {
             {issue.title}
           </StyledIssueTitle>
           <StoryPointBadge value={issue.estimateStoryPoints} />
+          <StatusBadge status={issue.status} />
         </StyledDraggablePanel>
       )}
     </Draggable>

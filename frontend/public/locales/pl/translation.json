@@ -11,11 +11,20 @@
     "mainPage": "Strona główna",
     "cancel": "Anuluj",
     "submit": "Wyślij",
+    "view": "Zobacz",
+    "edit": "Edytuj",
     "accept": "Zaakceptuj",
     "decline": "Odrzuć",
     "sentAt": "Wysłane: ",
     "updatedAt": "Zaktualizowany",
     "notUpdated": "Nigdy nie aktualizowany",
+    "active": "Aktywny",
+    "setActive": "Aktywuj",
+    "yes": "Tak",
+    "no": "Nie",
+    "storyPoints": "Punkty story",
+    "issueStatus": "Status zadania",
+    "issuePriority": "Priorytet zadania",
     "issueType": {
       "BUG": "Bug",
       "EPIC": "Epic",
@@ -23,6 +32,10 @@
       "TASK": "Zadanie",
       "SUBTASK": "Podzadanie"
     }
+  },
+  "error": {
+    "title": "Ups! Coś poszło nie tak :(",
+    "content": "Spróbuj odświeżyć stronę, jeśli to nie pomoże, skontaktuj się z administratorem strony."
   },
   "login": {
     "title": "Logowanie",
@@ -86,7 +99,7 @@
       "dashboard": "Dashboard",
       "myOrganisation": "Moja organizacja",
       "projects": "Projekty",
-      "activeSprint": "Aktywny sprint",
+      "board": "Tablica",
       "backlog": "Backlog",
       "statistics": "Statystyki"
     }
@@ -177,7 +190,8 @@
     "noSprints": "Brak stworzonych sprintów.",
     "noIssues": "Brak stworzonych zadań.",
     "lastIssues": "Najnowsze zadania",
-    "addSprint": "Dodaj sprint"
+    "addSprint": "Dodaj sprint",
+    "setActiveSprintConfirmation": "Czy na pewno chcesz ustawić ten sprint jako aktywny? Ta operacja zmieni zawartość tablicy."
   },
   "priorityBadge": {
     "label": {
@@ -208,5 +222,29 @@
         "required": "Data końcowa jest wymagana"
       }
     }
+  },
+  "sprintPage": {
+    "infoTitle": "Informacje",
+    "createdAt": "Stworzony: ",
+    "startDate": "Data rozpoczęcia: ",
+    "finishDate": "Data zakończenia: ",
+    "description": "Opis: "
+  },
+  "board": {
+    "title": "Tablica {{methodology}}",
+    "noCurrentSprint": "Zadania nie są wyświetlane, ponieważ żaden sprint nie został rozpoczęty."
+  },
+  "backlog": {
+    "title": "Backlog",
+    "emptySection": "Brak zadań",
+    "sprint": {
+      "title": "Sprint {{ordinal}}"
+    },
+    "unassigned": {
+      "title": "Nieprzypisane zadania"
+    }
+  },
+  "confirmationDialog": {
+    "header": "Na pewno?"
   }
 }

@@ -44,7 +44,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
             "FROM organisation_invitations oi)", nativeQuery = true)
     List<User> findUnassigned();
 
-    @Query(value = "SELECT * FROM users u " +
+    @Query(value = "SELECT DISTINCT ON(u.id) * FROM users u " +
             "INNER JOIN projects p ON u.organisation_id = p.organisation_id " +
             "LEFT JOIN issues i ON p.id = i.project_id " +
             "WHERE p.id = ?1 " +
@@ -54,6 +54,18 @@ public interface UserRepository extends JpaRepository<User, UUID> {
             "SELECT i.created_by FROM issues i UNION ALL " +
             "SELECT i.modified_by FROM issues i)", nativeQuery = true)
     List<User> findActiveProjectMembers(UUID projectId);
+
+    @Query(value = "SELECT DISTINCT ON(u.id) * FROM users u " +
+            "INNER JOIN projects p ON u.organisation_id = p.organisation_id " +
+            "LEFT JOIN sprints s ON p.id = s.project_id " +
+            "LEFT JOIN issues i ON s.id = i.sprint_id " +
+            "WHERE s.id = ?1 " +
+            "AND u.id IN (SELECT s.created_by FROM sprints s UNION ALL " +
+            "SELECT s.modified_by FROM sprints s UNION ALL " +
+            "SELECT i.assignee_id FROM issues i UNION ALL " +
+            "SELECT i.created_by FROM issues i UNION ALL " +
+            "SELECT i.modified_by FROM issues i)", nativeQuery = true)
+    List<User> findActiveSprintMembers(UUID sprintId);
 
     @NonNull
     default User getById(@NonNull UUID id) {

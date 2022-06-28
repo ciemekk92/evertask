@@ -9,10 +9,12 @@ import {
   reducer as organisationInvitationReducer
 } from './OrganisationInvitation';
 import { OrganisationState, reducer as organisationReducer } from './Organisation';
+import { SprintState, reducer as sprintReducer } from './Sprint';
 
 export interface ApplicationState {
   user: UserState | undefined;
   project: ProjectState | undefined;
+  sprint: SprintState | undefined;
   issue: IssueState | undefined;
   organisation: OrganisationState | undefined;
   organisationInvitation: OrganisationInvitationState | undefined;
@@ -29,6 +31,7 @@ const composeEnhancers = composeWithDevTools({});
 const rootReducer = combineReducers({
   user: userReducer,
   project: projectReducer,
+  sprint: sprintReducer,
   issue: issueReducer,
   organisation: organisationReducer,
   organisationInvitation: organisationInvitationReducer

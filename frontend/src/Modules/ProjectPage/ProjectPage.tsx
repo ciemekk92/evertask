@@ -1,71 +1,85 @@
 import React from 'react';
 import { useParams } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { ApplicationState } from 'Stores/store';
 import { actionCreators, ProjectState } from 'Stores/Project';
 import {
-  VerticalPageWrapper,
   StyledHorizontalContainer,
-  StyledSectionContainer
+  StyledSectionContainer,
+  VerticalPageWrapper
 } from 'Shared/PageWrappers';
 import { Heading5 } from 'Shared/Typography';
 import { isDefined } from 'Utils/isDefined';
 import { Container } from 'Hooks/useLoading';
 import { DialogComponent, useDialog } from 'Hooks/useDialog';
 import {
-  ProjectInfoSection,
   ProjectActiveMembersSection,
-  ProjectSprintsSection,
-  ProjectLastIssuesSection
+  ProjectInfoSection,
+  ProjectLastIssuesSection,
+  ProjectSprintsSection
 } from './components';
 import { SPRINT_DIALOG_MODES } from '../SprintDialog/fixtures';
 import { SprintDialog } from '../SprintDialog';
 import { StyledHeaderWrapper } from './ProjectPage.styled';
 
-type Params = {
-  id: Id;
-};
-
 export const ProjectPage = (): Nullable<JSX.Element> => {
-  const params = useParams<Params>();
+  const params = useParams<RouterParams>();
   const dispatch = useDispatch();
-  const projectState: Nullable<ProjectState> = useSelector((state: ApplicationState) =>
-    state.project ? state.project : null
+  const projectState: Nullable<ProjectState> = useSelector(
+    (state: ApplicationState) => (state.project ? state.project : null),
+    shallowEqual
   );
 
   const sprintDialogConfig = useDialog<SPRINT_DIALOG_MODES>(SPRINT_DIALOG_MODES.ADD);
 
+  const handleRefreshingProjectState = React.useCallback(
+    (id: Id) => {
+      dispatch(actionCreators.getSelectedProject(id));
+      dispatch(actionCreators.getActiveMembers(id));
+      dispatch(actionCreators.getSprints(id));
+      dispatch(actionCreators.getLastIssues(id));
+    },
+    [dispatch]
+  );
+
   React.useEffect(() => {
     if (isDefined(params.id)) {
-      dispatch(actionCreators.getSelectedProject(params.id));
-      dispatch(actionCreators.getActiveMembers(params.id));
-      dispatch(actionCreators.getSprints(params.id));
-      dispatch(actionCreators.getLastIssues(params.id));
+      handleRefreshingProjectState(params.id);
     }
-  }, [params.id, dispatch]);
+  }, [params.id, handleRefreshingProjectState]);
 
   if (!projectState || !params.id) {
     return null;
   }
 
-  const handleOpeningAddSprint = () => {
+  const handleOpeningAddSprint = (): void => {
     sprintDialogConfig.handleOpen(SPRINT_DIALOG_MODES.ADD);
   };
 
-  const renderProjectInfo = () => <ProjectInfoSection project={projectState.selectedProject} />;
+  const handleOpeningEditSprint = (id: Id) => (): void => {
+    sprintDialogConfig.handleOpen(SPRINT_DIALOG_MODES.EDIT, { sprintId: id });
+  };
 
-  const renderMembersSection = () => (
+  const renderProjectInfo = (): JSX.Element => (
+    <ProjectInfoSection project={projectState.selectedProject} />
+  );
+
+  const renderMembersSection = (): JSX.Element => (
     <ProjectActiveMembersSection membersData={projectState.activeMembers} />
   );
 
-  const renderSprintsSection = () => (
+  const renderSprintsSection = (): JSX.Element => (
     <ProjectSprintsSection
       sprintsData={projectState.sprints}
       handleOpeningAddSprint={handleOpeningAddSprint}
+      handleOpeningEditSprint={handleOpeningEditSprint}
+      activeSprintId={projectState.selectedProject.activeSprint?.id}
+      projectId={projectState.selectedProject.id}
+      handleRefreshingProjectState={handleRefreshingProjectState}
     />
   );
 
-  const renderLastIssuesSection = () => (
+  const renderLastIssuesSection = (): JSX.Element => (
     <ProjectLastIssuesSection issuesData={projectState.lastIssues} />
   );
 
@@ -93,6 +107,7 @@ export const ProjectPage = (): Nullable<JSX.Element> => {
           mode={sprintDialogConfig.dialogMode}
           handleClose={sprintDialogConfig.handleClose}
           projectId={params.id}
+          sprintId={sprintDialogConfig.params.sprintId}
         />
       </DialogComponent>
     </VerticalPageWrapper>

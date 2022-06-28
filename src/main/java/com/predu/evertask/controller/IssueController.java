@@ -1,7 +1,9 @@
 package com.predu.evertask.controller;
 
+import com.predu.evertask.annotation.IsNotUnassignedUser;
 import com.predu.evertask.domain.dto.issue.IssueDto;
 import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
+import com.predu.evertask.domain.dto.issue.MoveIssueDto;
 import com.predu.evertask.domain.model.Issue;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.service.IssueService;
@@ -48,10 +50,27 @@ public class IssueController {
     }
 
     @PostMapping
-    public ResponseEntity<IssueDto> createIssue(@RequestBody @Valid IssueDto toCreate) throws URISyntaxException {
+    public ResponseEntity<IssueDto> createIssue(@RequestBody @Valid IssueDto toCreate)
+            throws URISyntaxException {
         IssueDto created = issueService.create(toCreate);
 
         return ResponseEntity.created(new URI("http://localhost:8080/api/issues/" + created.getId())).body(created);
+    }
+
+    @IsNotUnassignedUser
+    @PutMapping("/{id}/move_issue")
+    public ResponseEntity<Void> moveIssue(@RequestBody @Valid MoveIssueDto dto,
+                                          @PathVariable UUID id) {
+
+        UUID targetSprintId = null;
+
+        if (dto.getTargetSprintId() != null) {
+            targetSprintId = UUID.fromString(dto.getTargetSprintId());
+        }
+
+        issueService.moveIssue(id, targetSprintId);
+
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")

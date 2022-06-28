@@ -30,7 +30,7 @@ export enum ISSUE_TYPE {
   EPIC = 'EPIC',
   STORY = 'STORY',
   BUG = 'BUG',
-  TASK = BUG,
+  TASK = 'TASK',
   SUBTASK = 'SUBTASK'
 }
 
@@ -49,3 +49,5 @@ export enum ICON_SIZE {
   XL = 48,
   XXL = 96
 }
+
+export const CURRENT_PROJECT_KEY: string = 'CURRENT_PROJECT';

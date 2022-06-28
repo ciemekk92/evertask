@@ -1,15 +1,20 @@
 import styled from 'styled-components';
-import { StyledIcon } from '../Elements/Icons/Shared.styled';
+import { StyledIcon } from 'Shared/Elements/Icons/Shared.styled';
 import { StyledPriorityBadge } from '../PriorityBadge/PriorityBadge.styled';
 
 export const StyledIssuePanel = styled.div`
   display: flex;
-  padding: 0.8rem 1.2rem;
+  align-items: center;
+  padding: 0.6rem 1.2rem;
   background-color: ${(props) => props.theme.surfaceSecondary};
   border-radius: 0.3rem;
   font-size: 1.6rem;
   transition: all 0.4s ease;
   cursor: pointer;
+
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
 
   & ${StyledIcon}, & ${StyledPriorityBadge} {
     margin-right: 1rem;

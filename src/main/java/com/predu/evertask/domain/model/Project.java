@@ -59,6 +59,10 @@ public class Project extends BaseEntity {
     @OneToMany(mappedBy = "project")
     private Set<Sprint> sprints = new HashSet<>();
 
+    @OneToOne
+    @JoinColumn(name = "active_sprint_id")
+    private Sprint activeSprint;
+
     public void updateFrom(Project source) {
         description = source.getDescription();
         name = source.getName();

@@ -1,9 +1,10 @@
 import { Action, Reducer } from 'redux';
 import { Api } from 'Utils/Api';
 import { isDefined } from 'Utils/isDefined';
-import { PROJECT_METHODOLOGIES } from 'Shared/constants';
+import { CURRENT_PROJECT_KEY, PROJECT_METHODOLOGIES } from 'Shared/constants';
 import { Project } from 'Types/Project';
 import { Issue } from 'Types/Issue';
+import { Sprint } from 'Types/Sprint';
 import { CurrentProjectModel } from 'Models/CurrentProjectModel';
 import { ActionTypes } from './constants';
 import { AppThunkAction } from './store';
@@ -14,6 +15,7 @@ export interface ProjectState {
   selectedProject: Project.ProjectEntity;
   activeMembers: User.UserEntity[];
   sprints: Sprint.SprintEntity[];
+  notCompletedSprints: Sprint.SprintIssuesEntity[];
   lastIssues: Issue.IssueEntity[];
 }
 
@@ -28,13 +30,18 @@ interface SetSelectedProjectAction {
 }
 
 interface SetActiveProjectMembersAction {
-  type: typeof ActionTypes.SET_ACTIVE_PROJECT_MEMBERS;
+  type: typeof ActionTypes.SET_PROJECT_ACTIVE_MEMBERS;
   activeMembers: User.UserEntity[];
 }
 
 interface SetProjectSprints {
   type: typeof ActionTypes.SET_PROJECT_SPRINTS;
   sprints: Sprint.SprintEntity[];
+}
+
+interface SetProjectNotCompletedSprints {
+  type: typeof ActionTypes.SET_NOT_COMPLETED_SPRINTS;
+  notCompletedSprints: Sprint.SprintIssuesEntity[];
 }
 
 interface SetProjectLastIssues {
@@ -52,6 +59,7 @@ export type ProjectActionTypes =
   | SetSelectedProjectAction
   | SetActiveProjectMembersAction
   | SetProjectSprints
+  | SetProjectNotCompletedSprints
   | SetProjectLastIssues
   | SetProjectLoadingAction;
 
@@ -69,10 +77,19 @@ export const actionCreators = {
         const result = await Api.get('projects/organisation');
 
         if (result.status === 200) {
+          const localProject = localStorage.getItem(CURRENT_PROJECT_KEY) as Nullable<Id>;
           const json = await result.json();
 
-          if (json.length) {
-            CurrentProjectModel.currentProjectSubject.next(json[0]);
+          if (json.length && !CurrentProjectModel.currentProjectValue.id) {
+            if (localProject) {
+              const project = json.find((el: Project.ProjectEntity) => localProject === el.id);
+
+              if (project) {
+                CurrentProjectModel.currentProjectSubject.next(project);
+              }
+            } else {
+              CurrentProjectModel.currentProjectSubject.next(json[0]);
+            }
           }
 
           dispatch({
@@ -127,7 +144,7 @@ export const actionCreators = {
           const json = await result.json();
 
           dispatch({
-            type: ActionTypes.SET_ACTIVE_PROJECT_MEMBERS,
+            type: ActionTypes.SET_PROJECT_ACTIVE_MEMBERS,
             activeMembers: json
           });
         } else {
@@ -157,6 +174,34 @@ export const actionCreators = {
           dispatch({
             type: ActionTypes.SET_PROJECT_SPRINTS,
             sprints: json
+          });
+        } else {
+          dispatch({
+            type: ActionTypes.SET_PROJECT_LOADING,
+            isLoading: false
+          });
+        }
+      }
+    },
+  getNotCompletedSprints:
+    (id: Id): AppThunkAction<ProjectActionTypes> =>
+    async (dispatch, getState) => {
+      const appState = getState();
+
+      dispatch({
+        type: ActionTypes.SET_PROJECT_LOADING,
+        isLoading: true
+      });
+
+      if (appState && appState.project) {
+        const result = await Api.get(`projects/${id}/sprints_not_completed`);
+
+        if (result.status === 200) {
+          const json = await result.json();
+
+          dispatch({
+            type: ActionTypes.SET_NOT_COMPLETED_SPRINTS,
+            notCompletedSprints: json
           });
         } else {
           dispatch({
@@ -206,11 +251,13 @@ const initialState: ProjectState = {
     createdAt: '',
     updatedAt: null,
     lastUpdatedAt: '',
+    activeSprint: null,
     id: ''
   },
   organisationProjects: [],
   activeMembers: [],
   sprints: [],
+  notCompletedSprints: [],
   lastIssues: []
 };
 
@@ -237,7 +284,7 @@ export const reducer: Reducer<ProjectState> = (
         isLoading: false,
         organisationProjects: action.organisationProjects
       };
-    case ActionTypes.SET_ACTIVE_PROJECT_MEMBERS:
+    case ActionTypes.SET_PROJECT_ACTIVE_MEMBERS:
       return {
         ...state,
         isLoading: false,
@@ -254,6 +301,12 @@ export const reducer: Reducer<ProjectState> = (
         ...state,
         isLoading: false,
         lastIssues: action.lastIssues
+      };
+    case ActionTypes.SET_NOT_COMPLETED_SPRINTS:
+      return {
+        ...state,
+        isLoading: false,
+        notCompletedSprints: action.notCompletedSprints
       };
     case ActionTypes.SET_PROJECT_LOADING:
       return {

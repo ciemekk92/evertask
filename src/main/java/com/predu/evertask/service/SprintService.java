@@ -1,16 +1,18 @@
 package com.predu.evertask.service;
 
 import com.predu.evertask.domain.dto.sprint.SprintDto;
+import com.predu.evertask.domain.dto.sprint.SprintIssuesDto;
 import com.predu.evertask.domain.dto.sprint.SprintSaveDto;
+import com.predu.evertask.domain.dto.sprint.SprintUpdateDto;
 import com.predu.evertask.domain.mapper.SprintMapper;
 import com.predu.evertask.domain.model.Sprint;
+import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.SprintRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class SprintService {
@@ -27,15 +29,43 @@ public class SprintService {
         return sprintRepository.findAll()
                 .stream()
                 .map(sprintMapper::sprintToSprintDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    public Optional<Sprint> findById(UUID id) {
-        return sprintRepository.findById(id);
+    public List<SprintDto> getProjectSprints(UUID projectId) {
+        return sprintRepository.findAllByProjectIdOrderByOrdinalDesc(projectId)
+                .stream()
+                .map(sprintMapper::sprintToSprintDto)
+                .toList();
     }
 
-    public Sprint save(SprintSaveDto toSave) {
+    public List<SprintIssuesDto> getProjectsNotCompletedSprints(UUID projectId) {
+        return sprintRepository.findAllByProjectIdAndCompletedIsFalseOrderByOrdinalAsc(projectId)
+                .stream()
+                .map(sprintMapper::sprintToSprintIssuesDto)
+                .toList();
+    }
+
+    public Optional<SprintDto> findById(UUID id) {
+        Optional<Sprint> sprint = sprintRepository.findById(id);
+
+        return sprint.map(sprintMapper::sprintToSprintDto);
+    }
+
+    public Sprint create(SprintSaveDto toSave) {
         return sprintRepository.save(sprintMapper.sprintSaveDtoToSprint(toSave));
+    }
+
+    public Sprint update(UUID id, SprintUpdateDto toUpdate) {
+        Optional<Sprint> optionalSprint = sprintRepository.findById(id);
+
+        if (optionalSprint.isEmpty()) {
+            throw new NotFoundException("Sprint not found");
+        }
+
+        Sprint result = sprintMapper.update(optionalSprint.get(), toUpdate);
+
+        return sprintRepository.save(result);
     }
 
     public boolean existsById(UUID id) {

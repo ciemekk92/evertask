@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -16,7 +15,10 @@ public class UserAuthDto extends UserDto {
         super(userDto);
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
-        this.authorities = authorities.stream().map(Role::getAuthority).collect(Collectors.toList());
+        this.authorities = authorities
+                .stream()
+                .map(Role::getAuthority)
+                .toList();
     }
 
     private String accessToken;

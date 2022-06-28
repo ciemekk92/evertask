@@ -36,14 +36,14 @@ public class OrganisationInvitationService {
         return invitationRepository.findAllByUserId(userId)
                 .stream()
                 .map(invitationMapper::organisationInvitationToOrganisationInvitationDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<OrganisationInvitationDto> findAllByOrganisation(UUID organisationId) {
         return invitationRepository.findAllByOrganisationId(organisationId)
                 .stream()
                 .map(invitationMapper::organisationInvitationToOrganisationInvitationDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public OrganisationInvitation create(UUID userId, UUID organisationId, Locale locale) {

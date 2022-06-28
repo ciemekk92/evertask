@@ -13,6 +13,7 @@ public class IssueDto extends BaseDto {
     private String title;
     private int estimateStoryPoints;
     private int estimateHours;
+    private int key;
     private String pullRequestUrl;
     private String status;
     private String type;

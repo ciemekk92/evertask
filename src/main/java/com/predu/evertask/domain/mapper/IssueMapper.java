@@ -6,8 +6,8 @@ import com.predu.evertask.domain.dto.issue.IssueDto;
 import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
 import com.predu.evertask.domain.model.Issue;
 import com.predu.evertask.repository.IssueRepository;
+import com.predu.evertask.repository.SprintRepository;
 import com.predu.evertask.repository.UserRepository;
-import com.predu.evertask.service.SprintService;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,7 +22,7 @@ public abstract class IssueMapper {
     protected IssueRepository issueRepository;
 
     @Autowired
-    private SprintService sprintService;
+    private SprintRepository sprintRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -67,7 +67,7 @@ public abstract class IssueMapper {
         }
 
         if (issueDto.getSprintId() != null) {
-            issue.setSprint(sprintService.findById(uuidMapper.stringToUUID(issueDto.getSprintId())).orElse(null));
+            issue.setSprint(sprintRepository.findById(uuidMapper.stringToUUID(issueDto.getSprintId())).orElse(null));
         }
     }
 

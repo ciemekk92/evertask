@@ -11,11 +11,20 @@
     "mainPage": "Main page",
     "cancel": "Cancel",
     "submit": "Submit",
+    "view": "View",
+    "edit": "Edit",
     "accept": "Accept",
     "decline": "Decline",
     "sentAt": "Sent at:",
     "updatedAt": "Updated at",
     "notUpdated": "Not updated yet",
+    "active": "Active",
+    "setActive": "Set active",
+    "yes": "Yes",
+    "no": "No",
+    "storyPoints": "Story points",
+    "issueStatus": "Issue status",
+    "issuePriority": "Issue priority",
     "issueType": {
       "BUG": "Bug",
       "EPIC": "Epic",
@@ -23,6 +32,10 @@
       "TASK": "Task",
       "SUBTASK": "Subtask"
     }
+  },
+  "error": {
+    "title": "Oops! Something went wrong! :(",
+    "content": "Try refreshing the page, if it doesn't help, please contact page administrator."
   },
   "login": {
     "title": "Login",
@@ -86,7 +99,7 @@
       "dashboard": "Dashboard",
       "myOrganisation": "My organisation",
       "projects": "Projects",
-      "activeSprint": "Active sprint",
+      "board": "Board",
       "backlog": "Backlog",
       "statistics": "Statistics"
     }
@@ -177,7 +190,8 @@
     "noSprints": "No sprints created yet.",
     "noIssues": "No issues created yet",
     "lastIssues": "Newest issues",
-    "addSprint": "Add sprint"
+    "addSprint": "Add sprint",
+    "setActiveSprintConfirmation": "Are you sure you want to set this sprint as current? This operation will change the content of the board."
   },
   "priorityBadge": {
     "label": {
@@ -208,5 +222,29 @@
         "required": "Finish date is required"
       }
     }
+  },
+  "sprintPage": {
+    "infoTitle": "Information",
+    "createdAt": "Created at: ",
+    "startDate": "Start date: ",
+    "finishDate": "Finish date: ",
+    "description": "Description: "
+  },
+  "board": {
+    "title": "{{methodology}} board",
+    "noCurrentSprint": "The board is empty, because there is no sprint currently active."
+  },
+  "backlog": {
+    "title": "Backlog",
+    "emptySection": "No issues",
+    "sprint": {
+      "title": "Sprint {{ordinal}}"
+    },
+    "unassigned": {
+      "title": "Unassigned issues"
+    }
+  },
+  "confirmationDialog": {
+    "header": "Are you sure?"
   }
 }

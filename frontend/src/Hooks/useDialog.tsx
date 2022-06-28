@@ -8,14 +8,23 @@ interface DialogProps {
 }
 
 type DialogModes = 'ADD' | 'EDIT' | 'CONFIRM';
+type Params = { [x: string]: any };
 
 export function useDialog<T extends DialogModes>(initialMode: T) {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [dialogMode, setDialogMode] = React.useState<T>(initialMode);
+  const [params, setParams] = React.useState<Params>({});
 
-  const handleClose = () => setIsOpen(false);
+  const handleClose = () => {
+    setParams({});
+    setIsOpen(false);
+  };
 
-  const handleOpen = (openMode: T) => {
+  const handleOpen = (openMode: T, newParams?: Params) => {
+    if (newParams) {
+      setParams(newParams);
+    }
+
     setDialogMode(openMode);
     setIsOpen(true);
   };
@@ -23,6 +32,7 @@ export function useDialog<T extends DialogModes>(initialMode: T) {
   return {
     dialogMode,
     isOpen,
+    params,
     handleClose,
     handleOpen
   };

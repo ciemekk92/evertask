@@ -4,27 +4,57 @@ import com.predu.evertask.domain.dto.issue.IssueDto;
 import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
 import com.predu.evertask.domain.mapper.IssueMapper;
 import com.predu.evertask.domain.model.Issue;
+import com.predu.evertask.domain.model.Sprint;
+import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.IssueRepository;
+import com.predu.evertask.repository.SprintRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
 public class IssueService {
 
     private final IssueRepository issueRepository;
+    private final SprintRepository sprintRepository;
     private final IssueMapper issueMapper;
 
     public List<IssueDto> findAll() {
         return issueRepository.findAll()
                 .stream()
                 .map(issueMapper::issueToIssueDto)
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    public List<IssueDto> findAllByProjectId(UUID projectId) {
+        return issueRepository.findAllByProjectId(projectId)
+                .stream()
+                .map(issueMapper::issueToIssueDto)
+                .toList();
+    }
+
+    public List<IssueDto> getProjectLastIssues(UUID projectId) {
+        return issueRepository.findTop10ByProjectIdOrderByCreatedAtDesc(projectId)
+                .stream()
+                .map(issueMapper::issueToIssueDto)
+                .toList();
+    }
+
+    public List<IssueDto> findAllBySprintId(UUID sprintId) {
+        return issueRepository.findAllBySprintId(sprintId)
+                .stream()
+                .map(issueMapper::issueToIssueDto)
+                .toList();
+    }
+
+    public List<IssueDto> findAllUnassignedByProjectId(UUID projectId) {
+        return issueRepository.findAllByProjectIdAndSprintIsNull(projectId)
+                .stream()
+                .sorted(Comparator.comparingInt(Issue::getKey))
+                .map(issueMapper::issueToIssueDto)
+                .toList();
     }
 
     public Optional<Issue> findById(UUID id) {
@@ -35,7 +65,7 @@ public class IssueService {
         return issueRepository.findAllByAssigneeId(id)
                 .stream()
                 .map(issueMapper::issueToIssueDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public IssueDto create(IssueDto toSave) {
@@ -48,8 +78,39 @@ public class IssueService {
         return issueRepository.save(issueMapper.issueUpdateDtoToIssue(toUpdate));
     }
 
+    public Map<String, List<IssueDto>> mapIssuesByStatus(List<IssueDto> issues) {
+        Map<String, List<IssueDto>> map = new HashMap<>();
+
+        issues.forEach(issue -> {
+            var list = map.get(issue.getStatus());
+            if (list == null) {
+                list = new ArrayList<>();
+            }
+
+            list.add(issue);
+            map.put(issue.getStatus(), list);
+        });
+
+        return map;
+    }
+
     public boolean existsById(UUID id) {
         return issueRepository.existsById(id);
+    }
+
+    public void moveIssue(UUID issueId, UUID targetSprintId) {
+
+        Issue issue = issueRepository.findById(issueId)
+                .orElseThrow(() -> new NotFoundException(Issue.class, issueId));
+
+        Sprint sprint = null;
+
+        if (targetSprintId != null) {
+            sprint = sprintRepository.findById(targetSprintId).orElse(null);
+        }
+
+        issue.setSprint(sprint);
+        issueRepository.save(issue);
     }
 
     public void delete(Issue toDelete) {

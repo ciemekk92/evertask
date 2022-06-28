@@ -13,9 +13,9 @@ export const StyledButtonFilled = styled.button<Props>`
       ? props.backgroundColor
       : props.theme.primaryDark};
   border: none;
-  font-size: 1.8rem;
-  min-height: 3.6rem;
-  min-width: 20rem;
+  font-size: 1.6rem;
+  min-height: 3.2rem;
+  min-width: 16rem;
   padding: 0 0.5rem;
   border-radius: 0.5rem;
   color: ${(props) => (props.disabled ? props.theme.disabledText : props.theme.textOnPrimary)};

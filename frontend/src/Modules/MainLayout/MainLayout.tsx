@@ -7,15 +7,16 @@ import { LandingPage } from 'Modules/LandingPage';
 import { Login, Signup, SignupConfirmation, SuccessNotification } from 'Modules/Auth';
 import { Dashboard } from 'Modules/Dashboard';
 import { ProjectPage } from 'Modules/ProjectPage';
+import { Board } from 'Modules/Board';
+import { Backlog } from 'Modules/Backlog';
 import { UnassignedUserPage } from 'Modules/UnassignedUserPage';
 import { OrganisationPage } from 'Modules/OrganisationPage';
+import { SprintPage } from 'Modules/SprintPage';
 import { UserModel, IUserModel } from 'Models/UserModel';
 import { actionCreators } from 'Stores/User';
 import { NOTIFICATION_TYPES } from 'Shared/constants';
 import { PermissionCheck } from 'Utils/PermissionCheck';
-import { AppHeader } from './components/AppHeader/AppHeader';
-import { AppSidebar } from './components/AppSidebar/AppSidebar';
-import { AppMainWindow } from './components/AppMainWindow/AppMainWindow';
+import { AppHeader, AppMainWindow, AppSidebar } from './components';
 import { HorizontalWrapper, LayoutWrapper } from './MainLayout.styled';
 
 export const MainLayout = (): JSX.Element => {
@@ -31,9 +32,13 @@ export const MainLayout = (): JSX.Element => {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    UserModel.currentUser.subscribe((user: IUserModel) => {
+    const subscription = UserModel.currentUser.subscribe((user: IUserModel) => {
       setCurrentUser(user);
     });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [UserModel.currentUser]);
 
   React.useEffect(() => {
@@ -50,6 +55,9 @@ export const MainLayout = (): JSX.Element => {
           <ReactRoutes>
             <Route path={'/'} element={<Dashboard />} />
             <Route path={'/project/:id'} element={<ProjectPage />} />
+            <Route path={'/sprint/:id'} element={<SprintPage />} />
+            <Route path={'/board'} element={<Board />} />
+            <Route path={'/backlog'} element={<Backlog />} />
             <Route path={'/organisation'} element={<OrganisationPage />} />
           </ReactRoutes>
         </GlobalErrorBoundary>

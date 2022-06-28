@@ -10,6 +10,7 @@ import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Mapper(uses = UUIDMapper.class, componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public abstract class ProjectMapper {
@@ -17,8 +18,12 @@ public abstract class ProjectMapper {
     @Autowired
     private IssueRepository issueRepository;
 
+    @Autowired
+    private SprintMapper sprintMapper;
+
     @Mapping(target = "issues", ignore = true)
     @Mapping(target = "organisation", ignore = true)
+    @Mapping(target = "activeSprint", ignore = true)
     public abstract Project projectCreateDtoToProject(ProjectCreateDto projectCreateDto);
 
     public abstract Project update(@MappingTarget Project project, ProjectUpdateDto projectUpdateDto);
@@ -31,19 +36,32 @@ public abstract class ProjectMapper {
 
     @AfterMapping
     protected void afterProjectToProjectDto(Project project, @MappingTarget ProjectDto dto) {
-        Issue issue = issueRepository.findTopByOrderByUpdatedAtDesc();
-        if (issue == null) {
+        Optional<Issue> topByOrderByUpdatedAtDesc = issueRepository.findTopByProjectIdOrderByUpdatedAtDesc(project.getId());
+        Optional<Issue> topByOrderByCreatedAtDesc = issueRepository.findTopByProjectIdOrderByCreatedAtDesc(project.getId());
+
+        if (topByOrderByUpdatedAtDesc.isEmpty() || topByOrderByCreatedAtDesc.isEmpty()) {
             dto.setLastUpdatedAt(project.getUpdatedAt());
         } else {
-            Date lastUpdatedIssueDate = issue.getUpdatedAt();
+            Date lastUpdatedIssueDate = topByOrderByUpdatedAtDesc.get().getUpdatedAt();
+            Date lastCreatedIssueDate = topByOrderByCreatedAtDesc.get().getCreatedAt();
 
             if (lastUpdatedIssueDate != null) {
-                if (lastUpdatedIssueDate.after(project.getUpdatedAt())) {
+                if (lastUpdatedIssueDate.after(lastCreatedIssueDate)) {
                     dto.setLastUpdatedAt(lastUpdatedIssueDate);
+                }
+            } else if (project.getUpdatedAt() != null) {
+                if (lastCreatedIssueDate.after(project.getUpdatedAt())) {
+                    dto.setLastUpdatedAt(lastCreatedIssueDate);
                 } else {
                     dto.setLastUpdatedAt(project.getUpdatedAt());
                 }
+            } else {
+                dto.setLastUpdatedAt(lastCreatedIssueDate);
             }
+        }
+
+        if (project.getActiveSprint() != null) {
+            dto.setActiveSprint(sprintMapper.sprintToSprintDto(project.getActiveSprint()));
         }
     }
 }

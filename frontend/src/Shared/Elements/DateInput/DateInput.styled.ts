@@ -9,7 +9,7 @@ export const DateInput = styled(DateField)`
   color: ${(props) => props.theme.primaryText};
   border-radius: 0.3rem;
   padding: 0.5rem 1rem;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   outline: none;
   color-scheme: ${(props) => props.theme.colorScheme};
 

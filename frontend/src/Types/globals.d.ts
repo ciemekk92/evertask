@@ -16,6 +16,9 @@ declare global {
     createdAt: string;
     updatedAt: Nullable<string>;
   };
+  export type RouterParams = {
+    id: Id;
+  };
 }
 
 export {};

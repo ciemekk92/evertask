@@ -1,51 +1,37 @@
 package com.predu.evertask.service;
 
-import com.predu.evertask.domain.dto.auth.UserDto;
-import com.predu.evertask.domain.dto.issue.IssueDto;
 import com.predu.evertask.domain.dto.project.ProjectCreateDto;
 import com.predu.evertask.domain.dto.project.ProjectDto;
 import com.predu.evertask.domain.dto.project.ProjectUpdateDto;
-import com.predu.evertask.domain.dto.sprint.SprintDto;
-import com.predu.evertask.domain.mapper.IssueMapper;
+import com.predu.evertask.domain.dto.sprint.EndSprintDto;
+import com.predu.evertask.domain.dto.sprint.StartSprintDto;
 import com.predu.evertask.domain.mapper.ProjectMapper;
-import com.predu.evertask.domain.mapper.SprintMapper;
-import com.predu.evertask.domain.mapper.UserViewMapper;
-import com.predu.evertask.domain.model.Project;
-import com.predu.evertask.domain.model.Role;
-import com.predu.evertask.domain.model.User;
+import com.predu.evertask.domain.model.*;
+import com.predu.evertask.exception.InvalidOperationException;
 import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.IssueRepository;
 import com.predu.evertask.repository.ProjectRepository;
 import com.predu.evertask.repository.SprintRepository;
-import com.predu.evertask.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final UserRepository userRepository;
+    private final ProjectMapper projectMapper;
+    private final RoleService roleService;
     private final SprintRepository sprintRepository;
     private final IssueRepository issueRepository;
-    private final UserViewMapper userViewMapper;
-    private final ProjectMapper projectMapper;
-    private final SprintMapper sprintMapper;
-    private final IssueMapper issueMapper;
-    private final RoleService roleService;
 
     public List<ProjectDto> findAll() {
         return projectRepository.findAll()
                 .stream()
                 .map(projectMapper::projectToProjectDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public Optional<ProjectDto> findById(UUID id) {
@@ -62,28 +48,7 @@ public class ProjectService {
         return projectRepository.findAllByOrganisationId(organisationId)
                 .stream()
                 .map(projectMapper::projectToProjectDto)
-                .collect(Collectors.toList());
-    }
-
-    public List<UserDto> getProjectActiveMembers(UUID projectId) {
-        return userRepository.findActiveProjectMembers(projectId)
-                .stream()
-                .map(userViewMapper::toUserDto)
-                .collect(Collectors.toList());
-    }
-
-    public List<SprintDto> getProjectSprints(UUID projectId) {
-        return sprintRepository.findAllByProjectIdOrderByOrdinalDesc(projectId)
-                .stream()
-                .map(sprintMapper::sprintToSprintDto)
-                .collect(Collectors.toList());
-    }
-
-    public List<IssueDto> getProjectLastIssues(UUID projectId) {
-        return issueRepository.findTop10ByProjectIdOrderByCreatedAtDesc(projectId)
-                .stream()
-                .map(issueMapper::issueToIssueDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public Project create(ProjectCreateDto toSave, User user) {
@@ -102,16 +67,49 @@ public class ProjectService {
         return project;
     }
 
-    public Project update(UUID id, ProjectUpdateDto toSave) {
-        Optional<Project> optionalProject = projectRepository.findById(id);
-
-        if (optionalProject.isEmpty()) {
-            throw new NotFoundException("Project not found");
-        }
-
-        Project result = projectMapper.update(optionalProject.get(), toSave);
+    public Project update(UUID id, ProjectUpdateDto toUpdate) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(Project.class, id));
+        Project result = projectMapper.update(project, toUpdate);
 
         return projectRepository.save(result);
+    }
+
+    public void startSprint(UUID projectId, StartSprintDto dto) throws InvalidOperationException {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new NotFoundException(Project.class, projectId));
+        Sprint sprint = sprintRepository.findById(UUID.fromString(dto.getSprintId()))
+                .orElseThrow(() -> new NotFoundException(Sprint.class, dto.getSprintId()));
+
+        project.setActiveSprint(sprint);
+
+        projectRepository.save(project);
+    }
+
+    public void endSprint(UUID projectId, EndSprintDto dto) throws InvalidOperationException {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new NotFoundException(Project.class, projectId));
+        Sprint sprint = sprintRepository.findById(UUID.fromString(dto.getSprintId()))
+                .orElseThrow(() -> new NotFoundException(Sprint.class, dto.getSprintId()));
+
+        if (sprint.isCompleted()) {
+            throw new InvalidOperationException("completed");
+        }
+
+        project.setActiveSprint(null);
+        sprint.setCompleted(true);
+
+        projectRepository.save(project);
+        sprintRepository.save(sprint);
+
+        Optional<Sprint> sprintToMoveTo = sprintRepository.findById(UUID.fromString(dto.getSprintIdToMoveTo()));
+
+        Set<Issue> sprintIssues = sprint.getIssues();
+        for (Issue issue : sprintIssues) {
+            issue.setSprint(sprintToMoveTo.orElse(null));
+        }
+
+        issueRepository.saveAll(sprintIssues);
     }
 
     public boolean existsById(UUID id) {

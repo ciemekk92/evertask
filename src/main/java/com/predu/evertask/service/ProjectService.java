@@ -3,13 +3,13 @@ package com.predu.evertask.service;
 import com.predu.evertask.domain.dto.project.ProjectCreateDto;
 import com.predu.evertask.domain.dto.project.ProjectDto;
 import com.predu.evertask.domain.dto.project.ProjectUpdateDto;
-import com.predu.evertask.domain.dto.project.SetCurrentSprintDto;
+import com.predu.evertask.domain.dto.sprint.EndSprintDto;
+import com.predu.evertask.domain.dto.sprint.StartSprintDto;
 import com.predu.evertask.domain.mapper.ProjectMapper;
-import com.predu.evertask.domain.model.Project;
-import com.predu.evertask.domain.model.Role;
-import com.predu.evertask.domain.model.Sprint;
-import com.predu.evertask.domain.model.User;
+import com.predu.evertask.domain.model.*;
+import com.predu.evertask.exception.InvalidOperationException;
 import com.predu.evertask.exception.NotFoundException;
+import com.predu.evertask.repository.IssueRepository;
 import com.predu.evertask.repository.ProjectRepository;
 import com.predu.evertask.repository.SprintRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +25,7 @@ public class ProjectService {
     private final ProjectMapper projectMapper;
     private final RoleService roleService;
     private final SprintRepository sprintRepository;
+    private final IssueRepository issueRepository;
 
     public List<ProjectDto> findAll() {
         return projectRepository.findAll()
@@ -67,33 +68,48 @@ public class ProjectService {
     }
 
     public Project update(UUID id, ProjectUpdateDto toUpdate) {
-        Optional<Project> optionalProject = projectRepository.findById(id);
-
-        if (optionalProject.isEmpty()) {
-            throw new NotFoundException("Project not found");
-        }
-
-        Project result = projectMapper.update(optionalProject.get(), toUpdate);
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(Project.class, id));
+        Project result = projectMapper.update(project, toUpdate);
 
         return projectRepository.save(result);
     }
 
-    public Project setProjectsCurrentSprint(UUID projectId, SetCurrentSprintDto dto) {
-        Optional<Project> optionalProject = projectRepository.findById(projectId);
-        Optional<Sprint> optionalSprint = sprintRepository.findById(UUID.fromString(dto.getSprintId()));
+    public void startSprint(UUID projectId, StartSprintDto dto) throws InvalidOperationException {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new NotFoundException(Project.class, projectId));
+        Sprint sprint = sprintRepository.findById(UUID.fromString(dto.getSprintId()))
+                .orElseThrow(() -> new NotFoundException(Sprint.class, dto.getSprintId()));
 
-        if (optionalProject.isEmpty()) {
-            throw new NotFoundException("Project not found");
+        project.setActiveSprint(sprint);
+
+        projectRepository.save(project);
+    }
+
+    public void endSprint(UUID projectId, EndSprintDto dto) throws InvalidOperationException {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new NotFoundException(Project.class, projectId));
+        Sprint sprint = sprintRepository.findById(UUID.fromString(dto.getSprintId()))
+                .orElseThrow(() -> new NotFoundException(Sprint.class, dto.getSprintId()));
+
+        if (sprint.isCompleted()) {
+            throw new InvalidOperationException("completed");
         }
 
-        if (optionalSprint.isEmpty()) {
-            throw new NotFoundException("Sprint not found");
+        project.setActiveSprint(null);
+        sprint.setCompleted(true);
+
+        projectRepository.save(project);
+        sprintRepository.save(sprint);
+
+        Optional<Sprint> sprintToMoveTo = sprintRepository.findById(UUID.fromString(dto.getSprintIdToMoveTo()));
+
+        Set<Issue> sprintIssues = sprint.getIssues();
+        for (Issue issue : sprintIssues) {
+            issue.setSprint(sprintToMoveTo.orElse(null));
         }
 
-        Project project = optionalProject.get();
-        project.setActiveSprint(optionalSprint.get());
-
-        return projectRepository.save(project);
+        issueRepository.saveAll(sprintIssues);
     }
 
     public boolean existsById(UUID id) {

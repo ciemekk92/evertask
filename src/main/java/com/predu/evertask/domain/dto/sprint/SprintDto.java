@@ -14,6 +14,7 @@ public class SprintDto extends BaseDto {
     private String projectId;
     private int ordinal;
     private String description;
+    private boolean isCompleted;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss Z")
     private Date startDate;

@@ -2,6 +2,7 @@ import { Action, Reducer } from 'redux';
 import { Api } from 'Utils/Api';
 import { isDefined } from 'Utils/isDefined';
 import { Issue } from 'Types/Issue';
+import { Sprint } from 'Types/Sprint';
 import { ActionTypes } from './constants';
 import { AppThunkAction } from './store';
 
@@ -130,6 +131,7 @@ const initialState: SprintState = {
   sprintIssues: [],
   activeMembers: [],
   selectedSprint: {
+    completed: false,
     id: '',
     createdAt: '',
     updatedAt: '',

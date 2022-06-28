@@ -5,6 +5,7 @@ declare namespace Issue {
     readonly id: Id;
     readonly createdAt: string;
     readonly updatedAt: string;
+    key: number;
     title: string;
     estimateStoryPoints: number;
     estimateHours: number;

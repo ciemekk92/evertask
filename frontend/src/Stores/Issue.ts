@@ -9,6 +9,7 @@ export interface IssueState {
   isLoading: boolean;
   assignedIssues: Issue.IssueEntity[];
   projectIssues: Issue.IssueEntity[];
+  issuesUnassignedToSprint: Issue.IssueEntity[];
 }
 
 interface SetAssignedIssuesAction {
@@ -21,6 +22,11 @@ interface SetProjectIssuesAction {
   projectIssues: Issue.IssueEntity[];
 }
 
+interface SetIssuesUnassignedToSprintAction {
+  type: typeof ActionTypes.SET_ISSUES_UNASSIGNED_TO_SPRINT;
+  issuesUnassignedToSprint: Issue.IssueEntity[];
+}
+
 interface SetIssueLoadingAction {
   type: typeof ActionTypes.SET_ISSUE_LOADING;
   isLoading: boolean;
@@ -29,6 +35,7 @@ interface SetIssueLoadingAction {
 export type IssueActionTypes =
   | SetAssignedIssuesAction
   | SetProjectIssuesAction
+  | SetIssuesUnassignedToSprintAction
   | SetIssueLoadingAction;
 
 export const actionCreators = {
@@ -85,13 +92,42 @@ export const actionCreators = {
           });
         }
       }
+    },
+  getIssuesUnassignedToSprint:
+    (projectId: Id): AppThunkAction<IssueActionTypes> =>
+    async (dispatch, getState) => {
+      const appState = getState();
+
+      dispatch({
+        type: ActionTypes.SET_ISSUE_LOADING,
+        isLoading: true
+      });
+
+      if (appState && appState.issue) {
+        const result = await Api.get(`projects/${projectId}/unassigned_issues`);
+
+        if (result.status === 200) {
+          const json = await result.json();
+
+          dispatch({
+            type: ActionTypes.SET_ISSUES_UNASSIGNED_TO_SPRINT,
+            issuesUnassignedToSprint: json
+          });
+        } else {
+          dispatch({
+            type: ActionTypes.SET_ISSUE_LOADING,
+            isLoading: false
+          });
+        }
+      }
     }
 };
 
 const initialState: IssueState = {
   isLoading: false,
   assignedIssues: [],
-  projectIssues: []
+  projectIssues: [],
+  issuesUnassignedToSprint: []
 };
 
 export const reducer: Reducer<IssueState> = (
@@ -116,6 +152,12 @@ export const reducer: Reducer<IssueState> = (
         ...state,
         isLoading: false,
         projectIssues: action.projectIssues
+      };
+    case ActionTypes.SET_ISSUES_UNASSIGNED_TO_SPRINT:
+      return {
+        ...state,
+        isLoading: false,
+        issuesUnassignedToSprint: action.issuesUnassignedToSprint
       };
     case ActionTypes.SET_ISSUE_LOADING:
       return {

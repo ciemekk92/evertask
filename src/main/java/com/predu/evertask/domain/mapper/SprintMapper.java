@@ -1,12 +1,16 @@
 package com.predu.evertask.domain.mapper;
 
 import com.predu.evertask.domain.dto.sprint.SprintDto;
+import com.predu.evertask.domain.dto.sprint.SprintIssuesDto;
 import com.predu.evertask.domain.dto.sprint.SprintSaveDto;
 import com.predu.evertask.domain.dto.sprint.SprintUpdateDto;
+import com.predu.evertask.domain.model.Issue;
 import com.predu.evertask.domain.model.Sprint;
 import com.predu.evertask.repository.ProjectRepository;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Comparator;
 
 @Mapper(uses = UUIDMapper.class, componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public abstract class SprintMapper {
@@ -16,6 +20,9 @@ public abstract class SprintMapper {
 
     @Autowired
     private UUIDMapper uuidMapper;
+
+    @Autowired
+    private IssueMapper issueMapper;
 
     @Mapping(target = "issues", ignore = true)
     @Mapping(target = "ordinal", ignore = true)
@@ -30,11 +37,27 @@ public abstract class SprintMapper {
     @Mapping(target = "projectId", ignore = true)
     public abstract SprintDto sprintToSprintDto(Sprint sprint);
 
+    @Mapping(target = "projectId", ignore = true)
+    public abstract SprintIssuesDto sprintToSprintIssuesDto(Sprint sprint);
+
     @AfterMapping
     public void afterSprintToSprintDto(Sprint sprint, @MappingTarget SprintDto sprintDto) {
         if (sprint.getProject() != null) {
             sprintDto.setProjectId(uuidMapper.uuidToString(sprint.getProject().getId()));
         }
+    }
+
+    @AfterMapping
+    public void afterSprintToSprintIssuesDto(Sprint source, @MappingTarget SprintIssuesDto target) {
+        if (source.getProject() != null) {
+            target.setProjectId(uuidMapper.uuidToString(source.getProject().getId()));
+        }
+
+        target.setIssues(source.getIssues()
+                .stream()
+                .sorted(Comparator.comparingInt(Issue::getKey))
+                .map(issueMapper::issueToIssueDto)
+                .toList());
     }
 
     @AfterMapping

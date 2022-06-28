@@ -29,6 +29,7 @@ export const StyledHorizontalContainer = styled.div`
 
 export const StyledVerticalContainer = styled.div`
   display: flex;
+  flex-direction: column;
   width: 100%;
   margin-top: 1.6rem;
 `;

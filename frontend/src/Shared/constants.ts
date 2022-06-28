@@ -49,3 +49,5 @@ export enum ICON_SIZE {
   XL = 48,
   XXL = 96
 }
+
+export const CURRENT_PROJECT_KEY: string = 'CURRENT_PROJECT';

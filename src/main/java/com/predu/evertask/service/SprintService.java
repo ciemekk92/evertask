@@ -1,6 +1,7 @@
 package com.predu.evertask.service;
 
 import com.predu.evertask.domain.dto.sprint.SprintDto;
+import com.predu.evertask.domain.dto.sprint.SprintIssuesDto;
 import com.predu.evertask.domain.dto.sprint.SprintSaveDto;
 import com.predu.evertask.domain.dto.sprint.SprintUpdateDto;
 import com.predu.evertask.domain.mapper.SprintMapper;
@@ -35,6 +36,13 @@ public class SprintService {
         return sprintRepository.findAllByProjectIdOrderByOrdinalDesc(projectId)
                 .stream()
                 .map(sprintMapper::sprintToSprintDto)
+                .toList();
+    }
+
+    public List<SprintIssuesDto> getProjectsNotCompletedSprints(UUID projectId) {
+        return sprintRepository.findAllByProjectIdAndCompletedIsFalseOrderByOrdinalAsc(projectId)
+                .stream()
+                .map(sprintMapper::sprintToSprintIssuesDto)
                 .toList();
     }
 

@@ -5,6 +5,7 @@ import { Heading6 } from 'Shared/Typography';
 import { InfoField } from 'Shared/Elements/InfoField';
 import { ButtonFilled } from 'Shared/Elements/Buttons';
 import { formatDateForDisplay } from 'Utils/formatDate';
+import { Sprint } from 'Types/Sprint';
 
 interface Props {
   sprint: Sprint.SprintEntity;

@@ -33,9 +33,15 @@ export const Board = () => {
   });
 
   React.useEffect(() => {
-    CurrentProjectModel.currentProject.subscribe((project: Project.ProjectEntity) => {
-      setCurrentProject(project);
-    });
+    const subscription = CurrentProjectModel.currentProject.subscribe(
+      (project: Project.ProjectEntity) => {
+        setCurrentProject(project);
+      }
+    );
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [CurrentProjectModel.currentProject]);
 
   const boardTitle = t('board.title', {

@@ -6,6 +6,7 @@ import { ApplicationState } from 'Stores/store';
 import { Project } from 'Types/Project';
 import { CurrentProjectModel } from 'Models/CurrentProjectModel';
 import { StyledFieldContainer, StyledLabel } from './CurrentProjectField.styled';
+import { CURRENT_PROJECT_KEY } from '../../Shared/constants';
 
 export const CurrentProjectField = () => {
   const [currentProjectValue, setCurrentProjectValue] = React.useState<Id>('');
@@ -16,18 +17,26 @@ export const CurrentProjectField = () => {
   );
 
   React.useEffect(() => {
-    CurrentProjectModel.currentProject.subscribe((project: Project.ProjectEntity) => {
-      setCurrentProjectValue(project.id);
-    });
+    const subscription = CurrentProjectModel.currentProject.subscribe(
+      (project: Project.ProjectEntity) => {
+        setCurrentProjectValue(project.id);
+      }
+    );
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [CurrentProjectModel.currentProject]);
 
   const handleSelectingCurrentProject = (value: string) => {
     const project = organisationProjects.find(
       (project: Project.ProjectEntity) => project.id === value
     );
+
     if (project) {
       CurrentProjectModel.currentProjectSubject.next(project);
       setCurrentProjectValue(project.id);
+      localStorage.setItem(CURRENT_PROJECT_KEY, project.id);
     }
   };
 

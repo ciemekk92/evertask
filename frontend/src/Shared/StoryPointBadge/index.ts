@@ -1,0 +1,1 @@
+export { StoryPointBadge } from './StoryPointBadge';

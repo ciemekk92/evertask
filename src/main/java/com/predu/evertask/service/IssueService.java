@@ -4,7 +4,10 @@ import com.predu.evertask.domain.dto.issue.IssueDto;
 import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
 import com.predu.evertask.domain.mapper.IssueMapper;
 import com.predu.evertask.domain.model.Issue;
+import com.predu.evertask.domain.model.Sprint;
+import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.IssueRepository;
+import com.predu.evertask.repository.SprintRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,7 @@ import java.util.*;
 public class IssueService {
 
     private final IssueRepository issueRepository;
+    private final SprintRepository sprintRepository;
     private final IssueMapper issueMapper;
 
     public List<IssueDto> findAll() {
@@ -41,6 +45,14 @@ public class IssueService {
     public List<IssueDto> findAllBySprintId(UUID sprintId) {
         return issueRepository.findAllBySprintId(sprintId)
                 .stream()
+                .map(issueMapper::issueToIssueDto)
+                .toList();
+    }
+
+    public List<IssueDto> findAllUnassignedByProjectId(UUID projectId) {
+        return issueRepository.findAllByProjectIdAndSprintIsNull(projectId)
+                .stream()
+                .sorted(Comparator.comparingInt(Issue::getKey))
                 .map(issueMapper::issueToIssueDto)
                 .toList();
     }
@@ -84,6 +96,21 @@ public class IssueService {
 
     public boolean existsById(UUID id) {
         return issueRepository.existsById(id);
+    }
+
+    public void moveIssue(UUID issueId, UUID targetSprintId) {
+
+        Issue issue = issueRepository.findById(issueId)
+                .orElseThrow(() -> new NotFoundException(Issue.class, issueId));
+
+        Sprint sprint = null;
+
+        if (targetSprintId != null) {
+            sprint = sprintRepository.findById(targetSprintId).orElse(null);
+        }
+
+        issue.setSprint(sprint);
+        issueRepository.save(issue);
     }
 
     public void delete(Issue toDelete) {

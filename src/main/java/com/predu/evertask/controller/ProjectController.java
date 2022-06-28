@@ -8,10 +8,13 @@ import com.predu.evertask.domain.dto.issue.IssueDto;
 import com.predu.evertask.domain.dto.project.ProjectCreateDto;
 import com.predu.evertask.domain.dto.project.ProjectDto;
 import com.predu.evertask.domain.dto.project.ProjectUpdateDto;
-import com.predu.evertask.domain.dto.project.SetCurrentSprintDto;
+import com.predu.evertask.domain.dto.sprint.EndSprintDto;
 import com.predu.evertask.domain.dto.sprint.SprintDto;
+import com.predu.evertask.domain.dto.sprint.SprintIssuesDto;
+import com.predu.evertask.domain.dto.sprint.StartSprintDto;
 import com.predu.evertask.domain.model.Project;
 import com.predu.evertask.domain.model.User;
+import com.predu.evertask.exception.InvalidOperationException;
 import com.predu.evertask.service.IssueService;
 import com.predu.evertask.service.ProjectService;
 import com.predu.evertask.service.SprintService;
@@ -77,6 +80,14 @@ public class ProjectController {
     }
 
     @IsNotUnassignedUser
+    @GetMapping("/{id}/sprints_not_completed")
+    public ResponseEntity<List<SprintIssuesDto>> getProjectsNotCompletedSprints(@PathVariable UUID id) {
+        var sprints = sprintService.getProjectsNotCompletedSprints(id);
+
+        return ResponseEntity.ok(sprints);
+    }
+
+    @IsNotUnassignedUser
     @GetMapping("/{id}/last_issues")
     public ResponseEntity<List<IssueDto>> getProjectLastIssues(@PathVariable UUID id) {
         var issues = issueService.getProjectLastIssues(id);
@@ -92,11 +103,28 @@ public class ProjectController {
         return ResponseEntity.ok(issues);
     }
 
+    @IsNotUnassignedUser
+    @GetMapping("/{id}/unassigned_issues")
+    public ResponseEntity<List<IssueDto>> getIssuesUnassignedToSprint(@PathVariable UUID id) {
+        var issues = issueService.findAllUnassignedByProjectId(id);
+
+        return ResponseEntity.ok(issues);
+    }
+
     @IsProjectAdminOrAdmin
-    @PutMapping("/{id}/set_current_sprint")
-    public ResponseEntity<Void> setProjectsCurrentSprint(@PathVariable UUID id,
-                                                         @RequestBody @Valid SetCurrentSprintDto dto) {
-        projectService.setProjectsCurrentSprint(id, dto);
+    @PutMapping("/{id}/start_sprint")
+    public ResponseEntity<Void> startSprint(@PathVariable UUID id,
+                                            @RequestBody @Valid StartSprintDto dto) throws InvalidOperationException {
+        projectService.startSprint(id, dto);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @IsProjectAdminOrAdmin
+    @PutMapping("/{id}/end_sprint")
+    public ResponseEntity<Void> endSprint(@PathVariable UUID id,
+                                          @RequestBody @Valid EndSprintDto dto) throws InvalidOperationException {
+        projectService.endSprint(id, dto);
 
         return ResponseEntity.noContent().build();
     }

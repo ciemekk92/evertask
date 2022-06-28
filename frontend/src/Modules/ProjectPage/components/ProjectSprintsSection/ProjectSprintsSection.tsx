@@ -7,6 +7,7 @@ import { CONFIRMATION_DIALOG_MODES, ConfirmationDialog } from 'Shared/Confirmati
 import { IconButton } from 'Shared/Elements/Buttons';
 import { StyledSectionHeaderRow, StyledSectionWrapper } from 'Shared/PageWrappers';
 import { Heading6 } from 'Shared/Typography';
+import { Sprint } from 'Types/Sprint';
 import { ProjectSprintPanel } from '..';
 
 interface Props {
@@ -27,13 +28,9 @@ export const ProjectSprintsSection = ({
   handleRefreshingProjectState
 }: Props): JSX.Element => {
   const { t } = useTranslation();
-  const confirmationDialogConfig = useDialog<CONFIRMATION_DIALOG_MODES>(
-    CONFIRMATION_DIALOG_MODES.CONFIRM
-  );
-
-  const handleOpeningActivationConfirmationFactory = (id: string) => () => {
-    confirmationDialogConfig.handleOpen(CONFIRMATION_DIALOG_MODES.CONFIRM, { sprintId: id });
-  };
+  // const confirmationDialogConfig = useDialog<CONFIRMATION_DIALOG_MODES>(
+  //   CONFIRMATION_DIALOG_MODES.CONFIRM
+  // );
 
   const renderSprintPanels = (): JSX.Element | JSX.Element[] => {
     if (!sprintsData.length) {
@@ -46,7 +43,6 @@ export const ProjectSprintsSection = ({
         sprint={sprint}
         isActive={sprint.id === activeSprintId}
         handleOpeningEditSprint={handleOpeningEditSprint}
-        handleOpeningActivationConfirmation={handleOpeningActivationConfirmationFactory(sprint.id)}
       />
     ));
   };
@@ -63,15 +59,15 @@ export const ProjectSprintsSection = ({
     return null;
   };
 
-  const handleActivatingSprint = async () => {
-    const result = await Api.put(`projects/${projectId}/set_current_sprint`, {
-      ...confirmationDialogConfig.params
-    });
-
-    if (result.status === 204) {
-      handleRefreshingProjectState(projectId);
-    }
-  };
+  // const handleActivatingSprint = async () => {
+  //   const result = await Api.put(`projects/${projectId}/set_current_sprint`, {
+  //     ...confirmationDialogConfig.params
+  //   });
+  //
+  //   if (result.status === 204) {
+  //     handleRefreshingProjectState(projectId);
+  //   }
+  // };
 
   return (
     <React.Fragment>
@@ -82,15 +78,15 @@ export const ProjectSprintsSection = ({
         </StyledSectionHeaderRow>
         {renderSprintPanels()}
       </StyledSectionWrapper>
-      <DialogComponent
-        isOpen={confirmationDialogConfig.isOpen}
-        handleClose={confirmationDialogConfig.handleClose}
-      >
-        <ConfirmationDialog
-          handleClose={confirmationDialogConfig.handleClose}
-          handleConfirm={handleActivatingSprint}
-        />
-      </DialogComponent>
+      {/*<DialogComponent*/}
+      {/*  isOpen={confirmationDialogConfig.isOpen}*/}
+      {/*  handleClose={confirmationDialogConfig.handleClose}*/}
+      {/*>*/}
+      {/*  <ConfirmationDialog*/}
+      {/*    handleClose={confirmationDialogConfig.handleClose}*/}
+      {/*    handleConfirm={handleActivatingSprint}*/}
+      {/*  />*/}
+      {/*</DialogComponent>*/}
     </React.Fragment>
   );
 };

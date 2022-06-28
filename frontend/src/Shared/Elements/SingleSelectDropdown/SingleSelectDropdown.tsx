@@ -52,7 +52,7 @@ export const SingleSelectDropdown = ({ options, onChange, value }: Props): JSX.E
             <StyledDropdownOption
               title={option.label}
               isOpen={isOpen}
-              key={value}
+              key={option.value}
               onClick={handleSelectingOption(option)}
             >
               {option.label}

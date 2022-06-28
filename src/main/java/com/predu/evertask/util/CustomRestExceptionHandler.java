@@ -1,5 +1,6 @@
 package com.predu.evertask.util;
 
+import com.predu.evertask.exception.InvalidOperationException;
 import com.predu.evertask.exception.InvalidTokenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -41,6 +42,13 @@ public class CustomRestExceptionHandler {
     @ExceptionHandler(InvalidTokenException.class)
     public ResponseEntity<RestMessage> handleInvalidTokenException(InvalidTokenException ex, Locale locale) {
         String message = messageSource.getMessage("message.token." + ex.getMessage(), null, locale);
+
+        return new ResponseEntity<>(new RestMessage(message), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidOperationException.class)
+    public ResponseEntity<RestMessage> handleInvalidOperationException(InvalidOperationException ex, Locale locale) {
+        String message = messageSource.getMessage("message.operation." + ex.getMessage(), null, locale);
 
         return new ResponseEntity<>(new RestMessage(message), HttpStatus.BAD_REQUEST);
     }

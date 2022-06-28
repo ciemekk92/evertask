@@ -26,6 +26,10 @@ public class Sprint extends BaseEntity implements Serializable {
     private Date startDate;
     private Date finishDate;
 
+    @Column(name = "is_completed")
+    @NotNull
+    private boolean completed = false;
+
     @OneToMany(mappedBy = "sprint")
     private Set<Issue> issues = new HashSet<>();
 

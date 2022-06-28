@@ -19,6 +19,10 @@ declare global {
   export type RouterParams = {
     id: Id;
   };
+  export type DropdownOption = {
+    value: string;
+    label: string;
+  };
 }
 
 export {};

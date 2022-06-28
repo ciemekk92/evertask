@@ -6,7 +6,7 @@ import { Heading6 } from 'Shared/Typography';
 import { PROJECT_METHODOLOGIES } from 'Shared/constants';
 import { Issue } from 'Types/Issue';
 import { BacklogIssuePanel, EmptySection } from '..';
-import { StyledDroppableWrapper } from '../Shared.styled';
+import { StyledDroppableWrapper, StyledHeaderWrapper } from '../Shared.styled';
 
 interface Props {
   issues: Issue.IssueEntity[];
@@ -17,7 +17,11 @@ export const UnassignedIssues = ({ issues }: Props): JSX.Element => {
 
   const renderHeading = (): Nullable<JSX.Element> => {
     if (CurrentProjectModel.currentProjectValue.methodology === PROJECT_METHODOLOGIES.AGILE) {
-      return <Heading6>{t('backlog.unassigned.title')}</Heading6>;
+      return (
+        <StyledHeaderWrapper>
+          <Heading6>{t('backlog.unassigned.title')}</Heading6>
+        </StyledHeaderWrapper>
+      );
     }
 
     return null;

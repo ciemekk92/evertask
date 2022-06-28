@@ -5,7 +5,7 @@ import { Heading6 } from 'Shared/Typography';
 import { Sprint } from 'Types/Sprint';
 import { Issue } from 'Types/Issue';
 import { BacklogIssuePanel, EmptySection } from '..';
-import { StyledDroppableWrapper } from '../Shared.styled';
+import { StyledDroppableWrapper, StyledHeaderWrapper } from '../Shared.styled';
 
 interface Props {
   sprint: Sprint.SprintIssuesEntity;
@@ -30,7 +30,9 @@ export const SprintSection = ({ sprint }: Props): JSX.Element => {
 
   return (
     <StyledDroppableWrapper>
-      <Heading6>{headingTitle}</Heading6>
+      <StyledHeaderWrapper>
+        <Heading6>{headingTitle}</Heading6>
+      </StyledHeaderWrapper>
       <Droppable droppableId={sprint.id}>
         {(provided: DroppableProvided) => (
           <div {...provided.droppableProps} ref={provided.innerRef}>

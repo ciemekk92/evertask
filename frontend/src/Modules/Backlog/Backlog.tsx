@@ -3,6 +3,8 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { Container, useLoading } from 'Hooks/useLoading';
+import { DialogComponent, useDialog } from 'Hooks/useDialog';
+import { ISSUE_DIALOG_MODES, IssueDialog } from 'Modules/IssueDialog';
 import { ApplicationState } from 'Stores/store';
 import { actionCreators as projectActionCreators, ProjectState } from 'Stores/Project';
 import { actionCreators as issueActionCreators, IssueState } from 'Stores/Issue';
@@ -19,6 +21,9 @@ export const Backlog = (): Nullable<JSX.Element> => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { startLoading, stopLoading, isLoading } = useLoading();
+  const { isOpen, handleOpen, handleClose, dialogMode } = useDialog<ISSUE_DIALOG_MODES>(
+    ISSUE_DIALOG_MODES.ADD
+  );
 
   const projectState: Nullable<ProjectState> = useSelector(
     (state: ApplicationState) => (state.project ? state.project : null),
@@ -94,6 +99,9 @@ export const Backlog = (): Nullable<JSX.Element> => {
           <UnassignedIssues issues={issueState.issuesUnassignedToSprint} />
         </DragDropContext>
       </StyledVerticalContainer>
+      <DialogComponent isOpen={isOpen} handleClose={handleClose}>
+        <IssueDialog mode={dialogMode} handleClose={handleClose} />
+      </DialogComponent>
     </VerticalPageWrapper>
   );
 };

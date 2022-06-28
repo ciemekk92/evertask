@@ -7,6 +7,7 @@ declare namespace Issue {
     readonly updatedAt: string;
     key: number;
     title: string;
+    description: string;
     estimateStoryPoints: number;
     estimateHours: number;
     pullRequestUrl: string;

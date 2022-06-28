@@ -9,8 +9,6 @@ import {
   StyledDropdownOptionsList
 } from './SingleSelectDropdown.styled';
 
-type DropdownOption = { value: string; label: string };
-
 interface Props {
   options: DropdownOption[];
   value: string;

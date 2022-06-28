@@ -12,6 +12,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,6 +30,9 @@ public class Issue extends BaseEntity {
 
     @Length(min = 6, max = 50)
     private String title;
+
+    @NotBlank
+    private String description;
 
     @Column(name = "hidden", nullable = false)
     private boolean hidden = false;

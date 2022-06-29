@@ -14,8 +14,5 @@ export const StyledHeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  & h6 {
-    margin-bottom: 1rem;
-  }
+  margin-bottom: 1rem;
 `;

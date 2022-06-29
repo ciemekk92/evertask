@@ -20,7 +20,7 @@ declare global {
     id: Id;
   };
   export type DropdownOption = {
-    value: string;
+    value: Nullable<string>;
     label: string;
   };
 }

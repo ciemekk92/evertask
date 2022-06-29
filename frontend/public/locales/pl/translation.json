@@ -151,7 +151,9 @@
     "type": "Typ zadania",
     "estimateStoryPoints": "Oszacowanie (punkty story)",
     "estimateHours": "Oszacowanie (godziny)",
-    "pullRequestUrl": "Adres pull requestu",
+    "pullRequestUrl": "Adres pull requesta",
+    "sprint": "Sprint",
+    "priority": "Priorytet",
     "validation": {
       "title": {
         "minLength": "Tytuł zadania jest za mały (minimum 6 znaków)",
@@ -159,10 +161,11 @@
         "required": "Tytuł zadania jest wymagany"
       },
       "description": {
-        "maxLength": "Opis jest za długi  (maximum 2000 characters)"
+        "maxLength": "Opis jest za długi  (maximum 2000 characters)",
+        "required": "Opis zadania jest wymagany."
       },
       "pullRequestUrl": {
-        "required": "Adres pull requestu jest wymagany."
+        "required": "Adres pull requesta jest wymagany."
       }
     }
   },
@@ -262,6 +265,7 @@
   "backlog": {
     "title": "Backlog",
     "emptySection": "Brak zadań",
+    "addIssue": "Dodaj zadanie",
     "sprint": {
       "title": "Sprint {{ordinal}}"
     },

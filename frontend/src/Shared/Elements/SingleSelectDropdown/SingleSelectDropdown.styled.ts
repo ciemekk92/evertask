@@ -64,6 +64,7 @@ export const StyledDropdownOptionsList = styled.div`
   position: absolute;
   top: 3rem;
   left: 0;
+  z-index: 5;
 `;
 
 export const StyledDropdownOption = styled.button<ButtonProps>`

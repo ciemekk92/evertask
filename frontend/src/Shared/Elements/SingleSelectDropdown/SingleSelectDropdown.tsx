@@ -11,8 +11,8 @@ import {
 
 interface Props {
   options: DropdownOption[];
-  value: string;
-  onChange: (value: string) => void;
+  value: Nullable<string>;
+  onChange: (value: Nullable<string>) => void;
 }
 
 export const SingleSelectDropdown = ({ options, onChange, value }: Props): JSX.Element => {

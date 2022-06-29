@@ -5,6 +5,7 @@ import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
 import com.predu.evertask.domain.mapper.IssueMapper;
 import com.predu.evertask.domain.model.Issue;
 import com.predu.evertask.domain.model.Sprint;
+import com.predu.evertask.domain.model.User;
 import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.IssueRepository;
 import com.predu.evertask.repository.SprintRepository;
@@ -68,8 +69,11 @@ public class IssueService {
                 .toList();
     }
 
-    public IssueDto create(IssueDto toSave) {
-        issueRepository.save(issueMapper.issueDtoToIssue(toSave));
+    public IssueDto create(IssueDto toSave, User reporter) {
+        Issue issue = issueMapper.issueDtoToIssue(toSave);
+        issue.setReporter(reporter);
+
+        issueRepository.save(issue);
 
         return toSave;
     }

@@ -50,9 +50,11 @@ public class IssueController {
     }
 
     @PostMapping
-    public ResponseEntity<IssueDto> createIssue(@RequestBody @Valid IssueDto toCreate)
+    public ResponseEntity<IssueDto> createIssue(@RequestBody @Valid IssueDto toCreate, Authentication authentication)
             throws URISyntaxException {
-        IssueDto created = issueService.create(toCreate);
+        User reporter = (User) authentication.getPrincipal();
+
+        IssueDto created = issueService.create(toCreate, reporter);
 
         return ResponseEntity.created(new URI("http://localhost:8080/api/issues/" + created.getId())).body(created);
     }

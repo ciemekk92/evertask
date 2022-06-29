@@ -21,9 +21,7 @@ export const Backlog = (): Nullable<JSX.Element> => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { startLoading, stopLoading, isLoading } = useLoading();
-  const { isOpen, handleOpen, handleClose, dialogMode } = useDialog<ISSUE_DIALOG_MODES>(
-    ISSUE_DIALOG_MODES.ADD
-  );
+  const issueDialogConfig = useDialog<ISSUE_DIALOG_MODES>(ISSUE_DIALOG_MODES.ADD);
 
   const projectState: Nullable<ProjectState> = useSelector(
     (state: ApplicationState) => (state.project ? state.project : null),
@@ -56,10 +54,18 @@ export const Backlog = (): Nullable<JSX.Element> => {
     return null;
   }
 
+  const handleOpeningAddIssue = (sprintId: Nullable<Id>) => {
+    issueDialogConfig.handleOpen(ISSUE_DIALOG_MODES.ADD, { initialSprintId: sprintId });
+  };
+
   const renderSprints = (): Nullable<JSX.Element[]> => {
     if (CurrentProjectModel.currentProjectValue.methodology === PROJECT_METHODOLOGIES.AGILE) {
       return projectState.notCompletedSprints.map((sprint: Sprint.SprintIssuesEntity) => (
-        <SprintSection key={sprint.id} sprint={sprint} />
+        <SprintSection
+          key={sprint.id}
+          sprint={sprint}
+          handleOpeningAddIssue={handleOpeningAddIssue}
+        />
       ));
     }
 
@@ -96,11 +102,21 @@ export const Backlog = (): Nullable<JSX.Element> => {
       <StyledVerticalContainer>
         <DragDropContext onDragEnd={onDragEnd}>
           {renderSprints()}
-          <UnassignedIssues issues={issueState.issuesUnassignedToSprint} />
+          <UnassignedIssues
+            issues={issueState.issuesUnassignedToSprint}
+            handleOpeningAddIssue={handleOpeningAddIssue}
+          />
         </DragDropContext>
       </StyledVerticalContainer>
-      <DialogComponent isOpen={isOpen} handleClose={handleClose}>
-        <IssueDialog mode={dialogMode} handleClose={handleClose} />
+      <DialogComponent
+        isOpen={issueDialogConfig.isOpen}
+        handleClose={issueDialogConfig.handleClose}
+      >
+        <IssueDialog
+          mode={issueDialogConfig.dialogMode}
+          handleClose={issueDialogConfig.handleClose}
+          initialSprintId={issueDialogConfig.params.initialSprintId}
+        />
       </DialogComponent>
     </VerticalPageWrapper>
   );

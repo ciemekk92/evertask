@@ -152,6 +152,8 @@
     "estimateStoryPoints": "Estimate (story points)",
     "estimateHours": "Estimate (hours)",
     "pullRequestUrl": "Pull request URL",
+    "sprint": "Sprint",
+    "priority": "Priority",
     "validation": {
       "title": {
         "minLength": "Issue title is too short (minimum 6 characters)",
@@ -159,7 +161,8 @@
         "required": "Issue title is required"
       },
       "description": {
-        "maxLength": "Description is too long (maximum 2000 characters)"
+        "maxLength": "Description is too long (maximum 2000 characters)",
+        "required": "Description is required."
       },
       "pullRequestUrl": {
         "required": "Pull request URL is required."
@@ -262,6 +265,7 @@
   "backlog": {
     "title": "Backlog",
     "emptySection": "No issues",
+    "addIssue": "Add issue",
     "sprint": {
       "title": "Sprint {{ordinal}}"
     },

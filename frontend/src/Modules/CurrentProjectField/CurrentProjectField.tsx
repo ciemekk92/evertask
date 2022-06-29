@@ -28,7 +28,7 @@ export const CurrentProjectField = () => {
     };
   }, [CurrentProjectModel.currentProject]);
 
-  const handleSelectingCurrentProject = (value: string) => {
+  const handleSelectingCurrentProject = (value: Nullable<string>) => {
     const project = organisationProjects.find(
       (project: Project.ProjectEntity) => project.id === value
     );

@@ -58,6 +58,10 @@ export const Backlog = (): Nullable<JSX.Element> => {
     issueDialogConfig.handleOpen(ISSUE_DIALOG_MODES.ADD, { initialSprintId: sprintId });
   };
 
+  const handleOpeningEditIssue = (issueId: Id) => () => {
+    issueDialogConfig.handleOpen(ISSUE_DIALOG_MODES.EDIT, { issueId });
+  };
+
   const renderSprints = (): Nullable<JSX.Element[]> => {
     if (CurrentProjectModel.currentProjectValue.methodology === PROJECT_METHODOLOGIES.AGILE) {
       return projectState.notCompletedSprints.map((sprint: Sprint.SprintIssuesEntity) => (
@@ -65,6 +69,7 @@ export const Backlog = (): Nullable<JSX.Element> => {
           key={sprint.id}
           sprint={sprint}
           handleOpeningAddIssue={handleOpeningAddIssue}
+          handleOpeningEditIssue={handleOpeningEditIssue}
         />
       ));
     }
@@ -105,6 +110,7 @@ export const Backlog = (): Nullable<JSX.Element> => {
           <UnassignedIssues
             issues={issueState.issuesUnassignedToSprint}
             handleOpeningAddIssue={handleOpeningAddIssue}
+            handleOpeningEditIssue={handleOpeningEditIssue}
           />
         </DragDropContext>
       </StyledVerticalContainer>
@@ -116,6 +122,7 @@ export const Backlog = (): Nullable<JSX.Element> => {
           mode={issueDialogConfig.dialogMode}
           handleClose={issueDialogConfig.handleClose}
           initialSprintId={issueDialogConfig.params.initialSprintId}
+          issueId={issueDialogConfig.params.issueId}
         />
       </DialogComponent>
     </VerticalPageWrapper>

@@ -9,7 +9,7 @@ import { TextArea } from 'Shared/Elements/TextArea';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
 import { SingleSelectDropdown } from 'Shared/Elements/SingleSelectDropdown';
 import { LoadingModalDialog } from 'Shared/LoadingModalDialog';
-import { ISSUE_PRIORITY, ISSUE_STATUS, ISSUE_TYPE } from 'Shared/constants';
+import { ISSUE_PRIORITY, ISSUE_STATUS, ISSUE_TYPE, PROJECT_METHODOLOGIES } from 'Shared/constants';
 import { useLoading } from 'Hooks/useLoading';
 import { ApplicationState } from 'Stores/store';
 import { Api } from 'Utils/Api';
@@ -21,11 +21,15 @@ import {
 } from './helpers';
 import { StyledDialogContent } from './IssueDialog.styled';
 import { CurrentProjectModel } from 'Models/CurrentProjectModel';
+import { ApiResponse } from '../../Types/Response';
+import { actionCreators as projectActionCreators } from '../../Stores/Project';
+import { actionCreators as issueActionCreators } from '../../Stores/Issue';
 
 interface Props {
   mode: ISSUE_DIALOG_MODES;
-  initialSprintId: Nullable<Id>;
   handleClose: VoidFunctionNoArgs;
+  initialSprintId?: Nullable<Id>;
+  issueId?: Id;
 }
 
 interface IssueData {
@@ -40,18 +44,18 @@ interface IssueData {
   priority: ISSUE_PRIORITY;
 }
 
-export const IssueDialog = ({ mode, handleClose, initialSprintId }: Props) => {
-  const initialData: IssueData = {
+export const IssueDialog = ({ mode, handleClose, initialSprintId, issueId }: Props) => {
+  const [initialData, setInitialData] = React.useState<IssueData>({
     title: '',
     description: '',
     estimateStoryPoints: 0,
     estimateHours: 0,
     pullRequestUrl: '',
-    sprintId: initialSprintId,
+    sprintId: typeof initialSprintId !== 'undefined' ? initialSprintId : null,
     status: ISSUE_STATUS.TO_DO,
     type: ISSUE_TYPE.TASK,
     priority: ISSUE_PRIORITY.MEDIUM
-  };
+  });
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -60,6 +64,14 @@ export const IssueDialog = ({ mode, handleClose, initialSprintId }: Props) => {
     shallowEqual
   );
   const { isLoading, startLoading, stopLoading } = useLoading();
+
+  React.useEffect(() => {
+    if (issueId && mode === ISSUE_DIALOG_MODES.EDIT) {
+      Api.get(`issues/${issueId}`)
+        .then((response: ApiResponse) => response.json())
+        .then((data: IssueData) => setInitialData({ ...data }));
+    }
+  }, [issueId, mode]);
 
   const validationSchema = Yup.object().shape({
     title: Yup.string()
@@ -87,16 +99,26 @@ export const IssueDialog = ({ mode, handleClose, initialSprintId }: Props) => {
   };
 
   const onSubmit = async (values: IssueData) => {
+    let result: Response;
+    const currentProject = CurrentProjectModel.currentProjectValue;
+
     startLoading();
 
-    const result = await Api.post('issues', {
-      ...values,
-      projectId: CurrentProjectModel.currentProjectValue.id
-    });
+    if (!issueId && mode === ISSUE_DIALOG_MODES.ADD) {
+      result = await Api.post('issues', {
+        ...values,
+        projectId: currentProject.id
+      });
+    } else {
+      result = await Api.put(`issues/${issueId}`, { ...values });
+    }
 
-    if (result.status === 201) {
+    if ([201, 204].includes(result.status)) {
+      if (currentProject.methodology === PROJECT_METHODOLOGIES.AGILE) {
+        dispatch(projectActionCreators.getNotCompletedSprints(currentProject.id));
+      }
+      dispatch(issueActionCreators.getIssuesUnassignedToSprint(currentProject.id));
       handleClose();
-      // TODO refresh after adding
     }
 
     stopLoading();
@@ -117,6 +139,7 @@ export const IssueDialog = ({ mode, handleClose, initialSprintId }: Props) => {
       validationSchema={validationSchema}
       initialValues={initialData}
       onSubmit={onSubmit}
+      enableReinitialize
     >
       {({
         errors,

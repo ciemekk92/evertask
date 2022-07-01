@@ -1,6 +1,5 @@
 package com.predu.evertask.domain.mapper;
 
-import com.predu.evertask.annotation.IncludeAfterMapping;
 import com.predu.evertask.annotation.IncludeBeforeMapping;
 import com.predu.evertask.domain.dto.issue.IssueDto;
 import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
@@ -46,13 +45,7 @@ public abstract class IssueMapper {
     @InheritInverseConfiguration(name = "issueDtoToIssue")
     public abstract IssueDto issueToIssueDto(Issue issue);
 
-    @Mapping(target = "parentIssue", ignore = true)
-    @Mapping(target = "assignee", ignore = true)
-    @Mapping(target = "reporter", ignore = true)
-    @Mapping(target = "sprint", ignore = true)
-    @Mapping(target = "project", ignore = true)
-    @BeanMapping(qualifiedBy = {IncludeBeforeMapping.class})
-    public abstract Issue issueUpdateDtoToIssue(IssueUpdateDto issueUpdateDto);
+    public abstract Issue update(@MappingTarget Issue issue, IssueUpdateDto issueUpdateDto);
 
     @AfterMapping
     public void afterIssueSaveDtoToIssue(IssueDto issueDto, @MappingTarget Issue issue) {
@@ -86,21 +79,5 @@ public abstract class IssueMapper {
     @BeforeMapping
     void beforeFlushIssue(@MappingTarget IssueDto issueDto, Issue issue) {
         entityManager.flush();
-    }
-
-    @IncludeAfterMapping
-    @AfterMapping
-    public void afterIssueUpdateDtoToIssue(IssueUpdateDto issueUpdateDto, @MappingTarget Issue issue) {
-        if (issueUpdateDto.getParentId() != null) {
-            issue.setParentIssue(issueRepository.findById(uuidMapper.stringToUUID(issueUpdateDto.getParentId())).orElse(null));
-        }
-
-        if (issueUpdateDto.getReporterId() != null) {
-            issue.setReporter(userRepository.getById(uuidMapper.stringToUUID(issueUpdateDto.getReporterId())));
-        }
-
-        if (issueUpdateDto.getAssigneeId() != null) {
-            issue.setAssignee(userRepository.getById(uuidMapper.stringToUUID(issueUpdateDto.getAssigneeId())));
-        }
     }
 }

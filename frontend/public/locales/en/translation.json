@@ -165,6 +165,8 @@
         "required": "Description is required."
       },
       "pullRequestUrl": {
+        "minLength": "Pull request URL is too short (minimum 10 characters)",
+        "maxLength": "Pull request URL is too long (maximum 150 characters)",
         "required": "Pull request URL is required."
       }
     }

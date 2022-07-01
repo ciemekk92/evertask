@@ -165,6 +165,8 @@
         "required": "Opis zadania jest wymagany."
       },
       "pullRequestUrl": {
+        "minLength": "Adres pull requesta jest za krótki (minimum 10 znaków)",
+        "maxLength": "Adres pull requesta  jest za długi (maksimum 150 znaków)",
         "required": "Adres pull requesta jest wymagany."
       }
     }

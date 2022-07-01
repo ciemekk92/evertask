@@ -12,9 +12,14 @@ import { StyledDroppableWrapper, StyledHeaderWrapper } from '../Shared.styled';
 interface Props {
   issues: Issue.IssueEntity[];
   handleOpeningAddIssue: (sprintId: Nullable<Id>) => void;
+  handleOpeningEditIssue: (issueId: Id) => VoidFunctionNoArgs;
 }
 
-export const UnassignedIssues = ({ issues, handleOpeningAddIssue }: Props): JSX.Element => {
+export const UnassignedIssues = ({
+  issues,
+  handleOpeningAddIssue,
+  handleOpeningEditIssue
+}: Props): JSX.Element => {
   const { t } = useTranslation();
 
   const handleAddingNewIssue = (): void => {
@@ -42,7 +47,12 @@ export const UnassignedIssues = ({ issues, handleOpeningAddIssue }: Props): JSX.
     }
 
     return issues.map((issue: Issue.IssueEntity, index: number) => (
-      <BacklogIssuePanel issue={issue} index={index} key={issue.id} />
+      <BacklogIssuePanel
+        issue={issue}
+        index={index}
+        key={issue.id}
+        handleOpeningEditIssue={handleOpeningEditIssue}
+      />
     ));
   };
 

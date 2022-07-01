@@ -4,7 +4,6 @@ import com.predu.evertask.annotation.IsNotUnassignedUser;
 import com.predu.evertask.domain.dto.issue.IssueDto;
 import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
 import com.predu.evertask.domain.dto.issue.MoveIssueDto;
-import com.predu.evertask.domain.model.Issue;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.service.IssueService;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +31,7 @@ public class IssueController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Issue> getIssue(@PathVariable UUID id) {
+    public ResponseEntity<IssueDto> getIssue(@PathVariable UUID id) {
         return issueService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -81,7 +80,8 @@ public class IssueController {
             return ResponseEntity.notFound().build();
         }
 
-        issueService.findById(id).ifPresent(issue -> issueService.update(toUpdate));
+        issueService.findById(id)
+                .ifPresent(issue -> issueService.update(id, toUpdate));
 
         return ResponseEntity.noContent().build();
     }

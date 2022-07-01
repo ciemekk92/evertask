@@ -11,9 +11,14 @@ import { StyledDroppableWrapper, StyledHeaderWrapper } from '../Shared.styled';
 interface Props {
   sprint: Sprint.SprintIssuesEntity;
   handleOpeningAddIssue: (sprintId: Nullable<Id>) => void;
+  handleOpeningEditIssue: (issueId: Id) => VoidFunctionNoArgs;
 }
 
-export const SprintSection = ({ sprint, handleOpeningAddIssue }: Props): JSX.Element => {
+export const SprintSection = ({
+  sprint,
+  handleOpeningAddIssue,
+  handleOpeningEditIssue
+}: Props): JSX.Element => {
   const { t } = useTranslation();
   const headingTitle = React.useMemo(
     () => t('backlog.sprint.title', { ordinal: sprint.ordinal }),
@@ -26,7 +31,12 @@ export const SprintSection = ({ sprint, handleOpeningAddIssue }: Props): JSX.Ele
     }
 
     return sprint.issues.map((issue: Issue.IssueEntity, index: number) => (
-      <BacklogIssuePanel issue={issue} index={index} key={issue.id} />
+      <BacklogIssuePanel
+        handleOpeningEditIssue={handleOpeningEditIssue}
+        issue={issue}
+        index={index}
+        key={issue.id}
+      />
     ));
   };
 

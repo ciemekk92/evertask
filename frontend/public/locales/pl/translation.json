@@ -141,6 +141,36 @@
       }
     }
   },
+  "issueDialog": {
+    "header": {
+      "add": "Dodaj zadanie",
+      "edit": "Edytuj zadanie"
+    },
+    "title": "Tytuł",
+    "description": "Opis zadania",
+    "type": "Typ zadania",
+    "estimateStoryPoints": "Oszacowanie (punkty story)",
+    "estimateHours": "Oszacowanie (godziny)",
+    "pullRequestUrl": "Adres pull requesta",
+    "sprint": "Sprint",
+    "priority": "Priorytet",
+    "validation": {
+      "title": {
+        "minLength": "Tytuł zadania jest za mały (minimum 6 znaków)",
+        "maxLength": "Tytuł zadania jest za długi (maksimum 50 znaków)",
+        "required": "Tytuł zadania jest wymagany"
+      },
+      "description": {
+        "maxLength": "Opis jest za długi  (maximum 2000 characters)",
+        "required": "Opis zadania jest wymagany."
+      },
+      "pullRequestUrl": {
+        "minLength": "Adres pull requesta jest za krótki (minimum 10 znaków)",
+        "maxLength": "Adres pull requesta  jest za długi (maksimum 150 znaków)",
+        "required": "Adres pull requesta jest wymagany."
+      }
+    }
+  },
   "unassignedUserPage": {
     "title": "Obecnie nie jesteś członkiem żadnej organizacji.",
     "content": "Nic straconego! Poniżej możesz stworzyć nową organizację lub przejrzeć zaproszenia do już istniejących. Pamiętaj że możesz być członkiem tylko jednej organizacji.",
@@ -237,6 +267,7 @@
   "backlog": {
     "title": "Backlog",
     "emptySection": "Brak zadań",
+    "addIssue": "Dodaj zadanie",
     "sprint": {
       "title": "Sprint {{ordinal}}"
     },

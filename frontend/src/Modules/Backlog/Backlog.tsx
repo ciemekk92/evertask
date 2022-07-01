@@ -3,6 +3,8 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { Container, useLoading } from 'Hooks/useLoading';
+import { DialogComponent, useDialog } from 'Hooks/useDialog';
+import { ISSUE_DIALOG_MODES, IssueDialog } from 'Modules/IssueDialog';
 import { ApplicationState } from 'Stores/store';
 import { actionCreators as projectActionCreators, ProjectState } from 'Stores/Project';
 import { actionCreators as issueActionCreators, IssueState } from 'Stores/Issue';
@@ -19,6 +21,7 @@ export const Backlog = (): Nullable<JSX.Element> => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { startLoading, stopLoading, isLoading } = useLoading();
+  const issueDialogConfig = useDialog<ISSUE_DIALOG_MODES>(ISSUE_DIALOG_MODES.ADD);
 
   const projectState: Nullable<ProjectState> = useSelector(
     (state: ApplicationState) => (state.project ? state.project : null),
@@ -51,10 +54,23 @@ export const Backlog = (): Nullable<JSX.Element> => {
     return null;
   }
 
+  const handleOpeningAddIssue = (sprintId: Nullable<Id>) => {
+    issueDialogConfig.handleOpen(ISSUE_DIALOG_MODES.ADD, { initialSprintId: sprintId });
+  };
+
+  const handleOpeningEditIssue = (issueId: Id) => () => {
+    issueDialogConfig.handleOpen(ISSUE_DIALOG_MODES.EDIT, { issueId });
+  };
+
   const renderSprints = (): Nullable<JSX.Element[]> => {
     if (CurrentProjectModel.currentProjectValue.methodology === PROJECT_METHODOLOGIES.AGILE) {
       return projectState.notCompletedSprints.map((sprint: Sprint.SprintIssuesEntity) => (
-        <SprintSection key={sprint.id} sprint={sprint} />
+        <SprintSection
+          key={sprint.id}
+          sprint={sprint}
+          handleOpeningAddIssue={handleOpeningAddIssue}
+          handleOpeningEditIssue={handleOpeningEditIssue}
+        />
       ));
     }
 
@@ -91,9 +107,24 @@ export const Backlog = (): Nullable<JSX.Element> => {
       <StyledVerticalContainer>
         <DragDropContext onDragEnd={onDragEnd}>
           {renderSprints()}
-          <UnassignedIssues issues={issueState.issuesUnassignedToSprint} />
+          <UnassignedIssues
+            issues={issueState.issuesUnassignedToSprint}
+            handleOpeningAddIssue={handleOpeningAddIssue}
+            handleOpeningEditIssue={handleOpeningEditIssue}
+          />
         </DragDropContext>
       </StyledVerticalContainer>
+      <DialogComponent
+        isOpen={issueDialogConfig.isOpen}
+        handleClose={issueDialogConfig.handleClose}
+      >
+        <IssueDialog
+          mode={issueDialogConfig.dialogMode}
+          handleClose={issueDialogConfig.handleClose}
+          initialSprintId={issueDialogConfig.params.initialSprintId}
+          issueId={issueDialogConfig.params.issueId}
+        />
+      </DialogComponent>
     </VerticalPageWrapper>
   );
 };

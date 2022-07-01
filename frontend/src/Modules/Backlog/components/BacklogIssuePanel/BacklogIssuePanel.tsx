@@ -1,20 +1,32 @@
 import React from 'react';
-import { Issue } from 'Types/Issue';
 import { Draggable, DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
+import { useTranslation } from 'react-i18next';
+import { Issue } from 'Types/Issue';
 import { CurrentProjectModel } from 'Models/CurrentProjectModel';
 import { PriorityBadge } from 'Shared/PriorityBadge';
 import { StoryPointBadge } from 'Shared/StoryPointBadge';
 import { IssueTypeIcon } from 'Shared/IssueTypeIcon';
 import { StatusBadge } from 'Shared/StatusBadge';
 import { StyledDraggablePanel, StyledIssueTitle } from './BacklogIssuePanel.styled';
+import { DROPDOWN_MENU_POSITION, DropdownMenu } from 'Shared/Elements/DropdownMenu';
 
 interface Props {
   issue: Issue.IssueEntity;
   index: number;
+  handleOpeningEditIssue: (issueId: Id) => VoidFunctionNoArgs;
 }
 
-export const BacklogIssuePanel = ({ issue, index }: Props): JSX.Element => {
+export const BacklogIssuePanel = ({ issue, index, handleOpeningEditIssue }: Props): JSX.Element => {
   const currentProject = CurrentProjectModel.currentProjectValue;
+  const { t } = useTranslation();
+
+  const dropdownOptions = [
+    {
+      label: t('general.edit'),
+      onClick: handleOpeningEditIssue(issue.id),
+      iconName: 'edit'
+    }
+  ];
 
   return (
     <Draggable draggableId={issue.id} index={index}>
@@ -33,6 +45,7 @@ export const BacklogIssuePanel = ({ issue, index }: Props): JSX.Element => {
           </StyledIssueTitle>
           <StoryPointBadge value={issue.estimateStoryPoints} />
           <StatusBadge status={issue.status} />
+          <DropdownMenu options={dropdownOptions} position={DROPDOWN_MENU_POSITION.LEFT} />
         </StyledDraggablePanel>
       )}
     </Draggable>

@@ -10,6 +10,7 @@ public class IssueUpdateDto {
     private String title;
     private int estimateStoryPoints;
     private int estimateHours;
+    private String description;
     private String pullRequestUrl;
     private String status;
     private String type;

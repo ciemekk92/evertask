@@ -4,7 +4,6 @@ import com.predu.evertask.annotation.IsNotUnassignedUser;
 import com.predu.evertask.domain.dto.issue.IssueDto;
 import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
 import com.predu.evertask.domain.dto.issue.MoveIssueDto;
-import com.predu.evertask.domain.model.Issue;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.service.IssueService;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +31,7 @@ public class IssueController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Issue> getIssue(@PathVariable UUID id) {
+    public ResponseEntity<IssueDto> getIssue(@PathVariable UUID id) {
         return issueService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -50,9 +49,11 @@ public class IssueController {
     }
 
     @PostMapping
-    public ResponseEntity<IssueDto> createIssue(@RequestBody @Valid IssueDto toCreate)
+    public ResponseEntity<IssueDto> createIssue(@RequestBody @Valid IssueDto toCreate, Authentication authentication)
             throws URISyntaxException {
-        IssueDto created = issueService.create(toCreate);
+        User reporter = (User) authentication.getPrincipal();
+
+        IssueDto created = issueService.create(toCreate, reporter);
 
         return ResponseEntity.created(new URI("http://localhost:8080/api/issues/" + created.getId())).body(created);
     }
@@ -79,7 +80,8 @@ public class IssueController {
             return ResponseEntity.notFound().build();
         }
 
-        issueService.findById(id).ifPresent(issue -> issueService.update(toUpdate));
+        issueService.findById(id)
+                .ifPresent(issue -> issueService.update(id, toUpdate));
 
         return ResponseEntity.noContent().build();
     }

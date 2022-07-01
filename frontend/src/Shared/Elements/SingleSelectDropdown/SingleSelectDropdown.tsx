@@ -9,12 +9,10 @@ import {
   StyledDropdownOptionsList
 } from './SingleSelectDropdown.styled';
 
-type DropdownOption = { value: string; label: string };
-
 interface Props {
   options: DropdownOption[];
-  value: string;
-  onChange: (value: string) => void;
+  value: Nullable<string>;
+  onChange: (value: Nullable<string>) => void;
 }
 
 export const SingleSelectDropdown = ({ options, onChange, value }: Props): JSX.Element => {
@@ -29,7 +27,10 @@ export const SingleSelectDropdown = ({ options, onChange, value }: Props): JSX.E
     setSelectedLabel(options.find((option) => option.value === value)?.label ?? '');
   }, [options, value]);
 
-  const toggleOpen = () => setIsOpen(!isOpen);
+  const handleOpeningDropdown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsOpen(!isOpen);
+  };
 
   const handleSelectingOption = (option: DropdownOption) => () => {
     onChange(option.value);
@@ -42,7 +43,7 @@ export const SingleSelectDropdown = ({ options, onChange, value }: Props): JSX.E
 
   return (
     <StyledDropdownContainer ref={containerRef}>
-      <StyledDropdownButton title={selectedLabel} isOpen={isOpen} onClick={toggleOpen}>
+      <StyledDropdownButton title={selectedLabel} isOpen={isOpen} onClick={handleOpeningDropdown}>
         <StyledDropdownLabelContainer>{selectedLabel}</StyledDropdownLabelContainer>
         <IconFilled iconName="chevron_right" />
       </StyledDropdownButton>

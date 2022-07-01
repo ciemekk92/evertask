@@ -8,8 +8,11 @@ export const StyledDroppableWrapper = styled.div`
   &:not(:last-child) {
     margin-bottom: 2rem;
   }
+`;
 
-  & h6 {
-    margin-bottom: 1rem;
-  }
+export const StyledHeaderWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 `;

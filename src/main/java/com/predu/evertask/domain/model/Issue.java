@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -26,17 +25,14 @@ import java.util.Set;
 public class Issue extends BaseEntity {
 
     private int key;
-
-    @Length(min = 6, max = 50)
     private String title;
+    private String description;
 
     @Column(name = "hidden", nullable = false)
     private boolean hidden = false;
 
     private int estimateStoryPoints;
     private int estimateHours;
-
-    @Length(min = 10, max = 150)
     private String pullRequestUrl;
 
     @Enumerated(EnumType.STRING)
@@ -66,6 +62,7 @@ public class Issue extends BaseEntity {
     @JoinColumn(name = "assignee_id")
     private User assignee;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "reporter_id")
     private User reporter;

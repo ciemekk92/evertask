@@ -141,6 +141,36 @@
       }
     }
   },
+  "issueDialog": {
+    "header": {
+      "add": "Add new issue",
+      "edit": "Edit issue"
+    },
+    "title": "Issue title",
+    "description": "Description",
+    "type": "Issue type",
+    "estimateStoryPoints": "Estimate (story points)",
+    "estimateHours": "Estimate (hours)",
+    "pullRequestUrl": "Pull request URL",
+    "sprint": "Sprint",
+    "priority": "Priority",
+    "validation": {
+      "title": {
+        "minLength": "Issue title is too short (minimum 6 characters)",
+        "maxLength": "Issue title is too long (maximum 50 characters)",
+        "required": "Issue title is required"
+      },
+      "description": {
+        "maxLength": "Description is too long (maximum 2000 characters)",
+        "required": "Description is required."
+      },
+      "pullRequestUrl": {
+        "minLength": "Pull request URL is too short (minimum 10 characters)",
+        "maxLength": "Pull request URL is too long (maximum 150 characters)",
+        "required": "Pull request URL is required."
+      }
+    }
+  },
   "unassignedUserPage": {
     "title": "Currently you're not a member of any organisation.",
     "content": "But worry not! Below you can create your own organisation, or see the invitations from the existing ones. Remember, that you can only be a member of one organisation at a time.",
@@ -237,6 +267,7 @@
   "backlog": {
     "title": "Backlog",
     "emptySection": "No issues",
+    "addIssue": "Add issue",
     "sprint": {
       "title": "Sprint {{ordinal}}"
     },

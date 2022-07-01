@@ -29,5 +29,8 @@ export const StyledPriorityBadge = styled.div<BadgeProps>`
   border-radius: 0.3rem;
   box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.4);
   background-color: ${(props) => getBadgeColor(props.priority)};
-  color: ${(props) => props.theme.textOnPrimary};
+  color: ${(props) =>
+    [ISSUE_PRIORITY.LOW, ISSUE_PRIORITY.MEDIUM].includes(props.priority)
+      ? props.theme.textOnLight
+      : props.theme.textOnPrimary};
 `;

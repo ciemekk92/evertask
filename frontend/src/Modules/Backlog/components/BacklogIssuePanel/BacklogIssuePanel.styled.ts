@@ -3,6 +3,8 @@ import React from 'react';
 import { DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { StyledPriorityBadge } from 'Shared/PriorityBadge/PriorityBadge.styled';
 import { StyledBadge } from 'Shared/StoryPointBadge/StoryPointBadge.styled';
+import { StyledDropdownOption } from 'Shared/Elements/SingleSelectDropdown/SingleSelectDropdown.styled';
+import { StyledStatusBadge } from '../../../../Shared/StatusBadge/StatusBadge.styled';
 
 interface DraggableProps extends React.HTMLAttributes<HTMLDivElement> {
   readonly snapshot: DraggableStateSnapshot;
@@ -18,12 +20,20 @@ export const StyledDraggablePanel = styled.div<DraggableProps>`
   transition: all 0.4s ease;
 
   & span,
-  & ${StyledPriorityBadge}, & ${StyledBadge} {
+  & ${StyledPriorityBadge}, & ${StyledBadge}, & ${StyledStatusBadge} {
     margin-right: 1rem;
   }
 
   & ${StyledBadge} {
     margin-left: auto;
+  }
+
+  & ${StyledDropdownOption} {
+    background-color: ${(props) => props.theme.surfaceTertiary};
+
+    &:hover {
+      background-color: ${(props) => props.theme.primary};
+    }
   }
 
   &:hover {

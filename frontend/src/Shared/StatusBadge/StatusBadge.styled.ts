@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { ISSUE_STATUS } from '../constants';
 import React from 'react';
+import { ISSUE_STATUS } from '../constants';
 
 interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
   readonly status: ISSUE_STATUS;

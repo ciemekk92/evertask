@@ -5,6 +5,7 @@ import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
 import com.predu.evertask.domain.mapper.IssueMapper;
 import com.predu.evertask.domain.model.Issue;
 import com.predu.evertask.domain.model.Sprint;
+import com.predu.evertask.domain.model.User;
 import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.IssueRepository;
 import com.predu.evertask.repository.SprintRepository;
@@ -57,8 +58,10 @@ public class IssueService {
                 .toList();
     }
 
-    public Optional<Issue> findById(UUID id) {
-        return issueRepository.findById(id);
+    public Optional<IssueDto> findById(UUID id) {
+        Optional<Issue> issue = issueRepository.findById(id);
+
+        return issue.map(issueMapper::issueToIssueDto);
     }
 
     public List<IssueDto> findAllByAssigneeId(UUID id) {
@@ -68,14 +71,25 @@ public class IssueService {
                 .toList();
     }
 
-    public IssueDto create(IssueDto toSave) {
-        issueRepository.save(issueMapper.issueDtoToIssue(toSave));
+    public IssueDto create(IssueDto toSave, User reporter) {
+        Issue issue = issueMapper.issueDtoToIssue(toSave);
+        issue.setReporter(reporter);
+
+        issueRepository.save(issue);
 
         return toSave;
     }
 
-    public Issue update(IssueUpdateDto toUpdate) {
-        return issueRepository.save(issueMapper.issueUpdateDtoToIssue(toUpdate));
+    public Issue update(UUID id, IssueUpdateDto toUpdate) {
+        Optional<Issue> optionalIssue = issueRepository.findById(id);
+
+        if (optionalIssue.isEmpty()) {
+            throw new NotFoundException(Issue.class, id);
+        }
+
+        Issue result = issueMapper.update(optionalIssue.get(), toUpdate);
+
+        return issueRepository.save(result);
     }
 
     public Map<String, List<IssueDto>> mapIssuesByStatus(List<IssueDto> issues) {

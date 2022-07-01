@@ -2,22 +2,40 @@ import React from 'react';
 import { Droppable, DroppableProvided } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
 import { CurrentProjectModel } from 'Models/CurrentProjectModel';
+import { IconButton } from 'Shared/Elements/Buttons';
 import { Heading6 } from 'Shared/Typography';
 import { PROJECT_METHODOLOGIES } from 'Shared/constants';
 import { Issue } from 'Types/Issue';
 import { BacklogIssuePanel, EmptySection } from '..';
-import { StyledDroppableWrapper } from '../Shared.styled';
+import { StyledDroppableWrapper, StyledHeaderWrapper } from '../Shared.styled';
 
 interface Props {
   issues: Issue.IssueEntity[];
+  handleOpeningAddIssue: (sprintId: Nullable<Id>) => void;
+  handleOpeningEditIssue: (issueId: Id) => VoidFunctionNoArgs;
 }
 
-export const UnassignedIssues = ({ issues }: Props): JSX.Element => {
+export const UnassignedIssues = ({
+  issues,
+  handleOpeningAddIssue,
+  handleOpeningEditIssue
+}: Props): JSX.Element => {
   const { t } = useTranslation();
+
+  const handleAddingNewIssue = (): void => {
+    handleOpeningAddIssue(null);
+  };
 
   const renderHeading = (): Nullable<JSX.Element> => {
     if (CurrentProjectModel.currentProjectValue.methodology === PROJECT_METHODOLOGIES.AGILE) {
-      return <Heading6>{t('backlog.unassigned.title')}</Heading6>;
+      return (
+        <StyledHeaderWrapper>
+          <Heading6>{t('backlog.unassigned.title')}</Heading6>
+          <IconButton iconName="add" onClick={handleAddingNewIssue}>
+            {t('backlog.addIssue')}
+          </IconButton>
+        </StyledHeaderWrapper>
+      );
     }
 
     return null;
@@ -29,7 +47,12 @@ export const UnassignedIssues = ({ issues }: Props): JSX.Element => {
     }
 
     return issues.map((issue: Issue.IssueEntity, index: number) => (
-      <BacklogIssuePanel issue={issue} index={index} key={issue.id} />
+      <BacklogIssuePanel
+        issue={issue}
+        index={index}
+        key={issue.id}
+        handleOpeningEditIssue={handleOpeningEditIssue}
+      />
     ));
   };
 

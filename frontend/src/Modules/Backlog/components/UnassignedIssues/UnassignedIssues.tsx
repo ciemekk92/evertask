@@ -26,20 +26,21 @@ export const UnassignedIssues = ({
     handleOpeningAddIssue(null);
   };
 
-  const renderHeading = (): Nullable<JSX.Element> => {
-    if (CurrentProjectModel.currentProjectValue.methodology === PROJECT_METHODOLOGIES.AGILE) {
-      return (
-        <StyledHeaderWrapper>
-          <Heading6>{t('backlog.unassigned.title')}</Heading6>
-          <IconButton iconName="add" onClick={handleAddingNewIssue}>
-            {t('backlog.addIssue')}
-          </IconButton>
-        </StyledHeaderWrapper>
-      );
-    }
+  const currentProject = CurrentProjectModel.currentProjectValue;
 
-    return null;
-  };
+  const headingTitleKey: string =
+    currentProject.methodology === PROJECT_METHODOLOGIES.AGILE
+      ? 'backlog.unassigned.title'
+      : 'backlog.allIssues';
+
+  const renderHeading = (): JSX.Element => (
+    <StyledHeaderWrapper>
+      <Heading6>{t(headingTitleKey)}</Heading6>
+      <IconButton iconName="add" onClick={handleAddingNewIssue}>
+        {t('backlog.addIssue')}
+      </IconButton>
+    </StyledHeaderWrapper>
+  );
 
   const renderIssues = (): JSX.Element | JSX.Element[] => {
     if (!issues.length) {

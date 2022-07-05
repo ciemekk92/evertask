@@ -76,6 +76,13 @@ public abstract class IssueMapper {
         }
     }
 
+    @AfterMapping
+    public void afterUpdate(IssueUpdateDto source, @MappingTarget Issue target) {
+        if (source.getSprintId() == null) {
+            target.setSprint(null);
+        }
+    }
+
     @IncludeBeforeMapping
     @BeforeMapping
     void beforeFlushIssue(@MappingTarget IssueDto issueDto, Issue issue) {

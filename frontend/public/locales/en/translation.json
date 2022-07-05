@@ -262,12 +262,14 @@
   },
   "board": {
     "title": "{{methodology}} board",
-    "noCurrentSprint": "The board is empty, because there is no sprint currently active."
+    "noCurrentSprint": "The board is empty, because there is no sprint currently active.",
+    "noCurrentIssues": "There are no current issues."
   },
   "backlog": {
     "title": "Backlog",
     "emptySection": "No issues",
     "addIssue": "Add issue",
+    "allIssues": "All issues",
     "sprint": {
       "title": "Sprint {{ordinal}}"
     },

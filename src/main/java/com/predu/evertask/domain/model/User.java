@@ -49,6 +49,10 @@ public class User implements UserDetails, Serializable {
     private boolean enabled;
     private boolean verified;
 
+    @ManyToOne
+    @JoinColumn(name = "avatar_id")
+    private Image avatar;
+
     @OneToMany(mappedBy = "assignee")
     private Set<Issue> assignedIssues = new HashSet<>();
 

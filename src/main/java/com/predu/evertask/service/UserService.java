@@ -5,6 +5,7 @@ import com.predu.evertask.domain.dto.auth.UpdateUserRequest;
 import com.predu.evertask.domain.dto.auth.UserDto;
 import com.predu.evertask.domain.mapper.UserEditMapper;
 import com.predu.evertask.domain.mapper.UserViewMapper;
+import com.predu.evertask.domain.model.Image;
 import com.predu.evertask.domain.model.Role;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.domain.model.VerificationToken;
@@ -20,8 +21,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ValidationException;
+import java.io.IOException;
 import java.util.*;
 
 import static java.lang.String.format;
@@ -36,6 +39,7 @@ public class UserService implements UserDetailsService {
     private final UserEditMapper userEditMapper;
     private final UserViewMapper userViewMapper;
     private final PasswordEncoder passwordEncoder;
+    private final ImageService imageService;
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     public List<UserDto> getUnassignedUsers(String query) {
@@ -81,6 +85,18 @@ public class UserService implements UserDetailsService {
         User user = userRepository.getById(id);
         userEditMapper.update(request, user);
 
+        user = userRepository.save(user);
+
+        return userViewMapper.toUserDto(user);
+    }
+
+    @Transactional
+    public UserDto uploadAvatar(UUID id, MultipartFile file) throws IOException {
+
+        User user = userRepository.getById(id);
+        Image image = imageService.saveImage(file);
+
+        user.setAvatar(image);
         user = userRepository.save(user);
 
         return userViewMapper.toUserDto(user);

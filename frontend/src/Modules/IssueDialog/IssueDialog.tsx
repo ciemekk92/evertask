@@ -10,7 +10,7 @@ import { TextArea } from 'Shared/Elements/TextArea';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
 import { SingleSelectDropdown } from 'Shared/Elements/SingleSelectDropdown';
 import { LoadingModalDialog } from 'Shared/LoadingModalDialog';
-import { ISSUE_PRIORITY, ISSUE_STATUS, ISSUE_TYPE } from 'Shared/constants';
+import { ISSUE_PRIORITY, ISSUE_STATUS, ISSUE_TYPE, PROJECT_METHODOLOGIES } from 'Shared/constants';
 import { useLoading } from 'Hooks/useLoading';
 import { ApplicationState } from 'Stores/store';
 import { Api } from 'Utils/Api';
@@ -33,7 +33,7 @@ interface Props {
 }
 
 interface IssueData {
-  id: Id;
+  id: Nullable<Id>;
   title: string;
   description: string;
   estimateStoryPoints: Nullable<string>;
@@ -54,7 +54,7 @@ export const IssueDialog = ({
   targetStatus
 }: Props) => {
   const [initialData, setInitialData] = React.useState<IssueData>({
-    id: '',
+    id: null,
     title: '',
     description: '',
     estimateStoryPoints: '',
@@ -72,6 +72,7 @@ export const IssueDialog = ({
     shallowEqual
   );
   const { isLoading, startLoading, stopLoading } = useLoading();
+  const currentProject = CurrentProjectModel.currentProjectValue;
 
   React.useEffect(() => {
     if (issueId && issueId !== initialData.id && mode === ISSUE_DIALOG_MODES.EDIT) {
@@ -114,7 +115,6 @@ export const IssueDialog = ({
 
   const onSubmit = async (values: IssueData) => {
     let result: Response;
-    const currentProject = CurrentProjectModel.currentProjectValue;
 
     startLoading();
 
@@ -202,16 +202,18 @@ export const IssueDialog = ({
                   onChange={(value: Nullable<string>) => setFieldValue('priority', value)}
                 />
               </FormField>
-              <FormField label={t('issueDialog.estimateStoryPoints')} name="estimateStoryPoints">
-                <TextInput
-                  valid={!errors.estimateStoryPoints && touched.estimateStoryPoints}
-                  error={errors.estimateStoryPoints && touched.estimateStoryPoints}
-                  name="estimateStoryPoints"
-                  type="text"
-                  pattern="[0-9]*"
-                  onChange={handleEstimateChangeFactory('estimateStoryPoints', setFieldValue)}
-                />
-              </FormField>
+              {currentProject.methodology === PROJECT_METHODOLOGIES.AGILE && (
+                <FormField label={t('issueDialog.estimateStoryPoints')} name="estimateStoryPoints">
+                  <TextInput
+                    valid={!errors.estimateStoryPoints && touched.estimateStoryPoints}
+                    error={errors.estimateStoryPoints && touched.estimateStoryPoints}
+                    name="estimateStoryPoints"
+                    type="text"
+                    pattern="[0-9]*"
+                    onChange={handleEstimateChangeFactory('estimateStoryPoints', setFieldValue)}
+                  />
+                </FormField>
+              )}
               <FormField label={t('issueDialog.estimateHours')} name="estimateHours">
                 <TextInput
                   valid={!errors.estimateHours && touched.estimateHours}
@@ -232,13 +234,15 @@ export const IssueDialog = ({
                   type="text"
                 />
               </FormField>
-              <FormField label={t('issueDialog.sprint')} name="sprintId">
-                <SingleSelectDropdown
-                  options={mapSprintsToDropdownOptions(notCompletedSprints)}
-                  value={values.sprintId}
-                  onChange={(value: Nullable<Id>) => setFieldValue('sprintId', value)}
-                />
-              </FormField>
+              {currentProject.methodology === PROJECT_METHODOLOGIES.AGILE && (
+                <FormField label={t('issueDialog.sprint')} name="sprintId">
+                  <SingleSelectDropdown
+                    options={mapSprintsToDropdownOptions(notCompletedSprints)}
+                    value={values.sprintId}
+                    onChange={(value: Nullable<Id>) => setFieldValue('sprintId', value)}
+                  />
+                </FormField>
+              )}
               <FormField label={t('issueDialog.description')} name="description" required>
                 <TextArea
                   valid={!errors.description && touched.description}

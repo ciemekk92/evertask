@@ -8,7 +8,7 @@ import { DialogComponent, useDialog } from 'Hooks/useDialog';
 import { ISSUE_DIALOG_MODES, IssueDialog } from 'Modules/IssueDialog';
 import { VerticalPageWrapper } from 'Shared/PageWrappers';
 import { Heading5 } from 'Shared/Typography';
-import { ISSUE_STATUS } from 'Shared/constants';
+import { ISSUE_STATUS, PROJECT_METHODOLOGIES } from 'Shared/constants';
 import { CurrentProjectModel } from 'Models/CurrentProjectModel';
 import { capitalizeFirstLetter } from 'Utils/capitalizeFirstLetter';
 import { Project } from 'Types/Project';
@@ -16,6 +16,7 @@ import { Issue } from 'Types/Issue';
 import { ApplicationState } from 'Stores/store';
 import { actionCreators } from 'Stores/Issue';
 import { Api } from 'Utils/Api';
+import { isEmpty } from 'Utils/isEmpty';
 import { BoardColumn } from './components';
 import {
   StyledDragDropContextContainer,
@@ -34,6 +35,8 @@ export const Board = () => {
     shallowEqual
   );
 
+  const currentProject = CurrentProjectModel.currentProjectValue;
+
   React.useEffect(() => {
     const subscription = CurrentProjectModel.currentProject.subscribe(
       (project: Project.ProjectEntity) => {
@@ -49,7 +52,7 @@ export const Board = () => {
   }, [dispatch]);
 
   const boardTitle = t('board.title', {
-    methodology: capitalizeFirstLetter(CurrentProjectModel.currentProjectValue.methodology)
+    methodology: capitalizeFirstLetter(currentProject.methodology)
   });
 
   const onDragEnd = async (result: DropResult): Promise<void> => {
@@ -75,7 +78,7 @@ export const Board = () => {
         if (!dialogResult) {
           return;
         } else {
-          dispatch(actionCreators.getCurrentIssues(CurrentProjectModel.currentProjectValue.id));
+          dispatch(actionCreators.getCurrentIssues(currentProject.id));
         }
       } else {
         const issue = currentIssues[sourceStatus]?.find(
@@ -88,7 +91,7 @@ export const Board = () => {
         });
 
         if (req.status === 204) {
-          dispatch(actionCreators.getCurrentIssues(CurrentProjectModel.currentProjectValue.id));
+          dispatch(actionCreators.getCurrentIssues(currentProject.id));
         }
       }
 
@@ -96,9 +99,32 @@ export const Board = () => {
     }
   };
 
-  const renderBoard = (): Nullable<JSX.Element> => {
-    if (!currentIssues) {
-      return null;
+  const renderAgileBoard = (): Nullable<JSX.Element> => {
+    if (!currentProject.activeSprint) {
+      return <StyledMessageContainer>{t('board.noCurrentSprint')}</StyledMessageContainer>;
+    }
+
+    if (isEmpty(currentIssues) || !currentIssues) {
+      return <StyledMessageContainer>{t('board.noCurrentIssues')}</StyledMessageContainer>;
+    }
+
+    return (
+      <StyledDragDropContextContainer>
+        <Container isLoading={isLoading} />
+        <DragDropContext onDragEnd={onDragEnd}>
+          <StyledListGrid>
+            {Object.values(ISSUE_STATUS).map((status: ISSUE_STATUS) => (
+              <BoardColumn key={status} label={status} elements={currentIssues[status]} />
+            ))}
+          </StyledListGrid>
+        </DragDropContext>
+      </StyledDragDropContextContainer>
+    );
+  };
+
+  const renderKanbanBoard = (): Nullable<JSX.Element> => {
+    if (isEmpty(currentIssues) || !currentIssues) {
+      return <StyledMessageContainer>{t('board.noCurrentIssues')}</StyledMessageContainer>;
     }
 
     return (
@@ -116,11 +142,11 @@ export const Board = () => {
   };
 
   const renderContent = (): Nullable<JSX.Element> => {
-    if (CurrentProjectModel.currentProjectValue.activeSprint) {
-      return renderBoard();
+    if (currentProject.methodology === PROJECT_METHODOLOGIES.AGILE) {
+      return renderAgileBoard();
     }
 
-    return <StyledMessageContainer>{t('board.noCurrentSprint')}</StyledMessageContainer>;
+    return renderKanbanBoard();
   };
 
   return (

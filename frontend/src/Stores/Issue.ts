@@ -1,4 +1,5 @@
 import { Action, Reducer } from 'redux';
+import { ISSUE_STATUS } from 'Shared/constants';
 import { Issue } from 'Types/Issue';
 import { Api } from 'Utils/Api';
 import { isDefined } from 'Utils/isDefined';
@@ -8,8 +9,8 @@ import { ActionTypes } from './constants';
 export interface IssueState {
   isLoading: boolean;
   assignedIssues: Issue.IssueEntity[];
-  projectIssues: Issue.IssueEntity[];
   issuesUnassignedToSprint: Issue.IssueEntity[];
+  boardIssues: PartialRecord<ISSUE_STATUS, Issue.IssueEntity[]>;
 }
 
 interface SetAssignedIssuesAction {
@@ -17,14 +18,14 @@ interface SetAssignedIssuesAction {
   assignedIssues: Issue.IssueEntity[];
 }
 
-interface SetProjectIssuesAction {
-  type: typeof ActionTypes.SET_PROJECT_ISSUES;
-  projectIssues: Issue.IssueEntity[];
-}
-
 interface SetIssuesUnassignedToSprintAction {
   type: typeof ActionTypes.SET_ISSUES_UNASSIGNED_TO_SPRINT;
   issuesUnassignedToSprint: Issue.IssueEntity[];
+}
+
+interface SetBoardIssuesAction {
+  type: typeof ActionTypes.SET_BOARD_ISSUES;
+  boardIssues: PartialRecord<ISSUE_STATUS, Issue.IssueEntity[]>;
 }
 
 interface SetIssueLoadingAction {
@@ -34,8 +35,8 @@ interface SetIssueLoadingAction {
 
 export type IssueActionTypes =
   | SetAssignedIssuesAction
-  | SetProjectIssuesAction
   | SetIssuesUnassignedToSprintAction
+  | SetBoardIssuesAction
   | SetIssueLoadingAction;
 
 export const actionCreators = {
@@ -76,14 +77,14 @@ export const actionCreators = {
       });
 
       if (appState && appState.issue) {
-        const result = await Api.get('issues/...');
+        const result = await Api.get(`projects/${projectId}/current_issues`);
 
         if (result.status === 200) {
           const json = await result.json();
 
           dispatch({
-            type: ActionTypes.SET_PROJECT_ISSUES,
-            projectIssues: json
+            type: ActionTypes.SET_BOARD_ISSUES,
+            boardIssues: json
           });
         } else {
           dispatch({
@@ -126,8 +127,8 @@ export const actionCreators = {
 const initialState: IssueState = {
   isLoading: false,
   assignedIssues: [],
-  projectIssues: [],
-  issuesUnassignedToSprint: []
+  issuesUnassignedToSprint: [],
+  boardIssues: {}
 };
 
 export const reducer: Reducer<IssueState> = (
@@ -147,11 +148,11 @@ export const reducer: Reducer<IssueState> = (
         isLoading: false,
         assignedIssues: action.assignedIssues
       };
-    case ActionTypes.SET_PROJECT_ISSUES:
+    case ActionTypes.SET_BOARD_ISSUES:
       return {
         ...state,
         isLoading: false,
-        projectIssues: action.projectIssues
+        boardIssues: action.boardIssues
       };
     case ActionTypes.SET_ISSUES_UNASSIGNED_TO_SPRINT:
       return {

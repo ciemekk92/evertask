@@ -2,12 +2,15 @@ package com.predu.evertask.service;
 
 import com.predu.evertask.domain.dto.issue.IssueDto;
 import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
+import com.predu.evertask.domain.enums.ProjectMethodology;
 import com.predu.evertask.domain.mapper.IssueMapper;
 import com.predu.evertask.domain.model.Issue;
+import com.predu.evertask.domain.model.Project;
 import com.predu.evertask.domain.model.Sprint;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.IssueRepository;
+import com.predu.evertask.repository.ProjectRepository;
 import com.predu.evertask.repository.SprintRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,7 @@ public class IssueService {
 
     private final IssueRepository issueRepository;
     private final SprintRepository sprintRepository;
+    private final ProjectRepository projectRepository;
     private final IssueMapper issueMapper;
 
     public List<IssueDto> findAll() {
@@ -29,14 +33,30 @@ public class IssueService {
                 .toList();
     }
 
-    public List<IssueDto> findAllByProjectId(UUID projectId) {
-        return issueRepository.findAllByProjectId(projectId)
-                .stream()
+    public List<IssueDto> findProjectsCurrentIssues(UUID projectId) {
+        Optional<Project> optionalProject = projectRepository.findById(projectId);
+
+        if (optionalProject.isEmpty()) {
+            throw new NotFoundException(Project.class, projectId);
+        }
+
+        Project project = optionalProject.get();
+        List<Issue> issues;
+
+        if (project.getMethodology() == ProjectMethodology.KANBAN) {
+            issues = issueRepository.findAllByProjectId(projectId);
+        } else if (project.getActiveSprint() != null) {
+            issues = issueRepository.findAllBySprintId(project.getActiveSprint().getId());
+        } else {
+            issues = new ArrayList<>();
+        }
+
+        return issues.stream()
                 .map(issueMapper::issueToIssueDto)
                 .toList();
     }
 
-    public List<IssueDto> getProjectLastIssues(UUID projectId) {
+    public List<IssueDto> findProjectLastIssues(UUID projectId) {
         return issueRepository.findTop10ByProjectIdOrderByCreatedAtDesc(projectId)
                 .stream()
                 .map(issueMapper::issueToIssueDto)

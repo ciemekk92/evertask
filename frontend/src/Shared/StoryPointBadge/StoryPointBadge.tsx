@@ -3,11 +3,15 @@ import { StyledBadge } from './StoryPointBadge.styled';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
-  value: number;
+  value: Nullable<number>;
 }
 
-export const StoryPointBadge = ({ value }: Props): JSX.Element => {
+export const StoryPointBadge = ({ value }: Props): Nullable<JSX.Element> => {
   const { t } = useTranslation();
+
+  if (value === null) {
+    return null;
+  }
 
   return <StyledBadge title={t('general.storyPoints')}>{value}</StyledBadge>;
 };

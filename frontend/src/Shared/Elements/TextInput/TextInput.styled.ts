@@ -1,8 +1,11 @@
+import React from 'react';
 import styled from 'styled-components';
 import { errorBorderCss } from 'Themes';
 import { InputField } from './InputField';
 
-export const TextInput = styled(InputField)`
+interface TextInputProps extends React.HTMLAttributes<HTMLInputElement> {}
+
+export const TextInput = styled(InputField)<TextInputProps>`
   height: 4.8rem;
   min-width: 24rem;
   border: 1px solid ${(props) => props.theme.primary};

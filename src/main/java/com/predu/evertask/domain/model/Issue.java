@@ -24,15 +24,15 @@ import java.util.Set;
 @EntityListeners(AuditingEntityListener.class)
 public class Issue extends BaseEntity {
 
-    private int key;
+    private Integer key;
     private String title;
     private String description;
 
     @Column(name = "hidden", nullable = false)
     private boolean hidden = false;
 
-    private int estimateStoryPoints;
-    private int estimateHours;
+    private Integer estimateStoryPoints;
+    private Integer estimateHours;
     private String pullRequestUrl;
 
     @Enumerated(EnumType.STRING)

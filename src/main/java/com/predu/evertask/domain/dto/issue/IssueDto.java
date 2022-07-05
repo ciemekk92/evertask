@@ -17,9 +17,9 @@ public class IssueDto extends BaseDto {
     @Length(min = 6, max = 50)
     private String title;
 
-    private int estimateStoryPoints;
-    private int estimateHours;
-    private int key;
+    private Integer estimateStoryPoints;
+    private Integer estimateHours;
+    private Integer key;
 
     @NotBlank
     private String description;

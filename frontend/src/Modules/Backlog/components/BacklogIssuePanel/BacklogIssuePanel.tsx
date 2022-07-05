@@ -7,7 +7,11 @@ import { PriorityBadge } from 'Shared/PriorityBadge';
 import { StoryPointBadge } from 'Shared/StoryPointBadge';
 import { IssueTypeIcon } from 'Shared/IssueTypeIcon';
 import { StatusBadge } from 'Shared/StatusBadge';
-import { StyledDraggablePanel, StyledIssueTitle } from './BacklogIssuePanel.styled';
+import {
+  StyledDraggablePanel,
+  StyledIconsContainer,
+  StyledIssueTitle
+} from './BacklogIssuePanel.styled';
 import { DROPDOWN_MENU_POSITION, DropdownMenu } from 'Shared/Elements/DropdownMenu';
 
 interface Props {
@@ -43,9 +47,11 @@ export const BacklogIssuePanel = ({ issue, index, handleOpeningEditIssue }: Prop
             <strong>{`${currentProject.code}-${issue.key}`}</strong>
             {issue.title}
           </StyledIssueTitle>
-          <StoryPointBadge value={issue.estimateStoryPoints} />
-          <StatusBadge status={issue.status} />
-          <DropdownMenu options={dropdownOptions} position={DROPDOWN_MENU_POSITION.LEFT} />
+          <StyledIconsContainer>
+            <StoryPointBadge value={issue.estimateStoryPoints} />
+            <StatusBadge status={issue.status} />
+            <DropdownMenu options={dropdownOptions} position={DROPDOWN_MENU_POSITION.LEFT} />
+          </StyledIconsContainer>
         </StyledDraggablePanel>
       )}
     </Draggable>

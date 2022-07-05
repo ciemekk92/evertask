@@ -6,20 +6,27 @@ import {
   StyledChildrenContainer,
   StyledFieldContainer,
   StyledFormLabel,
-  StyledLabelAndInputContainer
+  StyledLabelAndInputContainer,
+  StyledLabelContainer,
+  StyledRequiredMark
 } from './FormField.styled';
 
 interface Props {
   label: string;
   name: string;
+  required?: boolean;
   children: React.ReactNode;
 }
 
-export const FormField = ({ label, name, children }: Props): JSX.Element => {
+export const FormField = ({ label, name, required, children }: Props): JSX.Element => {
   return (
     <StyledFieldContainer>
       <StyledLabelAndInputContainer>
-        <StyledFormLabel>{label}</StyledFormLabel>
+        <StyledLabelContainer>
+          <StyledFormLabel>
+            {label} {required && <StyledRequiredMark>*</StyledRequiredMark>}
+          </StyledFormLabel>
+        </StyledLabelContainer>
         <StyledChildrenContainer>{children}</StyledChildrenContainer>
       </StyledLabelAndInputContainer>
       <ErrorMessage name={name}>

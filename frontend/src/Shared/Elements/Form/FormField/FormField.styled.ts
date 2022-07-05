@@ -31,7 +31,17 @@ export const StyledChildrenContainer = styled.div`
   }
 `;
 
+export const StyledLabelContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 export const StyledFormLabel = styled.p`
   font-size: 1.6rem;
   min-width: 18rem;
+`;
+
+export const StyledRequiredMark = styled.span`
+  color: ${(props) => props.theme.error};
+  font-size: 2rem;
 `;

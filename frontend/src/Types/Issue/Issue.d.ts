@@ -8,8 +8,8 @@ declare namespace Issue {
     key: number;
     title: string;
     description: string;
-    estimateStoryPoints: number;
-    estimateHours: number;
+    estimateStoryPoints: Nullable<number>;
+    estimateHours: Nullable<number>;
     pullRequestUrl: string;
     status: ISSUE_STATUS;
     type: ISSUE_TYPE;

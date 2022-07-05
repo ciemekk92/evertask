@@ -4,7 +4,7 @@ import { DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { StyledPriorityBadge } from 'Shared/PriorityBadge/PriorityBadge.styled';
 import { StyledBadge } from 'Shared/StoryPointBadge/StoryPointBadge.styled';
 import { StyledDropdownOption } from 'Shared/Elements/SingleSelectDropdown/SingleSelectDropdown.styled';
-import { StyledStatusBadge } from '../../../../Shared/StatusBadge/StatusBadge.styled';
+import { StyledStatusBadge } from 'Shared/StatusBadge/StatusBadge.styled';
 
 interface DraggableProps extends React.HTMLAttributes<HTMLDivElement> {
   readonly snapshot: DraggableStateSnapshot;
@@ -24,10 +24,6 @@ export const StyledDraggablePanel = styled.div<DraggableProps>`
     margin-right: 1rem;
   }
 
-  & ${StyledBadge} {
-    margin-left: auto;
-  }
-
   & ${StyledDropdownOption} {
     background-color: ${(props) => props.theme.surfaceTertiary};
 
@@ -41,6 +37,12 @@ export const StyledDraggablePanel = styled.div<DraggableProps>`
     color: ${(props) => props.theme.textOnPrimary};
     transform: translateY(-0.2rem);
   }
+`;
+
+export const StyledIconsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: auto;
 `;
 
 export const StyledIssueTitle = styled.p`

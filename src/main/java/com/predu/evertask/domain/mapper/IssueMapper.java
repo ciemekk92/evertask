@@ -45,6 +45,7 @@ public abstract class IssueMapper {
     @InheritInverseConfiguration(name = "issueDtoToIssue")
     public abstract IssueDto issueToIssueDto(Issue issue);
 
+    @Mapping(source = "sprintId", target = "sprint.id")
     public abstract Issue update(@MappingTarget Issue issue, IssueUpdateDto issueUpdateDto);
 
     @AfterMapping

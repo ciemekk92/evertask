@@ -12,7 +12,7 @@ public class SprintDto extends BaseDto {
 
     private String id;
     private String projectId;
-    private int ordinal;
+    private Integer ordinal;
     private String description;
     private boolean isCompleted;
 

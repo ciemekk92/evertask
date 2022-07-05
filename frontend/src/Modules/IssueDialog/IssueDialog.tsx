@@ -2,17 +2,19 @@ import React from 'react';
 import * as Yup from 'yup';
 import { Formik, FormikProps } from 'formik';
 import { useTranslation } from 'react-i18next';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
+import { CurrentProjectModel } from 'Models/CurrentProjectModel';
 import { Form, FormField } from 'Shared/Elements/Form';
 import { TextInput } from 'Shared/Elements/TextInput';
 import { TextArea } from 'Shared/Elements/TextArea';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
 import { SingleSelectDropdown } from 'Shared/Elements/SingleSelectDropdown';
 import { LoadingModalDialog } from 'Shared/LoadingModalDialog';
-import { ISSUE_PRIORITY, ISSUE_STATUS, ISSUE_TYPE, PROJECT_METHODOLOGIES } from 'Shared/constants';
+import { ISSUE_PRIORITY, ISSUE_STATUS, ISSUE_TYPE } from 'Shared/constants';
 import { useLoading } from 'Hooks/useLoading';
 import { ApplicationState } from 'Stores/store';
 import { Api } from 'Utils/Api';
+import { ApiResponse } from 'Types/Response';
 import { ISSUE_DIALOG_MODES } from './fixtures';
 import {
   mapIssuePrioritiesToDropdownOptions,
@@ -20,23 +22,22 @@ import {
   mapSprintsToDropdownOptions
 } from './helpers';
 import { StyledDialogContent } from './IssueDialog.styled';
-import { CurrentProjectModel } from 'Models/CurrentProjectModel';
-import { ApiResponse } from '../../Types/Response';
-import { actionCreators as projectActionCreators } from '../../Stores/Project';
-import { actionCreators as issueActionCreators } from '../../Stores/Issue';
 
 interface Props {
   mode: ISSUE_DIALOG_MODES;
   handleClose: VoidFunctionNoArgs;
+  handleSubmitting: VoidFunctionNoArgs;
   initialSprintId?: Nullable<Id>;
   issueId?: Id;
+  targetStatus?: ISSUE_STATUS;
 }
 
 interface IssueData {
+  id: Id;
   title: string;
   description: string;
-  estimateStoryPoints: number;
-  estimateHours: number;
+  estimateStoryPoints: Nullable<string>;
+  estimateHours: Nullable<string>;
   pullRequestUrl: string;
   sprintId: Nullable<Id>;
   status: ISSUE_STATUS;
@@ -44,12 +45,20 @@ interface IssueData {
   priority: ISSUE_PRIORITY;
 }
 
-export const IssueDialog = ({ mode, handleClose, initialSprintId, issueId }: Props) => {
+export const IssueDialog = ({
+  mode,
+  handleClose,
+  handleSubmitting,
+  initialSprintId,
+  issueId,
+  targetStatus
+}: Props) => {
   const [initialData, setInitialData] = React.useState<IssueData>({
+    id: '',
     title: '',
     description: '',
-    estimateStoryPoints: 0,
-    estimateHours: 0,
+    estimateStoryPoints: '',
+    estimateHours: '',
     pullRequestUrl: '',
     sprintId: typeof initialSprintId !== 'undefined' ? initialSprintId : null,
     status: ISSUE_STATUS.TO_DO,
@@ -58,7 +67,6 @@ export const IssueDialog = ({ mode, handleClose, initialSprintId, issueId }: Pro
   });
 
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const notCompletedSprints = useSelector(
     (state: ApplicationState) => (state.project ? state.project.notCompletedSprints : []),
     shallowEqual
@@ -66,12 +74,16 @@ export const IssueDialog = ({ mode, handleClose, initialSprintId, issueId }: Pro
   const { isLoading, startLoading, stopLoading } = useLoading();
 
   React.useEffect(() => {
-    if (issueId && mode === ISSUE_DIALOG_MODES.EDIT) {
+    if (issueId && issueId !== initialData.id && mode === ISSUE_DIALOG_MODES.EDIT) {
       Api.get(`issues/${issueId}`)
         .then((response: ApiResponse) => response.json())
-        .then((data: IssueData) => setInitialData({ ...data }));
+        .then((data: IssueData) => {
+          const adjustedData = targetStatus ? { ...data, status: targetStatus } : data;
+
+          setInitialData({ ...adjustedData });
+        });
     }
-  }, [issueId, mode]);
+  }, [issueId, initialData.id, mode, targetStatus]);
 
   const validationSchema = Yup.object().shape({
     title: Yup.string()
@@ -82,7 +94,9 @@ export const IssueDialog = ({ mode, handleClose, initialSprintId, issueId }: Pro
       .max(2000, t('issueDialog.validation.description.maxLength'))
       .required(t('issueDialog.validation.description.required')),
     sprintId: Yup.string().nullable(),
-    status: Yup.string(),
+    estimateStoryPoints: Yup.string().nullable(),
+    estimateHours: Yup.string().nullable(),
+    status: Yup.mixed<ISSUE_STATUS>().oneOf(Object.values(ISSUE_STATUS)),
     priority: Yup.string(),
     pullRequestUrl: Yup.string().when('status', {
       is: 'CODE_REVIEW',
@@ -110,19 +124,29 @@ export const IssueDialog = ({ mode, handleClose, initialSprintId, issueId }: Pro
         projectId: currentProject.id
       });
     } else {
+      console.log({ values });
       result = await Api.put(`issues/${issueId}`, { ...values });
     }
 
     if ([201, 204].includes(result.status)) {
-      if (currentProject.methodology === PROJECT_METHODOLOGIES.AGILE) {
-        dispatch(projectActionCreators.getNotCompletedSprints(currentProject.id));
-      }
-      dispatch(issueActionCreators.getIssuesUnassignedToSprint(currentProject.id));
-      handleClose();
+      handleSubmitting();
     }
 
     stopLoading();
   };
+
+  const handleEstimateChangeFactory =
+    (
+      fieldName: 'estimateStoryPoints' | 'estimateHours',
+      changeCb: (field: string, value: Unrestricted, shouldValidate?: boolean) => void
+    ) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault();
+
+      if (e.target.validity.valid) {
+        changeCb(fieldName, e.target.value);
+      }
+    };
 
   const renderFooter = (isSubmitDisabled: boolean): JSX.Element => (
     <React.Fragment>
@@ -156,7 +180,7 @@ export const IssueDialog = ({ mode, handleClose, initialSprintId, issueId }: Pro
             footer={renderFooter(!isValid)}
           >
             <StyledDialogContent>
-              <FormField label={t('issueDialog.title')} name="title">
+              <FormField label={t('issueDialog.title')} name="title" required>
                 <TextInput
                   valid={!errors.title && touched.title}
                   error={errors.title && touched.title}
@@ -183,7 +207,9 @@ export const IssueDialog = ({ mode, handleClose, initialSprintId, issueId }: Pro
                   valid={!errors.estimateStoryPoints && touched.estimateStoryPoints}
                   error={errors.estimateStoryPoints && touched.estimateStoryPoints}
                   name="estimateStoryPoints"
-                  type="number"
+                  type="text"
+                  pattern="[0-9]*"
+                  onChange={handleEstimateChangeFactory('estimateStoryPoints', setFieldValue)}
                 />
               </FormField>
               <FormField label={t('issueDialog.estimateHours')} name="estimateHours">
@@ -191,10 +217,14 @@ export const IssueDialog = ({ mode, handleClose, initialSprintId, issueId }: Pro
                   valid={!errors.estimateHours && touched.estimateHours}
                   error={errors.estimateHours && touched.estimateHours}
                   name="estimateHours"
-                  type="number"
+                  type="text"
                 />
               </FormField>
-              <FormField label={t('issueDialog.pullRequestUrl')} name="pullRequestUrl">
+              <FormField
+                label={t('issueDialog.pullRequestUrl')}
+                name="pullRequestUrl"
+                required={values.status === ISSUE_STATUS.CODE_REVIEW}
+              >
                 <TextInput
                   valid={!errors.pullRequestUrl && touched.pullRequestUrl}
                   error={errors.pullRequestUrl && touched.pullRequestUrl}
@@ -209,7 +239,7 @@ export const IssueDialog = ({ mode, handleClose, initialSprintId, issueId }: Pro
                   onChange={(value: Nullable<Id>) => setFieldValue('sprintId', value)}
                 />
               </FormField>
-              <FormField label={t('issueDialog.description')} name="description">
+              <FormField label={t('issueDialog.description')} name="description" required>
                 <TextArea
                   valid={!errors.description && touched.description}
                   error={errors.description && touched.description}

@@ -10,31 +10,45 @@ interface DialogProps {
 type DialogModes = 'ADD' | 'EDIT' | 'CONFIRM';
 type Params = { [x: string]: any };
 
+let resolve: (value: boolean | PromiseLike<boolean>) => void;
+
 export function useDialog<T extends DialogModes>(initialMode: T) {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [dialogMode, setDialogMode] = React.useState<T>(initialMode);
   const [params, setParams] = React.useState<Params>({});
 
-  const handleClose = () => {
+  const handleClose = React.useCallback(() => {
     setParams({});
     setIsOpen(false);
-  };
+    resolve(false);
+  }, []);
 
-  const handleOpen = (openMode: T, newParams?: Params) => {
+  const handleSubmit = React.useCallback(() => {
+    setParams({});
+    setIsOpen(false);
+    resolve(true);
+  }, []);
+
+  const handleOpen = React.useCallback((openMode: T, newParams?: Params): Promise<boolean> => {
     if (newParams) {
       setParams(newParams);
     }
 
     setDialogMode(openMode);
     setIsOpen(true);
-  };
+
+    return new Promise((res) => {
+      resolve = res;
+    });
+  }, []);
 
   return {
     dialogMode,
     isOpen,
     params,
     handleClose,
-    handleOpen
+    handleOpen,
+    handleSubmit
   };
 }
 

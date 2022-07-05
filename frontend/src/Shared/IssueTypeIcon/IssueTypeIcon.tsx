@@ -28,8 +28,8 @@ export const IssueTypeIcon = ({ type }: Props): JSX.Element => {
         [ISSUE_TYPE.BUG]: '#D33636',
         [ISSUE_TYPE.EPIC]: '#692AF5',
         [ISSUE_TYPE.STORY]: '#68AD48',
-        [ISSUE_TYPE.TASK]: '#2A54D9',
-        [ISSUE_TYPE.SUBTASK]: '#1B9BEA'
+        [ISSUE_TYPE.TASK]: '#4267E3',
+        [ISSUE_TYPE.SUBTASK]: '#3bA5EE'
       }[type]),
     [type]
   );

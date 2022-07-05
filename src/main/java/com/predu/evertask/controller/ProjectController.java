@@ -90,7 +90,7 @@ public class ProjectController {
     @IsNotUnassignedUser
     @GetMapping("/{id}/last_issues")
     public ResponseEntity<List<IssueDto>> getProjectLastIssues(@PathVariable UUID id) {
-        var issues = issueService.getProjectLastIssues(id);
+        var issues = issueService.findProjectLastIssues(id);
 
         return ResponseEntity.ok(issues);
     }
@@ -98,7 +98,7 @@ public class ProjectController {
     @IsNotUnassignedUser
     @GetMapping("/{id}/current_issues")
     public ResponseEntity<Map<String, List<IssueDto>>> getProjectCurrentIssues(@PathVariable UUID id) {
-        var issues = issueService.mapIssuesByStatus(issueService.findAllByProjectId(id));
+        var issues = issueService.mapIssuesByStatus(issueService.findProjectsCurrentIssues(id));
 
         return ResponseEntity.ok(issues);
     }

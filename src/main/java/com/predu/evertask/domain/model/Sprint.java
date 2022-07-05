@@ -19,7 +19,7 @@ import java.util.Set;
 @EntityListeners(AuditingEntityListener.class)
 public class Sprint extends BaseEntity implements Serializable {
 
-    private int ordinal;
+    private Integer ordinal;
 
     @Length(max = 1000)
     private String description;

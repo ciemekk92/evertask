@@ -2,6 +2,7 @@ package com.predu.evertask.util;
 
 import com.predu.evertask.exception.InvalidOperationException;
 import com.predu.evertask.exception.InvalidTokenException;
+import com.predu.evertask.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -65,5 +66,12 @@ public class CustomRestExceptionHandler {
         String message = messageSource.getMessage("message.validation." + ex.getMessage(), null, locale);
 
         return new ResponseEntity<>(new RestMessage(message), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<RestMessage> handleNotFoundException(NotFoundException ex) {
+        String message = ex.getMessage();
+        
+        return new ResponseEntity<>(new RestMessage(message), HttpStatus.NOT_FOUND);
     }
 }

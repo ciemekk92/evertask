@@ -33,6 +33,8 @@ export const Backlog = (): Nullable<JSX.Element> => {
     shallowEqual
   );
 
+  const currentProject = CurrentProjectModel.currentProjectValue;
+
   React.useEffect(() => {
     const subscription = CurrentProjectModel.currentProject.subscribe(
       (project: Project.ProjectEntity) => {
@@ -54,16 +56,34 @@ export const Backlog = (): Nullable<JSX.Element> => {
     return null;
   }
 
-  const handleOpeningAddIssue = (sprintId: Nullable<Id>) => {
-    issueDialogConfig.handleOpen(ISSUE_DIALOG_MODES.ADD, { initialSprintId: sprintId });
+  const handleRefreshingData = () => {
+    if (currentProject.methodology === PROJECT_METHODOLOGIES.AGILE) {
+      dispatch(projectActionCreators.getNotCompletedSprints(currentProject.id));
+    }
+
+    dispatch(issueActionCreators.getIssuesUnassignedToSprint(currentProject.id));
   };
 
-  const handleOpeningEditIssue = (issueId: Id) => () => {
-    issueDialogConfig.handleOpen(ISSUE_DIALOG_MODES.EDIT, { issueId });
+  const handleOpeningAddIssue = async (sprintId: Nullable<Id>) => {
+    const result = await issueDialogConfig.handleOpen(ISSUE_DIALOG_MODES.ADD, {
+      initialSprintId: sprintId
+    });
+
+    if (result) {
+      handleRefreshingData();
+    }
+  };
+
+  const handleOpeningEditIssue = (issueId: Id) => async () => {
+    const result = await issueDialogConfig.handleOpen(ISSUE_DIALOG_MODES.EDIT, { issueId });
+
+    if (result) {
+      handleRefreshingData();
+    }
   };
 
   const renderSprints = (): Nullable<JSX.Element[]> => {
-    if (CurrentProjectModel.currentProjectValue.methodology === PROJECT_METHODOLOGIES.AGILE) {
+    if (currentProject.methodology === PROJECT_METHODOLOGIES.AGILE) {
       return projectState.notCompletedSprints.map((sprint: Sprint.SprintIssuesEntity) => (
         <SprintSection
           key={sprint.id}
@@ -93,9 +113,8 @@ export const Backlog = (): Nullable<JSX.Element> => {
     });
 
     if (req.status === 204) {
-      const projectId = CurrentProjectModel.currentProjectValue.id;
-      dispatch(projectActionCreators.getNotCompletedSprints(projectId));
-      dispatch(issueActionCreators.getIssuesUnassignedToSprint(projectId));
+      dispatch(projectActionCreators.getNotCompletedSprints(currentProject.id));
+      dispatch(issueActionCreators.getIssuesUnassignedToSprint(currentProject.id));
     }
     stopLoading();
   };
@@ -121,6 +140,7 @@ export const Backlog = (): Nullable<JSX.Element> => {
         <IssueDialog
           mode={issueDialogConfig.dialogMode}
           handleClose={issueDialogConfig.handleClose}
+          handleSubmitting={issueDialogConfig.handleSubmit}
           initialSprintId={issueDialogConfig.params.initialSprintId}
           issueId={issueDialogConfig.params.issueId}
         />

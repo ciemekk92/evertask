@@ -10,7 +10,7 @@ import { actionCreators as projectActionCreators, ProjectActionTypes } from './P
 
 export interface UserState {
   isLoading: boolean;
-  userInfo: User.UserInfo;
+  userInfo: User.UserFullInfo;
   accessToken: string;
   organisation: Organisation.OrganisationEntity;
   errors: string;
@@ -23,7 +23,7 @@ export interface LoginCredentials {
 
 interface SetLoginInfoAction {
   type: typeof ActionTypes.SET_LOGIN_INFO;
-  userInfo: User.UserInfo;
+  userInfo: User.UserFullInfo;
   accessToken: string;
   isLoading: boolean;
 }
@@ -86,7 +86,8 @@ export const actionCreators = {
             email: json.email,
             username: json.username,
             accessToken: json.accessToken,
-            authorities: json.authorities
+            authorities: json.authorities,
+            avatar: json.avatar
           });
 
           // TODO: Development only
@@ -99,7 +100,8 @@ export const actionCreators = {
               firstName: json.firstName,
               lastName: json.lastName,
               email: json.email,
-              username: json.username
+              username: json.username,
+              avatar: json.avatar
             },
             isLoading: false
           });
@@ -158,8 +160,16 @@ export const actionCreators = {
               isLoading: false
             });
           } else {
-            const { firstName, lastName, email, username, accessToken, authorities, message } =
-              await result.json();
+            const {
+              firstName,
+              lastName,
+              email,
+              username,
+              accessToken,
+              authorities,
+              avatar,
+              message
+            } = await result.json();
             if (result.status === 200) {
               UserModel.currentUserSubject.next({
                 firstName,
@@ -167,7 +177,8 @@ export const actionCreators = {
                 email,
                 username,
                 accessToken,
-                authorities
+                authorities,
+                avatar
               });
 
               dispatch({
@@ -177,7 +188,8 @@ export const actionCreators = {
                   firstName,
                   lastName,
                   email,
-                  username
+                  username,
+                  avatar
                 },
                 isLoading: false
               });
@@ -231,7 +243,8 @@ const initialState: UserState = {
     username: '',
     firstName: '',
     lastName: '',
-    email: ''
+    email: '',
+    avatar: ''
   },
   organisation: {
     id: '',

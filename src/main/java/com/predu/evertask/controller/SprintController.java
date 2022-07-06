@@ -1,7 +1,7 @@
 package com.predu.evertask.controller;
 
-import com.predu.evertask.domain.dto.auth.UserDto;
 import com.predu.evertask.domain.dto.issue.IssueDto;
+import com.predu.evertask.domain.dto.user.UserDto;
 import com.predu.evertask.domain.dto.sprint.SprintDto;
 import com.predu.evertask.domain.dto.sprint.SprintSaveDto;
 import com.predu.evertask.domain.dto.sprint.SprintUpdateDto;

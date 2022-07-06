@@ -1,6 +1,7 @@
 package com.predu.evertask.service;
 
 import com.predu.evertask.domain.dto.issue.IssueDto;
+import com.predu.evertask.domain.dto.issue.IssueSaveDto;
 import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
 import com.predu.evertask.domain.enums.ProjectMethodology;
 import com.predu.evertask.domain.mapper.IssueMapper;
@@ -91,8 +92,8 @@ public class IssueService {
                 .toList();
     }
 
-    public IssueDto create(IssueDto toSave, User reporter) {
-        Issue issue = issueMapper.issueDtoToIssue(toSave);
+    public IssueSaveDto create(IssueSaveDto toSave, User reporter) {
+        Issue issue = issueMapper.issueSaveDtoToIssue(toSave);
         issue.setReporter(reporter);
 
         issueRepository.save(issue);
@@ -124,6 +125,8 @@ public class IssueService {
             list.add(issue);
             map.put(issue.getStatus(), list);
         });
+
+        map.values().forEach(list -> list.sort(Comparator.comparingInt(IssueDto::getKey)));
 
         return map;
     }

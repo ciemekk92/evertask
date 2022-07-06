@@ -50,7 +50,7 @@ export const BacklogIssuePanel = ({ issue, index, handleOpeningEditIssue }: Prop
           <StyledIconsContainer>
             <StoryPointBadge value={issue.estimateStoryPoints} />
             <StatusBadge status={issue.status} />
-            <DropdownMenu options={dropdownOptions} position={DROPDOWN_MENU_POSITION.LEFT} />
+            <DropdownMenu options={dropdownOptions} position={DROPDOWN_MENU_POSITION.BOTTOM_LEFT} />
           </StyledIconsContainer>
         </StyledDraggablePanel>
       )}

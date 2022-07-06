@@ -5,15 +5,17 @@ import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
-public class ImageCompressor {
+public class ImageUtil {
 
-    private ImageCompressor () {}
+    private ImageUtil() {
+    }
 
-    private static final Logger logger = LoggerFactory.getLogger(ImageCompressor.class);
+    private static final Logger logger = LoggerFactory.getLogger(ImageUtil.class);
 
     public static byte[] compressBytes(byte[] data) {
         Deflater deflater = new Deflater();
@@ -55,5 +57,13 @@ public class ImageCompressor {
         }
 
         return outputStream.toByteArray();
+    }
+
+    public static String toBase64(byte[] fileContent) {
+        return Base64.getEncoder().encodeToString(fileContent);
+    }
+
+    public static byte[] fromBase64(String encodedString) {
+        return Base64.getDecoder().decode(encodedString);
     }
 }

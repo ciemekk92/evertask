@@ -1,10 +1,8 @@
-package com.predu.evertask.domain.dto.auth;
+package com.predu.evertask.domain.dto.user;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -17,11 +15,13 @@ public class UserDto {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.email = user.getEmail();
+        this.avatar = user.getAvatar();
     }
 
-    private UUID id;
+    private String id;
     private String username;
     private String firstName;
     private String lastName;
     private String email;
+    private String avatar;
 }

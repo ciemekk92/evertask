@@ -23,6 +23,7 @@ export const mapSprintsToDropdownOptions = (
     value: null,
     label: `-`
   };
+
   const mappedSprints = sprints.map((sprint: Sprint.SprintIssuesEntity) => ({
     value: sprint.id,
     label: `Sprint ${sprint.ordinal}`

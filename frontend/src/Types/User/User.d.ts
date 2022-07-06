@@ -1,10 +1,14 @@
 declare namespace User {
-  export interface UserInfo {
-    username: string;
+  export interface UserReducedInfo {
     firstName: string;
     lastName: string;
+    avatar: string;
+  }
+
+  export interface UserFullInfo extends UserReducedInfo {
+    username: string;
     email: string;
   }
 
-  export type UserEntity = IdentifiedEntity & UserInfo;
+  export type UserEntity = IdentifiedEntity & UserFullInfo;
 }

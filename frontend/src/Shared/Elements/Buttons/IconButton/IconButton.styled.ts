@@ -12,10 +12,6 @@ export const StyledButton = styled.button`
   padding: 0.6rem 1.2rem;
   transition: all 0.4s ease;
 
-  & span {
-    margin-right: 1rem;
-  }
-
   &,
   & span {
     cursor: pointer;
@@ -23,6 +19,7 @@ export const StyledButton = styled.button`
 
   & p {
     margin-bottom: 0.3rem;
+    margin-left: 1rem;
   }
 
   &:hover {

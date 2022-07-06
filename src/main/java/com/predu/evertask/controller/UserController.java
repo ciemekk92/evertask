@@ -3,7 +3,7 @@ package com.predu.evertask.controller;
 import com.predu.evertask.annotation.IsNotUnassignedUser;
 import com.predu.evertask.annotation.IsOrganisationAdminOrAdmin;
 import com.predu.evertask.annotation.IsUnassignedUser;
-import com.predu.evertask.domain.dto.auth.UserDto;
+import com.predu.evertask.domain.dto.user.UserDto;
 import com.predu.evertask.domain.dto.organisation.OrganisationDto;
 import com.predu.evertask.domain.dto.organisation.OrganisationInvitationDto;
 import com.predu.evertask.domain.model.User;

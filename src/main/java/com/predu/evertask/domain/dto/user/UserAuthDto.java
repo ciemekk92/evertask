@@ -1,4 +1,4 @@
-package com.predu.evertask.domain.dto.auth;
+package com.predu.evertask.domain.dto.user;
 
 import com.predu.evertask.domain.model.Role;
 import lombok.Getter;

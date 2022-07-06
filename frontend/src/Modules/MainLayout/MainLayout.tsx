@@ -12,6 +12,7 @@ import { Backlog } from 'Modules/Backlog';
 import { UnassignedUserPage } from 'Modules/UnassignedUserPage';
 import { OrganisationPage } from 'Modules/OrganisationPage';
 import { SprintPage } from 'Modules/SprintPage';
+import { UserProfile } from 'Modules/UserProfile';
 import { UserModel, IUserModel } from 'Models/UserModel';
 import { actionCreators } from 'Stores/User';
 import { NOTIFICATION_TYPES } from 'Shared/constants';
@@ -26,7 +27,8 @@ export const MainLayout = (): JSX.Element => {
     lastName: '',
     username: '',
     accessToken: '',
-    authorities: []
+    authorities: [],
+    avatar: ''
   });
 
   const dispatch = useDispatch();
@@ -59,6 +61,7 @@ export const MainLayout = (): JSX.Element => {
             <Route path={'/board'} element={<Board />} />
             <Route path={'/backlog'} element={<Backlog />} />
             <Route path={'/organisation'} element={<OrganisationPage />} />
+            <Route path={'/profile'} element={<UserProfile />} />
           </ReactRoutes>
         </GlobalErrorBoundary>
       </AppMainWindow>
@@ -70,6 +73,7 @@ export const MainLayout = (): JSX.Element => {
       <GlobalErrorBoundary>
         <ReactRoutes>
           <Route path={'/'} element={<UnassignedUserPage />} />
+          <Route path={'/profile'} element={<UserProfile />} />
         </ReactRoutes>
       </GlobalErrorBoundary>
     </AppMainWindow>

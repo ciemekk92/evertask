@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.stream.Collectors;
 
-@Mapper(uses = UUIDMapper.class, componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(uses = {UUIDMapper.class, ImageMapper.class}, componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public abstract class OrganisationMapper {
 
     @Autowired
@@ -39,7 +39,7 @@ public abstract class OrganisationMapper {
     public void afterOrganisationToOrganisationDto(Organisation source, @MappingTarget OrganisationDto target) {
         target.setMembers(source.getMembers()
                 .stream()
-                .map(userViewMapper::toUserDto)
+                .map(userViewMapper::toUserIssueDto)
                 .collect(Collectors.toSet()));
 
         target.setProjects(source.getProjects()

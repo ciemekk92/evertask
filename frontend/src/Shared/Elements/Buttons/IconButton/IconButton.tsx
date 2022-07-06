@@ -10,7 +10,7 @@ export const IconButton = ({ children, iconName, ...props }: Props): JSX.Element
   return (
     <StyledButton role="button" {...props}>
       <IconOutline role="presentation" iconName={iconName} />
-      <p>{children}</p>
+      {children && <p>{children}</p>}
     </StyledButton>
   );
 };

@@ -3,7 +3,7 @@ package com.predu.evertask.service;
 import com.predu.evertask.domain.model.Image;
 import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.ImageRepository;
-import com.predu.evertask.util.ImageCompressor;
+import com.predu.evertask.util.ImageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,7 +25,7 @@ public class ImageService {
         Image decompressedImage = new Image();
         decompressedImage.setName(compressedImage.getName());
         decompressedImage.setType(compressedImage.getType());
-        decompressedImage.setPicByte(ImageCompressor.decompressBytes(compressedImage.getPicByte()));
+        decompressedImage.setPicByte(ImageUtil.decompressBytes(compressedImage.getPicByte()));
 
         return decompressedImage;
     }
@@ -38,7 +38,7 @@ public class ImageService {
         Image decompressedImage = new Image();
         decompressedImage.setName(compressedImage.getName());
         decompressedImage.setType(compressedImage.getType());
-        decompressedImage.setPicByte(ImageCompressor.decompressBytes(compressedImage.getPicByte()));
+        decompressedImage.setPicByte(ImageUtil.decompressBytes(compressedImage.getPicByte()));
 
         return decompressedImage;
     }
@@ -47,7 +47,7 @@ public class ImageService {
         Image image = new Image();
         image.setName(file.getOriginalFilename());
         image.setType(file.getContentType());
-        image.setPicByte(ImageCompressor.compressBytes(file.getBytes()));
+        image.setPicByte(ImageUtil.compressBytes(file.getBytes()));
 
         return imageRepository.save(image);
     }

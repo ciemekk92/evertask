@@ -25,7 +25,7 @@ export const StyledDropdownContainer = styled.div<ContainerProps>`
 `;
 
 export const StyledDropdownOptionsList = styled.div<OptionsListProps>`
-  width: 18rem;
+  width: max-content;
   display: flex;
   flex-direction: column;
   position: absolute;

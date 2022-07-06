@@ -5,7 +5,7 @@ import { Heading6 } from 'Shared/Typography';
 import { OrganisationMemberPanel } from '../';
 
 interface Props {
-  membersData: User.UserEntity[];
+  membersData: User.UserBasicEntity[];
 }
 
 export const OrganisationMembersSection = ({ membersData }: Props): JSX.Element => {
@@ -16,7 +16,7 @@ export const OrganisationMembersSection = ({ membersData }: Props): JSX.Element 
       <StyledSectionHeaderRow>
         <Heading6>{t('organisationPage.members')}</Heading6>
       </StyledSectionHeaderRow>
-      {membersData.map((user: User.UserEntity) => (
+      {membersData.map((user: User.UserBasicEntity) => (
         <OrganisationMemberPanel key={user.id} user={user} />
       ))}
     </StyledSectionWrapper>

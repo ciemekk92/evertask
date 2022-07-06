@@ -8,13 +8,13 @@ import {
   StyledSectionContainer
 } from 'Shared/PageWrappers';
 import { Heading5 } from 'Shared/Typography';
-import { USER_ROLES } from 'Shared/constants';
-import { UserModel } from 'Models/UserModel';
 import { ApplicationState } from 'Stores/store';
 import { actionCreators as userActionCreators } from 'Stores/User';
 import { actionCreators as invitationActionCreators } from 'Stores/OrganisationInvitation';
 import { Api } from 'Utils/Api';
-import { ProjectDialog } from '../ProjectDialog';
+import { Organisation } from 'Types/Organisation';
+import { PermissionCheck } from 'Utils/PermissionCheck';
+import { ProjectDialog } from 'Modules/ProjectDialog';
 import { PROJECT_DIALOG_MODES } from '../ProjectDialog/fixtures';
 import {
   OrganisationInfoSection,
@@ -32,13 +32,9 @@ export const OrganisationPage = (): JSX.Element => {
   const inviteDialogConfig = useDialog<INVITE_MEMBER_DIALOG_MODES>(INVITE_MEMBER_DIALOG_MODES.ADD);
   const projectDialogConfig = useDialog<PROJECT_DIALOG_MODES>(PROJECT_DIALOG_MODES.ADD);
 
-  const isUserOrganisationAdmin = [USER_ROLES.ROLE_ORGANISATION_ADMIN, USER_ROLES.ROLE_ADMIN].some(
-    (role: USER_ROLES) => UserModel.currentUserValue.authorities.includes(role)
-  );
-
   React.useEffect(() => {
     dispatch(userActionCreators.getOrganisation());
-  }, []);
+  }, [dispatch]);
 
   const organisationData: Nullable<Organisation.OrganisationEntity> = useSelector(
     (state: ApplicationState) => (state.user ? state.user.organisation : null)
@@ -50,10 +46,10 @@ export const OrganisationPage = (): JSX.Element => {
   );
 
   React.useEffect(() => {
-    if (organisationData && organisationData.id && isUserOrganisationAdmin) {
+    if (organisationData && organisationData.id && PermissionCheck.isOrganisationAdmin) {
       dispatch(invitationActionCreators.getAllInvitationsForOrganisation(organisationData.id));
     }
-  }, [organisationData?.id]);
+  }, [dispatch, organisationData?.id]);
 
   const handleOpeningInviteDialog = (): void => {
     inviteDialogConfig.handleOpen(INVITE_MEMBER_DIALOG_MODES.ADD);
@@ -105,7 +101,7 @@ export const OrganisationPage = (): JSX.Element => {
   };
 
   const renderInvitations = (): Nullable<JSX.Element> => {
-    if (invitationsData && isUserOrganisationAdmin) {
+    if (invitationsData && PermissionCheck.isOrganisationAdmin) {
       return (
         <OrganisationInvitationsSection
           invitationsData={invitationsData}

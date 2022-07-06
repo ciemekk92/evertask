@@ -4,13 +4,15 @@ import { CircleContainer, UserImage } from './UserSmallCircle.styled';
 
 interface Props {
   label: string;
-  image?: Unrestricted;
+  imageSrc?: string;
 }
 
-export const UserSmallCircle = ({ label, image }: Props): JSX.Element => {
+export const UserSmallCircle = ({ label, imageSrc }: Props): JSX.Element => {
+  const imageString = imageSrc || userPlaceholder;
+
   return (
     <CircleContainer>
-      <UserImage src={image || userPlaceholder} alt={label} />
+      <UserImage src={imageString} alt={label} title={label} />
     </CircleContainer>
   );
 };

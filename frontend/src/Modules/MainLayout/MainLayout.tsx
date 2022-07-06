@@ -41,7 +41,7 @@ export const MainLayout = (): JSX.Element => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [UserModel.currentUser]);
+  }, []);
 
   React.useEffect(() => {
     if (!currentUser.accessToken) {

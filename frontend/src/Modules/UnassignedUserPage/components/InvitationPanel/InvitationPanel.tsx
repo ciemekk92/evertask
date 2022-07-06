@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { IconButton } from 'Shared/Elements/Buttons';
+import { Organisation } from 'Types/Organisation';
 import {
   StyledButtonContainer,
   StyledDate,

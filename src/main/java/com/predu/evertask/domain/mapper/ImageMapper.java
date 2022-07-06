@@ -8,8 +8,18 @@ import org.mapstruct.Mapper;
 public class ImageMapper {
     public String imageToString(Image value) {
         if (value != null) {
-            return ImageUtil.toBase64(
+            StringBuilder stringBuilder = new StringBuilder();
+
+            String dataString = ImageUtil.toBase64(
                     ImageUtil.decompressBytes(value.getPicByte()));
+
+            stringBuilder
+                    .append("data:")
+                    .append(value.getType())
+                    .append(";base64,")
+                    .append(dataString);
+
+            return stringBuilder.toString();
         }
 
         return null;

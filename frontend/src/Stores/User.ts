@@ -4,6 +4,7 @@ import { isDefined } from 'Utils/isDefined';
 import { updateObject } from 'Utils/updateObject';
 import { UserModel } from 'Models/UserModel';
 import { history } from 'Routes';
+import { Organisation } from 'Types/Organisation';
 import { AppThunkAction } from './store';
 import { ActionTypes } from './constants';
 import { actionCreators as projectActionCreators, ProjectActionTypes } from './Project';

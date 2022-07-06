@@ -19,16 +19,20 @@ export const AppHeader = ({ isLoggedIn }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    dispatch(actionCreators.logout());
+  };
+
   const dropdownOptions: Util.MenuOption[] = [
     {
       label: t('general.profile'),
       onClick: () => navigate('/profile')
+    },
+    {
+      label: t('general.logout'),
+      onClick: handleLogout
     }
   ];
-
-  const handleLogout = () => {
-    dispatch(actionCreators.logout());
-  };
 
   const renderMenuLoggedOut = () => (
     <React.Fragment>
@@ -44,13 +48,10 @@ export const AppHeader = ({ isLoggedIn }: Props): JSX.Element => {
   const renderMenuLoggedIn = () => (
     <React.Fragment>
       <CurrentProjectField />
-      <IconButton onClick={handleLogout} iconName="logout">
-        {t('general.logout')}
-      </IconButton>
       <DropdownMenu
         options={dropdownOptions}
         position={DROPDOWN_MENU_POSITION.BOTTOM_LEFT}
-        iconName="settings"
+        iconName="person"
       />
     </React.Fragment>
   );

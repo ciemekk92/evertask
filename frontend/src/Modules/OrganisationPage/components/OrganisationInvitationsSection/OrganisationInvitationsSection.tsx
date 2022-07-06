@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Heading6 } from 'Shared/Typography';
 import { IconButton } from 'Shared/Elements/Buttons';
 import { StyledSectionHeaderRow, StyledSectionWrapper } from 'Shared/PageWrappers';
+import { Organisation } from 'Types/Organisation';
 import { InvitationPanel } from '../';
 
 interface Props {

@@ -7,15 +7,15 @@ import { Container, useLoading } from 'Hooks/useLoading';
 import { Api } from 'Utils/Api';
 import { actionCreators as userActionCreators } from 'Stores/User';
 import { actionCreators as invitationsActionCreators } from 'Stores/OrganisationInvitation';
-
+import { ApplicationState } from 'Stores/store';
+import { Organisation } from 'Types/Organisation';
+import { InvitationPanel } from './components';
 import {
   StyledFormContainer,
   StyledHorizontalContainer,
   StyledInvitationsContainer,
   StyledPageWrapper
 } from './UnassignedUserPage.styled';
-import { ApplicationState } from '../../Stores/store';
-import { InvitationPanel } from './components';
 
 export const UnassignedUserPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -29,7 +29,7 @@ export const UnassignedUserPage = (): JSX.Element => {
 
   React.useEffect(() => {
     dispatch(invitationsActionCreators.getUserInvitations());
-  }, []);
+  }, [dispatch]);
 
   const handleCreatingOrganisation = async (data: Organisation.OrganisationPayload) => {
     startLoading();

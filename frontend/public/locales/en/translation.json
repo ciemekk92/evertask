@@ -280,5 +280,11 @@
   },
   "confirmationDialog": {
     "header": "Are you sure?"
+  },
+  "profile": {
+    "title": "Your profile",
+    "accountSettings": "Account settings",
+    "security": "Security",
+    "interface": "Interface"
   }
 }

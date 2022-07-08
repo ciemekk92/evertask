@@ -280,5 +280,8 @@
   },
   "confirmationDialog": {
     "header": "Na pewno?"
+  },
+  "profile": {
+    "title": "Twój profil"
   }
 }

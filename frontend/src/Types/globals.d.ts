@@ -7,6 +7,7 @@ declare global {
   export type EmptyArray = never[];
   export type EmptyObject = Record<string, never>;
   export type EmptyString = '';
+  export type AnyFunction = (...args: unknown[]) => unknown;
   export type VoidFunctionNoArgs = () => void;
   export type UiTheme = 'light' | 'dark';
   export type IdentifiedEntity = {

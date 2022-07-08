@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export const CircleContainer = styled.div`
-  width: 3.6rem;
-  height: 3.6rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
   z-index: 5;
 `;

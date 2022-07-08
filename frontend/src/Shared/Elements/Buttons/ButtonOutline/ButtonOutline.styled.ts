@@ -14,4 +14,8 @@ export const StyledButtonOutline = styled(StyledButtonFilled)<Props>`
     border-color: ${(props) => props.theme.primary};
     color: ${(props) => props.theme.textOnPrimary};
   }
+
+  &:disabled {
+    border-color: ${(props) => props.theme.disabled};
+  }
 `;

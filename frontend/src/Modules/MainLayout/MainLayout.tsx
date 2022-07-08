@@ -47,7 +47,7 @@ export const MainLayout = (): JSX.Element => {
     if (!currentUser.accessToken) {
       dispatch(actionCreators.refresh());
     }
-  }, []);
+  }, [dispatch, currentUser.accessToken]);
 
   const renderForAssignedUser = (): JSX.Element => (
     <React.Fragment>

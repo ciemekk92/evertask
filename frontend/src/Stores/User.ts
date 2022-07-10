@@ -29,6 +29,12 @@ interface SetLoginInfoAction {
   isLoading: boolean;
 }
 
+interface SetUserInfoAction {
+  type: typeof ActionTypes.SET_USER_INFO;
+  userInfo: User.UserFullInfo;
+  isLoading: boolean;
+}
+
 interface SetUserLoadingAction {
   type: typeof ActionTypes.SET_USER_LOADING;
   isLoading: boolean;
@@ -55,6 +61,7 @@ interface SetLogoutAction {
 
 export type UserActionTypes =
   | SetLoginInfoAction
+  | SetUserInfoAction
   | SetUserLoadingAction
   | SetUserOrganisationAction
   | SetUserErrorsAction
@@ -215,6 +222,51 @@ export const actionCreators = {
         }
       }
     },
+  getCurrentUserDetails: (): AppThunkAction<UserActionTypes> => async (dispatch, getState) => {
+    const appState = getState();
+
+    dispatch({
+      type: ActionTypes.SET_USER_LOADING,
+      isLoading: true
+    });
+
+    if (appState && appState.user) {
+      const result = await Api.get('user/me');
+
+      if (result.status === 200) {
+        const { firstName, lastName, email, username, avatar } =
+          (await result.json()) as User.UserFullInfo;
+        const { currentUserSubject, currentUserValue } = UserModel;
+
+        currentUserSubject.next({
+          firstName,
+          lastName,
+          email,
+          username,
+          accessToken: currentUserValue.accessToken,
+          authorities: currentUserValue.authorities,
+          avatar
+        });
+
+        dispatch({
+          type: ActionTypes.SET_USER_INFO,
+          userInfo: {
+            firstName,
+            lastName,
+            email,
+            username,
+            avatar
+          },
+          isLoading: false
+        });
+      } else {
+        dispatch({
+          type: ActionTypes.SET_USER_LOADING,
+          isLoading: false
+        });
+      }
+    }
+  },
   getOrganisation: (): AppThunkAction<UserActionTypes> => async (dispatch, getState) => {
     const appState = getState();
 
@@ -278,6 +330,12 @@ export const reducer: Reducer<UserState> = (
         isLoading: false,
         accessToken: action.accessToken,
         errors: ''
+      };
+    case ActionTypes.SET_USER_INFO:
+      return {
+        ...state,
+        userInfo: updateObject(state.userInfo, action.userInfo),
+        isLoading: false
       };
     case ActionTypes.SET_USER_ORGANISATION:
       return {

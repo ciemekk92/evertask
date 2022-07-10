@@ -25,18 +25,30 @@ const getJsonRequestOptions = ({
   method = 'POST',
   hasCredentials
 }: {
-  data: Payload;
+  data: Payload | FormData;
   method?: string;
   hasCredentials?: boolean;
 }): RequestInit => {
-  return getRequestOptions({
-    body: JSON.stringify(data),
-    method,
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: hasCredentials ? 'include' : 'omit'
-  });
+  let options: RequestInit;
+
+  if (data instanceof FormData) {
+    options = {
+      body: data,
+      method,
+      credentials: hasCredentials ? 'include' : 'omit'
+    };
+  } else {
+    options = {
+      body: JSON.stringify(data),
+      method,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: hasCredentials ? 'include' : 'omit'
+    };
+  }
+
+  return getRequestOptions(options);
 };
 
 export class Api {

@@ -2,7 +2,7 @@ declare namespace User {
   export interface UserBasicInfo {
     firstName: string;
     lastName: string;
-    avatar: string;
+    avatar: Nullable<string>;
   }
 
   export interface UserFullInfo extends UserBasicInfo {

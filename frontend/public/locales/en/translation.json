@@ -16,6 +16,7 @@
     "edit": "Edit",
     "accept": "Accept",
     "decline": "Decline",
+    "upload": "Upload",
     "sentAt": "Sent at:",
     "updatedAt": "Updated at",
     "notUpdated": "Not updated yet",
@@ -283,8 +284,18 @@
   },
   "profile": {
     "title": "Your profile",
-    "accountSettings": "Account settings",
-    "security": "Security",
-    "interface": "Interface"
+    "accountSettings": {
+      "title": "Account settings",
+      "avatarHeading": "Your avatar",
+      "avatarLabel": "Current avatar",
+      "uploadAvatar": "Upload new",
+      "removeAvatar": "Remove avatar"
+    },
+    "security": {
+      "title": "Security"
+    },
+    "interface": {
+      "title": "Interface"
+    }
   }
 }

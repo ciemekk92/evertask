@@ -14,10 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -34,17 +31,28 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/upload_avatar")
-    public ResponseEntity<UserDto> uploadAvatar(@RequestParam("imageFile")MultipartFile file,
-                                             Authentication authentication) throws IOException {
+    public ResponseEntity<UserDto> uploadAvatar(@RequestParam("imageFile") MultipartFile file,
+                                                Authentication authentication) throws IOException {
 
         User user = (User) authentication.getPrincipal();
 
         return ResponseEntity.ok(userService.uploadAvatar(user.getId(), file));
     }
 
+    @DeleteMapping("/remove_avatar")
+    public ResponseEntity<Void> removeAvatar(Authentication authentication) {
+
+        User user = (User) authentication.getPrincipal();
+
+        userService.removeAvatar(user.getId());
+
+        return ResponseEntity.noContent().build();
+    }
+
     @IsUnassignedUser
     @GetMapping("/organisation_invitations")
-    public ResponseEntity<List<OrganisationInvitationDto>> getUserOrganisationInvitations(Authentication authentication) throws IllegalAccessException {
+    public ResponseEntity<List<OrganisationInvitationDto>> getUserOrganisationInvitations(Authentication authentication)
+            throws IllegalAccessException {
 
         if (authentication == null) {
             throw new IllegalAccessException("No user logged in.");
@@ -53,6 +61,19 @@ public class UserController {
         UUID userId = ((User) authentication.getPrincipal()).getId();
 
         return ResponseEntity.ok(organisationInvitationService.findAllByUser(userId));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserDto> getCurrentUserDetails(Authentication authentication)
+            throws IllegalAccessException {
+
+        if (authentication == null) {
+            throw new IllegalAccessException("No user logged in.");
+        }
+
+        User user = (User) authentication.getPrincipal();
+
+        return ResponseEntity.ok(userService.getUser(user.getId()));
     }
 
     @IsNotUnassignedUser

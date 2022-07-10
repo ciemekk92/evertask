@@ -16,6 +16,7 @@
     "edit": "Edytuj",
     "accept": "Zaakceptuj",
     "decline": "Odrzuć",
+    "upload": "Wgraj",
     "sentAt": "Wysłane: ",
     "updatedAt": "Zaktualizowany",
     "notUpdated": "Nigdy nie aktualizowany",
@@ -282,6 +283,17 @@
     "header": "Na pewno?"
   },
   "profile": {
-    "title": "Twój profil"
+    "title": "Twój profil",
+    "accountSettings": {
+      "title": "Ustawienia konta",
+      "avatarHeading": "Twój avatar",
+      "avatarLabel": "Obecny avatar"
+    },
+    "security": {
+      "title": "Bezpieczeństwo"
+    },
+    "interface": {
+      "title": "Interfejs"
+    }
   }
 }

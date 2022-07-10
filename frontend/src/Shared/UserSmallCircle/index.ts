@@ -1,1 +1,0 @@
-export { UserSmallCircle } from './UserSmallCircle';

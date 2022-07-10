@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import { CircleContainer } from 'Shared/UserSmallCircle/UserSmallCircle.styled';
+import { StyledCircleContainer } from 'Shared/UserCircle/UserCircle.styled';
 
 export const StyledPanelContainer = styled.div`
   display: flex;
   align-items: center;
   padding: 1rem;
 
-  & ${CircleContainer} {
+  & ${StyledCircleContainer} {
     margin-right: 1rem;
   }
 

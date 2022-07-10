@@ -54,7 +54,7 @@ export class Tabs extends React.Component<Props, State> {
         const { title, disabled } = panel.props;
 
         return (
-          <StyledTabsMenuItem key={index}>
+          <StyledTabsMenuItem key={index} isActive={index === this.state.activeTab}>
             <ButtonOutline disabled={disabled} onClick={this.handleClickFactory(index, disabled)}>
               {title}
             </ButtonOutline>

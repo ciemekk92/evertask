@@ -94,12 +94,30 @@ public class UserService implements UserDetailsService {
     public UserDto uploadAvatar(UUID id, MultipartFile file) throws IOException {
 
         User user = userRepository.getById(id);
+
+        if (user.getAvatar() != null) {
+            imageService.deleteImageById(user.getAvatar().getId());
+        }
+
         Image image = imageService.saveImage(file);
 
         user.setAvatar(image);
         user = userRepository.save(user);
 
         return userViewMapper.toUserDto(user);
+    }
+
+    @Transactional
+    public void removeAvatar(UUID id) {
+        User user = userRepository.getById(id);
+        UUID avatarId = user.getAvatar().getId();
+
+        if (user.getAvatar() != null) {
+            user.setAvatar(null);
+            userRepository.save(user);
+
+            imageService.deleteImageById(avatarId);
+        }
     }
 
     @Transactional

@@ -12,13 +12,13 @@ export const UserProfile = (): JSX.Element => {
     <VerticalPageWrapper alignItems="unset">
       <Heading5>{t('profile.title')}</Heading5>
       <Tabs>
-        <Tabs.Panel title={t('profile.accountSettings')}>
+        <Tabs.Panel title={t('profile.accountSettings.title')}>
           <Components.UserAccountSettings />
         </Tabs.Panel>
-        <Tabs.Panel title={t('profile.security')}>
+        <Tabs.Panel title={t('profile.security.title')}>
           <Components.UserSecurity />
         </Tabs.Panel>
-        <Tabs.Panel title={t('profile.interface')}>
+        <Tabs.Panel title={t('profile.interface.title')}>
           <Components.UserInterface />
         </Tabs.Panel>
       </Tabs>

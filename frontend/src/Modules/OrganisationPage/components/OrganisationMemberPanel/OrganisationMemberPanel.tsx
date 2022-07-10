@@ -1,5 +1,5 @@
 import React from 'react';
-import { UserSmallCircle } from 'Shared/UserSmallCircle';
+import { UserCircle } from 'Shared/UserCircle';
 import { StyledNameLabel, StyledPanelContainer } from './OrganisationMemberPanel.styled';
 
 interface Props {
@@ -11,7 +11,7 @@ export const OrganisationMemberPanel = ({ user }: Props): JSX.Element => {
 
   return (
     <StyledPanelContainer>
-      <UserSmallCircle label={renderName()} imageSrc={user.avatar} />
+      <UserCircle label={renderName()} imageSrc={user.avatar} />
       <StyledNameLabel>{renderName()}</StyledNameLabel>
     </StyledPanelContainer>
   );

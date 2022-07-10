@@ -1,6 +1,7 @@
 export enum ActionTypes {
   /* Auth Actions */
   SET_LOGIN_INFO = 'SET_LOGIN_INFO',
+  SET_USER_INFO = 'SET_USER_INFO',
   SET_TOKEN = 'SET_TOKEN',
   SET_LOGOUT = 'SET_LOGOUT',
   SET_USER_LOADING = 'SET_USER_LOADING',

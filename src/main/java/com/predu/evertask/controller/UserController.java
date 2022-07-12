@@ -3,6 +3,7 @@ package com.predu.evertask.controller;
 import com.predu.evertask.annotation.IsNotUnassignedUser;
 import com.predu.evertask.annotation.IsOrganisationAdminOrAdmin;
 import com.predu.evertask.annotation.IsUnassignedUser;
+import com.predu.evertask.domain.dto.user.UserDetailsUpdateDto;
 import com.predu.evertask.domain.dto.user.UserDto;
 import com.predu.evertask.domain.dto.organisation.OrganisationDto;
 import com.predu.evertask.domain.dto.organisation.OrganisationInvitationDto;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -29,6 +31,15 @@ public class UserController {
     private final OrganisationInvitationService organisationInvitationService;
     private final OrganisationService organisationService;
     private final UserService userService;
+
+    @PutMapping("/{id}/update_details")
+    public ResponseEntity<UserDto> updateUserDetails(@PathVariable UUID id,
+                                                     @RequestBody @Valid UserDetailsUpdateDto dto) {
+
+        userService.updateUserDetails(id, dto);
+
+        return ResponseEntity.noContent().build();
+    }
 
     @PostMapping("/upload_avatar")
     public ResponseEntity<UserDto> uploadAvatar(@RequestParam("imageFile") MultipartFile file,

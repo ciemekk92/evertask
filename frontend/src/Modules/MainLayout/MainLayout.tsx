@@ -22,11 +22,14 @@ import { HorizontalWrapper, LayoutWrapper } from './MainLayout.styled';
 
 export const MainLayout = (): JSX.Element => {
   const [currentUser, setCurrentUser] = React.useState<IUserModel>({
+    id: '',
     email: '',
     firstName: '',
     lastName: '',
     username: '',
     accessToken: '',
+    bio: null,
+    phoneNumber: null,
     authorities: [],
     avatar: ''
   });

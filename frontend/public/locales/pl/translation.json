@@ -6,6 +6,10 @@
     "resetPassword": "Zresetuj hasło",
     "profile": "Profil użytkownika",
     "username": "Nazwa użytkownika",
+    "firstName": "Imię",
+    "lastName": "Nazwisko",
+    "bio": "Bio",
+    "phoneNumber": "Numer telefonu",
     "email": "E-mail",
     "password": "Hasło",
     "back": "Wróć",
@@ -24,6 +28,7 @@
     "setActive": "Aktywuj",
     "yes": "Tak",
     "no": "Nie",
+    "notSet": "Nie ustawiono",
     "storyPoints": "Punkty story",
     "issueStatus": "Status zadania",
     "issuePriority": "Priorytet zadania",
@@ -286,8 +291,21 @@
     "title": "Twój profil",
     "accountSettings": {
       "title": "Ustawienia konta",
-      "avatarHeading": "Twój avatar",
-      "avatarLabel": "Obecny avatar"
+      "avatarHeading": "Twój awatar",
+      "infoSectionHeading": "Twoje dane",
+      "avatarLabel": "Obecny awatar",
+      "uploadAvatar": "Wgraj nowy",
+      "removeAvatar": "Usuń awatar",
+      "avatarDisclaimer": "Tylko pliki obrazów o rozmiarach mniejszych niż 2 MB są akceptowane."
+    },
+    "validation": {
+      "bio": {
+        "maxLength": "Biografia jest za długa (maksimum 1000 znaków)"
+      },
+      "phoneNumber": {
+        "minLength": "Numer telefonu jest za krótki (minimum 9 znaków)",
+        "maxLength": "Numer telefonu jest za długi (maksimum 30 znaków)"
+      }
     },
     "security": {
       "title": "Bezpieczeństwo"

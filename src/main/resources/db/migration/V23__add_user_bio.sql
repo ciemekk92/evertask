@@ -1,0 +1,8 @@
+ALTER TABLE users
+    DROP COLUMN IF EXISTS bio;
+ALTER TABLE users
+    ADD COLUMN bio TEXT;
+ALTER TABLE users
+    DROP COLUMN IF EXISTS phone_number;
+ALTER TABLE users
+    ADD COLUMN phone_number VARCHAR(30);

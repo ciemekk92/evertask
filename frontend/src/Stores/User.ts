@@ -89,13 +89,16 @@ export const actionCreators = {
         if (result.status === 200) {
           history.push('/');
           UserModel.currentUserSubject.next({
+            id: json.id,
             firstName: json.firstName,
             lastName: json.lastName,
             email: json.email,
             username: json.username,
             accessToken: json.accessToken,
             authorities: json.authorities,
-            avatar: json.avatar
+            avatar: json.avatar,
+            bio: json.bio,
+            phoneNumber: json.phoneNumber
           });
 
           // TODO: Development only
@@ -105,11 +108,14 @@ export const actionCreators = {
             type: ActionTypes.SET_LOGIN_INFO,
             accessToken: json.accessToken,
             userInfo: {
+              id: json.id,
               firstName: json.firstName,
               lastName: json.lastName,
               email: json.email,
               username: json.username,
-              avatar: json.avatar
+              avatar: json.avatar,
+              bio: json.bio,
+              phoneNumber: json.phoneNumber
             },
             isLoading: false
           });
@@ -169,9 +175,12 @@ export const actionCreators = {
             });
           } else {
             const {
+              id,
               firstName,
               lastName,
               email,
+              bio,
+              phoneNumber,
               username,
               accessToken,
               authorities,
@@ -180,24 +189,30 @@ export const actionCreators = {
             } = await result.json();
             if (result.status === 200) {
               UserModel.currentUserSubject.next({
+                id,
                 firstName,
                 lastName,
                 email,
                 username,
                 accessToken,
                 authorities,
-                avatar
+                avatar,
+                bio,
+                phoneNumber
               });
 
               dispatch({
                 type: ActionTypes.SET_LOGIN_INFO,
                 accessToken,
                 userInfo: {
+                  id,
                   firstName,
                   lastName,
                   email,
                   username,
-                  avatar
+                  avatar,
+                  bio,
+                  phoneNumber
                 },
                 isLoading: false
               });
@@ -234,28 +249,34 @@ export const actionCreators = {
       const result = await Api.get('user/me');
 
       if (result.status === 200) {
-        const { firstName, lastName, email, username, avatar } =
+        const { id, firstName, lastName, email, username, avatar, bio, phoneNumber } =
           (await result.json()) as User.UserFullInfo;
         const { currentUserSubject, currentUserValue } = UserModel;
 
         currentUserSubject.next({
+          id,
           firstName,
           lastName,
           email,
           username,
           accessToken: currentUserValue.accessToken,
           authorities: currentUserValue.authorities,
-          avatar
+          avatar,
+          bio,
+          phoneNumber
         });
 
         dispatch({
           type: ActionTypes.SET_USER_INFO,
           userInfo: {
+            id,
             firstName,
             lastName,
             email,
             username,
-            avatar
+            avatar,
+            bio,
+            phoneNumber
           },
           isLoading: false
         });
@@ -293,11 +314,14 @@ export const actionCreators = {
 const initialState: UserState = {
   isLoading: false,
   userInfo: {
+    id: '',
     username: '',
     firstName: '',
     lastName: '',
     email: '',
-    avatar: ''
+    avatar: '',
+    bio: null,
+    phoneNumber: null
   },
   organisation: {
     id: '',

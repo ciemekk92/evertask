@@ -6,6 +6,10 @@
     "resetPassword": "Reset Password",
     "profile": "User profile",
     "username": "Username",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "bio": "Bio",
+    "phoneNumber": "Phone number",
     "email": "E-mail",
     "password": "Password",
     "back": "Back",
@@ -24,6 +28,7 @@
     "setActive": "Set active",
     "yes": "Yes",
     "no": "No",
+    "notSet": "Not set",
     "storyPoints": "Story points",
     "issueStatus": "Issue status",
     "issuePriority": "Issue priority",
@@ -57,9 +62,6 @@
   "signup": {
     "title": "Sign Up",
     "username": "Username",
-    "firstName": "First name",
-    "lastName": "Last name",
-    "email": "E-mail",
     "password": "Password",
     "rePassword": "Password confirmation",
     "submit": "Sign up",
@@ -287,9 +289,20 @@
     "accountSettings": {
       "title": "Account settings",
       "avatarHeading": "Your avatar",
+      "infoSectionHeading": "Personal information",
       "avatarLabel": "Current avatar",
       "uploadAvatar": "Upload new",
-      "removeAvatar": "Remove avatar"
+      "removeAvatar": "Remove avatar",
+      "avatarDisclaimer": "Only image files with size below 2 MBs are accepted."
+    },
+    "validation": {
+      "bio": {
+        "maxLength": "Bio is too long (maximum 1000 characters)"
+      },
+      "phoneNumber": {
+        "minLength": "Phone number is too short (minimum 9 characters)",
+        "maxLength": "Phone number is too long (maximum 30 characters)"
+      }
     },
     "security": {
       "title": "Security"

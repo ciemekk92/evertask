@@ -16,6 +16,8 @@ public class UserDto {
         this.lastName = user.getLastName();
         this.email = user.getEmail();
         this.avatar = user.getAvatar();
+        this.bio = user.getBio();
+        this.phoneNumber = user.getPhoneNumber();
     }
 
     private String id;
@@ -23,5 +25,7 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private String email;
+    private String bio;
+    private String phoneNumber;
     private String avatar;
 }

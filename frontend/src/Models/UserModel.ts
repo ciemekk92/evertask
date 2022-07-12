@@ -7,10 +7,13 @@ export interface IUserModel extends User.UserFullInfo {
 }
 
 const currentUserSubject = new BehaviorSubject<IUserModel>({
+  id: '',
   username: '',
   firstName: '',
   lastName: '',
   email: '',
+  bio: null,
+  phoneNumber: null,
   accessToken: '',
   avatar: '',
   authorities: []

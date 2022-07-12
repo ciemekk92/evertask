@@ -23,6 +23,14 @@ export const TextInput = styled(InputField)<TextInputProps>`
   ${({ error }) => error && errorBorderCss}
 `;
 
+export const StyledReadonlyField = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 1.6rem;
+  height: 4.8rem;
+  padding: calc(0.5rem + 1px) calc(1rem + 1px);
+`;
+
 export const TextInputErrorMessage = styled.div`
   color: ${(props) => props.theme.error};
   font-size: 1.4rem;

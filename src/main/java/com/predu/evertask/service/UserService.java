@@ -2,6 +2,7 @@ package com.predu.evertask.service;
 
 import com.predu.evertask.domain.dto.auth.CreateUserRequest;
 import com.predu.evertask.domain.dto.auth.UpdateUserRequest;
+import com.predu.evertask.domain.dto.user.UserDetailsUpdateDto;
 import com.predu.evertask.domain.dto.user.UserDto;
 import com.predu.evertask.domain.mapper.UserEditMapper;
 import com.predu.evertask.domain.mapper.UserViewMapper;
@@ -84,6 +85,18 @@ public class UserService implements UserDetailsService {
     public UserDto update(UUID id, UpdateUserRequest request) {
         User user = userRepository.getById(id);
         userEditMapper.update(request, user);
+
+        user = userRepository.save(user);
+
+        return userViewMapper.toUserDto(user);
+    }
+
+    @Transactional
+    public UserDto updateUserDetails(UUID id, UserDetailsUpdateDto dto) {
+
+        User user = userRepository.getById(id);
+
+        userEditMapper.updateDetails(dto, user);
 
         user = userRepository.save(user);
 

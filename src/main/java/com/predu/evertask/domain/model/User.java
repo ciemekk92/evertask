@@ -35,12 +35,19 @@ public class User implements UserDetails, Serializable {
     private String password;
 
     @Email
+    @Length(max = 60)
     private String email;
 
+    @Length(max = 30)
     private String firstName;
+
+    @Length(max = 30)
     private String lastName;
+
+    @Length(max = 30)
     private String phoneNumber;
 
+    private String bio;
     private String refreshToken;
     private Date refreshTokenExpiryDate;
 

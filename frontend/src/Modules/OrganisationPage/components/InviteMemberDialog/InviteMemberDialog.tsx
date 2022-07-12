@@ -10,6 +10,7 @@ import { LoadingModalDialog } from 'Shared/LoadingModalDialog';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
 import { SearchInput } from 'Shared/Elements/SearchInput';
 import { RadioField } from 'Shared/Elements/RadioField';
+import { User } from 'Types/User';
 import { INVITE_MEMBER_DIALOG_MODES } from './fixtures';
 import { StyledDialogContent } from './InviteMemberDialog.styled';
 
@@ -28,7 +29,7 @@ export const InviteMemberDialog = ({ handleClose, organisationId }: Props): JSX.
 
   React.useEffect(() => {
     dispatch(organisationActionCreators.getUnassignedUsers());
-  }, []);
+  }, [dispatch]);
 
   const isOrganisationLoading = useSelector(
     (state: ApplicationState) => (state.organisation ? state.organisation.isLoading : false),

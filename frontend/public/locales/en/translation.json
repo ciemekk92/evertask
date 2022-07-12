@@ -12,6 +12,7 @@
     "phoneNumber": "Phone number",
     "email": "E-mail",
     "password": "Password",
+    "rePassword": "Password confirmation",
     "back": "Back",
     "mainPage": "Main page",
     "cancel": "Cancel",
@@ -60,10 +61,7 @@
     }
   },
   "signup": {
-    "title": "Sign Up",
-    "username": "Username",
-    "password": "Password",
-    "rePassword": "Password confirmation",
+    "title": "Sign up",
     "submit": "Sign up",
     "validation": {
       "firstName": {

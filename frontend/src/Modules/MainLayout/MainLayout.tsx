@@ -13,9 +13,9 @@ import { UnassignedUserPage } from 'Modules/UnassignedUserPage';
 import { OrganisationPage } from 'Modules/OrganisationPage';
 import { SprintPage } from 'Modules/SprintPage';
 import { UserProfile } from 'Modules/UserProfile';
-import { UserModel, IUserModel } from 'Models/UserModel';
+import { IUserModel, UserModel } from 'Models/UserModel';
 import { actionCreators } from 'Stores/User';
-import { NOTIFICATION_TYPES } from 'Shared/constants';
+import { INTERFACE_LANGUAGE, NOTIFICATION_TYPES } from 'Shared/constants';
 import { PermissionCheck } from 'Utils/PermissionCheck';
 import { AppHeader, AppMainWindow, AppSidebar } from './components';
 import { HorizontalWrapper, LayoutWrapper } from './MainLayout.styled';
@@ -31,7 +31,12 @@ export const MainLayout = (): JSX.Element => {
     bio: null,
     phoneNumber: null,
     authorities: [],
-    avatar: ''
+    avatar: '',
+    userSettings: {
+      darkMode: false,
+      interfaceLanguage: INTERFACE_LANGUAGE.EN,
+      interfaceColor: '#3F51B5'
+    }
   });
 
   const dispatch = useDispatch();
@@ -106,7 +111,7 @@ export const MainLayout = (): JSX.Element => {
   return (
     <CustomRouter basename={'/'} history={history}>
       <LayoutWrapper>
-        <AppHeader isLoggedIn={Boolean(currentUser.accessToken)} />
+        <AppHeader />
         {currentUser.accessToken ? renderLoggedInView() : renderLoggedOutView()}
       </LayoutWrapper>
     </CustomRouter>

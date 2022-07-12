@@ -3,6 +3,7 @@ import { Api } from 'Utils/Api';
 import { isDefined } from 'Utils/isDefined';
 import { Issue } from 'Types/Issue';
 import { Sprint } from 'Types/Sprint';
+import { User } from 'Types/User';
 import { ActionTypes } from './constants';
 import { AppThunkAction } from './store';
 

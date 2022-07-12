@@ -1,9 +1,11 @@
-export const lightTheme = {
+import { darken, lighten } from 'polished';
+
+export const getLightTheme = (primary: string) => ({
   colorScheme: 'light',
-  primary: '#3F51B5',
-  primaryDark: '#303F9F',
-  primaryLight: '#C5CAE9',
-  secondary: '#03A9F4',
+  primary,
+  primaryDark: darken(0.07, primary),
+  primaryLight: lighten(0.4, primary),
+  secondary: lighten(0.1, primary),
   background: '#D4D4D4',
   surface: '#F3F3F3',
   surfaceSecondary: '#E1E1E1',
@@ -18,7 +20,7 @@ export const lightTheme = {
   surfaceTransparent: 'rgba(243,243,243,0.4)',
   boxShadow: 'rgba(102,102,102,0.4)',
   textShadow: 'rgba(31,31,31,0.4)'
-};
+});
 
 export const darkTheme = {
   colorScheme: 'dark',

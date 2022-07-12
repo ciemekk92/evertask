@@ -9,15 +9,15 @@ import { DROPDOWN_MENU_POSITION, DropdownMenu } from 'Shared/Elements/DropdownMe
 import { CurrentProjectField } from 'Modules/CurrentProjectField';
 import { HeaderBody, LoginContainer } from './AppHeader.styled';
 import logoDark from 'Assets/logo_dark.png';
+import logoLight from 'Assets/logo_light.png';
+import { UserModel } from 'Models/UserModel';
 
-interface Props {
-  isLoggedIn: boolean;
-}
-
-export const AppHeader = ({ isLoggedIn }: Props): JSX.Element => {
+export const AppHeader = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const currentUser = UserModel.currentUserValue;
 
   const handleLogout = () => {
     dispatch(actionCreators.logout());
@@ -59,9 +59,11 @@ export const AppHeader = ({ isLoggedIn }: Props): JSX.Element => {
   return (
     <HeaderBody>
       <StyledLink to="/">
-        <img src={logoDark} alt="EverTask" />
+        <img src={currentUser.userSettings.darkMode ? logoDark : logoLight} alt="EverTask" />
       </StyledLink>
-      <LoginContainer>{isLoggedIn ? renderMenuLoggedIn() : renderMenuLoggedOut()}</LoginContainer>
+      <LoginContainer>
+        {currentUser.accessToken ? renderMenuLoggedIn() : renderMenuLoggedOut()}
+      </LoginContainer>
     </HeaderBody>
   );
 };

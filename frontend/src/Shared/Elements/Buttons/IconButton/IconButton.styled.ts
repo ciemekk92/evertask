@@ -24,5 +24,6 @@ export const StyledButton = styled.button`
 
   &:hover {
     background-color: ${(props) => props.theme.primaryDark};
+    color: ${(props) => props.theme.textOnPrimary};
   }
 `;

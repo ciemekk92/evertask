@@ -1,4 +1,12 @@
+import { INTERFACE_LANGUAGE } from 'Shared/constants';
+
 declare namespace User {
+  export interface UserSettings {
+    darkMode: boolean;
+    interfaceLanguage: INTERFACE_LANGUAGE;
+    interfaceColor: string;
+  }
+
   export interface UserBasicInfo {
     firstName: string;
     lastName: string;
@@ -11,6 +19,7 @@ declare namespace User {
     email: string;
     bio: Nullable<string>;
     phoneNumber: Nullable<string>;
+    userSettings: UserSettings;
   }
 
   export type UserBasicEntity = IdentifiedEntity & UserBasicInfo;

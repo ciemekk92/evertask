@@ -18,6 +18,7 @@ public class UserDto {
         this.avatar = user.getAvatar();
         this.bio = user.getBio();
         this.phoneNumber = user.getPhoneNumber();
+        this.userSettings = user.getUserSettings();
     }
 
     private String id;
@@ -28,4 +29,5 @@ public class UserDto {
     private String bio;
     private String phoneNumber;
     private String avatar;
+    private UserSettingsDto userSettings;
 }

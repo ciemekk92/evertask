@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React from 'react';
-import { StyledButtonOutline } from '../Elements/Buttons/ButtonOutline/ButtonOutline.styled';
+import { StyledButtonOutline } from 'Shared/Elements/Buttons/ButtonOutline/ButtonOutline.styled';
 
 interface MenuItemProps extends React.HTMLAttributes<HTMLLIElement> {
   readonly isActive: boolean;
@@ -34,6 +34,7 @@ export const StyledTabsMenuItem = styled.li<MenuItemProps>`
   & > ${StyledButtonOutline} {
     background-color: ${(props) => (props.isActive ? props.theme.primaryDark : 'transparent')};
     font-weight: ${(props) => (props.isActive ? 700 : 400)};
+    color: ${(props) => (props.isActive ? props.theme.textOnPrimary : 'inherit')};
   }
 `;
 

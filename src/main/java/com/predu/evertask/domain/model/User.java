@@ -56,6 +56,10 @@ public class User implements UserDetails, Serializable {
     private boolean enabled;
     private boolean verified;
 
+    @OneToOne
+    @JoinColumn(name = "user_settings_id")
+    private UserSettings userSettings;
+
     @ManyToOne
     @JoinColumn(name = "avatar_id")
     private Image avatar;

@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public abstract class IssueMapper {
 
     @Autowired
-    protected IssueRepository issueRepository;
+    private IssueRepository issueRepository;
 
     @Autowired
     private SprintRepository sprintRepository;

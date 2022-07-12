@@ -28,6 +28,7 @@ const DropdownButtonStyles = css`
 
   &:hover {
     background-color: ${(props) => props.theme.primary};
+    color: ${(props) => props.theme.textOnPrimary};
   }
 `;
 

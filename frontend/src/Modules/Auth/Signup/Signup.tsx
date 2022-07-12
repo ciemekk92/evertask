@@ -86,7 +86,7 @@ export const Signup = (): JSX.Element => {
         error={errors[key] && touched[key]}
         name={key}
         type={['password', 'rePassword'].includes(key) ? 'password' : 'text'}
-        placeholder={t(`signup.${key}`)}
+        placeholder={t(`general.${key}`)}
       />
       <ErrorMessage name={key}>
         {(msg: string) => <TextInputErrorMessage>{msg}</TextInputErrorMessage>}

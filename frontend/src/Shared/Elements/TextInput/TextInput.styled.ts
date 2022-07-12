@@ -34,7 +34,6 @@ export const StyledReadonlyField = styled.div`
 export const TextInputErrorMessage = styled.div`
   color: ${(props) => props.theme.error};
   font-size: 1.4rem;
-  margin-left: 18rem;
   margin-bottom: 1rem;
   padding: 0.5rem 0.75rem;
   white-space: pre-line;

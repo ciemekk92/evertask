@@ -1,7 +1,12 @@
+import React from 'react';
 import styled, { css } from 'styled-components';
 import { FormikRadioField } from './FormikRadioField';
 
-export const StyledCheck = styled.div`
+interface CheckProps extends React.HTMLAttributes<HTMLDivElement> {
+  readonly disabled?: boolean;
+}
+
+export const StyledCheck = styled.div<CheckProps>`
   display: block;
   position: absolute;
   height: 20px;
@@ -38,24 +43,25 @@ export const StyledContainer = styled.div`
   }
 
   &:hover ${StyledCheck} {
-    border: 3px solid ${(props) => props.theme.primaryLight};
+    border: 3px solid
+      ${(props) => (props.disabled ? props.theme.disabled : props.theme.primaryLight)};
   }
 `;
 
-const RadioStyles = css`
+const RadioStyles = css<CheckProps>`
   position: absolute;
   visibility: hidden;
 
   &:checked ~ ${StyledCheck} {
-    border: 3px solid ${(props) => props.theme.primary};
+    border: 3px solid ${(props) => (props.disabled ? props.theme.disabled : props.theme.primary)};
   }
 
   &:checked ~ ${StyledCheck}::before {
-    background: ${(props) => props.theme.primary};
+    background: ${(props) => (props.disabled ? props.theme.disabled : props.theme.primary)};
   }
 
   &:checked ~ label {
-    color: ${(props) => props.theme.primary};
+    color: ${(props) => (props.disabled ? props.theme.disabled : props.theme.primary)};
   }
 `;
 

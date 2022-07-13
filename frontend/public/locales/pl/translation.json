@@ -39,6 +39,10 @@
       "STORY": "Story",
       "TASK": "Zadanie",
       "SUBTASK": "Podzadanie"
+    },
+    "language": {
+      "EN": "Angielski",
+      "PL": "Polski"
     }
   },
   "error": {
@@ -292,6 +296,16 @@
       "uploadAvatar": "Wgraj nowy",
       "removeAvatar": "Usuń awatar",
       "avatarDisclaimer": "Tylko pliki obrazów o rozmiarach mniejszych niż 2 MB są akceptowane."
+    },
+    "userInterface": {
+      "title": "Ustawienia interfejsu",
+      "interfaceLanguage": "Język",
+      "darkMode": {
+        "label": "Tryb wyświetlania",
+        "darkMode": "Tryb ciemny",
+        "lightMode": "Tryb jasny"
+      },
+      "interfaceColor": "Kolor akcentów"
     },
     "validation": {
       "bio": {

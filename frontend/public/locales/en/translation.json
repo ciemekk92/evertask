@@ -39,6 +39,10 @@
       "STORY": "Story",
       "TASK": "Task",
       "SUBTASK": "Subtask"
+    },
+    "language": {
+      "EN": "English",
+      "PL": "Polish"
     }
   },
   "error": {
@@ -292,6 +296,16 @@
       "uploadAvatar": "Upload new",
       "removeAvatar": "Remove avatar",
       "avatarDisclaimer": "Only image files with size below 2 MBs are accepted."
+    },
+    "userInterface": {
+      "title": "User interface",
+      "interfaceLanguage": "Interface language",
+      "darkMode": {
+        "label": "Interface theme",
+        "darkMode": "Dark theme",
+        "lightMode": "Light theme"
+      },
+      "interfaceColor": "Accent color"
     },
     "validation": {
       "bio": {

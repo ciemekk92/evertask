@@ -7,7 +7,9 @@ import com.predu.evertask.domain.dto.user.UserDetailsUpdateDto;
 import com.predu.evertask.domain.dto.user.UserDto;
 import com.predu.evertask.domain.dto.organisation.OrganisationDto;
 import com.predu.evertask.domain.dto.organisation.OrganisationInvitationDto;
+import com.predu.evertask.domain.dto.user.UserSettingsDto;
 import com.predu.evertask.domain.model.User;
+import com.predu.evertask.domain.model.UserSettings;
 import com.predu.evertask.service.OrganisationInvitationService;
 import com.predu.evertask.service.OrganisationService;
 import com.predu.evertask.service.UserService;
@@ -41,6 +43,17 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/update_interface")
+    public ResponseEntity<Void> updateUserSettings(@RequestBody @Valid UserSettingsDto dto,
+                                                   Authentication authentication) {
+
+        User user = (User) authentication.getPrincipal();
+
+        userService.updateUserSettings(user.getId(), dto);
+
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping("/upload_avatar")
     public ResponseEntity<UserDto> uploadAvatar(@RequestParam("imageFile") MultipartFile file,
                                                 Authentication authentication) throws IOException {
@@ -62,12 +75,8 @@ public class UserController {
 
     @IsUnassignedUser
     @GetMapping("/organisation_invitations")
-    public ResponseEntity<List<OrganisationInvitationDto>> getUserOrganisationInvitations(Authentication authentication)
-            throws IllegalAccessException {
+    public ResponseEntity<List<OrganisationInvitationDto>> getUserOrganisationInvitations(Authentication authentication) {
 
-        if (authentication == null) {
-            throw new IllegalAccessException("No user logged in.");
-        }
 
         UUID userId = ((User) authentication.getPrincipal()).getId();
 
@@ -89,11 +98,7 @@ public class UserController {
 
     @IsNotUnassignedUser
     @GetMapping("/organisation")
-    public ResponseEntity<OrganisationDto> getUserOrganisation(Authentication authentication) throws IllegalAccessException {
-
-        if (authentication == null) {
-            throw new IllegalAccessException("No user logged in.");
-        }
+    public ResponseEntity<OrganisationDto> getUserOrganisation(Authentication authentication) {
 
         User user = (User) authentication.getPrincipal();
 

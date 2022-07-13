@@ -1,4 +1,9 @@
 import styled from 'styled-components';
+import React from 'react';
+
+interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
+  readonly alignItems?: string;
+}
 
 export const StyledFieldContainer = styled.div`
   display: flex;
@@ -10,9 +15,9 @@ export const StyledFieldContainer = styled.div`
   }
 `;
 
-export const StyledLabelAndInputContainer = styled.div`
+export const StyledLabelAndInputContainer = styled.div<ContainerProps>`
   display: flex;
-  align-items: baseline;
+  align-items: ${({ alignItems }) => alignItems ?? 'baseline'};
 
   & input,
   & textarea {

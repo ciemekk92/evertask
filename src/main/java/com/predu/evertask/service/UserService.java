@@ -4,15 +4,15 @@ import com.predu.evertask.domain.dto.auth.CreateUserRequest;
 import com.predu.evertask.domain.dto.auth.UpdateUserRequest;
 import com.predu.evertask.domain.dto.user.UserDetailsUpdateDto;
 import com.predu.evertask.domain.dto.user.UserDto;
+import com.predu.evertask.domain.dto.user.UserSettingsDto;
 import com.predu.evertask.domain.mapper.UserEditMapper;
+import com.predu.evertask.domain.mapper.UserSettingsMapper;
 import com.predu.evertask.domain.mapper.UserViewMapper;
-import com.predu.evertask.domain.model.Image;
-import com.predu.evertask.domain.model.Role;
-import com.predu.evertask.domain.model.User;
-import com.predu.evertask.domain.model.VerificationToken;
+import com.predu.evertask.domain.model.*;
 import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.RoleRepository;
 import com.predu.evertask.repository.UserRepository;
+import com.predu.evertask.repository.UserSettingsRepository;
 import com.predu.evertask.repository.VerificationTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,8 +37,10 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final VerificationTokenRepository tokenRepository;
+    private final UserSettingsRepository userSettingsRepository;
     private final UserEditMapper userEditMapper;
     private final UserViewMapper userViewMapper;
+    private final UserSettingsMapper userSettingsMapper;
     private final PasswordEncoder passwordEncoder;
     private final ImageService imageService;
 
@@ -101,6 +103,16 @@ public class UserService implements UserDetailsService {
         user = userRepository.save(user);
 
         return userViewMapper.toUserDto(user);
+    }
+
+    @Transactional
+    public void updateUserSettings(UUID id, UserSettingsDto dto) {
+
+        User user = userRepository.getById(id);
+
+        UserSettings newSettings = userSettingsMapper.update(user.getUserSettings(), dto);
+
+        userSettingsRepository.save(newSettings);
     }
 
     @Transactional

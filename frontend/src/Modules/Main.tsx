@@ -1,13 +1,29 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material';
-import { darkTheme, GlobalStyles, getLightTheme } from 'Themes';
+import { getDarkTheme, getLightTheme, GlobalStyles } from 'Themes';
 import { MainLayout } from 'Modules/MainLayout';
-import { UserModel } from 'Models/UserModel';
+import { IUserModel, UserModel } from 'Models/UserModel';
 
 export const Main = (): JSX.Element => {
-  const isDarkTheme = UserModel.currentUserValue.userSettings.darkMode;
-  const primaryColor = UserModel.currentUserValue.userSettings.interfaceColor;
+  const [isDarkTheme, setIsDarkTheme] = React.useState<boolean>(
+    UserModel.currentUserValue.userSettings.darkMode
+  );
+
+  const [primaryColor, setPrimaryColor] = React.useState<string>(
+    UserModel.currentUserValue.userSettings.interfaceColor
+  );
+
+  React.useEffect(() => {
+    const subscription = UserModel.currentUser.subscribe(
+      ({ userSettings: { darkMode, interfaceColor } }: IUserModel) => {
+        setIsDarkTheme(darkMode);
+        setPrimaryColor(interfaceColor);
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const muiTheme = createTheme({
     palette: {
@@ -17,7 +33,7 @@ export const Main = (): JSX.Element => {
 
   return (
     <MuiThemeProvider theme={muiTheme}>
-      <ThemeProvider theme={isDarkTheme ? darkTheme : getLightTheme(primaryColor)}>
+      <ThemeProvider theme={isDarkTheme ? getDarkTheme(primaryColor) : getLightTheme(primaryColor)}>
         <GlobalStyles themeType={isDarkTheme ? 'dark' : 'light'} />
         <MainLayout />
       </ThemeProvider>

@@ -9,7 +9,7 @@ export const StyledAvatarSettingsContainer = styled.div`
   align-items: center;
   width: 39%;
   height: max-content;
-  padding: 1rem;
+  padding: 2rem;
   border-radius: 0.3rem;
   background-color: ${(props) => props.theme.surface};
 

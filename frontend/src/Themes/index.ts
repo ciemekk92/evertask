@@ -1,3 +1,3 @@
 export { GlobalStyles } from './GlobalStyles';
-export { getLightTheme, darkTheme } from './colorThemes';
+export { getLightTheme, getDarkTheme } from './colorThemes';
 export { errorBorderCss } from './ErrorStyles';

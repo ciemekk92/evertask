@@ -6,7 +6,9 @@ import { Heading6 } from 'Shared/Typography';
 import { ButtonFilled, ButtonOutline, IconButton } from 'Shared/Elements/Buttons';
 import { FormField } from 'Shared/Elements/Form';
 import { TextInput } from 'Shared/Elements/TextInput';
-import { UserModel } from 'Models/UserModel';
+import { TextArea } from 'Shared/Elements/TextArea';
+import { IUserModel, UserModel } from 'Models/UserModel';
+import { Api } from 'Utils/Api';
 import {
   StyledFooterContainer,
   StyledFormContainer,
@@ -14,8 +16,6 @@ import {
   StyledHorizontalFieldContainer,
   StyledUserInfoSettingsContainer
 } from './PersonalInfoSection.styled';
-import { TextArea } from 'Shared/Elements/TextArea';
-import { Api } from 'Utils/Api';
 
 interface UserData {
   firstName: string;
@@ -59,7 +59,7 @@ export const PersonalInfoSection = ({ onUpdate }: Props): JSX.Element => {
   });
 
   React.useEffect(() => {
-    UserModel.currentUser.subscribe((user) => {
+    const subscription = UserModel.currentUser.subscribe((user: IUserModel) => {
       setInitialData({
         firstName: user.firstName,
         lastName: user.lastName,
@@ -68,6 +68,8 @@ export const PersonalInfoSection = ({ onUpdate }: Props): JSX.Element => {
         phoneNumber: user.phoneNumber
       });
     });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const toggleEditingFactory =
@@ -121,7 +123,7 @@ export const PersonalInfoSection = ({ onUpdate }: Props): JSX.Element => {
       }
     };
 
-  const handleSubmit = async (values: UserData) => {
+  const onSubmit = async (values: UserData) => {
     const result = await Api.put(`user/${UserModel.currentUserValue.id}/update_details`, values);
 
     if (result.status === 204) {
@@ -137,9 +139,17 @@ export const PersonalInfoSection = ({ onUpdate }: Props): JSX.Element => {
         validateOnMount
         validationSchema={validationSchema}
         initialValues={initialData}
-        onSubmit={handleSubmit}
+        onSubmit={onSubmit}
       >
-        {({ errors, touched, handleSubmit, isValid, values, setFieldValue, resetForm }) => (
+        {({
+          errors,
+          touched,
+          handleSubmit,
+          isValid,
+          values,
+          setFieldValue,
+          resetForm
+        }: FormikProps<UserData>) => (
           <React.Fragment>
             <StyledHeaderContainer>
               <Heading6>{t('profile.accountSettings.infoSectionHeading')}</Heading6>

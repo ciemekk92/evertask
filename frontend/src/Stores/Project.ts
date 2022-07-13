@@ -5,6 +5,7 @@ import { CURRENT_PROJECT_KEY, PROJECT_METHODOLOGIES } from 'Shared/constants';
 import { Project } from 'Types/Project';
 import { Issue } from 'Types/Issue';
 import { Sprint } from 'Types/Sprint';
+import { User } from 'Types/User';
 import { CurrentProjectModel } from 'Models/CurrentProjectModel';
 import { ActionTypes } from './constants';
 import { AppThunkAction } from './store';

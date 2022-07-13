@@ -5,7 +5,7 @@ interface Props {
   error: string;
 }
 
-const StyledErrorField = styled.div`
+export const StyledErrorField = styled.div`
   color: ${(props) => props.theme.error};
   font-size: 1.5rem;
   margin-bottom: 1rem;

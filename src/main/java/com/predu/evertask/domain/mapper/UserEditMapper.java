@@ -2,6 +2,7 @@ package com.predu.evertask.domain.mapper;
 
 import com.predu.evertask.domain.dto.auth.CreateUserRequest;
 import com.predu.evertask.domain.dto.auth.UpdateUserRequest;
+import com.predu.evertask.domain.dto.user.UserDetailsUpdateDto;
 import com.predu.evertask.domain.model.Role;
 import com.predu.evertask.domain.model.User;
 import org.mapstruct.*;
@@ -19,6 +20,9 @@ public abstract class UserEditMapper {
     @BeanMapping(nullValueCheckStrategy = ALWAYS, nullValuePropertyMappingStrategy = IGNORE)
     @Mapping(target = "authorities", ignore = true)
     public abstract void update(UpdateUserRequest request, @MappingTarget User user);
+
+
+    public abstract void updateDetails(UserDetailsUpdateDto source, @MappingTarget User user);
 
     @AfterMapping
     protected void afterUpdate(UpdateUserRequest request, @MappingTarget User user) {

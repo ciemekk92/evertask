@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Heading6 } from 'Shared/Typography';
 import { InfoField } from 'Shared/Elements/InfoField';
 import { StyledSectionHeaderRow, StyledSectionWrapper } from 'Shared/PageWrappers';
+import { Organisation } from 'Types/Organisation';
 import { StyledDescriptionField } from './OrganisationInfoSection.styled';
 
 interface Props {

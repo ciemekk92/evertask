@@ -1,27 +1,38 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-
+import { useNavigate } from 'react-router-dom';
 import { actionCreators } from 'Stores/User';
 import { StyledLink } from 'Shared/StyledLink';
 import { IconButton } from 'Shared/Elements/Buttons';
-import logoLight from 'Assets/logo_light.png';
-import logoDark from 'Assets/logo_dark.png';
-
+import { DROPDOWN_MENU_POSITION, DropdownMenu } from 'Shared/Elements/DropdownMenu';
+import { CurrentProjectField } from 'Modules/CurrentProjectField';
 import { HeaderBody, LoginContainer } from './AppHeader.styled';
-import { CurrentProjectField } from '../../../CurrentProjectField';
+import logoDark from 'Assets/logo_dark.png';
+import logoLight from 'Assets/logo_light.png';
+import { UserModel } from 'Models/UserModel';
 
-interface Props {
-  isLoggedIn: boolean;
-}
-
-export const AppHeader = ({ isLoggedIn }: Props): JSX.Element => {
+export const AppHeader = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const currentUser = UserModel.currentUserValue;
 
   const handleLogout = () => {
     dispatch(actionCreators.logout());
   };
+
+  const dropdownOptions: Util.MenuOption[] = [
+    {
+      label: t('general.profile'),
+      onClick: () => navigate('/profile')
+    },
+    {
+      label: t('general.logout'),
+      onClick: handleLogout
+    }
+  ];
 
   const renderMenuLoggedOut = () => (
     <React.Fragment>
@@ -33,21 +44,26 @@ export const AppHeader = ({ isLoggedIn }: Props): JSX.Element => {
       </StyledLink>
     </React.Fragment>
   );
+
   const renderMenuLoggedIn = () => (
     <React.Fragment>
       <CurrentProjectField />
-      <IconButton onClick={handleLogout} iconName="logout">
-        {t('general.logout')}
-      </IconButton>
+      <DropdownMenu
+        options={dropdownOptions}
+        position={DROPDOWN_MENU_POSITION.BOTTOM_LEFT}
+        iconName="person"
+      />
     </React.Fragment>
   );
 
   return (
     <HeaderBody>
       <StyledLink to="/">
-        <img src={logoDark} alt="EverTask" />
+        <img src={currentUser.userSettings.darkMode ? logoDark : logoLight} alt="EverTask" />
       </StyledLink>
-      <LoginContainer>{isLoggedIn ? renderMenuLoggedIn() : renderMenuLoggedOut()}</LoginContainer>
+      <LoginContainer>
+        {currentUser.accessToken ? renderMenuLoggedIn() : renderMenuLoggedOut()}
+      </LoginContainer>
     </HeaderBody>
   );
 };

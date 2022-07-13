@@ -1,18 +1,28 @@
 import { BehaviorSubject } from 'rxjs';
-import { USER_ROLES } from 'Shared/constants';
+import { INTERFACE_LANGUAGE, USER_ROLES } from 'Shared/constants';
+import { User } from 'Types/User';
 
-export interface IUserModel extends User.UserInfo {
+export interface IUserModel extends User.UserFullInfo {
   accessToken: string;
   authorities: USER_ROLES[];
 }
 
 const currentUserSubject = new BehaviorSubject<IUserModel>({
+  id: '',
   username: '',
   firstName: '',
   lastName: '',
   email: '',
+  bio: null,
+  phoneNumber: null,
   accessToken: '',
-  authorities: []
+  avatar: '',
+  authorities: [],
+  userSettings: {
+    darkMode: false,
+    interfaceLanguage: INTERFACE_LANGUAGE.EN,
+    interfaceColor: '#3F51B5'
+  }
 });
 
 export const UserModel = {

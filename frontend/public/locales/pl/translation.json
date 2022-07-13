@@ -4,9 +4,15 @@
     "signup": "Rejestracja",
     "logout": "Wyloguj się",
     "resetPassword": "Zresetuj hasło",
+    "profile": "Profil użytkownika",
     "username": "Nazwa użytkownika",
+    "firstName": "Imię",
+    "lastName": "Nazwisko",
+    "bio": "Bio",
+    "phoneNumber": "Numer telefonu",
     "email": "E-mail",
     "password": "Hasło",
+    "rePassword": "Potwierdź hasło",
     "back": "Wróć",
     "mainPage": "Strona główna",
     "cancel": "Anuluj",
@@ -15,6 +21,7 @@
     "edit": "Edytuj",
     "accept": "Zaakceptuj",
     "decline": "Odrzuć",
+    "upload": "Wgraj",
     "sentAt": "Wysłane: ",
     "updatedAt": "Zaktualizowany",
     "notUpdated": "Nigdy nie aktualizowany",
@@ -22,6 +29,7 @@
     "setActive": "Aktywuj",
     "yes": "Tak",
     "no": "Nie",
+    "notSet": "Nie ustawiono",
     "storyPoints": "Punkty story",
     "issueStatus": "Status zadania",
     "issuePriority": "Priorytet zadania",
@@ -31,6 +39,10 @@
       "STORY": "Story",
       "TASK": "Zadanie",
       "SUBTASK": "Podzadanie"
+    },
+    "language": {
+      "EN": "Angielski",
+      "PL": "Polski"
     }
   },
   "error": {
@@ -54,12 +66,6 @@
   },
   "signup": {
     "title": "Rejestracja",
-    "username": "Nazwa użytkownika",
-    "firstName": "Imię",
-    "lastName": "Nazwisko",
-    "email": "E-mail",
-    "password": "Hasło",
-    "rePassword": "Potwierdź hasło",
     "submit": "Zarejestruj się",
     "validation": {
       "firstName": {
@@ -279,5 +285,42 @@
   },
   "confirmationDialog": {
     "header": "Na pewno?"
+  },
+  "profile": {
+    "title": "Twój profil",
+    "accountSettings": {
+      "title": "Ustawienia konta",
+      "avatarHeading": "Twój awatar",
+      "infoSectionHeading": "Twoje dane",
+      "avatarLabel": "Obecny awatar",
+      "uploadAvatar": "Wgraj nowy",
+      "removeAvatar": "Usuń awatar",
+      "avatarDisclaimer": "Tylko pliki obrazów o rozmiarach mniejszych niż 2 MB są akceptowane."
+    },
+    "userInterface": {
+      "title": "Ustawienia interfejsu",
+      "interfaceLanguage": "Język",
+      "darkMode": {
+        "label": "Tryb wyświetlania",
+        "darkMode": "Tryb ciemny",
+        "lightMode": "Tryb jasny"
+      },
+      "interfaceColor": "Kolor akcentów"
+    },
+    "validation": {
+      "bio": {
+        "maxLength": "Biografia jest za długa (maksimum 1000 znaków)"
+      },
+      "phoneNumber": {
+        "minLength": "Numer telefonu jest za krótki (minimum 9 znaków)",
+        "maxLength": "Numer telefonu jest za długi (maksimum 30 znaków)"
+      }
+    },
+    "security": {
+      "title": "Bezpieczeństwo"
+    },
+    "interface": {
+      "title": "Interfejs"
+    }
   }
 }

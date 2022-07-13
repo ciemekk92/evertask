@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import React from 'react';
 import { DROPDOWN_MENU_POSITION } from './fixtures';
 import { StyledIcon } from '../Icons/Shared.styled';
-import {StyledDropdownOption} from "../SingleSelectDropdown/SingleSelectDropdown.styled";
+import { StyledDropdownOption } from '../SingleSelectDropdown/SingleSelectDropdown.styled';
 
 interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
   readonly isOpen: boolean;
@@ -25,15 +25,27 @@ export const StyledDropdownContainer = styled.div<ContainerProps>`
 `;
 
 export const StyledDropdownOptionsList = styled.div<OptionsListProps>`
-  width: 18rem;
+  width: max-content;
   display: flex;
   flex-direction: column;
   position: absolute;
   top: 0;
-  ${(props) => (props.position === DROPDOWN_MENU_POSITION.LEFT ? 'right: 3rem;' : 'left: 4rem;')}
+  ${(props) => {
+    switch (props.position) {
+      case DROPDOWN_MENU_POSITION.BOTTOM_LEFT:
+        return 'right: 4rem; top: 3rem;';
+      case DROPDOWN_MENU_POSITION.TOP_LEFT:
+        return 'right: 4rem; bottom: 3rem;';
+      case DROPDOWN_MENU_POSITION.TOP_RIGHT:
+        return 'left: 5rem; bottom: 3rem;';
+      default:
+        return 'left: 5rem; top: 3rem;';
+    }
+  }}
+  box-shadow: 0 0.2rem 0.3rem 0.2rem rgba(0, 0, 0, 0.3);
   z-index: 10;
-  
+
   & ${StyledDropdownOption} {
     border-top: none;
-  } 
+  }
 `;

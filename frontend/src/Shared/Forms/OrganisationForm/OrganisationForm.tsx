@@ -7,6 +7,7 @@ import { TextInput } from 'Shared/Elements/TextInput';
 import { TextArea } from 'Shared/Elements/TextArea';
 import { ButtonFilled } from 'Shared/Elements/Buttons';
 import { FormField } from 'Shared/Elements/Form';
+import { Organisation } from 'Types/Organisation';
 
 interface Props {
   handleSubmit: (values: Organisation.OrganisationPayload) => Promise<void>;

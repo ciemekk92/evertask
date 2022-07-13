@@ -3,21 +3,22 @@ import { StyledLink } from '../StyledLink';
 
 interface WrapperProps {
   readonly alignItems?: string;
+  readonly justifyContent?: string;
 }
 
-export const VerticalPageWrapper = styled.div<WrapperProps>`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+const PageWrapper = styled.div<WrapperProps>`
+  justify-content: ${(props) => (props.justifyContent ? props.justifyContent : 'center')};
   align-items: ${(props) => (props.alignItems ? props.alignItems : 'center')};
   padding: 2rem;
 `;
 
-export const HorizontalPageWrapper = styled.div`
+export const VerticalPageWrapper = styled(PageWrapper)`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
+  flex-direction: column;
+`;
+
+export const HorizontalPageWrapper = styled(PageWrapper)`
+  display: flex;
 `;
 
 export const StyledHorizontalContainer = styled.div`

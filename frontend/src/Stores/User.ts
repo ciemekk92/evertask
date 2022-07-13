@@ -1,19 +1,29 @@
 import { Action, Reducer } from 'redux';
+import { INTERFACE_LANGUAGE, USER_ROLES } from 'Shared/constants';
 import { Api } from 'Utils/Api';
 import { isDefined } from 'Utils/isDefined';
 import { updateObject } from 'Utils/updateObject';
 import { UserModel } from 'Models/UserModel';
 import { history } from 'Routes';
+import { Organisation } from 'Types/Organisation';
+import { User } from 'Types/User';
 import { AppThunkAction } from './store';
 import { ActionTypes } from './constants';
 import { actionCreators as projectActionCreators, ProjectActionTypes } from './Project';
 
+type AuthResponse = {
+  refreshToken: string;
+  accessToken: string;
+  message?: string;
+  authorities: USER_ROLES[];
+} & User.UserFullInfo;
+
 export interface UserState {
   isLoading: boolean;
-  userInfo: User.UserInfo;
+  userInfo: User.UserFullInfo;
   accessToken: string;
   organisation: Organisation.OrganisationEntity;
-  errors: string;
+  errors?: string;
 }
 
 export interface LoginCredentials {
@@ -23,8 +33,14 @@ export interface LoginCredentials {
 
 interface SetLoginInfoAction {
   type: typeof ActionTypes.SET_LOGIN_INFO;
-  userInfo: User.UserInfo;
+  userInfo: User.UserFullInfo;
   accessToken: string;
+  isLoading: boolean;
+}
+
+interface SetUserInfoAction {
+  type: typeof ActionTypes.SET_USER_INFO;
+  userInfo: User.UserFullInfo;
   isLoading: boolean;
 }
 
@@ -40,7 +56,7 @@ interface SetUserOrganisationAction {
 
 interface SetUserErrorsAction {
   type: typeof ActionTypes.SET_USER_ERRORS;
-  errors: string;
+  errors?: string;
 }
 
 interface SetTokenAction {
@@ -54,6 +70,7 @@ interface SetLogoutAction {
 
 export type UserActionTypes =
   | SetLoginInfoAction
+  | SetUserInfoAction
   | SetUserLoadingAction
   | SetUserOrganisationAction
   | SetUserErrorsAction
@@ -76,30 +93,25 @@ export const actionCreators = {
 
       if (appState && appState.user) {
         const result = await Api.postWithCredentials('auth/login', { username, password });
-        const json = await result.json();
+        const { accessToken, authorities, refreshToken, message, ...rest }: AuthResponse =
+          await result.json();
 
         if (result.status === 200) {
           history.push('/');
           UserModel.currentUserSubject.next({
-            firstName: json.firstName,
-            lastName: json.lastName,
-            email: json.email,
-            username: json.username,
-            accessToken: json.accessToken,
-            authorities: json.authorities
+            accessToken,
+            authorities,
+            ...rest
           });
 
           // TODO: Development only
-          localStorage.setItem('refreshToken', json.refreshToken);
+          localStorage.setItem('refreshToken', refreshToken);
 
           dispatch({
             type: ActionTypes.SET_LOGIN_INFO,
-            accessToken: json.accessToken,
+            accessToken,
             userInfo: {
-              firstName: json.firstName,
-              lastName: json.lastName,
-              email: json.email,
-              username: json.username
+              ...rest
             },
             isLoading: false
           });
@@ -112,7 +124,7 @@ export const actionCreators = {
             type: ActionTypes.SET_USER_LOADING,
             isLoading: false
           });
-          return json.message;
+          return message;
         }
       }
     },
@@ -147,10 +159,10 @@ export const actionCreators = {
       });
 
       if (appState && appState.user) {
-        const refreshToken = localStorage.getItem('refreshToken');
+        const storedRefreshToken = localStorage.getItem('refreshToken');
 
-        if (refreshToken) {
-          const result = await Api.post(`auth/refresh?refreshToken=${refreshToken}`);
+        if (storedRefreshToken) {
+          const result = await Api.post(`auth/refresh?refreshToken=${storedRefreshToken}`);
 
           if (result.status === 401) {
             dispatch({
@@ -158,26 +170,20 @@ export const actionCreators = {
               isLoading: false
             });
           } else {
-            const { firstName, lastName, email, username, accessToken, authorities, message } =
+            const { accessToken, authorities, message, refreshToken, ...rest }: AuthResponse =
               await result.json();
             if (result.status === 200) {
               UserModel.currentUserSubject.next({
-                firstName,
-                lastName,
-                email,
-                username,
                 accessToken,
-                authorities
+                authorities,
+                ...rest
               });
 
               dispatch({
                 type: ActionTypes.SET_LOGIN_INFO,
                 accessToken,
                 userInfo: {
-                  firstName,
-                  lastName,
-                  email,
-                  username
+                  ...rest
                 },
                 isLoading: false
               });
@@ -202,6 +208,42 @@ export const actionCreators = {
         }
       }
     },
+  getCurrentUserDetails: (): AppThunkAction<UserActionTypes> => async (dispatch, getState) => {
+    const appState = getState();
+
+    dispatch({
+      type: ActionTypes.SET_USER_LOADING,
+      isLoading: true
+    });
+
+    if (appState && appState.user) {
+      const result = await Api.get('user/me');
+
+      if (result.status === 200) {
+        const json: User.UserFullInfo = await result.json();
+        const { currentUserSubject, currentUserValue } = UserModel;
+
+        currentUserSubject.next({
+          ...json,
+          accessToken: currentUserValue.accessToken,
+          authorities: currentUserValue.authorities
+        });
+
+        dispatch({
+          type: ActionTypes.SET_USER_INFO,
+          userInfo: {
+            ...json
+          },
+          isLoading: false
+        });
+      } else {
+        dispatch({
+          type: ActionTypes.SET_USER_LOADING,
+          isLoading: false
+        });
+      }
+    }
+  },
   getOrganisation: (): AppThunkAction<UserActionTypes> => async (dispatch, getState) => {
     const appState = getState();
 
@@ -228,10 +270,19 @@ export const actionCreators = {
 const initialState: UserState = {
   isLoading: false,
   userInfo: {
+    id: '',
     username: '',
     firstName: '',
     lastName: '',
-    email: ''
+    email: '',
+    avatar: '',
+    bio: null,
+    phoneNumber: null,
+    userSettings: {
+      darkMode: false,
+      interfaceLanguage: INTERFACE_LANGUAGE.EN,
+      interfaceColor: '#3F51B5'
+    }
   },
   organisation: {
     id: '',
@@ -264,6 +315,12 @@ export const reducer: Reducer<UserState> = (
         isLoading: false,
         accessToken: action.accessToken,
         errors: ''
+      };
+    case ActionTypes.SET_USER_INFO:
+      return {
+        ...state,
+        userInfo: updateObject(state.userInfo, action.userInfo),
+        isLoading: false
       };
     case ActionTypes.SET_USER_ORGANISATION:
       return {

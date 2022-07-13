@@ -10,7 +10,6 @@ import java.util.Date;
 @Setter
 public class SprintDto extends BaseDto {
 
-    private String id;
     private String projectId;
     private Integer ordinal;
     private String description;

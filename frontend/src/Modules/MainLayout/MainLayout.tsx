@@ -12,21 +12,31 @@ import { Backlog } from 'Modules/Backlog';
 import { UnassignedUserPage } from 'Modules/UnassignedUserPage';
 import { OrganisationPage } from 'Modules/OrganisationPage';
 import { SprintPage } from 'Modules/SprintPage';
-import { UserModel, IUserModel } from 'Models/UserModel';
+import { UserProfile } from 'Modules/UserProfile';
+import { IUserModel, UserModel } from 'Models/UserModel';
 import { actionCreators } from 'Stores/User';
-import { NOTIFICATION_TYPES } from 'Shared/constants';
+import { INTERFACE_LANGUAGE, NOTIFICATION_TYPES } from 'Shared/constants';
 import { PermissionCheck } from 'Utils/PermissionCheck';
 import { AppHeader, AppMainWindow, AppSidebar } from './components';
 import { HorizontalWrapper, LayoutWrapper } from './MainLayout.styled';
 
 export const MainLayout = (): JSX.Element => {
   const [currentUser, setCurrentUser] = React.useState<IUserModel>({
+    id: '',
     email: '',
     firstName: '',
     lastName: '',
     username: '',
     accessToken: '',
-    authorities: []
+    bio: null,
+    phoneNumber: null,
+    authorities: [],
+    avatar: '',
+    userSettings: {
+      darkMode: false,
+      interfaceLanguage: INTERFACE_LANGUAGE.EN,
+      interfaceColor: '#3F51B5'
+    }
   });
 
   const dispatch = useDispatch();
@@ -39,13 +49,13 @@ export const MainLayout = (): JSX.Element => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [UserModel.currentUser]);
+  }, []);
 
   React.useEffect(() => {
     if (!currentUser.accessToken) {
       dispatch(actionCreators.refresh());
     }
-  }, []);
+  }, [dispatch, currentUser.accessToken]);
 
   const renderForAssignedUser = (): JSX.Element => (
     <React.Fragment>
@@ -59,6 +69,7 @@ export const MainLayout = (): JSX.Element => {
             <Route path={'/board'} element={<Board />} />
             <Route path={'/backlog'} element={<Backlog />} />
             <Route path={'/organisation'} element={<OrganisationPage />} />
+            <Route path={'/profile'} element={<UserProfile />} />
           </ReactRoutes>
         </GlobalErrorBoundary>
       </AppMainWindow>
@@ -70,6 +81,7 @@ export const MainLayout = (): JSX.Element => {
       <GlobalErrorBoundary>
         <ReactRoutes>
           <Route path={'/'} element={<UnassignedUserPage />} />
+          <Route path={'/profile'} element={<UserProfile />} />
         </ReactRoutes>
       </GlobalErrorBoundary>
     </AppMainWindow>
@@ -99,7 +111,7 @@ export const MainLayout = (): JSX.Element => {
   return (
     <CustomRouter basename={'/'} history={history}>
       <LayoutWrapper>
-        <AppHeader isLoggedIn={Boolean(currentUser.accessToken)} />
+        <AppHeader />
         {currentUser.accessToken ? renderLoggedInView() : renderLoggedOutView()}
       </LayoutWrapper>
     </CustomRouter>

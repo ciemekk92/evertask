@@ -1,3 +1,5 @@
+import { Project } from '../Project';
+
 declare namespace Organisation {
   export type OrganisationPayload = {
     name: string;
@@ -7,7 +9,7 @@ declare namespace Organisation {
   export type OrganisationEntity = AuditedEntity &
     OrganisationPayload & {
       projects: Project.ProjectEntity[];
-      members: User.UserEntity[];
+      members: User.UserBasicEntity[];
     };
 
   export type OrganisationInvitation = AuditedEntity & {

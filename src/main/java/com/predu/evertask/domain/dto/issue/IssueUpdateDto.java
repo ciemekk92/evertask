@@ -30,5 +30,5 @@ public class IssueUpdateDto {
     private String assigneeId;
     private String reporterId;
     private String sprintId;
-    private Set<IssueDto> subtasks = new HashSet<>();
+    private Set<IssueSaveDto> subtasks = new HashSet<>();
 }

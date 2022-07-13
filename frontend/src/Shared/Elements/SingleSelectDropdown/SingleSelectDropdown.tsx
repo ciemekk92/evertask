@@ -12,10 +12,16 @@ import {
 interface Props {
   options: DropdownOption[];
   value: Nullable<string>;
-  onChange: (value: Nullable<string>) => void;
+  onChange: (value: Unrestricted) => void;
+  disabled?: boolean;
 }
 
-export const SingleSelectDropdown = ({ options, onChange, value }: Props): JSX.Element => {
+export const SingleSelectDropdown = ({
+  options,
+  onChange,
+  value,
+  disabled
+}: Props): JSX.Element => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [selectedLabel, setSelectedLabel] = React.useState<string>(
     options.find((option) => option.value === value)?.label ?? ''
@@ -43,7 +49,12 @@ export const SingleSelectDropdown = ({ options, onChange, value }: Props): JSX.E
 
   return (
     <StyledDropdownContainer ref={containerRef}>
-      <StyledDropdownButton title={selectedLabel} isOpen={isOpen} onClick={handleOpeningDropdown}>
+      <StyledDropdownButton
+        disabled={disabled}
+        title={selectedLabel}
+        isOpen={isOpen}
+        onClick={handleOpeningDropdown}
+      >
         <StyledDropdownLabelContainer>{selectedLabel}</StyledDropdownLabelContainer>
         <IconFilled iconName="chevron_right" />
       </StyledDropdownButton>

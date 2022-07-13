@@ -2,15 +2,17 @@ package com.predu.evertask.service;
 
 import com.predu.evertask.domain.dto.auth.CreateUserRequest;
 import com.predu.evertask.domain.dto.auth.UpdateUserRequest;
-import com.predu.evertask.domain.dto.auth.UserDto;
+import com.predu.evertask.domain.dto.user.UserDetailsUpdateDto;
+import com.predu.evertask.domain.dto.user.UserDto;
+import com.predu.evertask.domain.dto.user.UserSettingsDto;
 import com.predu.evertask.domain.mapper.UserEditMapper;
+import com.predu.evertask.domain.mapper.UserSettingsMapper;
 import com.predu.evertask.domain.mapper.UserViewMapper;
-import com.predu.evertask.domain.model.Role;
-import com.predu.evertask.domain.model.User;
-import com.predu.evertask.domain.model.VerificationToken;
+import com.predu.evertask.domain.model.*;
 import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.RoleRepository;
 import com.predu.evertask.repository.UserRepository;
+import com.predu.evertask.repository.UserSettingsRepository;
 import com.predu.evertask.repository.VerificationTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,8 +22,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ValidationException;
+import java.io.IOException;
 import java.util.*;
 
 import static java.lang.String.format;
@@ -33,9 +37,12 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final VerificationTokenRepository tokenRepository;
+    private final UserSettingsRepository userSettingsRepository;
     private final UserEditMapper userEditMapper;
     private final UserViewMapper userViewMapper;
+    private final UserSettingsMapper userSettingsMapper;
     private final PasswordEncoder passwordEncoder;
+    private final ImageService imageService;
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     public List<UserDto> getUnassignedUsers(String query) {
@@ -84,6 +91,58 @@ public class UserService implements UserDetailsService {
         user = userRepository.save(user);
 
         return userViewMapper.toUserDto(user);
+    }
+
+    @Transactional
+    public UserDto updateUserDetails(UUID id, UserDetailsUpdateDto dto) {
+
+        User user = userRepository.getById(id);
+
+        userEditMapper.updateDetails(dto, user);
+
+        user = userRepository.save(user);
+
+        return userViewMapper.toUserDto(user);
+    }
+
+    @Transactional
+    public void updateUserSettings(UUID id, UserSettingsDto dto) {
+
+        User user = userRepository.getById(id);
+
+        UserSettings newSettings = userSettingsMapper.update(user.getUserSettings(), dto);
+
+        userSettingsRepository.save(newSettings);
+    }
+
+    @Transactional
+    public UserDto uploadAvatar(UUID id, MultipartFile file) throws IOException {
+
+        User user = userRepository.getById(id);
+
+        if (user.getAvatar() != null) {
+            imageService.deleteImageById(user.getAvatar().getId());
+        }
+
+        Image image = imageService.saveImage(file);
+
+        user.setAvatar(image);
+        user = userRepository.save(user);
+
+        return userViewMapper.toUserDto(user);
+    }
+
+    @Transactional
+    public void removeAvatar(UUID id) {
+        User user = userRepository.getById(id);
+        UUID avatarId = user.getAvatar().getId();
+
+        if (user.getAvatar() != null) {
+            user.setAvatar(null);
+            userRepository.save(user);
+
+            imageService.deleteImageById(avatarId);
+        }
     }
 
     @Transactional

@@ -1,6 +1,6 @@
 package com.predu.evertask.domain.mapper;
 
-import com.predu.evertask.domain.dto.auth.UserDto;
+import com.predu.evertask.domain.dto.user.UserDto;
 import com.predu.evertask.domain.dto.organisation.OrganisationInfoDto;
 import com.predu.evertask.domain.dto.organisation.OrganisationInvitationDto;
 import com.predu.evertask.domain.model.OrganisationInvitation;

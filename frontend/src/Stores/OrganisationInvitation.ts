@@ -1,6 +1,7 @@
 import { Action, Reducer } from 'redux';
 import { Api } from 'Utils/Api';
 import { isDefined } from 'Utils/isDefined';
+import { Organisation } from 'Types/Organisation';
 import { ActionTypes } from './constants';
 import { AppThunkAction } from './store';
 

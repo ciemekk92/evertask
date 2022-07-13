@@ -14,14 +14,15 @@ import {
 interface Props {
   label: string;
   name: string;
+  alignItems?: string;
   required?: boolean;
   children: React.ReactNode;
 }
 
-export const FormField = ({ label, name, required, children }: Props): JSX.Element => {
+export const FormField = ({ label, name, required, children, alignItems }: Props): JSX.Element => {
   return (
     <StyledFieldContainer>
-      <StyledLabelAndInputContainer>
+      <StyledLabelAndInputContainer alignItems={alignItems}>
         <StyledLabelContainer>
           <StyledFormLabel>
             {label} {required && <StyledRequiredMark>*</StyledRequiredMark>}

@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import javax.validation.ValidationException;
 import java.util.List;
@@ -71,7 +72,15 @@ public class CustomRestExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<RestMessage> handleNotFoundException(NotFoundException ex) {
         String message = ex.getMessage();
-        
+
         return new ResponseEntity<>(new RestMessage(message), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<RestMessage> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException ex,
+                                                                            Locale locale) {
+        String message = messageSource.getMessage("message.uploadSizeExceeded", null, locale);
+
+        return new ResponseEntity<>(new RestMessage(message), HttpStatus.BAD_REQUEST);
     }
 }

@@ -19,6 +19,7 @@ interface FormikProps {
   label: string;
   name: string;
   value: string | number | boolean;
+  disabled?: boolean;
   handleClick: (field: string, value: Unrestricted) => void;
 }
 
@@ -32,16 +33,24 @@ export const RadioField = ({ id, label, checked, onClick }: Props): JSX.Element 
   );
 };
 
-export const FormikRadio = ({ label, name, value, handleClick }: FormikProps): JSX.Element => {
+export const FormikRadio = ({
+  label,
+  name,
+  value,
+  handleClick,
+  disabled
+}: FormikProps): JSX.Element => {
   const handleSelecting = () => {
-    handleClick(name, value);
+    if (!disabled) {
+      handleClick(name, value);
+    }
   };
 
   return (
     <StyledContainer onClick={handleSelecting}>
       <StyledLabel>{label}</StyledLabel>
-      <StyledFormikRadio name={name} value={value} />
-      <StyledCheck />
+      <StyledFormikRadio disabled={disabled} name={name} value={value} />
+      <StyledCheck disabled={disabled} />
     </StyledContainer>
   );
 };

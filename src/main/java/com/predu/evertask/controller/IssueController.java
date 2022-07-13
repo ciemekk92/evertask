@@ -2,6 +2,7 @@ package com.predu.evertask.controller;
 
 import com.predu.evertask.annotation.IsNotUnassignedUser;
 import com.predu.evertask.domain.dto.issue.IssueDto;
+import com.predu.evertask.domain.dto.issue.IssueSaveDto;
 import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
 import com.predu.evertask.domain.dto.issue.MoveIssueDto;
 import com.predu.evertask.domain.model.User;
@@ -49,11 +50,11 @@ public class IssueController {
     }
 
     @PostMapping
-    public ResponseEntity<IssueDto> createIssue(@RequestBody @Valid IssueDto toCreate, Authentication authentication)
+    public ResponseEntity<IssueSaveDto> createIssue(@RequestBody @Valid IssueSaveDto toCreate, Authentication authentication)
             throws URISyntaxException {
         User reporter = (User) authentication.getPrincipal();
 
-        IssueDto created = issueService.create(toCreate, reporter);
+        IssueSaveDto created = issueService.create(toCreate, reporter);
 
         return ResponseEntity.created(new URI("http://localhost:8080/api/issues/" + created.getId())).body(created);
     }

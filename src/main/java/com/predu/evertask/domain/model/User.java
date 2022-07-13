@@ -35,12 +35,19 @@ public class User implements UserDetails, Serializable {
     private String password;
 
     @Email
+    @Length(max = 60)
     private String email;
 
+    @Length(max = 30)
     private String firstName;
+
+    @Length(max = 30)
     private String lastName;
+
+    @Length(max = 30)
     private String phoneNumber;
 
+    private String bio;
     private String refreshToken;
     private Date refreshTokenExpiryDate;
 
@@ -48,6 +55,14 @@ public class User implements UserDetails, Serializable {
     private boolean expired;
     private boolean enabled;
     private boolean verified;
+
+    @OneToOne
+    @JoinColumn(name = "user_settings_id")
+    private UserSettings userSettings;
+
+    @ManyToOne
+    @JoinColumn(name = "avatar_id")
+    private Image avatar;
 
     @OneToMany(mappedBy = "assignee")
     private Set<Issue> assignedIssues = new HashSet<>();

@@ -4,7 +4,13 @@ import { useDispatch } from 'react-redux';
 import { CustomRouter, history } from 'Routes';
 import { GlobalErrorBoundary } from 'Modules/GlobalErrorBoundary';
 import { LandingPage } from 'Modules/LandingPage';
-import { Login, Signup, SignupConfirmation, SuccessNotification } from 'Modules/Auth';
+import {
+  Login,
+  Signup,
+  SignupConfirmation,
+  SuccessNotification,
+  MultifactorAuth
+} from 'Modules/Auth';
 import { Dashboard } from 'Modules/Dashboard';
 import { ProjectPage } from 'Modules/ProjectPage';
 import { Board } from 'Modules/Board';
@@ -32,6 +38,7 @@ export const MainLayout = (): JSX.Element => {
     phoneNumber: null,
     authorities: [],
     avatar: '',
+    mfaEnabled: false,
     userSettings: {
       darkMode: false,
       interfaceLanguage: INTERFACE_LANGUAGE.EN,
@@ -104,6 +111,7 @@ export const MainLayout = (): JSX.Element => {
           path={'/signup_success'}
           element={<SuccessNotification type={NOTIFICATION_TYPES.SIGNUP} />}
         />
+        <Route path={'/mfa'} element={<MultifactorAuth />} />
       </ReactRoutes>
     </GlobalErrorBoundary>
   );
@@ -112,7 +120,7 @@ export const MainLayout = (): JSX.Element => {
     <CustomRouter basename={'/'} history={history}>
       <LayoutWrapper>
         <AppHeader />
-        {currentUser.accessToken ? renderLoggedInView() : renderLoggedOutView()}
+        {currentUser.id ? renderLoggedInView() : renderLoggedOutView()}
       </LayoutWrapper>
     </CustomRouter>
   );

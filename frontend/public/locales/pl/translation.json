@@ -21,6 +21,8 @@
     "edit": "Edytuj",
     "accept": "Zaakceptuj",
     "decline": "Odrzuć",
+    "enable": "Włącz",
+    "disable": "Wyłącz",
     "upload": "Wgraj",
     "sentAt": "Wysłane: ",
     "updatedAt": "Zaktualizowany",
@@ -30,6 +32,8 @@
     "yes": "Tak",
     "no": "Nie",
     "notSet": "Nie ustawiono",
+    "change": "Zmień",
+    "code": "Kod autentykatora",
     "storyPoints": "Punkty story",
     "issueStatus": "Status zadania",
     "issuePriority": "Priorytet zadania",
@@ -317,10 +321,26 @@
       }
     },
     "security": {
-      "title": "Bezpieczeństwo"
-    },
-    "interface": {
-      "title": "Interfejs"
+      "title": "Bezpieczeństwo",
+      "changePassword": "Zmień hasło",
+      "twoFactorAuth": "Weryfikacja dwuetapowa"
+    }
+  },
+  "mfaDialog": {
+    "header": "Weryfikacja dwuetapowa",
+    "mfaEnabled": "Two factor authentication is currently enabled. Press the button below, to disable it.",
+    "mfaDisabled": "Two factor authentication is currently disabled. Press the button below, to enable it. Warning: you will have to log in again after this operation.",
+    "qrCode": "Scan below QR code using your authenticator application (Google Authenticator, Microsoft Authenticator).",
+    "qrWarning": "Warning: closing this dialog will result in logging you out of the application, so make sure that authenticator is set up correctly."
+  },
+  "mfa": {
+    "title": "Weryfikacja dwuetapowa",
+    "validation": {
+      "code": {
+        "minLength": "Kod musi mieć 6 znaków",
+        "maxLength": "Kod musi mieć 6 znaków",
+        "required": "Kod jest wymagany"
+      }
     }
   }
 }

@@ -62,7 +62,7 @@ export const AppHeader = (): JSX.Element => {
         <img src={currentUser.userSettings.darkMode ? logoDark : logoLight} alt="EverTask" />
       </StyledLink>
       <LoginContainer>
-        {currentUser.accessToken ? renderMenuLoggedIn() : renderMenuLoggedOut()}
+        {currentUser.id ? renderMenuLoggedIn() : renderMenuLoggedOut()}
       </LoginContainer>
     </HeaderBody>
   );

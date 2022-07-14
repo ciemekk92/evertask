@@ -1,9 +1,12 @@
 package com.predu.evertask.config.security;
 
+import com.predu.evertask.domain.model.Role;
 import com.predu.evertask.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -15,6 +18,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
 
 import static java.util.List.of;
 import static java.util.Optional.ofNullable;
@@ -48,10 +53,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 .findById(jwtTokenUtil.getUserId(token))
                 .orElse(null);
 
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                userDetails, null,
-                ofNullable(userDetails).map(UserDetails::getAuthorities).orElse(of())
-        );
+        Collection<? extends GrantedAuthority> authorities = jwtTokenUtil.isAuthenticated(token)
+                ? ofNullable(userDetails).map(UserDetails::getAuthorities).orElse(of())
+                : List.of(new SimpleGrantedAuthority(Role.ROLE_PRE_VERIFICATION_USER));
+
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
 
         authentication
                 .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

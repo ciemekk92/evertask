@@ -15,6 +15,9 @@ import static java.lang.String.format;
 @Component
 public class JwtTokenUtil {
 
+    private static final String AUTHENTICATED = "authenticated";
+    private static final long TEMP_TOKEN_VALIDITY = 5 * 60 * 1000L;
+    private static final long TOKEN_VALIDITY = 60 * 60 * 1000L;
     private final Logger logger = LoggerFactory.getLogger(JwtTokenUtil.class);
     private final JwtConfigurationProperties jwtConfigurationProperties;
 
@@ -22,12 +25,16 @@ public class JwtTokenUtil {
         this.jwtConfigurationProperties = jwtConfigurationProperties;
     }
 
-    public String generateAccessToken(User user) {
+    public String generateAccessToken(User user, boolean authenticated) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + (authenticated ? TOKEN_VALIDITY : TEMP_TOKEN_VALIDITY));
+
         return Jwts.builder()
                 .setSubject(format("%s", user.getId()))
+                .claim(AUTHENTICATED, authenticated)
                 .setIssuer(jwtConfigurationProperties.getJwtIssuer())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 15 * 60 * 1000))
+                .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, jwtConfigurationProperties.getJwtSecret())
                 .compact();
     }
@@ -39,6 +46,15 @@ public class JwtTokenUtil {
                 .getBody();
 
         return UUID.fromString(claims.getSubject().split(",")[0]);
+    }
+
+    public boolean isAuthenticated(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtConfigurationProperties.getJwtSecret())
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.get(AUTHENTICATED, Boolean.class);
     }
 
     public Date getExpirationDate(String token) {

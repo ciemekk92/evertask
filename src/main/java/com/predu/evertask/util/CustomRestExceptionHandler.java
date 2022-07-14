@@ -1,5 +1,6 @@
 package com.predu.evertask.util;
 
+import com.predu.evertask.exception.InvalidMFACodeException;
 import com.predu.evertask.exception.InvalidOperationException;
 import com.predu.evertask.exception.InvalidTokenException;
 import com.predu.evertask.exception.NotFoundException;
@@ -74,6 +75,13 @@ public class CustomRestExceptionHandler {
         String message = ex.getMessage();
 
         return new ResponseEntity<>(new RestMessage(message), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InvalidMFACodeException.class)
+    public ResponseEntity<RestMessage> handleInvalidMFACodeException(InvalidMFACodeException ex, Locale locale) {
+        String message = messageSource.getMessage("message.invalidMFACode", null, locale);
+
+        return new ResponseEntity<>(new RestMessage(message), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)

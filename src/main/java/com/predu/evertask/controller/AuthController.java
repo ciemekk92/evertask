@@ -1,22 +1,24 @@
 package com.predu.evertask.controller;
 
+import com.predu.evertask.config.security.CurrentUser;
 import com.predu.evertask.config.security.JwtTokenUtil;
-import com.predu.evertask.domain.dto.auth.AuthRequest;
-import com.predu.evertask.domain.dto.auth.CreateUserRequest;
+import com.predu.evertask.domain.dto.auth.*;
 import com.predu.evertask.domain.dto.user.UserAuthDto;
 import com.predu.evertask.domain.dto.user.UserDto;
 import com.predu.evertask.domain.mapper.UserViewMapper;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.domain.model.VerificationToken;
 import com.predu.evertask.event.OnSignupCompleteEvent;
+import com.predu.evertask.exception.InvalidMFACodeException;
 import com.predu.evertask.exception.InvalidTokenException;
 import com.predu.evertask.repository.VerificationTokenRepository;
+import com.predu.evertask.service.MfaTokenManager;
 import com.predu.evertask.service.UserService;
-import com.predu.evertask.util.RandomToken;
+import dev.samstevens.totp.exceptions.QrGenerationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,7 +29,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.ValidationException;
 import java.util.Calendar;
-import java.util.Date;
 
 @RequiredArgsConstructor
 @RestController
@@ -40,44 +41,49 @@ public class AuthController {
     private final UserViewMapper userViewMapper;
     private final UserService userService;
     private final ApplicationEventPublisher eventPublisher;
+    private final MfaTokenManager mfaTokenManager;
 
-    @PostMapping("login")
-    public ResponseEntity<UserAuthDto> login(@RequestBody @Valid AuthRequest request, HttpServletResponse response) {
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponseDto> login(@RequestBody @Valid AuthRequest request,
+                                                 HttpServletResponse response) {
 
-            Authentication authenticate = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        Authentication authenticate = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
-            User user = (User) authenticate.getPrincipal();
+        User user = (User) authenticate.getPrincipal();
+        AuthResponseDto responseDto = userService.loginUser(user.getId(), response);
 
-            String refreshToken = RandomToken.generateRandomToken(32);
-            String token = jwtTokenUtil.generateAccessToken(user);
-
-            userService.updateRefreshToken(user,
-                    refreshToken,
-                    new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000L)
-            );
-
-            ResponseCookie cookie = ResponseCookie.from("refresh", refreshToken)
-                    .httpOnly(true)
-                    .sameSite("None")
-                    .secure(true)
-                    .path("/")
-                    .maxAge(7 * 24 * 60 * 60L)
-                    .build();
-
-            response.addHeader("Set-Cookie", cookie.toString());
-
-            UserDto userDto = userViewMapper.toUserDto(user);
-
-            // TODO: For development, refresh token should be set in localStorage
-            UserAuthDto userAuthDto = new UserAuthDto(userDto, token, refreshToken, user.getAuthorities());
-
-            return ResponseEntity.ok().body(userAuthDto);
+        return ResponseEntity.ok().body(responseDto);
     }
 
-    @PostMapping("signup")
-    public ResponseEntity<UserDto> signup(@RequestBody @Valid CreateUserRequest request, HttpServletRequest servletRequest)
-        throws ValidationException {
+    @PostMapping("/verify")
+    @PreAuthorize("hasRole('ROLE_PRE_VERIFICATION_USER')")
+    public ResponseEntity<AuthResponseDto> verifyCode(@RequestBody @Valid VerifyCodeDto dto,
+                                                      @CurrentUser User user,
+                                                      HttpServletResponse response) throws InvalidMFACodeException {
+
+        if (!mfaTokenManager.verifyTotp(dto.getCode(), user.getSecret())) {
+            throw new InvalidMFACodeException("");
+        }
+
+        AuthResponseDto responseDto = userService.verifyMFA(user.getId(), response);
+
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @PostMapping("/update_mfa")
+    public ResponseEntity<MfaUpdateResponseDto> updateMfa(@RequestBody @Valid MfaUpdateRequestDto request,
+                                                          @CurrentUser User user) throws QrGenerationException {
+
+        MfaUpdateResponseDto responseDto = userService.updateMfa(user.getId(), request);
+
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<UserDto> signup(@RequestBody @Valid CreateUserRequest request,
+                                          HttpServletRequest servletRequest)
+            throws ValidationException {
 
         User user = userService.create(request);
 
@@ -87,7 +93,7 @@ public class AuthController {
         return ResponseEntity.status(201).build();
     }
 
-    @PutMapping("confirm_signup")
+    @PutMapping("/confirm_signup")
     public ResponseEntity<UserDto> confirmSignup(@RequestParam("token") String token) throws InvalidTokenException {
         VerificationToken verificationToken = userService.getVerificationToken(token);
 
@@ -108,7 +114,7 @@ public class AuthController {
         return ResponseEntity.status(200).body(result);
     }
 
-    @PostMapping("refresh")
+    @PostMapping("/refresh")
     public ResponseEntity<UserAuthDto> refresh(@RequestParam("refreshToken") String refreshToken) throws InvalidTokenException {
         if (refreshToken == null) {
             throw new InvalidTokenException("tokenInvalid");
@@ -123,14 +129,14 @@ public class AuthController {
         }
 
         UserDto userDto = userViewMapper.toUserDto(user);
-        String newAccessToken = jwtTokenUtil.generateAccessToken(user);
+        String newAccessToken = jwtTokenUtil.generateAccessToken(user, true);
 
-        UserAuthDto userAuthDto = new UserAuthDto(userDto, newAccessToken, refreshToken, user.getAuthorities());
+        UserAuthDto userAuthDto = new UserAuthDto(userDto, newAccessToken, refreshToken, user.getAuthorities(), user.isMfaEnabled());
 
         return ResponseEntity.status(200).body(userAuthDto);
     }
 
-    @PostMapping("logout")
+    @PostMapping("/logout")
     public ResponseEntity<String> logout(Authentication authentication) throws IllegalAccessException {
         if (authentication == null) {
             throw new IllegalAccessException("No user logged in.");

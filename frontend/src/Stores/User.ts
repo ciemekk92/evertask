@@ -11,17 +11,26 @@ import { AppThunkAction } from './store';
 import { ActionTypes } from './constants';
 import { actionCreators as projectActionCreators, ProjectActionTypes } from './Project';
 
-type AuthResponse = {
+type UserDetailsFullResponse = {
   refreshToken: string;
   accessToken: string;
+  mfaEnabled: boolean;
   message?: string;
   authorities: USER_ROLES[];
 } & User.UserFullInfo;
 
+type AuthResponse = { message?: string } & (
+  | {
+      accessToken: string;
+      refreshToken: null;
+      mfaEnabled: true;
+    }
+  | { accessToken: string; refreshToken: string; mfaEnabled: false }
+);
+
 export interface UserState {
   isLoading: boolean;
   userInfo: User.UserFullInfo;
-  accessToken: string;
   organisation: Organisation.OrganisationEntity;
   errors?: string;
 }
@@ -29,13 +38,6 @@ export interface UserState {
 export interface LoginCredentials {
   username: string;
   password: string;
-}
-
-interface SetLoginInfoAction {
-  type: typeof ActionTypes.SET_LOGIN_INFO;
-  userInfo: User.UserFullInfo;
-  accessToken: string;
-  isLoading: boolean;
 }
 
 interface SetUserInfoAction {
@@ -59,22 +61,15 @@ interface SetUserErrorsAction {
   errors?: string;
 }
 
-interface SetTokenAction {
-  type: typeof ActionTypes.SET_TOKEN;
-  accessToken: string;
-}
-
 interface SetLogoutAction {
   type: typeof ActionTypes.SET_LOGOUT;
 }
 
 export type UserActionTypes =
-  | SetLoginInfoAction
   | SetUserInfoAction
   | SetUserLoadingAction
   | SetUserOrganisationAction
   | SetUserErrorsAction
-  | SetTokenAction
   | SetLogoutAction;
 
 export const actionCreators = {
@@ -93,39 +88,80 @@ export const actionCreators = {
 
       if (appState && appState.user) {
         const result = await Api.postWithCredentials('auth/login', { username, password });
-        const { accessToken, authorities, refreshToken, message, ...rest }: AuthResponse =
+        const { accessToken, refreshToken, mfaEnabled, message }: AuthResponse =
           await result.json();
 
         if (result.status === 200) {
-          history.push('/');
           UserModel.currentUserSubject.next({
+            ...UserModel.currentUserValue,
             accessToken,
-            authorities,
-            ...rest
+            mfaEnabled
           });
 
-          // TODO: Development only
-          localStorage.setItem('refreshToken', refreshToken);
+          if (mfaEnabled) {
+            dispatch({
+              type: ActionTypes.SET_USER_LOADING,
+              isLoading: false
+            });
 
-          dispatch({
-            type: ActionTypes.SET_LOGIN_INFO,
-            accessToken,
-            userInfo: {
-              ...rest
-            },
-            isLoading: false
-          });
+            history.push('/mfa');
+          } else {
+            history.push('/');
+            if (refreshToken) {
+              // TODO: Development only
+              localStorage.setItem('refreshToken', refreshToken);
 
-          setTimeout(() => {
-            dispatch(actionCreators.refresh());
-          }, 0.9 * 15 * 60 * 1000);
+              dispatch(actionCreators.refresh());
+            }
+          }
         } else {
           dispatch({
             type: ActionTypes.SET_USER_LOADING,
             isLoading: false
           });
-          return message;
         }
+
+        return message;
+      }
+    },
+  verifyMfa:
+    (code: string): AppThunkAction<UserActionTypes | ProjectActionTypes> | string =>
+    async (dispatch, getState) => {
+      const appState = getState();
+
+      dispatch({
+        type: ActionTypes.SET_USER_LOADING,
+        isLoading: true
+      });
+
+      if (appState && appState.user) {
+        const result = await Api.post('auth/verify', { code });
+
+        const { accessToken, refreshToken, mfaEnabled, message }: AuthResponse =
+          await result.json();
+
+        if (result.status === 200) {
+          UserModel.currentUserSubject.next({
+            ...UserModel.currentUserValue,
+            accessToken,
+            mfaEnabled
+          });
+
+          // TODO: Development only
+          if (refreshToken) {
+            localStorage.setItem('refreshToken', refreshToken);
+          }
+
+          history.push('/');
+          dispatch(actionCreators.refresh());
+        } else {
+          dispatch({
+            type: ActionTypes.SET_USER_LOADING,
+            isLoading: false
+          });
+        }
+
+        return message;
       }
     },
   logout: (): AppThunkAction<UserActionTypes> => async (dispatch, getState) => {
@@ -170,8 +206,13 @@ export const actionCreators = {
               isLoading: false
             });
           } else {
-            const { accessToken, authorities, message, refreshToken, ...rest }: AuthResponse =
-              await result.json();
+            const {
+              accessToken,
+              authorities,
+              message,
+              refreshToken,
+              ...rest
+            }: UserDetailsFullResponse = await result.json();
             if (result.status === 200) {
               UserModel.currentUserSubject.next({
                 accessToken,
@@ -180,8 +221,7 @@ export const actionCreators = {
               });
 
               dispatch({
-                type: ActionTypes.SET_LOGIN_INFO,
-                accessToken,
+                type: ActionTypes.SET_USER_INFO,
                 userInfo: {
                   ...rest
                 },
@@ -192,7 +232,7 @@ export const actionCreators = {
 
               setTimeout(() => {
                 dispatch(actionCreators.refresh());
-              }, 0.9 * 15 * 60 * 1000);
+              }, 0.9 * 60 * 60 * 1000);
             } else {
               dispatch({
                 type: ActionTypes.SET_USER_ERRORS,
@@ -225,6 +265,7 @@ export const actionCreators = {
 
         currentUserSubject.next({
           ...json,
+          mfaEnabled: currentUserValue.mfaEnabled,
           accessToken: currentUserValue.accessToken,
           authorities: currentUserValue.authorities
         });
@@ -293,7 +334,6 @@ const initialState: UserState = {
     projects: [],
     members: []
   },
-  accessToken: '',
   errors: ''
 };
 
@@ -308,14 +348,6 @@ export const reducer: Reducer<UserState> = (
   const action = incomingAction as UserActionTypes;
 
   switch (action.type) {
-    case ActionTypes.SET_LOGIN_INFO:
-      return {
-        ...state,
-        userInfo: updateObject(state.userInfo, action.userInfo),
-        isLoading: false,
-        accessToken: action.accessToken,
-        errors: ''
-      };
     case ActionTypes.SET_USER_INFO:
       return {
         ...state,
@@ -335,12 +367,6 @@ export const reducer: Reducer<UserState> = (
         ...state,
         isLoading: false,
         errors: action.errors
-      };
-    case ActionTypes.SET_TOKEN:
-      return {
-        ...state,
-        isLoading: false,
-        accessToken: action.accessToken
       };
     case ActionTypes.SET_USER_LOADING:
       return {

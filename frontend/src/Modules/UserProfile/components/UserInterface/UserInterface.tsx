@@ -9,7 +9,6 @@ import { FormikRadio } from 'Shared/Elements/RadioField/RadioField';
 import { Form, FormField } from 'Shared/Elements/Form';
 import { SingleSelectDropdown } from 'Shared/Elements/SingleSelectDropdown';
 import { ButtonFilled, ButtonOutline, IconButton } from 'Shared/Elements/Buttons';
-import { HorizontalPageWrapper } from 'Shared/PageWrappers';
 import { Heading6 } from 'Shared/Typography';
 import { INTERFACE_LANGUAGE } from 'Shared/constants';
 import { actionCreators } from 'Stores/User';
@@ -100,86 +99,85 @@ export const UserInterface = (): JSX.Element => {
 
     if (result.status === 204) {
       dispatch(actionCreators.getCurrentUserDetails());
+      setIsEditing(false);
     }
   };
 
   return (
-    <HorizontalPageWrapper alignItems="unset" justifyContent="center">
-      <StyledInterfaceContainer>
-        <Formik
-          enableReinitialize
-          validateOnMount
-          validationSchema={validationSchema}
-          initialValues={initialData}
-          onSubmit={onSubmit}
-        >
-          {({
-            values,
-            handleSubmit,
-            isValid,
-            setFieldValue,
-            resetForm
-          }: FormikProps<UserInterfaceData>) => (
-            <Form name="userInterfaceSettings" method="POST" onSubmit={handleSubmit}>
-              <StyledHeaderContainer>
-                <Heading6>{t('profile.userInterface.title')}</Heading6>
-                <IconButton onClick={toggleEditingFactory(resetForm)} iconName="edit" />
-              </StyledHeaderContainer>
-              <FormField
-                label={t('profile.userInterface.interfaceLanguage')}
-                name="interfaceLanguage"
-              >
-                <SingleSelectDropdown
-                  options={languageDropdownOptions}
-                  value={values.interfaceLanguage}
-                  onChange={handleChangeFactory<INTERFACE_LANGUAGE>(
-                    'interfaceLanguage',
-                    setFieldValue
-                  )}
-                  disabled={!isEditing}
-                />
-              </FormField>
-              <FormField label={t('profile.userInterface.darkMode.label')} name="darkMode">
-                <FormikRadio
-                  label={t('profile.userInterface.darkMode.lightMode')}
-                  name="darkMode"
-                  value={false}
-                  handleClick={setFieldValue}
-                  disabled={!isEditing}
-                />
-                <FormikRadio
-                  label={t('profile.userInterface.darkMode.darkMode')}
-                  name="darkMode"
-                  value={true}
-                  handleClick={setFieldValue}
-                  disabled={!isEditing}
-                />
-              </FormField>
-              <FormField
-                alignItems="start"
-                label={t('profile.userInterface.interfaceColor')}
-                name="interfaceColor"
-              >
-                <ColorPicker
-                  selectedColor={values.interfaceColor}
-                  onSelectingColor={handleChangeFactory<string>('interfaceColor', setFieldValue)}
-                  disabled={!isEditing}
-                />
-              </FormField>
-              {isEditing && (
-                <StyledButtonsContainer>
-                  <ButtonFilled disabled={!isValid} type="submit">
-                    {t('general.submit')}
-                  </ButtonFilled>
-                  <ButtonOutline onClick={toggleEditingFactory(resetForm)}>
-                    {t('general.cancel')}
-                  </ButtonOutline>
-                </StyledButtonsContainer>
-              )}
-            </Form>
-          )}
-        </Formik>
-      </StyledInterfaceContainer>
-    </HorizontalPageWrapper>
+    <StyledInterfaceContainer>
+      <Formik
+        enableReinitialize
+        validateOnMount
+        validationSchema={validationSchema}
+        initialValues={initialData}
+        onSubmit={onSubmit}
+      >
+        {({
+          values,
+          handleSubmit,
+          isValid,
+          setFieldValue,
+          resetForm
+        }: FormikProps<UserInterfaceData>) => (
+          <Form name="userInterfaceSettings" method="POST" onSubmit={handleSubmit}>
+            <StyledHeaderContainer>
+              <Heading6>{t('profile.userInterface.title')}</Heading6>
+              <IconButton onClick={toggleEditingFactory(resetForm)} iconName="edit" />
+            </StyledHeaderContainer>
+            <FormField
+              label={t('profile.userInterface.interfaceLanguage')}
+              name="interfaceLanguage"
+            >
+              <SingleSelectDropdown
+                options={languageDropdownOptions}
+                value={values.interfaceLanguage}
+                onChange={handleChangeFactory<INTERFACE_LANGUAGE>(
+                  'interfaceLanguage',
+                  setFieldValue
+                )}
+                disabled={!isEditing}
+              />
+            </FormField>
+            <FormField label={t('profile.userInterface.darkMode.label')} name="darkMode">
+              <FormikRadio
+                label={t('profile.userInterface.darkMode.lightMode')}
+                name="darkMode"
+                value={false}
+                handleClick={setFieldValue}
+                disabled={!isEditing}
+              />
+              <FormikRadio
+                label={t('profile.userInterface.darkMode.darkMode')}
+                name="darkMode"
+                value={true}
+                handleClick={setFieldValue}
+                disabled={!isEditing}
+              />
+            </FormField>
+            <FormField
+              alignItems="start"
+              label={t('profile.userInterface.interfaceColor')}
+              name="interfaceColor"
+            >
+              <ColorPicker
+                selectedColor={values.interfaceColor}
+                onSelectingColor={handleChangeFactory<string>('interfaceColor', setFieldValue)}
+                disabled={!isEditing}
+              />
+            </FormField>
+            {isEditing && (
+              <StyledButtonsContainer>
+                <ButtonFilled disabled={!isValid} type="submit">
+                  {t('general.submit')}
+                </ButtonFilled>
+                <ButtonOutline onClick={toggleEditingFactory(resetForm)}>
+                  {t('general.cancel')}
+                </ButtonOutline>
+              </StyledButtonsContainer>
+            )}
+          </Form>
+        )}
+      </Formik>
+    </StyledInterfaceContainer>
   );
 };

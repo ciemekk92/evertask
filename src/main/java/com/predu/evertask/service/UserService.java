@@ -1,7 +1,7 @@
 package com.predu.evertask.service;
 
-import com.predu.evertask.domain.dto.auth.CreateUserRequest;
-import com.predu.evertask.domain.dto.auth.UpdateUserRequest;
+import com.predu.evertask.config.security.JwtTokenUtil;
+import com.predu.evertask.domain.dto.auth.*;
 import com.predu.evertask.domain.dto.user.UserDetailsUpdateDto;
 import com.predu.evertask.domain.dto.user.UserDto;
 import com.predu.evertask.domain.dto.user.UserSettingsDto;
@@ -14,7 +14,10 @@ import com.predu.evertask.repository.RoleRepository;
 import com.predu.evertask.repository.UserRepository;
 import com.predu.evertask.repository.UserSettingsRepository;
 import com.predu.evertask.repository.VerificationTokenRepository;
+import com.predu.evertask.util.RandomToken;
+import dev.samstevens.totp.exceptions.QrGenerationException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,6 +27,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ValidationException;
 import java.io.IOException;
 import java.util.*;
@@ -42,7 +46,90 @@ public class UserService implements UserDetailsService {
     private final UserViewMapper userViewMapper;
     private final UserSettingsMapper userSettingsMapper;
     private final PasswordEncoder passwordEncoder;
+
+    private final MfaTokenManager mfaTokenManager;
+    private final JwtTokenUtil jwtTokenUtil;
     private final ImageService imageService;
+
+    @Transactional
+    public AuthResponseDto loginUser(UUID userId, HttpServletResponse response) {
+
+        User user = userRepository.getById(userId);
+        boolean authenticated = !user.isMfaEnabled();
+
+        if (!authenticated) {
+            String accessToken = jwtTokenUtil.generateAccessToken(user, false);
+
+            return AuthResponseDto
+                    .builder()
+                    .accessToken(accessToken)
+                    .mfaEnabled(user.isMfaEnabled())
+                    .build();
+        } else {
+            return verifyMFA(userId, response);
+        }
+    }
+
+    @Transactional
+    public AuthResponseDto verifyMFA(UUID userId, HttpServletResponse response) {
+
+        User user = userRepository.getById(userId);
+        String accessToken = jwtTokenUtil.generateAccessToken(user, true);
+        String refreshToken = RandomToken.generateRandomToken(32);
+
+        updateRefreshToken(user,
+                refreshToken,
+                new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000L)
+        );
+
+        ResponseCookie cookie = ResponseCookie.from("refresh", refreshToken)
+                .httpOnly(true)
+                .sameSite("None")
+                .secure(true)
+                .path("/")
+                .maxAge(7 * 24 * 60 * 60L)
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
+
+        // TODO: For development refresh is sent in response, to be set in localStorage
+
+        return AuthResponseDto
+                .builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .mfaEnabled(user.isMfaEnabled())
+                .build();
+    }
+
+    @Transactional
+    public MfaUpdateResponseDto updateMfa(UUID userId, MfaUpdateRequestDto request) throws QrGenerationException {
+
+        User user = userRepository.getById(userId);
+
+        MfaUpdateResponseDto response;
+
+        if (request.isMfaEnabled()) {
+            String secret = mfaTokenManager.generateSecretKey();
+            String qrImage = mfaTokenManager.getQrCode(secret);
+
+            user.setSecret(secret);
+            response = MfaUpdateResponseDto.builder()
+                    .mfaEnabled(request.isMfaEnabled())
+                    .qrCodeImage(qrImage)
+                    .build();
+        } else {
+            user.setSecret(null);
+            response = MfaUpdateResponseDto.builder()
+                    .mfaEnabled(false)
+                    .build();
+        }
+
+        user.setMfaEnabled(request.isMfaEnabled());
+        userRepository.save(user);
+
+        return response;
+    }
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     public List<UserDto> getUnassignedUsers(String query) {

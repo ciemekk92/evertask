@@ -1,15 +1,8 @@
 import React from 'react';
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import {
-  Formik,
-  ErrorMessage,
-  FormikErrors,
-  FormikTouched,
-  FormikProps
-} from 'formik';
+import { Formik, ErrorMessage, FormikErrors, FormikTouched, FormikProps } from 'formik';
 import * as Yup from 'yup';
-
 import { Heading3, StyledValidationMessage } from 'Shared/Typography';
 import { TextInput, TextInputErrorMessage } from 'Shared/Elements/TextInput';
 import { Form } from 'Shared/Elements/Form';

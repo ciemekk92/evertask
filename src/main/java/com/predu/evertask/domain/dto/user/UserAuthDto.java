@@ -11,10 +11,12 @@ import java.util.Set;
 @Setter
 public class UserAuthDto extends UserDto {
 
-    public UserAuthDto(UserDto userDto, String accessToken, String refreshToken, Set<Role> authorities) {
+    public UserAuthDto(UserDto userDto, String accessToken, String refreshToken,
+                       Set<Role> authorities, boolean mfaEnabled) {
         super(userDto);
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
+        this.mfaEnabled = mfaEnabled;
         this.authorities = authorities
                 .stream()
                 .map(Role::getAuthority)
@@ -23,6 +25,8 @@ public class UserAuthDto extends UserDto {
 
     private String accessToken;
     private String refreshToken;
+
+    private boolean mfaEnabled;
     private List<String> authorities;
 
     @Override

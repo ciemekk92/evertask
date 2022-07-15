@@ -19,7 +19,7 @@ export const AppHeader = (): JSX.Element => {
 
   const currentUser = UserModel.currentUserValue;
 
-  const handleLogout = () => {
+  const handleLogout = (): void => {
     dispatch(actionCreators.logout());
   };
 
@@ -34,7 +34,7 @@ export const AppHeader = (): JSX.Element => {
     }
   ];
 
-  const renderMenuLoggedOut = () => (
+  const renderMenuLoggedOut = (): JSX.Element => (
     <React.Fragment>
       <StyledLink to="/login">
         <IconButton iconName="login">{t('general.login')}</IconButton>
@@ -45,7 +45,7 @@ export const AppHeader = (): JSX.Element => {
     </React.Fragment>
   );
 
-  const renderMenuLoggedIn = () => (
+  const renderMenuLoggedIn = (): JSX.Element => (
     <React.Fragment>
       <CurrentProjectField />
       <DropdownMenu
@@ -62,7 +62,7 @@ export const AppHeader = (): JSX.Element => {
         <img src={currentUser.userSettings.darkMode ? logoDark : logoLight} alt="EverTask" />
       </StyledLink>
       <LoginContainer>
-        {currentUser.accessToken ? renderMenuLoggedIn() : renderMenuLoggedOut()}
+        {currentUser.id ? renderMenuLoggedIn() : renderMenuLoggedOut()}
       </LoginContainer>
     </HeaderBody>
   );

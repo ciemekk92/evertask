@@ -7,7 +7,7 @@ export const StyledAvatarSettingsContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 39%;
+  width: 100%;
   height: max-content;
   padding: 2rem;
   border-radius: 0.3rem;

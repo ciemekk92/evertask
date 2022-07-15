@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Date;
@@ -55,6 +56,11 @@ public class User implements UserDetails, Serializable {
     private boolean expired;
     private boolean enabled;
     private boolean verified;
+
+    @NotNull
+    private boolean mfaEnabled;
+
+    private String secret;
 
     @OneToOne
     @JoinColumn(name = "user_settings_id")

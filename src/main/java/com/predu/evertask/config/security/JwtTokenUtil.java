@@ -25,13 +25,13 @@ public class JwtTokenUtil {
         this.jwtConfigurationProperties = jwtConfigurationProperties;
     }
 
-    public String generateAccessToken(User user, boolean authenticated) {
+    public String generateAccessToken(User user, boolean fullyAuthenticated) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + (authenticated ? TOKEN_VALIDITY : TEMP_TOKEN_VALIDITY));
+        Date expiryDate = new Date(now.getTime() + (fullyAuthenticated ? TOKEN_VALIDITY : TEMP_TOKEN_VALIDITY));
 
         return Jwts.builder()
                 .setSubject(format("%s", user.getId()))
-                .claim(AUTHENTICATED, authenticated)
+                .claim(AUTHENTICATED, fullyAuthenticated)
                 .setIssuer(jwtConfigurationProperties.getJwtIssuer())
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)

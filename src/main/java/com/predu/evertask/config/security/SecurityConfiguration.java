@@ -80,6 +80,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/api/auth/verify").hasRole("PRE_VERIFICATION_USER")
+                .antMatchers("/api/auth/change_password").authenticated()
                 .antMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated();
 

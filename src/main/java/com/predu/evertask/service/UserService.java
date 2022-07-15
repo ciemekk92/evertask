@@ -9,6 +9,7 @@ import com.predu.evertask.domain.mapper.UserEditMapper;
 import com.predu.evertask.domain.mapper.UserSettingsMapper;
 import com.predu.evertask.domain.mapper.UserViewMapper;
 import com.predu.evertask.domain.model.*;
+import com.predu.evertask.exception.InvalidMFACodeException;
 import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.RoleRepository;
 import com.predu.evertask.repository.UserRepository;
@@ -46,18 +47,25 @@ public class UserService implements UserDetailsService {
     private final UserViewMapper userViewMapper;
     private final UserSettingsMapper userSettingsMapper;
     private final PasswordEncoder passwordEncoder;
-
     private final MfaTokenManager mfaTokenManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final ImageService imageService;
 
+    /**
+     * <p>Method logging user into application. If the user has MFA enabled, 5 minute accessToken is generated,
+     * which only allows the user to finish MFA process, otherwise, regular 1 hour accessToken is issued
+     * along with refresh token.</p>
+     *
+     * @param userId   current user ID
+     * @param response HttpResponse to be passed, when MFA is disabled
+     * @return DTO with tokens and state of MFA
+     */
     @Transactional
     public AuthResponseDto loginUser(UUID userId, HttpServletResponse response) {
 
         User user = userRepository.getById(userId);
-        boolean authenticated = !user.isMfaEnabled();
 
-        if (!authenticated) {
+        if (user.isMfaEnabled()) {
             String accessToken = jwtTokenUtil.generateAccessToken(user, false);
 
             return AuthResponseDto
@@ -66,12 +74,19 @@ public class UserService implements UserDetailsService {
                     .mfaEnabled(user.isMfaEnabled())
                     .build();
         } else {
-            return verifyMFA(userId, response);
+            return issueTokens(userId, response);
         }
     }
 
+    /**
+     * Method creating access and refresh tokens, which are used by front-end to access API resources
+     *
+     * @param userId   current user ID
+     * @param response HttpResponse to attach cookie into
+     * @return DTO with tokens and state of MFA
+     */
     @Transactional
-    public AuthResponseDto verifyMFA(UUID userId, HttpServletResponse response) {
+    public AuthResponseDto issueTokens(UUID userId, HttpServletResponse response) {
 
         User user = userRepository.getById(userId);
         String accessToken = jwtTokenUtil.generateAccessToken(user, true);
@@ -92,8 +107,6 @@ public class UserService implements UserDetailsService {
 
         response.addHeader("Set-Cookie", cookie.toString());
 
-        // TODO: For development refresh is sent in response, to be set in localStorage
-
         return AuthResponseDto
                 .builder()
                 .accessToken(accessToken)
@@ -102,6 +115,37 @@ public class UserService implements UserDetailsService {
                 .build();
     }
 
+    /**
+     * Method verifying whether the provided TOTP code is valid, and logging user in if it is.
+     *
+     * @param userId   current user ID
+     * @param dto      Request body containing MFA code
+     * @param response HttpResponse to attach cookie to
+     * @return DTO with tokens and state of MFA
+     * @throws InvalidMFACodeException - in case of invalid MFA Code, this error would be intercepted by
+     *                                 global exception handler
+     */
+    @Transactional
+    public AuthResponseDto verifyMFA(UUID userId, VerifyCodeDto dto, HttpServletResponse response)
+            throws InvalidMFACodeException {
+
+        User user = userRepository.getById(userId);
+
+        if (dto != null && !mfaTokenManager.verifyTotp(dto.getCode(), user.getSecret())) {
+            throw new InvalidMFACodeException("");
+        }
+
+        return issueTokens(userId, response);
+    }
+
+    /**
+     * Method allowing to change the status of MFA an current user's account
+     *
+     * @param userId  current user ID
+     * @param request request DTO containing whether MFA should be enabled or not
+     * @return response DTO with new state of MFA and QR code, if MFA was enabled
+     * @throws QrGenerationException can be thrown in case of errors during QR generation, like incorrect secret
+     */
     @Transactional
     public MfaUpdateResponseDto updateMfa(UUID userId, MfaUpdateRequestDto request) throws QrGenerationException {
 
@@ -131,6 +175,38 @@ public class UserService implements UserDetailsService {
         return response;
     }
 
+    /**
+     * Method allowing users to change their password.
+     *
+     * @param userId     current user ID
+     * @param requestDto DTO containing current password with confirmation and new password
+     */
+    public void changePassword(UUID userId, ChangePasswordRequestDto requestDto) {
+
+        if (!requestDto.getPassword().equals(requestDto.getRePassword())) {
+            throw new ValidationException("passwordsMatch");
+        }
+
+        User user = userRepository.getById(userId);
+
+        if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
+            throw new ValidationException("passwordIncorrect");
+        }
+
+        if (passwordEncoder.matches(requestDto.getNewPassword(), user.getPassword())) {
+            throw new ValidationException("newPasswordSameAsOld");
+        }
+
+        user.setPassword(passwordEncoder.encode(requestDto.getNewPassword()));
+        userRepository.save(user);
+    }
+
+    /**
+     * Method allowing to get all the users not assigned to any organisation
+     *
+     * @param query optional query to search for specific users
+     * @return list of users not assigned to any organisation
+     */
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     public List<UserDto> getUnassignedUsers(String query) {
         List<User> userList;
@@ -145,6 +221,12 @@ public class UserService implements UserDetailsService {
                 .toList();
     }
 
+    /**
+     * Method creating new user
+     *
+     * @param request DTO containing user signup data
+     * @return User entity
+     */
     @Transactional
     public User create(CreateUserRequest request) {
         if (usernameExists(request.getUsername())) {
@@ -172,6 +254,8 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public UserDto update(UUID id, UpdateUserRequest request) {
+        // TODO: remove or merge with updateUserDetails
+
         User user = userRepository.getById(id);
         userEditMapper.update(request, user);
 
@@ -181,15 +265,13 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public UserDto updateUserDetails(UUID id, UserDetailsUpdateDto dto) {
+    public void updateUserDetails(UUID id, UserDetailsUpdateDto dto) {
 
         User user = userRepository.getById(id);
 
         userEditMapper.updateDetails(dto, user);
 
-        user = userRepository.save(user);
-
-        return userViewMapper.toUserDto(user);
+        userRepository.save(user);
     }
 
     @Transactional
@@ -233,11 +315,11 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public User updateRefreshToken(User user, String token, Date expiryDate) {
+    public void updateRefreshToken(User user, String token, Date expiryDate) {
         user.setRefreshToken(token);
         user.setRefreshTokenExpiryDate(expiryDate);
 
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     @Transactional
@@ -257,6 +339,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public UserDto upsert(CreateUserRequest request) {
+        // TODO: remove if won't be needed
         Optional<User> optionalUser = userRepository.findByUsername(request.getUsername());
 
         if (optionalUser.isEmpty()) {

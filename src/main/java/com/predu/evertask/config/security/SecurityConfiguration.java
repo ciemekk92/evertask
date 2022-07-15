@@ -79,6 +79,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 ).and();
 
         http.authorizeRequests()
+                .antMatchers("/api/auth/verify").hasRole("PRE_VERIFICATION_USER")
                 .antMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated();
 

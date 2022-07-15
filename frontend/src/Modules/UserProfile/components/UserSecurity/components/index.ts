@@ -1,1 +1,1 @@
-export { MFADialog } from './MFADialog/MFADialog';
+export * from './MFADialog/MFADialog';

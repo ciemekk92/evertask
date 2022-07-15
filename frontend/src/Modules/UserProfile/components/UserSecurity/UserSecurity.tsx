@@ -12,7 +12,7 @@ export const UserSecurity = (): JSX.Element => {
 
   const mfaDialogConfig = useDialog<MFA_DIALOG_MODES>(MFA_DIALOG_MODES.EDIT);
 
-  const renderDialogs = () => (
+  const renderDialogs = (): JSX.Element => (
     <React.Fragment>
       <DialogComponent isOpen={mfaDialogConfig.isOpen} handleClose={mfaDialogConfig.handleClose}>
         <MFADialog handleClose={mfaDialogConfig.handleClose} />
@@ -20,13 +20,8 @@ export const UserSecurity = (): JSX.Element => {
     </React.Fragment>
   );
 
-  const handleOpeningMFADialog = async () => {
-    const result = await mfaDialogConfig.handleOpen(MFA_DIALOG_MODES.EDIT);
-
-    if (result) {
-      // TODO: finish
-      console.log('ok');
-    }
+  const handleOpeningMFADialog = (): void => {
+    mfaDialogConfig.handleOpen(MFA_DIALOG_MODES.EDIT);
   };
 
   return (

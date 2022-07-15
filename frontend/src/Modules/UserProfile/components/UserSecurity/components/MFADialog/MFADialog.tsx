@@ -26,7 +26,7 @@ export const MFADialog = ({ handleClose }: Props): JSX.Element => {
 
   const currentUser = UserModel.currentUserValue;
 
-  const onCancel = (e: React.MouseEvent) => {
+  const onCancel = (e: React.MouseEvent): void => {
     e.preventDefault();
     if (qrCode) {
       setQrCode(null);
@@ -35,7 +35,7 @@ export const MFADialog = ({ handleClose }: Props): JSX.Element => {
     handleClose();
   };
 
-  const onSubmit = async (e: React.MouseEvent) => {
+  const onSubmit = async (e: React.MouseEvent): Promise<void> => {
     e.preventDefault();
     startLoading();
 

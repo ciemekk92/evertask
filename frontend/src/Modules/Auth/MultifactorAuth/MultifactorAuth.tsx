@@ -45,7 +45,7 @@ export const MultifactorAuth = (): JSX.Element => {
     });
   }, []);
 
-  const onSubmit = async (values: MFAData) => {
+  const onSubmit = async (values: MFAData): Promise<void> => {
     if (validationErrors.has('message')) {
       removeError('message');
     }
@@ -64,7 +64,7 @@ export const MultifactorAuth = (): JSX.Element => {
       .required(t('mfa.validation.code.required'))
   });
 
-  const handleReturning = () => {
+  const handleReturning = (): void => {
     if (currentUser.accessToken) {
       dispatch(actionCreators.logout());
     } else {

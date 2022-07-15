@@ -4,8 +4,10 @@ import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material';
 import { getDarkTheme, getLightTheme, GlobalStyles } from 'Themes';
 import { MainLayout } from 'Modules/MainLayout';
 import { IUserModel, UserModel } from 'Models/UserModel';
+import { useTranslation } from 'react-i18next';
 
 export const Main = (): JSX.Element => {
+  const { i18n } = useTranslation();
   const [isDarkTheme, setIsDarkTheme] = React.useState<boolean>(
     UserModel.currentUserValue.userSettings.darkMode
   );
@@ -16,9 +18,10 @@ export const Main = (): JSX.Element => {
 
   React.useEffect(() => {
     const subscription = UserModel.currentUser.subscribe(
-      ({ userSettings: { darkMode, interfaceColor } }: IUserModel) => {
+      ({ userSettings: { darkMode, interfaceColor, interfaceLanguage } }: IUserModel) => {
         setIsDarkTheme(darkMode);
         setPrimaryColor(interfaceColor);
+        i18n.changeLanguage(interfaceLanguage.toLowerCase());
       }
     );
 

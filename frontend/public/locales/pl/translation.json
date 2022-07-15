@@ -13,6 +13,7 @@
     "email": "E-mail",
     "password": "Hasło",
     "rePassword": "Potwierdź hasło",
+    "newPassword": "Nowe hasło",
     "back": "Wróć",
     "mainPage": "Strona główna",
     "cancel": "Anuluj",
@@ -328,10 +329,20 @@
   },
   "mfaDialog": {
     "header": "Weryfikacja dwuetapowa",
-    "mfaEnabled": "Two factor authentication is currently enabled. Press the button below, to disable it.",
-    "mfaDisabled": "Two factor authentication is currently disabled. Press the button below, to enable it. Warning: you will have to log in again after this operation.",
-    "qrCode": "Scan below QR code using your authenticator application (Google Authenticator, Microsoft Authenticator).",
-    "qrWarning": "Warning: closing this dialog will result in logging you out of the application, so make sure that authenticator is set up correctly."
+    "mfaEnabled": "Weryfikacja dwuetapowa jest obecnie włączona. Naciśnij przycisk poniżej, aby ją wyłączyć.",
+    "mfaDisabled": "Weryfikacja dwuetapowa jest obecnie wyłączona. Naciśnij przycisk poniżej, aby ją włączyć. Uwaga: po tej operacji konieczne będzie ponowne zalogowanie.",
+    "qrCode": "Zeskanuj poniższy kod QR używając aplikacji autoryzacyjnej (Google Authenticator, Microsoft Authenticator).",
+    "qrWarning": "Uwaga: zamknięcie tego okna spowoduje wylogowanie z aplikacji, więc upewnij się, że aplikacja autoryzacyjna jest skonfigurowana poprawnie."
+  },
+  "changePasswordDialog": {
+    "header": "Zmień hasło",
+    "validation": {
+      "newPassword": {
+        "minLength": "Nowe hasło jest za krótkie (minimum 8 znaków)",
+        "maxLength": "Nowe hasło jest za długie (maksimum 30 znaków)",
+        "required": "Nowe hasło jest wymagane"
+      }
+    }
   },
   "mfa": {
     "title": "Weryfikacja dwuetapowa",

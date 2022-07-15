@@ -1,6 +1,6 @@
 package com.predu.evertask.controller;
 
-import com.predu.evertask.config.security.CurrentUser;
+import com.predu.evertask.config.security.CurrentUserId;
 import com.predu.evertask.config.security.JwtTokenUtil;
 import com.predu.evertask.domain.dto.auth.*;
 import com.predu.evertask.domain.dto.user.UserAuthDto;
@@ -12,7 +12,6 @@ import com.predu.evertask.event.OnSignupCompleteEvent;
 import com.predu.evertask.exception.InvalidMFACodeException;
 import com.predu.evertask.exception.InvalidTokenException;
 import com.predu.evertask.repository.VerificationTokenRepository;
-import com.predu.evertask.service.MfaTokenManager;
 import com.predu.evertask.service.UserService;
 import dev.samstevens.totp.exceptions.QrGenerationException;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.ValidationException;
 import java.util.Calendar;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -41,11 +41,10 @@ public class AuthController {
     private final UserViewMapper userViewMapper;
     private final UserService userService;
     private final ApplicationEventPublisher eventPublisher;
-    private final MfaTokenManager mfaTokenManager;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody @Valid AuthRequest request,
-                                                 HttpServletResponse response) {
+                                                 HttpServletResponse response) throws InvalidMFACodeException {
 
         Authentication authenticate = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
@@ -59,25 +58,30 @@ public class AuthController {
     @PostMapping("/verify")
     @PreAuthorize("hasRole('ROLE_PRE_VERIFICATION_USER')")
     public ResponseEntity<AuthResponseDto> verifyCode(@RequestBody @Valid VerifyCodeDto dto,
-                                                      @CurrentUser User user,
+                                                      @CurrentUserId UUID userId,
                                                       HttpServletResponse response) throws InvalidMFACodeException {
 
-        if (!mfaTokenManager.verifyTotp(dto.getCode(), user.getSecret())) {
-            throw new InvalidMFACodeException("");
-        }
-
-        AuthResponseDto responseDto = userService.verifyMFA(user.getId(), response);
+        AuthResponseDto responseDto = userService.verifyMFA(userId, dto, response);
 
         return ResponseEntity.ok(responseDto);
     }
 
     @PostMapping("/update_mfa")
     public ResponseEntity<MfaUpdateResponseDto> updateMfa(@RequestBody @Valid MfaUpdateRequestDto request,
-                                                          @CurrentUser User user) throws QrGenerationException {
+                                                          @CurrentUserId UUID userID) throws QrGenerationException {
 
-        MfaUpdateResponseDto responseDto = userService.updateMfa(user.getId(), request);
+        MfaUpdateResponseDto responseDto = userService.updateMfa(userID, request);
 
         return ResponseEntity.ok(responseDto);
+    }
+
+    @PutMapping("/change_password")
+    public ResponseEntity<Void> changePassword(@RequestBody @Valid ChangePasswordRequestDto request,
+                                               @CurrentUserId UUID userId) {
+
+        userService.changePassword(userId, request);
+
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/signup")

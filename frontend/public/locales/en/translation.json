@@ -13,6 +13,7 @@
     "email": "E-mail",
     "password": "Password",
     "rePassword": "Password confirmation",
+    "newPassword": "New password",
     "back": "Back",
     "mainPage": "Main page",
     "cancel": "Cancel",
@@ -332,6 +333,16 @@
     "mfaDisabled": "Two factor authentication is currently disabled. Press the button below, to enable it. Warning: you will have to log in again after this operation.",
     "qrCode": "Scan below QR code using your authenticator application (Google Authenticator, Microsoft Authenticator).",
     "qrWarning": "Warning: closing this dialog will result in logging you out of the application, so make sure that authenticator is set up correctly."
+  },
+  "changePasswordDialog": {
+    "header": "Change password",
+    "validation": {
+      "newPassword": {
+        "minLength": "New password is too short (minimum 8 characters)",
+        "maxLength": "New password is too long (maximum 30 characters)",
+        "required": "New password is required"
+      }
+    }
   },
   "mfa": {
     "title": "Two factor authentication",

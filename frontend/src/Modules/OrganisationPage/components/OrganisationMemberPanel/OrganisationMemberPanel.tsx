@@ -1,5 +1,6 @@
 import React from 'react';
 import { UserCircle } from 'Shared/UserCircle';
+import { User } from 'Types/User';
 import { StyledNameLabel, StyledPanelContainer } from './OrganisationMemberPanel.styled';
 
 interface Props {

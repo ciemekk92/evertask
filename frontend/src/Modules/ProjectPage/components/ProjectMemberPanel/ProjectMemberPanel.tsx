@@ -1,4 +1,5 @@
 import React from 'react';
+import { User } from 'Types/User';
 import { StyledNameLabel, StyledPanelContainer } from './ProjectMemberPanel.styled';
 
 interface Props {

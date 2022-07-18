@@ -6,7 +6,6 @@ import { ActionTypes } from './constants';
 import { AppThunkAction } from './store';
 
 export interface OrganisationState {
-  isLoading: boolean;
   unassignedUsers: User.UserEntity[];
 }
 
@@ -15,23 +14,13 @@ interface SetUnassignedUsersAction {
   unassignedUsers: User.UserEntity[];
 }
 
-interface SetOrganisationLoadingAction {
-  type: typeof ActionTypes.SET_ORGANISATION_LOADING;
-  isLoading: boolean;
-}
-
-export type OrganisationActionTypes = SetUnassignedUsersAction | SetOrganisationLoadingAction;
+export type OrganisationActionTypes = SetUnassignedUsersAction;
 
 export const actionCreators = {
   getUnassignedUsers:
     (query?: string): AppThunkAction<OrganisationActionTypes> =>
     async (dispatch, getState) => {
       const appState = getState();
-
-      dispatch({
-        type: ActionTypes.SET_ORGANISATION_LOADING,
-        isLoading: true
-      });
 
       if (appState && appState.organisation) {
         const result = await Api.get(`user/unassigned`, { query });
@@ -49,7 +38,6 @@ export const actionCreators = {
 };
 
 const initialState: OrganisationState = {
-  isLoading: false,
   unassignedUsers: []
 };
 
@@ -67,13 +55,7 @@ export const reducer: Reducer<OrganisationState> = (
     case ActionTypes.SET_UNASSIGNED_USERS:
       return {
         ...state,
-        isLoading: false,
         unassignedUsers: action.unassignedUsers
-      };
-    case ActionTypes.SET_ORGANISATION_LOADING:
-      return {
-        ...state,
-        isLoading: action.isLoading
       };
     default:
       return state;

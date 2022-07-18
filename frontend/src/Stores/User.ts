@@ -29,7 +29,6 @@ type AuthResponse = { message?: string } & (
 );
 
 export interface UserState {
-  isLoading: boolean;
   userInfo: User.UserFullInfo;
   organisation: Organisation.OrganisationEntity;
   errors?: string;
@@ -43,12 +42,6 @@ export interface LoginCredentials {
 interface SetUserInfoAction {
   type: typeof ActionTypes.SET_USER_INFO;
   userInfo: User.UserFullInfo;
-  isLoading: boolean;
-}
-
-interface SetUserLoadingAction {
-  type: typeof ActionTypes.SET_USER_LOADING;
-  isLoading: boolean;
 }
 
 interface SetUserOrganisationAction {
@@ -67,7 +60,6 @@ interface SetLogoutAction {
 
 export type UserActionTypes =
   | SetUserInfoAction
-  | SetUserLoadingAction
   | SetUserOrganisationAction
   | SetUserErrorsAction
   | SetLogoutAction;
@@ -80,11 +72,6 @@ export const actionCreators = {
     }: LoginCredentials): AppThunkAction<UserActionTypes | ProjectActionTypes> | string =>
     async (dispatch, getState) => {
       const appState = getState();
-
-      dispatch({
-        type: ActionTypes.SET_USER_LOADING,
-        isLoading: true
-      });
 
       if (appState && appState.user) {
         const result = await Api.postWithCredentials('auth/login', { username, password });
@@ -99,11 +86,6 @@ export const actionCreators = {
           });
 
           if (mfaEnabled) {
-            dispatch({
-              type: ActionTypes.SET_USER_LOADING,
-              isLoading: false
-            });
-
             history.push('/mfa');
           } else {
             history.push('/');
@@ -114,11 +96,6 @@ export const actionCreators = {
               dispatch(actionCreators.refresh());
             }
           }
-        } else {
-          dispatch({
-            type: ActionTypes.SET_USER_LOADING,
-            isLoading: false
-          });
         }
 
         return message;
@@ -128,11 +105,6 @@ export const actionCreators = {
     (code: string): AppThunkAction<UserActionTypes | ProjectActionTypes> | string =>
     async (dispatch, getState) => {
       const appState = getState();
-
-      dispatch({
-        type: ActionTypes.SET_USER_LOADING,
-        isLoading: true
-      });
 
       if (appState && appState.user) {
         const result = await Api.post('auth/verify', { code });
@@ -154,11 +126,6 @@ export const actionCreators = {
 
           history.push('/');
           dispatch(actionCreators.refresh());
-        } else {
-          dispatch({
-            type: ActionTypes.SET_USER_LOADING,
-            isLoading: false
-          });
         }
 
         return message;
@@ -166,11 +133,6 @@ export const actionCreators = {
     },
   logout: (): AppThunkAction<UserActionTypes> => async (dispatch, getState) => {
     const appState = getState();
-
-    dispatch({
-      type: ActionTypes.SET_USER_LOADING,
-      isLoading: true
-    });
 
     if (appState && appState.user) {
       const result = await Api.post('auth/logout');
@@ -189,11 +151,6 @@ export const actionCreators = {
     (): AppThunkAction<UserActionTypes | ProjectActionTypes> => async (dispatch, getState) => {
       const appState = getState();
 
-      dispatch({
-        type: ActionTypes.SET_USER_LOADING,
-        isLoading: true
-      });
-
       if (appState && appState.user) {
         const storedRefreshToken = localStorage.getItem('refreshToken');
 
@@ -201,10 +158,7 @@ export const actionCreators = {
           const result = await Api.post(`auth/refresh?refreshToken=${storedRefreshToken}`);
 
           if (result.status === 401) {
-            dispatch({
-              type: ActionTypes.SET_USER_LOADING,
-              isLoading: false
-            });
+            // TODO: handle 401?
           } else {
             const {
               accessToken,
@@ -224,8 +178,7 @@ export const actionCreators = {
                 type: ActionTypes.SET_USER_INFO,
                 userInfo: {
                   ...rest
-                },
-                isLoading: false
+                }
               });
 
               dispatch(projectActionCreators.getOrganisationsProjects());
@@ -240,21 +193,11 @@ export const actionCreators = {
               });
             }
           }
-        } else {
-          dispatch({
-            type: ActionTypes.SET_USER_LOADING,
-            isLoading: false
-          });
         }
       }
     },
   getCurrentUserDetails: (): AppThunkAction<UserActionTypes> => async (dispatch, getState) => {
     const appState = getState();
-
-    dispatch({
-      type: ActionTypes.SET_USER_LOADING,
-      isLoading: true
-    });
 
     if (appState && appState.user) {
       const result = await Api.get('user/me');
@@ -274,24 +217,13 @@ export const actionCreators = {
           type: ActionTypes.SET_USER_INFO,
           userInfo: {
             ...json
-          },
-          isLoading: false
-        });
-      } else {
-        dispatch({
-          type: ActionTypes.SET_USER_LOADING,
-          isLoading: false
+          }
         });
       }
     }
   },
   getOrganisation: (): AppThunkAction<UserActionTypes> => async (dispatch, getState) => {
     const appState = getState();
-
-    dispatch({
-      type: ActionTypes.SET_USER_LOADING,
-      isLoading: true
-    });
 
     if (appState && appState.user) {
       const result = await Api.get('user/organisation');
@@ -309,7 +241,6 @@ export const actionCreators = {
 };
 
 const initialState: UserState = {
-  isLoading: false,
   userInfo: {
     id: '',
     username: '',
@@ -351,13 +282,11 @@ export const reducer: Reducer<UserState> = (
     case ActionTypes.SET_USER_INFO:
       return {
         ...state,
-        userInfo: updateObject(state.userInfo, action.userInfo),
-        isLoading: false
+        userInfo: updateObject(state.userInfo, action.userInfo)
       };
     case ActionTypes.SET_USER_ORGANISATION:
       return {
         ...state,
-        isLoading: false,
         organisation: action.organisation
       };
     case ActionTypes.SET_LOGOUT:
@@ -365,14 +294,7 @@ export const reducer: Reducer<UserState> = (
     case ActionTypes.SET_USER_ERRORS:
       return {
         ...state,
-        isLoading: false,
         errors: action.errors
-      };
-    case ActionTypes.SET_USER_LOADING:
-      return {
-        ...state,
-        isLoading: action.isLoading,
-        errors: ''
       };
     default:
       return state;

@@ -7,7 +7,6 @@ import { AppThunkAction } from './store';
 import { ActionTypes } from './constants';
 
 export interface IssueState {
-  isLoading: boolean;
   assignedIssues: Issue.IssueEntity[];
   issuesUnassignedToSprint: Issue.IssueEntity[];
   boardIssues: PartialRecord<ISSUE_STATUS, Issue.IssueEntity[]>;
@@ -28,25 +27,14 @@ interface SetBoardIssuesAction {
   boardIssues: PartialRecord<ISSUE_STATUS, Issue.IssueEntity[]>;
 }
 
-interface SetIssueLoadingAction {
-  type: typeof ActionTypes.SET_ISSUE_LOADING;
-  isLoading: boolean;
-}
-
 export type IssueActionTypes =
   | SetAssignedIssuesAction
   | SetIssuesUnassignedToSprintAction
-  | SetBoardIssuesAction
-  | SetIssueLoadingAction;
+  | SetBoardIssuesAction;
 
 export const actionCreators = {
   getAssignedIssues: (): AppThunkAction<IssueActionTypes> => async (dispatch, getState) => {
     const appState = getState();
-
-    dispatch({
-      type: ActionTypes.SET_ISSUE_LOADING,
-      isLoading: true
-    });
 
     if (appState && appState.issue) {
       const result = await Api.get('issues/assigned_to_me');
@@ -58,11 +46,6 @@ export const actionCreators = {
           type: ActionTypes.SET_ASSIGNED_ISSUES,
           assignedIssues: json
         });
-      } else {
-        dispatch({
-          type: ActionTypes.SET_ISSUE_LOADING,
-          isLoading: false
-        });
       }
     }
   },
@@ -70,11 +53,6 @@ export const actionCreators = {
     (projectId: Id): AppThunkAction<IssueActionTypes> =>
     async (dispatch, getState) => {
       const appState = getState();
-
-      dispatch({
-        type: ActionTypes.SET_ISSUE_LOADING,
-        isLoading: true
-      });
 
       if (appState && appState.issue) {
         const result = await Api.get(`projects/${projectId}/current_issues`);
@@ -86,11 +64,6 @@ export const actionCreators = {
             type: ActionTypes.SET_BOARD_ISSUES,
             boardIssues: json
           });
-        } else {
-          dispatch({
-            type: ActionTypes.SET_ISSUE_LOADING,
-            isLoading: false
-          });
         }
       }
     },
@@ -98,11 +71,6 @@ export const actionCreators = {
     (projectId: Id): AppThunkAction<IssueActionTypes> =>
     async (dispatch, getState) => {
       const appState = getState();
-
-      dispatch({
-        type: ActionTypes.SET_ISSUE_LOADING,
-        isLoading: true
-      });
 
       if (appState && appState.issue) {
         const result = await Api.get(`projects/${projectId}/unassigned_issues`);
@@ -114,18 +82,12 @@ export const actionCreators = {
             type: ActionTypes.SET_ISSUES_UNASSIGNED_TO_SPRINT,
             issuesUnassignedToSprint: json
           });
-        } else {
-          dispatch({
-            type: ActionTypes.SET_ISSUE_LOADING,
-            isLoading: false
-          });
         }
       }
     }
 };
 
 const initialState: IssueState = {
-  isLoading: false,
   assignedIssues: [],
   issuesUnassignedToSprint: [],
   boardIssues: {}
@@ -145,25 +107,17 @@ export const reducer: Reducer<IssueState> = (
     case ActionTypes.SET_ASSIGNED_ISSUES:
       return {
         ...state,
-        isLoading: false,
         assignedIssues: action.assignedIssues
       };
     case ActionTypes.SET_BOARD_ISSUES:
       return {
         ...state,
-        isLoading: false,
         boardIssues: action.boardIssues
       };
     case ActionTypes.SET_ISSUES_UNASSIGNED_TO_SPRINT:
       return {
         ...state,
-        isLoading: false,
         issuesUnassignedToSprint: action.issuesUnassignedToSprint
-      };
-    case ActionTypes.SET_ISSUE_LOADING:
-      return {
-        ...state,
-        isLoading: action.isLoading
       };
     default:
       return state;

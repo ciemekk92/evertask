@@ -6,7 +6,6 @@ import { ActionTypes } from './constants';
 import { AppThunkAction } from './store';
 
 export interface OrganisationInvitationState {
-  isLoading: boolean;
   userInvitations: Organisation.OrganisationInvitation[];
   allInvitations: Organisation.OrganisationInvitation[];
 }
@@ -21,25 +20,14 @@ interface SetAllOrganisationInvitationsAction {
   allInvitations: Organisation.OrganisationInvitation[];
 }
 
-interface SetOrganisationInvitationLoadingAction {
-  type: typeof ActionTypes.SET_ORGANISATION_INVITATIONS_LOADING;
-  isLoading: boolean;
-}
-
 export type OrganisationInvitationActionTypes =
   | SetUserInvitationsAction
-  | SetAllOrganisationInvitationsAction
-  | SetOrganisationInvitationLoadingAction;
+  | SetAllOrganisationInvitationsAction;
 
 export const actionCreators = {
   getUserInvitations:
     (): AppThunkAction<OrganisationInvitationActionTypes> => async (dispatch, getState) => {
       const appState = getState();
-
-      dispatch({
-        type: ActionTypes.SET_ORGANISATION_INVITATIONS_LOADING,
-        isLoading: true
-      });
 
       if (appState && appState.organisationInvitation) {
         const result = await Api.get('user/organisation_invitations');
@@ -59,11 +47,6 @@ export const actionCreators = {
     async (dispatch, getState) => {
       const appState = getState();
 
-      dispatch({
-        type: ActionTypes.SET_ORGANISATION_INVITATIONS_LOADING,
-        isLoading: true
-      });
-
       if (appState && appState.organisationInvitation) {
         const result = await Api.get(`organisations/${id}/invitations`);
 
@@ -80,7 +63,6 @@ export const actionCreators = {
 };
 
 const initialState: OrganisationInvitationState = {
-  isLoading: false,
   userInvitations: [],
   allInvitations: []
 };
@@ -99,19 +81,12 @@ export const reducer: Reducer<OrganisationInvitationState> = (
     case ActionTypes.SET_USER_ORGANISATION_INVITATIONS:
       return {
         ...state,
-        isLoading: false,
         userInvitations: action.userInvitations
       };
     case ActionTypes.SET_ALL_ORGANISATION_INVITATIONS:
       return {
         ...state,
-        isLoading: false,
         allInvitations: action.allInvitations
-      };
-    case ActionTypes.SET_ORGANISATION_INVITATIONS_LOADING:
-      return {
-        ...state,
-        isLoading: action.isLoading
       };
     default:
       return state;

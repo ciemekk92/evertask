@@ -9,9 +9,8 @@ import { TextInput } from 'Shared/Elements/TextInput';
 import { TextArea } from 'Shared/Elements/TextArea';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
 import { SingleSelectDropdown } from 'Shared/Elements/SingleSelectDropdown';
-import { LoadingModalDialog } from 'Shared/LoadingModalDialog';
+import { ModalDialog } from 'Shared/ModalDialog';
 import { ISSUE_PRIORITY, ISSUE_STATUS, ISSUE_TYPE, PROJECT_METHODOLOGIES } from 'Shared/constants';
-import { useLoading } from 'Hooks/useLoading';
 import { ApplicationState } from 'Stores/store';
 import { Api } from 'Utils/Api';
 import { ApiResponse } from 'Types/Response';
@@ -71,7 +70,6 @@ export const IssueDialog = ({
     (state: ApplicationState) => (state.project ? state.project.notCompletedSprints : []),
     shallowEqual
   );
-  const { isLoading, startLoading, stopLoading } = useLoading();
   const currentProject = CurrentProjectModel.currentProjectValue;
 
   React.useEffect(() => {
@@ -116,8 +114,6 @@ export const IssueDialog = ({
   const onSubmit = async (values: IssueData) => {
     let result: Response;
 
-    startLoading();
-
     if (!issueId && mode === ISSUE_DIALOG_MODES.ADD) {
       result = await Api.post('issues', {
         ...values,
@@ -130,8 +126,6 @@ export const IssueDialog = ({
     if ([201, 204].includes(result.status)) {
       handleSubmitting();
     }
-
-    stopLoading();
   };
 
   const handleEstimateChangeFactory =
@@ -173,8 +167,7 @@ export const IssueDialog = ({
         values
       }: FormikProps<IssueData>) => (
         <Form name="issue" method="POST" onSubmit={handleSubmit}>
-          <LoadingModalDialog
-            isLoading={isLoading}
+          <ModalDialog
             header={t(`issueDialog.header.${mode.toLowerCase()}`)}
             footer={renderFooter(!isValid)}
           >
@@ -250,7 +243,7 @@ export const IssueDialog = ({
                 />
               </FormField>
             </StyledDialogContent>
-          </LoadingModalDialog>
+          </ModalDialog>
         </Form>
       )}
     </Formik>

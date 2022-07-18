@@ -2,10 +2,9 @@ import React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { Formik, FormikProps } from 'formik';
 import { useTranslation } from 'react-i18next';
-import { useLoading } from 'Hooks/useLoading';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
 import { Form, FormField } from 'Shared/Elements/Form';
-import { LoadingModalDialog } from 'Shared/LoadingModalDialog';
+import { ModalDialog } from 'Shared/ModalDialog';
 import { DateInput } from 'Shared/Elements/DateInput';
 import { SingleSelectDropdown } from 'Shared/Elements/SingleSelectDropdown';
 import { ApplicationState } from 'Stores/store';
@@ -40,7 +39,6 @@ export const StartEndSprintDialog = ({
   sprintData
 }: Props): JSX.Element => {
   const { t } = useTranslation();
-  const { isLoading, startLoading, stopLoading } = useLoading();
   const notCompletedSprints = useSelector(
     (state: ApplicationState) => (state.project ? state.project.notCompletedSprints : []),
     shallowEqual
@@ -76,8 +74,6 @@ export const StartEndSprintDialog = ({
   };
 
   const onSubmit = async (values: FormData): Promise<void> => {
-    startLoading();
-
     const adjustedValues = {
       finishDate: values.finishDate,
       sprintId,
@@ -96,8 +92,6 @@ export const StartEndSprintDialog = ({
     if (result.status === 204) {
       handleSubmitting();
     }
-
-    stopLoading();
   };
 
   const renderFooter = (isSubmitDisabled: boolean): JSX.Element => (
@@ -119,8 +113,7 @@ export const StartEndSprintDialog = ({
     >
       {({ handleSubmit, isValid, values, setFieldValue }: FormikProps<FormData>) => (
         <Form name="sprint" method="POST" onSubmit={handleSubmit}>
-          <LoadingModalDialog
-            isLoading={isLoading}
+          <ModalDialog
             header={t(`startEndSprintDialog.title.${mode.toLowerCase()}`)}
             footer={renderFooter(!isValid)}
           >
@@ -146,7 +139,7 @@ export const StartEndSprintDialog = ({
                 </FormField>
               )}
             </StyledDialogContent>
-          </LoadingModalDialog>
+          </ModalDialog>
         </Form>
       )}
     </Formik>

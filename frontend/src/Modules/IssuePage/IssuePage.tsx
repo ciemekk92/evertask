@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
-import { Api } from 'Utils/Api';
 import { Issue } from 'Types/Issue';
 import { ApiResponse } from 'Types/Response';
+import { Api } from 'Utils/Api';
 
 export const IssuePage = (): Nullable<JSX.Element> => {
   const params = useParams<RouterParams>();
@@ -13,7 +13,9 @@ export const IssuePage = (): Nullable<JSX.Element> => {
   React.useEffect(() => {
     Api.get(`issues/${params.id}`)
       .then((response: ApiResponse) => response.json())
-      .then((data: Issue.IssueFullEntity) => setIssueData(data));
+      .then((data: Issue.IssueFullEntity) => {
+        setIssueData(data);
+      });
   }, [params.id]);
 
   if (!issueData) return null;

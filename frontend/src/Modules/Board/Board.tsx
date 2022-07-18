@@ -1,9 +1,8 @@
 import React from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
-
-import { Container, useLoading } from 'Hooks/useLoading';
 import { DialogComponent, useDialog } from 'Hooks/useDialog';
 import { ISSUE_DIALOG_MODES, IssueDialog } from 'Modules/IssueDialog';
 import { VerticalPageWrapper } from 'Shared/PageWrappers';
@@ -26,8 +25,8 @@ import {
 
 export const Board = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { startLoading, stopLoading, isLoading } = useLoading();
   const issueDialogConfig = useDialog<ISSUE_DIALOG_MODES>(ISSUE_DIALOG_MODES.ADD);
 
   const currentIssues: Nullable<PartialRecord<ISSUE_STATUS, Issue.IssueEntity[]>> = useSelector(
@@ -57,10 +56,7 @@ export const Board = () => {
 
   const onDragEnd = async (result: DropResult): Promise<void> => {
     if (currentIssues) {
-      startLoading();
-
       if (!result.destination || result.source.droppableId === result.destination.droppableId) {
-        stopLoading();
         return;
       }
 
@@ -68,8 +64,6 @@ export const Board = () => {
       const sourceStatus = result.source.droppableId as ISSUE_STATUS;
 
       if (targetStatus === ISSUE_STATUS.CODE_REVIEW) {
-        stopLoading();
-
         const dialogResult = await issueDialogConfig.handleOpen(ISSUE_DIALOG_MODES.EDIT, {
           issueId: result.draggableId,
           targetStatus
@@ -94,10 +88,14 @@ export const Board = () => {
           dispatch(actionCreators.getCurrentIssues(currentProject.id));
         }
       }
-
-      stopLoading();
     }
   };
+
+  const handleViewingIssue =
+    (issueId: Id): VoidFunctionNoArgs =>
+    () => {
+      navigate(`/issue/${issueId}`);
+    };
 
   const renderAgileBoard = (): Nullable<JSX.Element> => {
     if (!currentProject.activeSprint) {
@@ -110,11 +108,15 @@ export const Board = () => {
 
     return (
       <StyledDragDropContextContainer>
-        <Container isLoading={isLoading} />
         <DragDropContext onDragEnd={onDragEnd}>
           <StyledListGrid>
             {Object.values(ISSUE_STATUS).map((status: ISSUE_STATUS) => (
-              <BoardColumn key={status} label={status} elements={currentIssues[status]} />
+              <BoardColumn
+                handleViewingIssue={handleViewingIssue}
+                key={status}
+                label={status}
+                elements={currentIssues[status]}
+              />
             ))}
           </StyledListGrid>
         </DragDropContext>
@@ -129,11 +131,15 @@ export const Board = () => {
 
     return (
       <StyledDragDropContextContainer>
-        <Container isLoading={isLoading} />
         <DragDropContext onDragEnd={onDragEnd}>
           <StyledListGrid>
             {Object.values(ISSUE_STATUS).map((status: ISSUE_STATUS) => (
-              <BoardColumn key={status} label={status} elements={currentIssues[status]} />
+              <BoardColumn
+                handleViewingIssue={handleViewingIssue}
+                key={status}
+                label={status}
+                elements={currentIssues[status]}
+              />
             ))}
           </StyledListGrid>
         </DragDropContext>

@@ -2,11 +2,10 @@ import React from 'react';
 import * as Yup from 'yup';
 import { ErrorMessage, Formik, FormikErrors, FormikProps, FormikTouched } from 'formik';
 import { useTranslation } from 'react-i18next';
-import { useLoading } from 'Hooks/useLoading';
 import { Form } from 'Shared/Elements/Form';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
 import { TextInput, TextInputErrorMessage } from 'Shared/Elements/TextInput';
-import { LoadingModalDialog } from 'Shared/LoadingModalDialog';
+import { ModalDialog } from 'Shared/ModalDialog';
 import { Api } from 'Utils/Api';
 import { StyledDialogContent } from '../MFADialog/MFADialog.styled';
 import { StyledInputContainer } from './ChangePasswordDialog.styled';
@@ -23,7 +22,6 @@ interface ChangePasswordData {
 
 export const ChangePasswordDialog = ({ handleClose }: Props): JSX.Element => {
   const { t } = useTranslation();
-  const { isLoading, startLoading, stopLoading } = useLoading();
 
   const initialData: ChangePasswordData = {
     password: '',
@@ -84,15 +82,11 @@ export const ChangePasswordDialog = ({ handleClose }: Props): JSX.Element => {
   });
 
   const onSubmit = async (values: ChangePasswordData) => {
-    startLoading();
-
     const result = await Api.put('auth/change_password', values);
 
     if (result.status === 204) {
       handleClose();
     }
-
-    stopLoading();
   };
 
   return (
@@ -104,11 +98,7 @@ export const ChangePasswordDialog = ({ handleClose }: Props): JSX.Element => {
     >
       {({ errors, touched, handleSubmit, isValid }: FormikProps<ChangePasswordData>) => (
         <Form name="changePassword" method="POST" onSubmit={handleSubmit}>
-          <LoadingModalDialog
-            isLoading={isLoading}
-            header={t('changePasswordDialog.header')}
-            footer={renderFooter(!isValid)}
-          >
+          <ModalDialog header={t('changePasswordDialog.header')} footer={renderFooter(!isValid)}>
             <StyledDialogContent>
               <StyledInputContainer>
                 {renderInput(errors, touched, 'password')}
@@ -116,7 +106,7 @@ export const ChangePasswordDialog = ({ handleClose }: Props): JSX.Element => {
                 {renderInput(errors, touched, 'newPassword')}
               </StyledInputContainer>
             </StyledDialogContent>
-          </LoadingModalDialog>
+          </ModalDialog>
         </Form>
       )}
     </Formik>

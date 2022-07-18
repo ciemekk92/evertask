@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Formik, ErrorMessage, FormikProps } from 'formik';
 import * as Yup from 'yup';
@@ -7,11 +7,9 @@ import { Form } from 'Shared/Elements/Form';
 import { ButtonFilled, IconButton } from 'Shared/Elements/Buttons';
 import { TextInput, TextInputErrorMessage } from 'Shared/Elements/TextInput';
 import { Heading3, StyledValidationMessage } from 'Shared/Typography';
-import { Container } from 'Hooks/useLoading';
 import { useValidation } from 'Hooks/useValidation';
 import { IUserModel, UserModel } from 'Models/UserModel';
 import { history } from 'Routes';
-import { ApplicationState } from 'Stores/store';
 import { actionCreators } from 'Stores/User';
 import { isDefined } from 'Utils/isDefined';
 import { ButtonsContainer, LoginWrapper } from '../Login/Login.styled';
@@ -29,11 +27,6 @@ export const MultifactorAuth = (): JSX.Element => {
   const initialData: MFAData = {
     code: ''
   };
-
-  const isLoading: boolean = useSelector(
-    (state: ApplicationState) => (state.user ? state.user.isLoading : false),
-    shallowEqual
-  );
 
   React.useEffect(() => {
     const subscription = UserModel.currentUser.subscribe((user: IUserModel) => {
@@ -84,7 +77,6 @@ export const MultifactorAuth = (): JSX.Element => {
 
   return (
     <LoginWrapper>
-      <Container isLoading={isLoading} />
       <IconButton iconName="arrow_back" onClick={handleReturning} />
       <Heading3>{t('mfa.title')}</Heading3>
       <Formik

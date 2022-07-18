@@ -5,8 +5,7 @@ import { actionCreators as organisationActionCreators } from 'Stores/Organisatio
 import { actionCreators as invitationsActionCreators } from 'Stores/OrganisationInvitation';
 import { ApplicationState } from 'Stores/store';
 import { Api } from 'Utils/Api';
-import { useLoading } from 'Hooks/useLoading';
-import { LoadingModalDialog } from 'Shared/LoadingModalDialog';
+import { ModalDialog } from 'Shared/ModalDialog';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
 import { SearchInput } from 'Shared/Elements/SearchInput';
 import { RadioField } from 'Shared/Elements/RadioField';
@@ -25,23 +24,16 @@ export const InviteMemberDialog = ({ handleClose, organisationId }: Props): JSX.
   const [userId, setUserId] = React.useState<Id>('');
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { isLoading, startLoading, stopLoading } = useLoading();
 
   React.useEffect(() => {
     dispatch(organisationActionCreators.getUnassignedUsers());
   }, [dispatch]);
-
-  const isOrganisationLoading = useSelector(
-    (state: ApplicationState) => (state.organisation ? state.organisation.isLoading : false),
-    shallowEqual
-  );
 
   const unassignedUsers = useSelector(
     (state: ApplicationState) => (state.organisation ? state.organisation.unassignedUsers : []),
     shallowEqual
   );
 
-  const isAppLoading = isLoading || isOrganisationLoading;
   const isSubmitDisabled = userId.length === 0;
 
   const onCancel = (e: React.MouseEvent) => {
@@ -55,7 +47,6 @@ export const InviteMemberDialog = ({ handleClose, organisationId }: Props): JSX.
 
   const handleSubmit = async () => {
     if (organisationId) {
-      startLoading();
       const result = await Api.post(`organisations/${organisationId}/invite_user`, {
         userId
       });
@@ -63,8 +54,6 @@ export const InviteMemberDialog = ({ handleClose, organisationId }: Props): JSX.
         handleClose();
         dispatch(invitationsActionCreators.getAllInvitationsForOrganisation(organisationId));
       }
-
-      stopLoading();
     }
   };
 
@@ -110,11 +99,7 @@ export const InviteMemberDialog = ({ handleClose, organisationId }: Props): JSX.
   };
 
   return (
-    <LoadingModalDialog
-      isLoading={isAppLoading}
-      header={t('inviteMemberDialog.title')}
-      footer={renderFooter()}
-    >
+    <ModalDialog header={t('inviteMemberDialog.title')} footer={renderFooter()}>
       <StyledDialogContent>
         <SearchInput
           value={query}
@@ -124,6 +109,6 @@ export const InviteMemberDialog = ({ handleClose, organisationId }: Props): JSX.
         />
         {renderUnassignedUsers()}
       </StyledDialogContent>
-    </LoadingModalDialog>
+    </ModalDialog>
   );
 };

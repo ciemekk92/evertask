@@ -16,9 +16,10 @@ import {
 interface Props {
   issue: Issue.IssueEntity;
   index: number;
+  handleViewingIssue: (id: Id) => VoidFunctionNoArgs;
 }
 
-export const BoardIssueTile = ({ issue, index }: Props): JSX.Element => {
+export const BoardIssueTile = ({ issue, index, handleViewingIssue }: Props): JSX.Element => {
   const currentProject = CurrentProjectModel.currentProjectValue;
 
   return (
@@ -27,6 +28,7 @@ export const BoardIssueTile = ({ issue, index }: Props): JSX.Element => {
         <StyledTile
           ref={provided.innerRef}
           snapshot={snapshot}
+          onClick={handleViewingIssue(issue.id)}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >

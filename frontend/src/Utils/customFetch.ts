@@ -1,8 +1,11 @@
 import { UserModel } from 'Models/UserModel';
+import { LoadingModel } from 'Models/LoadingModel';
 import { history } from 'Routes';
 
 export const customFetch = async (url: string, init: RequestInit): Promise<Unrestricted> => {
   const token = UserModel.currentUserValue.accessToken;
+
+  LoadingModel.increaseActiveCalls();
 
   try {
     const baseUrl =
@@ -23,6 +26,8 @@ export const customFetch = async (url: string, init: RequestInit): Promise<Unres
           }
     );
 
+    LoadingModel.decreaseActiveCalls();
+
     if (result.status === 403) {
       history.push('/forbidden');
       return;
@@ -35,6 +40,8 @@ export const customFetch = async (url: string, init: RequestInit): Promise<Unres
 
     return result;
   } catch (e: any) {
+    LoadingModel.decreaseActiveCalls();
+
     throw new Error(e);
   }
 };

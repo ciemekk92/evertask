@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallowEqual, useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Formik, ErrorMessage, FormikErrors, FormikTouched, FormikProps } from 'formik';
 import * as Yup from 'yup';
@@ -8,10 +8,8 @@ import { TextInput, TextInputErrorMessage } from 'Shared/Elements/TextInput';
 import { Form } from 'Shared/Elements/Form';
 import { ButtonFilled, ButtonLikeLink, ButtonOutline, IconButton } from 'Shared/Elements/Buttons';
 import { StyledLink } from 'Shared/StyledLink';
-import { ApplicationState } from 'Stores/store';
 import { actionCreators, LoginCredentials } from 'Stores/User';
 import { isDefined } from 'Utils/isDefined';
-import { Container } from 'Hooks/useLoading';
 import { useValidation } from 'Hooks/useValidation';
 import { history } from 'Routes';
 import { ButtonsContainer, LoginWrapper } from './Login.styled';
@@ -34,11 +32,6 @@ export const Login = (): JSX.Element => {
       .max(30, t('login.validation.password.maxLength'))
       .required(t('login.validation.password.required'))
   });
-
-  const isLoading: boolean = useSelector(
-    (state: ApplicationState) => (state.user ? state.user.isLoading : false),
-    shallowEqual
-  );
 
   const dispatch = useDispatch();
 
@@ -75,7 +68,6 @@ export const Login = (): JSX.Element => {
 
   return (
     <React.Fragment>
-      <Container isLoading={isLoading} />
       <LoginWrapper>
         <IconButton iconName="arrow_back" onClick={history.back} />
         <Heading3>{t('login.title')}</Heading3>

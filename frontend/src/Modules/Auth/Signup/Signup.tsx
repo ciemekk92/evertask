@@ -2,7 +2,6 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Formik, ErrorMessage, FormikErrors, FormikTouched, FormikProps } from 'formik';
 import * as Yup from 'yup';
-
 import { history } from 'Routes/history';
 import { Api } from 'Utils/Api';
 import { Heading3 } from 'Shared/Typography';
@@ -10,7 +9,6 @@ import { TextInput, TextInputErrorMessage } from 'Shared/Elements/TextInput';
 import { Form } from 'Shared/Elements/Form';
 import { ButtonFilled, IconButton } from 'Shared/Elements/Buttons';
 import { ErrorField } from 'Shared/Elements/ErrorField';
-import { useLoading, Container } from 'Hooks/useLoading';
 
 import { ButtonsContainer, LoginWrapper } from '../Login/Login.styled';
 
@@ -33,7 +31,6 @@ export const Signup = (): JSX.Element => {
     rePassword: ''
   };
 
-  const { isLoading, startLoading, stopLoading } = useLoading();
   const { t } = useTranslation();
   const [error, setError] = React.useState<string>('');
 
@@ -63,10 +60,8 @@ export const Signup = (): JSX.Element => {
   });
 
   const handleSignup = async (values: SignupData) => {
-    startLoading();
     const result = await Api.post('auth/signup', { ...values });
 
-    stopLoading();
     if (result.status === 201) {
       history.push('/signup_success');
     } else {
@@ -96,7 +91,6 @@ export const Signup = (): JSX.Element => {
 
   return (
     <LoginWrapper>
-      <Container isLoading={isLoading} />
       <IconButton iconName="arrow_back" onClick={history.back} />
       <Heading3>{t('signup.title')}</Heading3>
       <Formik

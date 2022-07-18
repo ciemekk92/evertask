@@ -1,7 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { Container } from 'Hooks/useLoading';
 import { DialogComponent, useDialog } from 'Hooks/useDialog';
 import { Heading5 } from 'Shared/Typography';
 import {
@@ -84,7 +83,6 @@ export const ProjectPage = (): Nullable<JSX.Element> => {
 
   return (
     <VerticalPageWrapper alignItems="unset">
-      <Container isLoading={projectState.isLoading} />
       <StyledHeaderWrapper>
         <Heading5>{projectState.selectedProject.name}</Heading5>
       </StyledHeaderWrapper>

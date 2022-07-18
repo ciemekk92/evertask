@@ -1,9 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { LoadingModalDialog } from 'Shared/LoadingModalDialog';
+import { ModalDialog } from 'Shared/ModalDialog';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
-import { useLoading } from 'Hooks/useLoading';
 import { UserModel } from 'Models/UserModel';
 import { actionCreators } from 'Stores/User';
 import { Api } from 'Utils/Api';
@@ -20,7 +19,6 @@ interface MfaResponse {
 
 export const MFADialog = ({ handleClose }: Props): JSX.Element => {
   const { t } = useTranslation();
-  const { isLoading, startLoading, stopLoading } = useLoading();
   const dispatch = useDispatch();
   const [qrCode, setQrCode] = React.useState<Nullable<string>>(null);
 
@@ -37,7 +35,6 @@ export const MFADialog = ({ handleClose }: Props): JSX.Element => {
 
   const onSubmit = async (e: React.MouseEvent): Promise<void> => {
     e.preventDefault();
-    startLoading();
 
     const result = await Api.post('auth/update_mfa', { mfaEnabled: !currentUser.mfaEnabled });
 
@@ -53,8 +50,6 @@ export const MFADialog = ({ handleClose }: Props): JSX.Element => {
         mfaEnabled
       });
     }
-
-    stopLoading();
   };
 
   const renderContent = (): JSX.Element => {
@@ -92,12 +87,8 @@ export const MFADialog = ({ handleClose }: Props): JSX.Element => {
   );
 
   return (
-    <LoadingModalDialog
-      isLoading={isLoading}
-      header={t('mfaDialog.header')}
-      footer={renderFooter()}
-    >
+    <ModalDialog header={t('mfaDialog.header')} footer={renderFooter()}>
       <StyledDialogContent>{renderContent()}</StyledDialogContent>
-    </LoadingModalDialog>
+    </ModalDialog>
   );
 };

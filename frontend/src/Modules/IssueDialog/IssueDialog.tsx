@@ -124,7 +124,6 @@ export const IssueDialog = ({
         projectId: currentProject.id
       });
     } else {
-      console.log({ values });
       result = await Api.put(`issues/${issueId}`, { ...values });
     }
 

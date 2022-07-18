@@ -32,6 +32,9 @@
     "setActive": "Set active",
     "yes": "Yes",
     "no": "No",
+    "startSprint": "Start sprint",
+    "endSprint": "End sprint",
+    "backlog": "Backlog",
     "notSet": "Not set",
     "change": "Change",
     "code": "Authenticator code",
@@ -263,6 +266,13 @@
         "required": "Finish date is required"
       }
     }
+  },
+  "startEndSprintDialog": {
+    "title": {
+      "start": "Start sprint",
+      "end": "End sprint"
+    },
+    "sprintIdToMoveTo": "Move open issues to"
   },
   "sprintPage": {
     "infoTitle": "Information",

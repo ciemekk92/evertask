@@ -32,6 +32,9 @@
     "setActive": "Aktywuj",
     "yes": "Tak",
     "no": "Nie",
+    "startSprint": "Rozpocznij sprint",
+    "endSprint": "Zakończ sprint",
+    "backlog": "Backlog",
     "notSet": "Nie ustawiono",
     "change": "Zmień",
     "code": "Kod autentykatora",
@@ -263,6 +266,13 @@
         "required": "Data końcowa jest wymagana"
       }
     }
+  },
+  "startEndSprintDialog": {
+    "title": {
+      "start": "Rozpocznij sprint",
+      "end": "Zakończ sprint"
+    },
+    "sprintIdToMoveTo": "Przenieś nieukończone zadania do"
   },
   "sprintPage": {
     "infoTitle": "Informacje",

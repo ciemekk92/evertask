@@ -5,18 +5,23 @@ import { LabelBadge } from 'Shared/LabelBadge';
 import { DropdownMenu } from 'Shared/Elements/DropdownMenu';
 import { formatDateForDisplay } from 'Utils/formatDate';
 import { Sprint } from 'Types/Sprint';
+import { START_END_SPRINT_DIALOG_MODES } from 'Modules/StartEndSprintDialog';
 import { StyledDateLabel, StyledSprintPanel } from './ProjectSprintPanel.styled';
 
 interface Props {
   sprint: Sprint.SprintEntity;
   isActive: boolean;
+  canBeStarted: boolean;
   handleOpeningEditSprint: (id: Id) => VoidFunctionNoArgs;
+  handleOpeningStartEndSprintDialog: (mode: START_END_SPRINT_DIALOG_MODES) => Promise<void>;
 }
 
 export const ProjectSprintPanel = ({
   sprint,
   isActive,
-  handleOpeningEditSprint
+  canBeStarted,
+  handleOpeningEditSprint,
+  handleOpeningStartEndSprintDialog
 }: Props): JSX.Element => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -33,25 +38,45 @@ export const ProjectSprintPanel = ({
     return <StyledDateLabel>{t('general.notUpdated')}</StyledDateLabel>;
   };
 
-  const dropdownOptions = [
-    {
-      label: t('general.view'),
-      onClick: () => navigate(`/sprint/${sprint.id}`),
-      iconName: 'visibility'
-    },
-    {
-      label: t('general.edit'),
-      onClick: handleOpeningEditSprint(sprint.id),
-      iconName: 'edit'
+  const getDropdownOptions = () => {
+    let dropdownOptions = [
+      {
+        label: t('general.view'),
+        onClick: () => navigate(`/sprint/${sprint.id}`),
+        iconName: 'visibility'
+      },
+      {
+        label: t('general.edit'),
+        onClick: handleOpeningEditSprint(sprint.id),
+        iconName: 'edit'
+      }
+    ];
+
+    if (isActive) {
+      dropdownOptions.push({
+        label: t('general.endSprint'),
+        onClick: () => handleOpeningStartEndSprintDialog(START_END_SPRINT_DIALOG_MODES.END),
+        iconName: 'check_small'
+      });
     }
-  ];
+
+    if (canBeStarted) {
+      dropdownOptions.push({
+        label: t('general.startSprint'),
+        onClick: () => handleOpeningStartEndSprintDialog(START_END_SPRINT_DIALOG_MODES.START),
+        iconName: 'start'
+      });
+    }
+
+    return dropdownOptions;
+  };
 
   return (
     <StyledSprintPanel>
       <p>{`Sprint ${sprint.ordinal}`}</p>
       {isActive && <LabelBadge label={t('general.active')} />}
       {renderUpdatedAtDate(sprint.updatedAt)}
-      <DropdownMenu options={dropdownOptions} />
+      <DropdownMenu options={getDropdownOptions()} />
     </StyledSprintPanel>
   );
 };

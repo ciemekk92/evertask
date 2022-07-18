@@ -67,7 +67,7 @@ export const SprintDialog = ({ mode, handleClose, projectId, sprintId }: Props):
     handleClose();
   };
 
-  const onSubmit = async (values: SprintData) => {
+  const onSubmit = async (values: SprintData): Promise<void> => {
     let result: Response;
     startLoading();
 

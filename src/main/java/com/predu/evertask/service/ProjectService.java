@@ -75,20 +75,23 @@ public class ProjectService {
         return projectRepository.save(result);
     }
 
-    public void startSprint(UUID projectId, StartSprintDto dto) throws InvalidOperationException {
+    public void startSprint(UUID projectId, StartSprintDto dto) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new NotFoundException(Project.class, projectId));
         Sprint sprint = sprintRepository.findById(UUID.fromString(dto.getSprintId()))
                 .orElseThrow(() -> new NotFoundException(Sprint.class, dto.getSprintId()));
 
+        sprint.setStartDate(dto.getStartDate());
+        sprint.setFinishDate(dto.getFinishDate());
+
+        sprint = sprintRepository.save(sprint);
         project.setActiveSprint(sprint);
 
         projectRepository.save(project);
     }
 
     public void endSprint(UUID projectId, EndSprintDto dto) throws InvalidOperationException {
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new NotFoundException(Project.class, projectId));
+
         Sprint sprint = sprintRepository.findById(UUID.fromString(dto.getSprintId()))
                 .orElseThrow(() -> new NotFoundException(Sprint.class, dto.getSprintId()));
 
@@ -96,13 +99,20 @@ public class ProjectService {
             throw new InvalidOperationException("completed");
         }
 
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new NotFoundException(Project.class, projectId));
+
         project.setActiveSprint(null);
+        sprint.setFinishDate(dto.getFinishDate());
         sprint.setCompleted(true);
 
-        projectRepository.save(project);
-        sprintRepository.save(sprint);
+        Optional<Sprint> sprintToMoveTo;
 
-        Optional<Sprint> sprintToMoveTo = sprintRepository.findById(UUID.fromString(dto.getSprintIdToMoveTo()));
+        if (dto.getSprintIdToMoveTo() == null) {
+            sprintToMoveTo = Optional.empty();
+        } else {
+            sprintToMoveTo = sprintRepository.findById(UUID.fromString(dto.getSprintIdToMoveTo()));
+        }
 
         Set<Issue> sprintIssues = sprint.getIssues();
         for (Issue issue : sprintIssues) {
@@ -110,6 +120,8 @@ public class ProjectService {
         }
 
         issueRepository.saveAll(sprintIssues);
+        projectRepository.save(project);
+        sprintRepository.save(sprint);
     }
 
     public boolean existsById(UUID id) {

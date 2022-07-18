@@ -1,13 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Api } from 'Utils/Api';
-import { PermissionCheck } from 'Utils/PermissionCheck';
 import { DialogComponent, useDialog } from 'Hooks/useDialog';
-import { CONFIRMATION_DIALOG_MODES, ConfirmationDialog } from 'Shared/ConfirmationDialog';
+import { START_END_SPRINT_DIALOG_MODES, StartEndSprintDialog } from 'Modules/StartEndSprintDialog';
 import { IconButton } from 'Shared/Elements/Buttons';
 import { StyledSectionHeaderRow, StyledSectionWrapper } from 'Shared/PageWrappers';
 import { Heading6 } from 'Shared/Typography';
 import { Sprint } from 'Types/Sprint';
+import { PermissionCheck } from 'Utils/PermissionCheck';
 import { ProjectSprintPanel } from '..';
 
 interface Props {
@@ -28,9 +27,57 @@ export const ProjectSprintsSection = ({
   handleRefreshingProjectState
 }: Props): JSX.Element => {
   const { t } = useTranslation();
-  // const confirmationDialogConfig = useDialog<CONFIRMATION_DIALOG_MODES>(
-  //   CONFIRMATION_DIALOG_MODES.CONFIRM
-  // );
+  const startEndSprintDialogConfig = useDialog<START_END_SPRINT_DIALOG_MODES>(
+    START_END_SPRINT_DIALOG_MODES.START
+  );
+
+  const handleOpeningStartEndSprintDialog =
+    (sprint: Sprint.SprintEntity) =>
+    async (mode: START_END_SPRINT_DIALOG_MODES): Promise<void> => {
+      const dialogResult = await startEndSprintDialogConfig.handleOpen(mode, {
+        sprintId: sprint.id,
+        sprintData: {
+          startDate: sprint.startDate,
+          finishDate: sprint.finishDate
+        }
+      });
+
+      if (!dialogResult) {
+        return;
+      } else {
+        handleRefreshingProjectState(projectId);
+      }
+    };
+
+  const canSprintBeStarted = (ordinal: number): boolean => {
+    if (activeSprintId) {
+      return false;
+    }
+
+    const currentActiveSprint = sprintsData.find(
+      (sprint: Sprint.SprintEntity) => sprint.id === activeSprintId
+    );
+
+    if (!currentActiveSprint) {
+      const firstNotCompletedSprint = sprintsData.find(
+        (sprint: Sprint.SprintEntity) => !sprint.completed
+      );
+
+      if (firstNotCompletedSprint) {
+        return firstNotCompletedSprint.ordinal === ordinal;
+      }
+    } else {
+      const nextPossibleActiveSprint = sprintsData.find(
+        (sprint: Sprint.SprintEntity) => sprint.ordinal === currentActiveSprint.ordinal + 1
+      );
+
+      if (nextPossibleActiveSprint) {
+        return nextPossibleActiveSprint.ordinal === ordinal;
+      }
+    }
+
+    return false;
+  };
 
   const renderSprintPanels = (): JSX.Element | JSX.Element[] => {
     if (!sprintsData.length) {
@@ -42,7 +89,9 @@ export const ProjectSprintsSection = ({
         key={sprint.id}
         sprint={sprint}
         isActive={sprint.id === activeSprintId}
+        canBeStarted={canSprintBeStarted(sprint.ordinal)}
         handleOpeningEditSprint={handleOpeningEditSprint}
+        handleOpeningStartEndSprintDialog={handleOpeningStartEndSprintDialog(sprint)}
       />
     ));
   };
@@ -59,16 +108,6 @@ export const ProjectSprintsSection = ({
     return null;
   };
 
-  // const handleActivatingSprint = async () => {
-  //   const result = await Api.put(`projects/${projectId}/set_current_sprint`, {
-  //     ...confirmationDialogConfig.params
-  //   });
-  //
-  //   if (result.status === 204) {
-  //     handleRefreshingProjectState(projectId);
-  //   }
-  // };
-
   return (
     <React.Fragment>
       <StyledSectionWrapper>
@@ -78,15 +117,19 @@ export const ProjectSprintsSection = ({
         </StyledSectionHeaderRow>
         {renderSprintPanels()}
       </StyledSectionWrapper>
-      {/*<DialogComponent*/}
-      {/*  isOpen={confirmationDialogConfig.isOpen}*/}
-      {/*  handleClose={confirmationDialogConfig.handleClose}*/}
-      {/*>*/}
-      {/*  <ConfirmationDialog*/}
-      {/*    handleClose={confirmationDialogConfig.handleClose}*/}
-      {/*    handleConfirm={handleActivatingSprint}*/}
-      {/*  />*/}
-      {/*</DialogComponent>*/}
+      <DialogComponent
+        isOpen={startEndSprintDialogConfig.isOpen}
+        handleClose={startEndSprintDialogConfig.handleClose}
+      >
+        <StartEndSprintDialog
+          mode={startEndSprintDialogConfig.dialogMode}
+          handleClose={startEndSprintDialogConfig.handleClose}
+          handleSubmitting={startEndSprintDialogConfig.handleSubmit}
+          projectId={projectId}
+          sprintId={startEndSprintDialogConfig.params.sprintId}
+          sprintData={startEndSprintDialogConfig.params.sprintData}
+        />
+      </DialogComponent>
     </React.Fragment>
   );
 };

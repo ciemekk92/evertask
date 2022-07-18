@@ -1,0 +1,4 @@
+export enum START_END_SPRINT_DIALOG_MODES {
+  START = 'START',
+  END = 'END'
+}

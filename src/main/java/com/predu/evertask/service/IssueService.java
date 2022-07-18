@@ -1,6 +1,7 @@
 package com.predu.evertask.service;
 
 import com.predu.evertask.domain.dto.issue.IssueDto;
+import com.predu.evertask.domain.dto.issue.IssueFullDto;
 import com.predu.evertask.domain.dto.issue.IssueSaveDto;
 import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
 import com.predu.evertask.domain.enums.ProjectMethodology;
@@ -79,10 +80,10 @@ public class IssueService {
                 .toList();
     }
 
-    public Optional<IssueDto> findById(UUID id) {
+    public Optional<IssueFullDto> findById(UUID id) {
         Optional<Issue> issue = issueRepository.findById(id);
 
-        return issue.map(issueMapper::issueToIssueDto);
+        return issue.map(issueMapper::issueToIssueFullDto);
     }
 
     public List<IssueDto> findAllByAssigneeId(UUID id) {

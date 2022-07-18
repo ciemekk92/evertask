@@ -2,6 +2,7 @@ package com.predu.evertask.domain.mapper;
 
 import com.predu.evertask.annotation.IncludeBeforeMapping;
 import com.predu.evertask.domain.dto.issue.IssueDto;
+import com.predu.evertask.domain.dto.issue.IssueFullDto;
 import com.predu.evertask.domain.dto.issue.IssueSaveDto;
 import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
 import com.predu.evertask.domain.model.Issue;
@@ -54,6 +55,8 @@ public abstract class IssueMapper {
     @Mapping(source = "sprint.id", target = "sprintId")
     @Mapping(target = "assignee", ignore = true)
     public abstract IssueDto issueToIssueDto(Issue issue);
+
+    public abstract IssueFullDto issueToIssueFullDto(Issue issue);
 
     @Mapping(source = "sprintId", target = "sprint.id")
     public abstract Issue update(@MappingTarget Issue issue, IssueUpdateDto issueUpdateDto);

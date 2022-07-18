@@ -12,12 +12,14 @@ interface Props {
   sprint: Sprint.SprintIssuesEntity;
   handleOpeningAddIssue: (sprintId: Nullable<Id>) => void;
   handleOpeningEditIssue: (issueId: Id) => VoidFunctionNoArgs;
+  handleViewingIssue: (issueId: Id) => VoidFunctionNoArgs;
 }
 
 export const SprintSection = ({
   sprint,
   handleOpeningAddIssue,
-  handleOpeningEditIssue
+  handleOpeningEditIssue,
+  handleViewingIssue
 }: Props): JSX.Element => {
   const { t } = useTranslation();
   const headingTitle = React.useMemo(
@@ -33,6 +35,7 @@ export const SprintSection = ({
     return sprint.issues.map((issue: Issue.IssueEntity, index: number) => (
       <BacklogIssuePanel
         handleOpeningEditIssue={handleOpeningEditIssue}
+        handleViewingIssue={handleViewingIssue}
         issue={issue}
         index={index}
         key={issue.id}

@@ -13,12 +13,14 @@ interface Props {
   issues: Issue.IssueEntity[];
   handleOpeningAddIssue: (sprintId: Nullable<Id>) => void;
   handleOpeningEditIssue: (issueId: Id) => VoidFunctionNoArgs;
+  handleViewingIssue: (issueId: Id) => VoidFunctionNoArgs;
 }
 
 export const UnassignedIssues = ({
   issues,
   handleOpeningAddIssue,
-  handleOpeningEditIssue
+  handleOpeningEditIssue,
+  handleViewingIssue
 }: Props): JSX.Element => {
   const { t } = useTranslation();
 
@@ -53,6 +55,7 @@ export const UnassignedIssues = ({
         index={index}
         key={issue.id}
         handleOpeningEditIssue={handleOpeningEditIssue}
+        handleViewingIssue={handleViewingIssue}
       />
     ));
   };

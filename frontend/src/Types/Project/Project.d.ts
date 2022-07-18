@@ -1,4 +1,5 @@
 import { PROJECT_METHODOLOGIES } from 'Shared/constants';
+import { Sprint } from '../Sprint';
 
 declare namespace Project {
   export type ProjectEntity = AuditedEntity & {
@@ -9,4 +10,11 @@ declare namespace Project {
     methodology: PROJECT_METHODOLOGIES;
     activeSprint: Nullable<Sprint.SprintEntity>;
   };
+
+  export interface ProjectInfoEntity extends IdentifiedEntity {
+    name: string;
+    description: string;
+    code: string;
+    methodology: PROJECT_METHODOLOGIES;
+  }
 }

@@ -13,4 +13,12 @@ declare namespace Sprint {
   export type SprintIssuesEntity = SprintEntity & {
     issues: Issue.IssueEntity[];
   };
+
+  export interface SprintInfoEntity extends IdentifiedEntity {
+    ordinal: number;
+    description: string;
+    completed: boolean;
+    startDate: string;
+    finishDate: string;
+  }
 }

@@ -1,10 +1,8 @@
 package com.predu.evertask.controller;
 
+import com.predu.evertask.annotation.IsAllowedToIssue;
 import com.predu.evertask.annotation.IsNotUnassignedUser;
-import com.predu.evertask.domain.dto.issue.IssueDto;
-import com.predu.evertask.domain.dto.issue.IssueSaveDto;
-import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
-import com.predu.evertask.domain.dto.issue.MoveIssueDto;
+import com.predu.evertask.domain.dto.issue.*;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.service.IssueService;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +29,9 @@ public class IssueController {
         return ResponseEntity.ok(issueService.findAll());
     }
 
+    @IsAllowedToIssue
     @GetMapping("/{id}")
-    public ResponseEntity<IssueDto> getIssue(@PathVariable UUID id) {
+    public ResponseEntity<IssueFullDto> getIssue(@PathVariable UUID id) {
         return issueService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -59,7 +58,7 @@ public class IssueController {
         return ResponseEntity.created(new URI("http://localhost:8080/api/issues/" + created.getId())).body(created);
     }
 
-    @IsNotUnassignedUser
+    @IsAllowedToIssue
     @PutMapping("/{id}/move_issue")
     public ResponseEntity<Void> moveIssue(@RequestBody @Valid MoveIssueDto dto,
                                           @PathVariable UUID id) {
@@ -75,6 +74,7 @@ public class IssueController {
         return ResponseEntity.noContent().build();
     }
 
+    @IsAllowedToIssue
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateIssue(@RequestBody @Valid IssueUpdateDto toUpdate, @PathVariable UUID id) {
         if (!issueService.existsById(id)) {

@@ -15,6 +15,7 @@ import { Dashboard } from 'Modules/Dashboard';
 import { ProjectPage } from 'Modules/ProjectPage';
 import { Board } from 'Modules/Board';
 import { Backlog } from 'Modules/Backlog';
+import { IssuePage } from 'Modules/IssuePage';
 import { UnassignedUserPage } from 'Modules/UnassignedUserPage';
 import { OrganisationPage } from 'Modules/OrganisationPage';
 import { SprintPage } from 'Modules/SprintPage';
@@ -73,6 +74,7 @@ export const MainLayout = (): JSX.Element => {
             <Route path={'/'} element={<Dashboard />} />
             <Route path={'/project/:id'} element={<ProjectPage />} />
             <Route path={'/sprint/:id'} element={<SprintPage />} />
+            <Route path={'/issue/:id'} element={<IssuePage />} />
             <Route path={'/board'} element={<Board />} />
             <Route path={'/backlog'} element={<Backlog />} />
             <Route path={'/organisation'} element={<OrganisationPage />} />

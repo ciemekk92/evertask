@@ -62,7 +62,7 @@ export const SprintDialog = ({ mode, handleClose, projectId, sprintId }: Props):
       .required(t('sprintDialog.validation.finishDate.required'))
   });
 
-  const onCancel = (e: React.MouseEvent) => {
+  const onCancel = (e: React.MouseEvent): void => {
     e.preventDefault();
     handleClose();
   };

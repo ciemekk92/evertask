@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { Container, useLoading } from 'Hooks/useLoading';
 import { DialogComponent, useDialog } from 'Hooks/useDialog';
@@ -20,6 +21,7 @@ import { SprintSection, UnassignedIssues } from './components';
 export const Backlog = (): Nullable<JSX.Element> => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { startLoading, stopLoading, isLoading } = useLoading();
   const issueDialogConfig = useDialog<ISSUE_DIALOG_MODES>(ISSUE_DIALOG_MODES.ADD);
 
@@ -56,6 +58,12 @@ export const Backlog = (): Nullable<JSX.Element> => {
     return null;
   }
 
+  const handleViewingIssue =
+    (issueId: Id): VoidFunctionNoArgs =>
+    () => {
+      navigate(`/issue/${issueId}`);
+    };
+
   const handleRefreshingData = () => {
     if (currentProject.methodology === PROJECT_METHODOLOGIES.AGILE) {
       dispatch(projectActionCreators.getNotCompletedSprints(currentProject.id));
@@ -90,6 +98,7 @@ export const Backlog = (): Nullable<JSX.Element> => {
           sprint={sprint}
           handleOpeningAddIssue={handleOpeningAddIssue}
           handleOpeningEditIssue={handleOpeningEditIssue}
+          handleViewingIssue={handleViewingIssue}
         />
       ));
     }
@@ -130,6 +139,7 @@ export const Backlog = (): Nullable<JSX.Element> => {
             issues={issueState.issuesUnassignedToSprint}
             handleOpeningAddIssue={handleOpeningAddIssue}
             handleOpeningEditIssue={handleOpeningEditIssue}
+            handleViewingIssue={handleViewingIssue}
           />
         </DragDropContext>
       </StyledVerticalContainer>

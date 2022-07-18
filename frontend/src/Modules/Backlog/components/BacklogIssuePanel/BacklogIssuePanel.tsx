@@ -18,9 +18,15 @@ interface Props {
   issue: Issue.IssueEntity;
   index: number;
   handleOpeningEditIssue: (issueId: Id) => VoidFunctionNoArgs;
+  handleViewingIssue: (issueId: Id) => VoidFunctionNoArgs;
 }
 
-export const BacklogIssuePanel = ({ issue, index, handleOpeningEditIssue }: Props): JSX.Element => {
+export const BacklogIssuePanel = ({
+  issue,
+  index,
+  handleOpeningEditIssue,
+  handleViewingIssue
+}: Props): JSX.Element => {
   const currentProject = CurrentProjectModel.currentProjectValue;
   const { t } = useTranslation();
 
@@ -38,6 +44,7 @@ export const BacklogIssuePanel = ({ issue, index, handleOpeningEditIssue }: Prop
         <StyledDraggablePanel
           ref={provided.innerRef}
           snapshot={snapshot}
+          onClick={handleViewingIssue(issue.id)}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >

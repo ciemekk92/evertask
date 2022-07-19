@@ -5,13 +5,20 @@ import { ICON_SIZE } from '../../constants';
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onIconClick?: VoidFunctionNoArgs;
+  onIconClick?: (event: React.MouseEvent) => void;
 }
 
-export const SearchInput = ({ onChange, onIconClick, ...restProps }: Props) => {
+export const SearchInput = ({ onChange, onIconClick, ...restProps }: Props): JSX.Element => {
+  const onClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onIconClick) {
+      onIconClick(e);
+    }
+  };
+
   return (
     <StyledInputContainer>
-      <IconOutline onClick={onIconClick} iconName="search" iconSize={ICON_SIZE.LARGE} />
+      <IconOutline onClick={onClick} iconName="search" iconSize={ICON_SIZE.LARGE} />
       <StyledInput type="text" onChange={onChange} {...restProps} />
     </StyledInputContainer>
   );

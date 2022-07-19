@@ -298,6 +298,25 @@
       "title": "Unassigned issues"
     }
   },
+  "issuePage": {
+    "center": {
+      "title": "Issue details"
+    },
+    "right": {
+      "title": "People and time",
+      "assignee": "Assignee:",
+      "reporter": "Reporter:",
+      "unassigned": "Unassigned",
+      "createdAt": "Reported at:",
+      "updatedAt": "Last updated at:"
+    },
+    "timeTracking": {
+      "title": "Time tracking",
+      "estimatedHours": "Estimated:",
+      "totalReportedHours": "Reported:",
+      "remainingHours": "Remaining:"
+    }
+  },
   "confirmationDialog": {
     "header": "Are you sure?"
   },

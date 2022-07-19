@@ -26,7 +26,7 @@ export const customFetch = async (url: string, init: RequestInit): Promise<Unres
           }
     );
 
-    LoadingModel.decreaseActiveCalls();
+    setTimeout(() => LoadingModel.decreaseActiveCalls(), 100);
 
     if (result.status === 403) {
       history.push('/forbidden');

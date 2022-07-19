@@ -1,1 +1,5 @@
-export { formatDateForInput, formatDateForDisplay } from './formatDate';
+export {
+  formatDateForInput,
+  formatDateForDisplay,
+  formatDateForDisplayWithTime
+} from './formatDate';

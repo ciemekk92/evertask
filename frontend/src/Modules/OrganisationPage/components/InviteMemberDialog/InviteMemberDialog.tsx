@@ -24,10 +24,13 @@ export const InviteMemberDialog = ({ handleClose, organisationId }: Props): JSX.
   const [userId, setUserId] = React.useState<Id>('');
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const getUnassignedUsers = (searchQuery?: string) => {
+    dispatch(organisationActionCreators.getUnassignedUsers(searchQuery));
+  };
 
   React.useEffect(() => {
-    dispatch(organisationActionCreators.getUnassignedUsers());
-  }, [dispatch]);
+    getUnassignedUsers();
+  }, [dispatch, getUnassignedUsers]);
 
   const unassignedUsers = useSelector(
     (state: ApplicationState) => (state.organisation ? state.organisation.unassignedUsers : []),
@@ -50,6 +53,7 @@ export const InviteMemberDialog = ({ handleClose, organisationId }: Props): JSX.
       const result = await Api.post(`organisations/${organisationId}/invite_user`, {
         userId
       });
+
       if (result.status === 201) {
         handleClose();
         dispatch(invitationsActionCreators.getAllInvitationsForOrganisation(organisationId));
@@ -57,9 +61,14 @@ export const InviteMemberDialog = ({ handleClose, organisationId }: Props): JSX.
     }
   };
 
+  const handleSearchClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    getUnassignedUsers(query);
+  };
+
   const handleEnter = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      dispatch(organisationActionCreators.getUnassignedUsers(query));
+      getUnassignedUsers(query);
     }
   };
 
@@ -105,7 +114,7 @@ export const InviteMemberDialog = ({ handleClose, organisationId }: Props): JSX.
           value={query}
           onChange={onChange}
           onKeyDown={handleEnter}
-          onIconClick={handleSubmit}
+          onIconClick={handleSearchClick}
         />
         {renderUnassignedUsers()}
       </StyledDialogContent>

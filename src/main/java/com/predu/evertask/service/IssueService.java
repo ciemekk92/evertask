@@ -1,17 +1,13 @@
 package com.predu.evertask.service;
 
-import com.predu.evertask.domain.dto.issue.IssueDto;
-import com.predu.evertask.domain.dto.issue.IssueFullDto;
-import com.predu.evertask.domain.dto.issue.IssueSaveDto;
-import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
+import com.predu.evertask.domain.dto.issue.*;
 import com.predu.evertask.domain.enums.ProjectMethodology;
 import com.predu.evertask.domain.mapper.IssueMapper;
-import com.predu.evertask.domain.model.Issue;
-import com.predu.evertask.domain.model.Project;
-import com.predu.evertask.domain.model.Sprint;
-import com.predu.evertask.domain.model.User;
+import com.predu.evertask.domain.mapper.IssueWorkLogMapper;
+import com.predu.evertask.domain.model.*;
 import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.IssueRepository;
+import com.predu.evertask.repository.IssueWorkLogRepository;
 import com.predu.evertask.repository.ProjectRepository;
 import com.predu.evertask.repository.SprintRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +20,11 @@ import java.util.*;
 public class IssueService {
 
     private final IssueRepository issueRepository;
+    private final IssueWorkLogRepository issueWorkLogRepository;
     private final SprintRepository sprintRepository;
     private final ProjectRepository projectRepository;
     private final IssueMapper issueMapper;
+    private final IssueWorkLogMapper issueWorkLogMapper;
 
     public List<IssueDto> findAll() {
         return issueRepository.findAll()
@@ -100,6 +98,30 @@ public class IssueService {
         issueRepository.save(issue);
 
         return toSave;
+    }
+
+    public void reportTimeOnIssue(IssueReportTimeDto toSave) {
+        IssueWorkLog workLog = issueWorkLogMapper.issueReportTimeDtoToIssueWorkLog(toSave);
+
+        issueWorkLogRepository.save(workLog);
+    }
+
+    public IssueTimeTrackingDto getIssueTimeTrackingDetails(UUID issueId) {
+
+        Issue issue = issueRepository.findById(issueId).orElseThrow(() -> new NotFoundException(Issue.class, issueId));
+
+        int totalReported = issueWorkLogRepository
+                .findAllByIssueId(issueId)
+                .stream()
+                .mapToInt(IssueWorkLog::getReportedHours).sum();
+
+        int remainingHours = issue.getEstimateHours() != null ? issue.getEstimateHours() - totalReported : 0;
+
+        return IssueTimeTrackingDto.builder()
+                .totalReportedHours(totalReported)
+                .estimatedHours(issue.getEstimateHours())
+                .remainingHours(Math.max(remainingHours, 0))
+                .build();
     }
 
     public Issue update(UUID id, IssueUpdateDto toUpdate) {

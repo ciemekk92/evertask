@@ -78,7 +78,13 @@ public class IssueService {
                 .toList();
     }
 
-    public Optional<IssueFullDto> findById(UUID id) {
+    public Optional<IssueDto> findById(UUID id) {
+        Optional<Issue> issue = issueRepository.findById(id);
+
+        return issue.map(issueMapper::issueToIssueDto);
+    }
+
+    public Optional<IssueFullDto> findFullIssueById(UUID id) {
         Optional<Issue> issue = issueRepository.findById(id);
 
         return issue.map(issueMapper::issueToIssueFullDto);

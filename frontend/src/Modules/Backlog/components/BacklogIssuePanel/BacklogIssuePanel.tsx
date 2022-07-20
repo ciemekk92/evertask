@@ -32,6 +32,11 @@ export const BacklogIssuePanel = ({
 
   const dropdownOptions = [
     {
+      label: t('general.view'),
+      onClick: handleViewingIssue(issue.id),
+      iconName: 'view'
+    },
+    {
       label: t('general.edit'),
       onClick: handleOpeningEditIssue(issue.id),
       iconName: 'edit'
@@ -44,7 +49,6 @@ export const BacklogIssuePanel = ({
         <StyledDraggablePanel
           ref={provided.innerRef}
           snapshot={snapshot}
-          onClick={handleViewingIssue(issue.id)}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >

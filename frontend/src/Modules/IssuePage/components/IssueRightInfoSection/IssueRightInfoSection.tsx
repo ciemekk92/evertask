@@ -6,12 +6,8 @@ import { UserCircle } from 'Shared/UserCircle';
 import { Issue } from 'Types/Issue';
 import { User } from 'Types/User';
 import { formatDateForDisplayWithTime } from 'Utils/formatDate';
-import {
-  StyledField,
-  StyledFieldLabel,
-  StyledUserContainer,
-  StyledUserName
-} from './IssueRightInfoSection.styled';
+import { StyledField, StyledFieldLabel } from '../Shared.styled';
+import { StyledUserContainer, StyledUserName } from './IssueRightInfoSection.styled';
 
 interface Props {
   issue: Issue.IssueFullEntity;

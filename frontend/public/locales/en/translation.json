@@ -300,7 +300,12 @@
   },
   "issuePage": {
     "center": {
-      "title": "Issue details"
+      "title": "Issue details",
+      "type": "Type",
+      "status": "Status",
+      "priority": "Priority",
+      "sprint": "Sprint",
+      "storyPoints": "Story points"
     },
     "right": {
       "title": "People and time",

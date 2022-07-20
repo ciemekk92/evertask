@@ -6,14 +6,15 @@ import { shallowEqual, useSelector } from 'react-redux';
 import { CurrentProjectModel } from 'Models/CurrentProjectModel';
 import { Form, FormField } from 'Shared/Elements/Form';
 import { TextInput } from 'Shared/Elements/TextInput';
-import { TextArea } from 'Shared/Elements/TextArea';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
 import { SingleSelectDropdown } from 'Shared/Elements/SingleSelectDropdown';
 import { ModalDialog } from 'Shared/ModalDialog';
+import { WysiwygEditor } from 'Shared/WysiwygEditor';
 import { ISSUE_PRIORITY, ISSUE_STATUS, ISSUE_TYPE, PROJECT_METHODOLOGIES } from 'Shared/constants';
 import { ApplicationState } from 'Stores/store';
-import { Api } from 'Utils/Api';
 import { ApiResponse } from 'Types/Response';
+import { Api } from 'Utils/Api';
+import { convertNullFieldsToEmptyString } from 'Utils/convertNullFieldsToEmptyString';
 import { ISSUE_DIALOG_MODES } from './fixtures';
 import {
   mapIssuePrioritiesToDropdownOptions,
@@ -77,7 +78,12 @@ export const IssueDialog = ({
       Api.get(`issues/${issueId}`)
         .then((response: ApiResponse) => response.json())
         .then((data: IssueData) => {
-          const adjustedData = targetStatus ? { ...data, status: targetStatus } : data;
+          const dataWithRemovedNullValues: IssueData = convertNullFieldsToEmptyString(
+            data
+          ) as IssueData;
+          const adjustedData = targetStatus
+            ? { ...dataWithRemovedNullValues, status: targetStatus }
+            : dataWithRemovedNullValues;
 
           setInitialData({ ...adjustedData });
         });
@@ -163,6 +169,7 @@ export const IssueDialog = ({
         touched,
         handleSubmit,
         isValid,
+        initialValues,
         setFieldValue,
         values
       }: FormikProps<IssueData>) => (
@@ -236,10 +243,11 @@ export const IssueDialog = ({
                 </FormField>
               )}
               <FormField label={t('issueDialog.description')} name="description" required>
-                <TextArea
-                  valid={!errors.description && touched.description}
-                  error={errors.description && touched.description}
-                  name="description"
+                <WysiwygEditor
+                  onChange={(value: string) => {
+                    setFieldValue('description', value);
+                  }}
+                  initialValue={initialValues.description}
                 />
               </FormField>
             </StyledDialogContent>

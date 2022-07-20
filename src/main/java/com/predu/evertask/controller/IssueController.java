@@ -31,8 +31,16 @@ public class IssueController {
 
     @IsAllowedToIssue
     @GetMapping("/{id}")
-    public ResponseEntity<IssueFullDto> getIssue(@PathVariable UUID id) {
+    public ResponseEntity<IssueDto> getIssue(@PathVariable UUID id) {
         return issueService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @IsAllowedToIssue
+    @GetMapping("/{id}/full")
+    public ResponseEntity<IssueFullDto> getFullIssueInfo(@PathVariable UUID id) {
+        return issueService.findFullIssueById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

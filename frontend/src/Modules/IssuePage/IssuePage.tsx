@@ -24,7 +24,7 @@ export const IssuePage = (): Nullable<JSX.Element> => {
   const [timeTracking, setTimeTracking] = React.useState<Nullable<TimeTrackingData>>(null);
 
   React.useEffect(() => {
-    Api.get(`issues/${params.id}`)
+    Api.get(`issues/${params.id}/full`)
       .then((response: ApiResponse) => response.json())
       .then((data: Issue.IssueFullEntity) => {
         setIssueData(data);
@@ -54,7 +54,7 @@ export const IssuePage = (): Nullable<JSX.Element> => {
       </StyledHeaderWrapper>
       <StyledHorizontalContainer>
         <StyledCenterSectionContainer>
-          <IssueCenterInfoSection />
+          <IssueCenterInfoSection issue={issueData} />
           <IssueCommentsSection />
         </StyledCenterSectionContainer>
         <StyledRightSectionContainer>

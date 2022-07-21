@@ -7,6 +7,7 @@ import { ApiResponse } from 'Types/Response';
 import { Api } from 'Utils/Api';
 import {
   IssueCenterInfoSection,
+  IssueDescriptionSection,
   IssueCommentsSection,
   IssueRightInfoSection,
   IssueTimeTrackingSection,
@@ -55,6 +56,7 @@ export const IssuePage = (): Nullable<JSX.Element> => {
       <StyledHorizontalContainer>
         <StyledCenterSectionContainer>
           <IssueCenterInfoSection issue={issueData} />
+          <IssueDescriptionSection description={issueData.description} />
           <IssueCommentsSection />
         </StyledCenterSectionContainer>
         <StyledRightSectionContainer>

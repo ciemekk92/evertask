@@ -320,6 +320,9 @@
       "estimatedHours": "Estimated:",
       "totalReportedHours": "Reported:",
       "remainingHours": "Remaining:"
+    },
+    "description": {
+      "title": "Description"
     }
   },
   "confirmationDialog": {

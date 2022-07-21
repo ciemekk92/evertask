@@ -8,6 +8,8 @@ interface Theme {
     secondary: string;
     background: string;
     surface: string;
+    surfaceSecondary: string;
+    surfaceTertiary: string;
     primaryText: string;
     secondaryText: string;
     disabled: string;
@@ -20,16 +22,31 @@ interface Props {
 }
 
 export const GlobalStyles = createGlobalStyle<Props & Theme>`
-    body {
-        background-color: ${(props) => props.theme.background}; 
-        color: ${(props) => props.theme.primaryText};
-        font-family: Lato, sans-serif;
-        
-        & button {
-          font-size: 1.2rem;
-        }
-        & .material-icons.md-18,
-        & .material-icons-outlined.md-18 {
+  *::-webkit-scrollbar {
+    width: 1rem;
+  }
+
+  *::-webkit-scrollbar-track {
+    background-color: ${(props) => props.theme.surfaceSecondary};
+    border-radius: 1rem;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: ${(props) => props.theme.primaryDark};
+    border-radius: 1rem;
+  }
+
+  body {
+    background-color: ${(props) => props.theme.background};
+    color: ${(props) => props.theme.primaryText};
+    font-family: Lato, sans-serif;
+
+    & button {
+      font-size: 1.2rem;
+    }
+
+    & .material-icons.md-18,
+    & .material-icons-outlined.md-18 {
           font-size: 1.8rem;
         }
         & .material-icons.md-24,

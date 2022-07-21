@@ -10,3 +10,8 @@ export const StyledDialogContent = styled.div`
     margin-bottom: 0;
   }
 `;
+
+export const StyledHorizontalFieldContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;

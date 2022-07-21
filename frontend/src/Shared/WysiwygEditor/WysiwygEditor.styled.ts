@@ -8,6 +8,16 @@ export const StyledEditorWrapper = styled.div`
     border-radius: 0.3rem;
     padding: 0 0.5rem;
 
+    & .rdw-image-alignment-options-popup {
+      width: revert;
+      background: ${(props) => props.theme.surfaceTertiary};
+      border: none;
+
+      & .rdw-image-alignment-option {
+        padding: 0.5rem;
+      }
+    }
+
     & .rdw-image-modal {
       width: 35rem;
       background: ${(props) => props.theme.surfaceTertiary};

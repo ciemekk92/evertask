@@ -21,7 +21,7 @@ import {
   mapIssueTypesToDropdownOptions,
   mapSprintsToDropdownOptions
 } from './helpers';
-import { StyledDialogContent } from './IssueDialog.styled';
+import { StyledDialogContent, StyledHorizontalFieldContainer } from './IssueDialog.styled';
 
 interface Props {
   mode: ISSUE_DIALOG_MODES;
@@ -185,20 +185,22 @@ export const IssueDialog = ({
                   type="text"
                 />
               </FormField>
-              <FormField label={t('issueDialog.type')} name="type">
-                <SingleSelectDropdown
-                  options={mapIssueTypesToDropdownOptions()}
-                  value={values.type}
-                  onChange={(value: Nullable<string>) => setFieldValue('type', value)}
-                />
-              </FormField>
-              <FormField label={t('issueDialog.priority')} name="priority">
-                <SingleSelectDropdown
-                  options={mapIssuePrioritiesToDropdownOptions()}
-                  value={values.priority}
-                  onChange={(value: Nullable<string>) => setFieldValue('priority', value)}
-                />
-              </FormField>
+              <StyledHorizontalFieldContainer>
+                <FormField label={t('issueDialog.type')} name="type">
+                  <SingleSelectDropdown
+                    options={mapIssueTypesToDropdownOptions()}
+                    value={values.type}
+                    onChange={(value: Nullable<string>) => setFieldValue('type', value)}
+                  />
+                </FormField>
+                <FormField label={t('issueDialog.priority')} name="priority">
+                  <SingleSelectDropdown
+                    options={mapIssuePrioritiesToDropdownOptions()}
+                    value={values.priority}
+                    onChange={(value: Nullable<string>) => setFieldValue('priority', value)}
+                  />
+                </FormField>
+              </StyledHorizontalFieldContainer>
               {currentProject.methodology === PROJECT_METHODOLOGIES.AGILE && (
                 <FormField label={t('issueDialog.estimateStoryPoints')} name="estimateStoryPoints">
                   <TextInput

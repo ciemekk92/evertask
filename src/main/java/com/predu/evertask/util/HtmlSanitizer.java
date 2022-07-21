@@ -8,38 +8,43 @@ import org.jsoup.safety.Safelist;
  */
 public class HtmlSanitizer {
 
-    private static final String CLASS_ATTRIBUTE = "class";
+    private HtmlSanitizer() {
+    }
+
+    private static final String STYLE_ATTRIBUTE = "style";
     private static final Safelist safelist = new Safelist(Safelist.basicWithImages())
-            .addAttributes("a", CLASS_ATTRIBUTE)
-            .addAttributes("b", CLASS_ATTRIBUTE)
-            .addAttributes("blockquote", CLASS_ATTRIBUTE)
-            .addAttributes("cite", CLASS_ATTRIBUTE)
-            .addAttributes("code", CLASS_ATTRIBUTE)
-            .addAttributes("dd", CLASS_ATTRIBUTE)
-            .addAttributes("dl", CLASS_ATTRIBUTE)
-            .addAttributes("dt", CLASS_ATTRIBUTE)
-            .addAttributes("em", CLASS_ATTRIBUTE)
-            .addAttributes("i", CLASS_ATTRIBUTE)
-            .addAttributes("img", CLASS_ATTRIBUTE)
-            .addAttributes("img", "alt")
-            .addAttributes("li", CLASS_ATTRIBUTE)
-            .addAttributes("ol", CLASS_ATTRIBUTE)
-            .addAttributes("p", CLASS_ATTRIBUTE)
-            .addAttributes("pre", CLASS_ATTRIBUTE)
-            .addAttributes("q", CLASS_ATTRIBUTE)
-            .addAttributes("small", CLASS_ATTRIBUTE)
-            .addAttributes("span", CLASS_ATTRIBUTE)
-            .addAttributes("strike", CLASS_ATTRIBUTE)
-            .addAttributes("strong", CLASS_ATTRIBUTE)
-            .addAttributes("sub", CLASS_ATTRIBUTE)
-            .addAttributes("sup", CLASS_ATTRIBUTE)
-            .addAttributes("u", CLASS_ATTRIBUTE)
-            .addAttributes("ul", CLASS_ATTRIBUTE)
+            .addTags("div")
+            .addAttributes("a", STYLE_ATTRIBUTE)
+            .addAttributes("b", STYLE_ATTRIBUTE)
+            .addAttributes("blockquote", STYLE_ATTRIBUTE)
+            .addAttributes("cite", STYLE_ATTRIBUTE)
+            .addAttributes("code", STYLE_ATTRIBUTE)
+            .addAttributes("dd", STYLE_ATTRIBUTE)
+            .addAttributes("del", STYLE_ATTRIBUTE)
+            .addAttributes("div", STYLE_ATTRIBUTE)
+            .addAttributes("dl", STYLE_ATTRIBUTE)
+            .addAttributes("dt", STYLE_ATTRIBUTE)
+            .addAttributes("em", STYLE_ATTRIBUTE)
+            .addAttributes("i", STYLE_ATTRIBUTE)
+            .addAttributes("img", STYLE_ATTRIBUTE)
+            .addAttributes("ins", STYLE_ATTRIBUTE)
+            .addAttributes("li", STYLE_ATTRIBUTE)
+            .addAttributes("ol", STYLE_ATTRIBUTE)
+            .addAttributes("p", STYLE_ATTRIBUTE)
+            .addAttributes("pre", STYLE_ATTRIBUTE)
+            .addAttributes("q", STYLE_ATTRIBUTE)
+            .addAttributes("small", STYLE_ATTRIBUTE)
+            .addAttributes("span", STYLE_ATTRIBUTE)
+            .addAttributes("strong", STYLE_ATTRIBUTE)
+            .addAttributes("sub", STYLE_ATTRIBUTE)
+            .addAttributes("sup", STYLE_ATTRIBUTE)
+            .addAttributes("u", STYLE_ATTRIBUTE)
+            .addAttributes("ul", STYLE_ATTRIBUTE)
             .addProtocols("img", "src", "http", "https", "data");
 
     /**
      * <p>Method allowing to sanitize HTML input from malicious code, to prevent XSS attacks.</p>
-     * <strong>Allowed tags:</strong> a, b, blockquote, br, cite, code, dd, dl, dt, em, i, img,
+     * <strong>Allowed tags:</strong> a, b, blockquote, br, cite, code, dd, div, dl, dt, em, i, img,
      * li, ol, p, pre, q, small, span, strike, strong, sub, sup, u, ul
      *
      * @param input HTML input string

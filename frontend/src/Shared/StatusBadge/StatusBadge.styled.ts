@@ -20,7 +20,7 @@ const getBadgeColor = (status: ISSUE_STATUS): string => {
 
 export const StyledStatusBadge = styled.div<BadgeProps>`
   display: flex;
-  width: 8rem;
+  width: 9.6rem;
   height: 2rem;
   padding: 0.3rem 0.5rem;
   font-weight: 600;

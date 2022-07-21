@@ -39,8 +39,17 @@
     "change": "Change",
     "code": "Authenticator code",
     "storyPoints": "Story points",
-    "issueStatus": "Issue status",
+    "issueStatusTitle": "Issue status",
     "issuePriorityTitle": "Issue priority",
+    "issueStatus": {
+      "TO_DO": "To do",
+      "ON_HOLD": "On hold",
+      "IN_PROGRESS": "In progress",
+      "CODE_REVIEW": "Code review",
+      "TESTING": "Testing",
+      "COMPLETED": "Completed",
+      "ACCEPTED": "Accepted"
+    },
     "issuePriority": {
       "ASAP": "ASAP",
       "VERY_HIGH": "Very high",

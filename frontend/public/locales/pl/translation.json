@@ -39,8 +39,17 @@
     "change": "Zmień",
     "code": "Kod autentykatora",
     "storyPoints": "Punkty story",
-    "issueStatus": "Status zadania",
+    "issueStatusTitle": "Status zadania",
     "issuePriorityTitle": "Priorytet zadania",
+    "issueStatus": {
+      "TO_DO": "Do zrobienia",
+      "ON_HOLD": "Wstrzymane",
+      "IN_PROGRESS": "W trakcie",
+      "CODE_REVIEW": "Przegląd kodu",
+      "TESTING": "Testowane",
+      "COMPLETED": "Zakończone",
+      "ACCEPTED": "Zaakceptowane"
+    },
     "issuePriority": {
       "ASAP": "ASAP",
       "VERY_HIGH": "Bardzo wysoki",

@@ -7,6 +7,7 @@ import {
   StyledColumnHeader,
   StyledDroppableWrapper
 } from './BoardColumn.styled';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   label: string;
@@ -15,9 +16,11 @@ interface Props {
 }
 
 export const BoardColumn = ({ label, elements, handleViewingIssue }: Props): JSX.Element => {
+  const { t } = useTranslation();
+
   return (
     <StyledColumnContainer>
-      <StyledColumnHeader>{label.replaceAll('_', ' ')}</StyledColumnHeader>
+      <StyledColumnHeader>{t(`general.issueStatus.${label}`).toUpperCase()}</StyledColumnHeader>
       <Droppable droppableId={label}>
         {(provided) => (
           <StyledDroppableWrapper {...provided.droppableProps} ref={provided.innerRef}>

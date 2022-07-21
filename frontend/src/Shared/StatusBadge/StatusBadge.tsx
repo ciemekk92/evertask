@@ -12,7 +12,7 @@ export const StatusBadge = ({ status }: Props): JSX.Element => {
   const statusLabel: string = status.replaceAll('_', ' ');
 
   return (
-    <StyledStatusBadge title={t('general.issueStatus')} status={status}>
+    <StyledStatusBadge title={t('general.issueStatusTitle')} status={status}>
       {statusLabel}
     </StyledStatusBadge>
   );

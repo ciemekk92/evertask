@@ -1,8 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { LoadingModalDialog } from 'Shared/LoadingModalDialog';
+import { ModalDialog } from 'Shared/ModalDialog';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
-import { useLoading } from 'Hooks/useLoading';
 import { StyledDialogContent } from './ConfirmationDialog.styled';
 
 interface Props {
@@ -13,7 +12,6 @@ interface Props {
 
 export const ConfirmationDialog = ({ message, handleClose, handleConfirm }: Props): JSX.Element => {
   const { t } = useTranslation();
-  const { isLoading, startLoading, stopLoading } = useLoading();
 
   const onCancel = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -21,9 +19,7 @@ export const ConfirmationDialog = ({ message, handleClose, handleConfirm }: Prop
   };
 
   const onSubmit = async () => {
-    startLoading();
     await handleConfirm();
-    stopLoading();
     handleClose();
   };
 
@@ -35,12 +31,8 @@ export const ConfirmationDialog = ({ message, handleClose, handleConfirm }: Prop
   );
 
   return (
-    <LoadingModalDialog
-      isLoading={isLoading}
-      header={t('confirmationDialog.header')}
-      footer={renderFooter()}
-    >
+    <ModalDialog header={t('confirmationDialog.header')} footer={renderFooter()}>
       {message && <StyledDialogContent>{message}</StyledDialogContent>}
-    </LoadingModalDialog>
+    </ModalDialog>
   );
 };

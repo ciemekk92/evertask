@@ -11,9 +11,10 @@ import {
 interface Props {
   label: string;
   elements?: Issue.IssueEntity[];
+  handleViewingIssue: (id: Id) => VoidFunctionNoArgs;
 }
 
-export const BoardColumn = ({ label, elements }: Props): JSX.Element => {
+export const BoardColumn = ({ label, elements, handleViewingIssue }: Props): JSX.Element => {
   return (
     <StyledColumnContainer>
       <StyledColumnHeader>{label.replaceAll('_', ' ')}</StyledColumnHeader>
@@ -22,7 +23,12 @@ export const BoardColumn = ({ label, elements }: Props): JSX.Element => {
           <StyledDroppableWrapper {...provided.droppableProps} ref={provided.innerRef}>
             {elements &&
               elements.map((element: Issue.IssueEntity, index: number) => (
-                <BoardIssueTile key={element.id} issue={element} index={index} />
+                <BoardIssueTile
+                  handleViewingIssue={handleViewingIssue}
+                  key={element.id}
+                  issue={element}
+                  index={index}
+                />
               ))}
             {provided.placeholder}
           </StyledDroppableWrapper>

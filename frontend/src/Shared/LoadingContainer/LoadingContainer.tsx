@@ -3,19 +3,6 @@ import styled from 'styled-components';
 import { TopPortal } from 'Shared/TopPortal';
 import { Preloader } from 'Shared/Preloader';
 
-export const useLoading = () => {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-
-  const startLoading = () => setIsLoading(true);
-  const stopLoading = () => setIsLoading(false);
-
-  return {
-    isLoading,
-    startLoading,
-    stopLoading
-  };
-};
-
 const Overlay = styled.div`
   position: fixed;
   top: 0;
@@ -39,7 +26,7 @@ interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
   isLoading: boolean;
 }
 
-export const Container = ({ isLoading, ...props }: ContainerProps): JSX.Element | null => {
+export const LoadingContainer = ({ isLoading, ...props }: ContainerProps): JSX.Element | null => {
   const ref = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {

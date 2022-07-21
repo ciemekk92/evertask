@@ -4,9 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { Formik, FormikProps } from 'formik';
 import * as Yup from 'yup';
 
-import { useLoading } from 'Hooks/useLoading';
 import { PROJECT_METHODOLOGIES } from 'Shared/constants';
-import { LoadingModalDialog } from 'Shared/LoadingModalDialog';
+import { ModalDialog } from 'Shared/ModalDialog';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
 import { Form, FormField } from 'Shared/Elements/Form';
 import { TextInput } from 'Shared/Elements/TextInput';
@@ -38,7 +37,6 @@ export const ProjectDialog = ({ mode, handleClose }: Props): JSX.Element => {
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { isLoading, startLoading, stopLoading } = useLoading();
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -60,16 +58,12 @@ export const ProjectDialog = ({ mode, handleClose }: Props): JSX.Element => {
   };
 
   const onSubmit = async (values: ProjectData) => {
-    startLoading();
-
     const result = await Api.post('projects', { ...values });
 
     if (result.status === 201) {
       handleClose();
       dispatch(actionCreators.getOrganisation());
     }
-
-    stopLoading();
   };
 
   const renderFooter = (isSubmitDisabled: boolean): JSX.Element => (
@@ -90,8 +84,7 @@ export const ProjectDialog = ({ mode, handleClose }: Props): JSX.Element => {
     >
       {({ errors, touched, handleSubmit, isValid, setFieldValue }: FormikProps<ProjectData>) => (
         <Form name="project" method="POST" onSubmit={handleSubmit}>
-          <LoadingModalDialog
-            isLoading={isLoading}
+          <ModalDialog
             header={t(`projectDialog.title.${mode.toLowerCase()}`)}
             footer={renderFooter(!isValid)}
           >
@@ -134,7 +127,7 @@ export const ProjectDialog = ({ mode, handleClose }: Props): JSX.Element => {
                 />
               </FormField>
             </StyledDialogContent>
-          </LoadingModalDialog>
+          </ModalDialog>
         </Form>
       )}
     </Formik>

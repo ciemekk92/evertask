@@ -1,8 +1,11 @@
 package com.predu.evertask.service;
 
+import com.predu.evertask.domain.model.Issue;
 import com.predu.evertask.domain.model.Organisation;
 import com.predu.evertask.domain.model.Project;
 import com.predu.evertask.domain.model.User;
+import com.predu.evertask.exception.NotFoundException;
+import com.predu.evertask.repository.IssueRepository;
 import com.predu.evertask.repository.OrganisationRepository;
 import com.predu.evertask.repository.ProjectRepository;
 import com.predu.evertask.repository.UserRepository;
@@ -21,8 +24,10 @@ public class AuthenticatedUserService {
     private final OrganisationRepository organisationRepository;
     private final ProjectRepository projectRepository;
 
+    private final IssueRepository issueRepository;
+
     public boolean isOrganisationAdmin(UUID id) {
-        String username =  ((User)SecurityContextHolder
+        String username = ((User) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getPrincipal())
@@ -64,8 +69,27 @@ public class AuthenticatedUserService {
         Organisation organisation = organisationRepository.getById(id);
 
         return user.filter(value -> organisation
-                .getMembers()
-                .contains(value))
+                        .getMembers()
+                        .contains(value))
+                .isPresent();
+    }
+
+    public boolean isAllowedToIssue(UUID id) {
+        String username = ((User) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal())
+                .getUsername();
+
+        Issue issue = issueRepository.findById(id).orElseThrow(() -> new NotFoundException(Issue.class, id));
+
+        Optional<User> user = userRepository.findByUsername(username);
+
+        return user.filter(value -> issue
+                        .getProject()
+                        .getOrganisation()
+                        .getId()
+                        .equals(value.getOrganisation().getId()))
                 .isPresent();
     }
 }

@@ -3,8 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { Formik, FormikProps } from 'formik';
 import * as Yup from 'yup';
-import { useLoading } from 'Hooks/useLoading';
-import { LoadingModalDialog } from 'Shared/LoadingModalDialog';
+import { ModalDialog } from 'Shared/ModalDialog';
 import { Form, FormField } from 'Shared/Elements/Form';
 import { DateInput } from 'Shared/Elements/DateInput';
 import { TextArea } from 'Shared/Elements/TextArea';
@@ -38,7 +37,6 @@ export const SprintDialog = ({ mode, handleClose, projectId, sprintId }: Props):
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { isLoading, startLoading, stopLoading } = useLoading();
 
   React.useEffect(() => {
     if (sprintId && mode === SPRINT_DIALOG_MODES.EDIT) {
@@ -62,14 +60,13 @@ export const SprintDialog = ({ mode, handleClose, projectId, sprintId }: Props):
       .required(t('sprintDialog.validation.finishDate.required'))
   });
 
-  const onCancel = (e: React.MouseEvent) => {
+  const onCancel = (e: React.MouseEvent): void => {
     e.preventDefault();
     handleClose();
   };
 
-  const onSubmit = async (values: SprintData) => {
+  const onSubmit = async (values: SprintData): Promise<void> => {
     let result: Response;
-    startLoading();
 
     if (projectId) {
       if (!sprintId && mode === SPRINT_DIALOG_MODES.ADD) {
@@ -84,8 +81,6 @@ export const SprintDialog = ({ mode, handleClose, projectId, sprintId }: Props):
         sprintId && dispatch(sprintActionCreators.getSelectedSprint(sprintId));
       }
     }
-
-    stopLoading();
   };
 
   const renderFooter = (isSubmitDisabled: boolean): JSX.Element => (
@@ -107,8 +102,7 @@ export const SprintDialog = ({ mode, handleClose, projectId, sprintId }: Props):
     >
       {({ errors, touched, handleSubmit, isValid }: FormikProps<SprintData>) => (
         <Form name="sprint" method="POST" onSubmit={handleSubmit}>
-          <LoadingModalDialog
-            isLoading={isLoading}
+          <ModalDialog
             header={t(`sprintDialog.title.${mode.toLowerCase()}`)}
             footer={renderFooter(!isValid)}
           >
@@ -127,7 +121,7 @@ export const SprintDialog = ({ mode, handleClose, projectId, sprintId }: Props):
                 />
               </FormField>
             </StyledDialogContent>
-          </LoadingModalDialog>
+          </ModalDialog>
         </Form>
       )}
     </Formik>

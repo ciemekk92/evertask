@@ -11,12 +11,12 @@ declare global {
   export type VoidFunctionNoArgs = () => void;
   export type UiTheme = 'light' | 'dark';
   export type IdentifiedEntity = {
-    id: Id;
+    readonly id: Id;
   };
   export type AuditedEntity = {
-    id: Id;
-    createdAt: string;
-    updatedAt: Nullable<string>;
+    readonly id: Id;
+    readonly createdAt: string;
+    readonly updatedAt: Nullable<string>;
   };
   export type RouterParams = {
     id: Id;

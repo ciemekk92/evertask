@@ -1,25 +1,23 @@
 import React from 'react';
 import { useParams } from 'react-router';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { ApplicationState } from 'Stores/store';
-import { actionCreators, ProjectState } from 'Stores/Project';
+import { DialogComponent, useDialog } from 'Hooks/useDialog';
+import { Heading5 } from 'Shared/Typography';
 import {
   StyledHorizontalContainer,
   StyledSectionContainer,
   VerticalPageWrapper
 } from 'Shared/PageWrappers';
-import { Heading5 } from 'Shared/Typography';
+import { ApplicationState } from 'Stores/store';
+import { actionCreators, ProjectState } from 'Stores/Project';
 import { isDefined } from 'Utils/isDefined';
-import { Container } from 'Hooks/useLoading';
-import { DialogComponent, useDialog } from 'Hooks/useDialog';
+import { SprintDialog, SPRINT_DIALOG_MODES } from '../SprintDialog';
 import {
   ProjectActiveMembersSection,
   ProjectInfoSection,
   ProjectLastIssuesSection,
   ProjectSprintsSection
 } from './components';
-import { SPRINT_DIALOG_MODES } from '../SprintDialog/fixtures';
-import { SprintDialog } from '../SprintDialog';
 import { StyledHeaderWrapper } from './ProjectPage.styled';
 
 export const ProjectPage = (): Nullable<JSX.Element> => {
@@ -36,7 +34,7 @@ export const ProjectPage = (): Nullable<JSX.Element> => {
     (id: Id) => {
       dispatch(actionCreators.getSelectedProject(id));
       dispatch(actionCreators.getActiveMembers(id));
-      dispatch(actionCreators.getSprints(id));
+      dispatch(actionCreators.getNotCompletedSprints(id));
       dispatch(actionCreators.getLastIssues(id));
     },
     [dispatch]
@@ -70,7 +68,7 @@ export const ProjectPage = (): Nullable<JSX.Element> => {
 
   const renderSprintsSection = (): JSX.Element => (
     <ProjectSprintsSection
-      sprintsData={projectState.sprints}
+      sprintsData={projectState.notCompletedSprints}
       handleOpeningAddSprint={handleOpeningAddSprint}
       handleOpeningEditSprint={handleOpeningEditSprint}
       activeSprintId={projectState.selectedProject.activeSprint?.id}
@@ -85,7 +83,6 @@ export const ProjectPage = (): Nullable<JSX.Element> => {
 
   return (
     <VerticalPageWrapper alignItems="unset">
-      <Container isLoading={projectState.isLoading} />
       <StyledHeaderWrapper>
         <Heading5>{projectState.selectedProject.name}</Heading5>
       </StyledHeaderWrapper>

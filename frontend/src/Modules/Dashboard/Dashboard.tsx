@@ -23,7 +23,7 @@ export const Dashboard = (): JSX.Element => {
   React.useEffect(() => {
     dispatch(projectActionCreators.getOrganisationsProjects());
     dispatch(issueActionCreators.getAssignedIssues());
-  }, []);
+  }, [dispatch]);
 
   return (
     <StyledDashboardWrapper>

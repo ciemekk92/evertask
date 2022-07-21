@@ -32,6 +32,9 @@
     "setActive": "Set active",
     "yes": "Yes",
     "no": "No",
+    "startSprint": "Start sprint",
+    "endSprint": "End sprint",
+    "backlog": "Backlog",
     "notSet": "Not set",
     "change": "Change",
     "code": "Authenticator code",
@@ -264,6 +267,13 @@
       }
     }
   },
+  "startEndSprintDialog": {
+    "title": {
+      "start": "Start sprint",
+      "end": "End sprint"
+    },
+    "sprintIdToMoveTo": "Move open issues to"
+  },
   "sprintPage": {
     "infoTitle": "Information",
     "createdAt": "Created at: ",
@@ -286,6 +296,33 @@
     },
     "unassigned": {
       "title": "Unassigned issues"
+    }
+  },
+  "issuePage": {
+    "center": {
+      "title": "Issue details",
+      "type": "Type",
+      "status": "Status",
+      "priority": "Priority",
+      "sprint": "Sprint",
+      "storyPoints": "Story points"
+    },
+    "right": {
+      "title": "People and time",
+      "assignee": "Assignee:",
+      "reporter": "Reporter:",
+      "unassigned": "Unassigned",
+      "createdAt": "Reported at:",
+      "updatedAt": "Last updated at:"
+    },
+    "timeTracking": {
+      "title": "Time tracking",
+      "estimatedHours": "Estimated:",
+      "totalReportedHours": "Reported:",
+      "remainingHours": "Remaining:"
+    },
+    "description": {
+      "title": "Description"
     }
   },
   "confirmationDialog": {

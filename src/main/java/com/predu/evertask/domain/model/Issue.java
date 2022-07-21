@@ -71,6 +71,9 @@ public class Issue extends BaseEntity {
     @JoinColumn(name = "sprint_id")
     private Sprint sprint;
 
+    @OneToMany(mappedBy = "issue")
+    private Set<IssueWorkLog> workLogs;
+
     @OneToMany(mappedBy = "parentIssue")
     private Set<Issue> subtasks = new HashSet<>();
 }

@@ -35,7 +35,7 @@ const DropdownButtonStyles = css<{ disabled?: boolean } & React.HTMLAttributes<H
 export const StyledDropdownContainer = styled.div`
   display: flex;
   position: relative;
-  width: 18rem;
+  width: 20rem;
   margin-right: 1rem;
 `;
 

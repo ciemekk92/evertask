@@ -3,14 +3,12 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { StyledHorizontalContainer, VerticalPageWrapper } from 'Shared/PageWrappers';
 import { Heading5 } from 'Shared/Typography';
-import { Container } from 'Hooks/useLoading';
 import { ApplicationState } from 'Stores/store';
 import { isDefined } from 'Utils/isDefined';
 import { actionCreators, SprintState } from 'Stores/Sprint';
 import { DialogComponent, useDialog } from 'Hooks/useDialog';
 import { SprintInfoSection } from './components';
-import { SprintDialog } from '../SprintDialog';
-import { SPRINT_DIALOG_MODES } from '../SprintDialog/fixtures';
+import { SprintDialog, SPRINT_DIALOG_MODES } from '../SprintDialog';
 import {
   StyledHeaderWrapper,
   StyledLargeSectionContainer,
@@ -50,7 +48,6 @@ export const SprintPage = (): Nullable<JSX.Element> => {
 
   return (
     <VerticalPageWrapper alignItems="unset">
-      <Container isLoading={sprintState.isLoading} />
       <StyledHeaderWrapper>
         <Heading5>{`Sprint ${sprintState.selectedSprint.ordinal}`}</Heading5>
       </StyledHeaderWrapper>

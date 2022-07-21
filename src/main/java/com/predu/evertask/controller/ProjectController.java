@@ -114,7 +114,7 @@ public class ProjectController {
     @IsProjectAdminOrAdmin
     @PutMapping("/{id}/start_sprint")
     public ResponseEntity<Void> startSprint(@PathVariable UUID id,
-                                            @RequestBody @Valid StartSprintDto dto) throws InvalidOperationException {
+                                            @RequestBody @Valid StartSprintDto dto) {
         projectService.startSprint(id, dto);
 
         return ResponseEntity.noContent().build();

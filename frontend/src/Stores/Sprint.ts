@@ -8,7 +8,6 @@ import { ActionTypes } from './constants';
 import { AppThunkAction } from './store';
 
 export interface SprintState {
-  isLoading: boolean;
   selectedSprint: Sprint.SprintEntity;
   activeMembers: User.UserEntity[];
   sprintIssues: Issue.IssueEntity[];
@@ -29,27 +28,16 @@ interface SetSprintActiveMembersAction {
   activeMembers: User.UserEntity[];
 }
 
-interface SetSprintLoadingAction {
-  type: typeof ActionTypes.SET_SPRINT_LOADING;
-  isLoading: boolean;
-}
-
 export type SprintActionTypes =
   | SetSelectedSprintAction
   | SetSprintIssuesAction
-  | SetSprintActiveMembersAction
-  | SetSprintLoadingAction;
+  | SetSprintActiveMembersAction;
 
 export const actionCreators = {
   getSelectedSprint:
     (id: Id): AppThunkAction<SprintActionTypes> =>
     async (dispatch, getState) => {
       const appState = getState();
-
-      dispatch({
-        type: ActionTypes.SET_SPRINT_LOADING,
-        isLoading: true
-      });
 
       if (appState && appState.sprint) {
         const result = await Api.get(`sprints/${id}`);
@@ -61,11 +49,6 @@ export const actionCreators = {
             type: ActionTypes.SET_SELECTED_SPRINT,
             selectedSprint: json
           });
-        } else {
-          dispatch({
-            type: ActionTypes.SET_SPRINT_LOADING,
-            isLoading: false
-          });
         }
       }
     },
@@ -73,11 +56,6 @@ export const actionCreators = {
     (id: Id): AppThunkAction<SprintActionTypes> =>
     async (dispatch, getState) => {
       const appState = getState();
-
-      dispatch({
-        type: ActionTypes.SET_SPRINT_LOADING,
-        isLoading: true
-      });
 
       if (appState && appState.sprint) {
         const result = await Api.get(`sprints/${id}/issues`);
@@ -89,11 +67,6 @@ export const actionCreators = {
             type: ActionTypes.SET_SPRINT_ISSUES,
             sprintIssues: json
           });
-        } else {
-          dispatch({
-            type: ActionTypes.SET_SPRINT_LOADING,
-            isLoading: false
-          });
         }
       }
     },
@@ -101,11 +74,6 @@ export const actionCreators = {
     (id: Id): AppThunkAction<SprintActionTypes> =>
     async (dispatch, getState) => {
       const appState = getState();
-
-      dispatch({
-        type: ActionTypes.SET_SPRINT_LOADING,
-        isLoading: true
-      });
 
       if (appState && appState.sprint) {
         const result = await Api.get(`sprints/${id}/active_members`);
@@ -117,18 +85,12 @@ export const actionCreators = {
             type: ActionTypes.SET_SPRINT_ACTIVE_MEMBERS,
             activeMembers: json
           });
-        } else {
-          dispatch({
-            type: ActionTypes.SET_SPRINT_LOADING,
-            isLoading: false
-          });
         }
       }
     }
 };
 
 const initialState: SprintState = {
-  isLoading: false,
   sprintIssues: [],
   activeMembers: [],
   selectedSprint: {
@@ -158,25 +120,17 @@ export const reducer: Reducer<SprintState> = (
     case ActionTypes.SET_SELECTED_SPRINT:
       return {
         ...state,
-        isLoading: false,
         selectedSprint: action.selectedSprint
       };
     case ActionTypes.SET_SPRINT_ISSUES:
       return {
         ...state,
-        isLoading: false,
         sprintIssues: action.sprintIssues
       };
     case ActionTypes.SET_SPRINT_ACTIVE_MEMBERS:
       return {
         ...state,
-        isLoading: false,
         activeMembers: action.activeMembers
-      };
-    case ActionTypes.SET_SPRINT_LOADING:
-      return {
-        ...state,
-        isLoading: action.isLoading
       };
     default:
       return state;

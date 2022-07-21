@@ -3,7 +3,6 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Heading5, Heading6 } from 'Shared/Typography';
 import { OrganisationForm } from 'Shared/Forms/OrganisationForm';
-import { Container, useLoading } from 'Hooks/useLoading';
 import { Api } from 'Utils/Api';
 import { actionCreators as userActionCreators } from 'Stores/User';
 import { actionCreators as invitationsActionCreators } from 'Stores/OrganisationInvitation';
@@ -20,7 +19,6 @@ import {
 export const UnassignedUserPage = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { isLoading, startLoading, stopLoading } = useLoading();
   const userInvitations = useSelector(
     (state: ApplicationState) =>
       state.organisationInvitation ? state.organisationInvitation.userInvitations : [],
@@ -32,11 +30,8 @@ export const UnassignedUserPage = (): JSX.Element => {
   }, [dispatch]);
 
   const handleCreatingOrganisation = async (data: Organisation.OrganisationPayload) => {
-    startLoading();
-
     const result = await Api.post('organisations', data);
 
-    stopLoading();
     if (result.status === 201) {
       dispatch(userActionCreators.refresh());
     }
@@ -44,7 +39,6 @@ export const UnassignedUserPage = (): JSX.Element => {
 
   const handleSendingInvitationResponseFactory =
     (organisationId: Id, shouldAccept: boolean) => async () => {
-      startLoading();
       const result = await Api.post(
         `organisations/${organisationId}/${shouldAccept ? 'accept' : 'decline'}_invitation`
       );
@@ -56,8 +50,6 @@ export const UnassignedUserPage = (): JSX.Element => {
           dispatch(invitationsActionCreators.getUserInvitations());
         }
       }
-
-      stopLoading();
     };
 
   const renderInvitations = (): JSX.Element[] | JSX.Element => {
@@ -76,7 +68,6 @@ export const UnassignedUserPage = (): JSX.Element => {
 
   return (
     <StyledPageWrapper>
-      <Container isLoading={isLoading} />
       <Heading5>{t('unassignedUserPage.title')}</Heading5>
       <p>{t('unassignedUserPage.content')}</p>
       <StyledHorizontalContainer>

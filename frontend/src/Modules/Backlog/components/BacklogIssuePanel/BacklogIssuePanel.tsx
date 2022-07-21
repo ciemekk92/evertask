@@ -18,13 +18,24 @@ interface Props {
   issue: Issue.IssueEntity;
   index: number;
   handleOpeningEditIssue: (issueId: Id) => VoidFunctionNoArgs;
+  handleViewingIssue: (issueId: Id) => VoidFunctionNoArgs;
 }
 
-export const BacklogIssuePanel = ({ issue, index, handleOpeningEditIssue }: Props): JSX.Element => {
+export const BacklogIssuePanel = ({
+  issue,
+  index,
+  handleOpeningEditIssue,
+  handleViewingIssue
+}: Props): JSX.Element => {
   const currentProject = CurrentProjectModel.currentProjectValue;
   const { t } = useTranslation();
 
   const dropdownOptions = [
+    {
+      label: t('general.view'),
+      onClick: handleViewingIssue(issue.id),
+      iconName: 'view'
+    },
     {
       label: t('general.edit'),
       onClick: handleOpeningEditIssue(issue.id),

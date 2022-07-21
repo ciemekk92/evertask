@@ -6,22 +6,22 @@ import { shallowEqual, useSelector } from 'react-redux';
 import { CurrentProjectModel } from 'Models/CurrentProjectModel';
 import { Form, FormField } from 'Shared/Elements/Form';
 import { TextInput } from 'Shared/Elements/TextInput';
-import { TextArea } from 'Shared/Elements/TextArea';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
 import { SingleSelectDropdown } from 'Shared/Elements/SingleSelectDropdown';
-import { LoadingModalDialog } from 'Shared/LoadingModalDialog';
+import { ModalDialog } from 'Shared/ModalDialog';
+import { WysiwygEditor } from 'Shared/WysiwygEditor';
 import { ISSUE_PRIORITY, ISSUE_STATUS, ISSUE_TYPE, PROJECT_METHODOLOGIES } from 'Shared/constants';
-import { useLoading } from 'Hooks/useLoading';
 import { ApplicationState } from 'Stores/store';
-import { Api } from 'Utils/Api';
 import { ApiResponse } from 'Types/Response';
+import { Api } from 'Utils/Api';
+import { convertNullFieldsToEmptyString } from 'Utils/convertNullFieldsToEmptyString';
 import { ISSUE_DIALOG_MODES } from './fixtures';
 import {
   mapIssuePrioritiesToDropdownOptions,
   mapIssueTypesToDropdownOptions,
   mapSprintsToDropdownOptions
 } from './helpers';
-import { StyledDialogContent } from './IssueDialog.styled';
+import { StyledDialogContent, StyledHorizontalFieldContainer } from './IssueDialog.styled';
 
 interface Props {
   mode: ISSUE_DIALOG_MODES;
@@ -71,7 +71,6 @@ export const IssueDialog = ({
     (state: ApplicationState) => (state.project ? state.project.notCompletedSprints : []),
     shallowEqual
   );
-  const { isLoading, startLoading, stopLoading } = useLoading();
   const currentProject = CurrentProjectModel.currentProjectValue;
 
   React.useEffect(() => {
@@ -79,7 +78,12 @@ export const IssueDialog = ({
       Api.get(`issues/${issueId}`)
         .then((response: ApiResponse) => response.json())
         .then((data: IssueData) => {
-          const adjustedData = targetStatus ? { ...data, status: targetStatus } : data;
+          const dataWithRemovedNullValues: IssueData = convertNullFieldsToEmptyString(
+            data
+          ) as IssueData;
+          const adjustedData = targetStatus
+            ? { ...dataWithRemovedNullValues, status: targetStatus }
+            : dataWithRemovedNullValues;
 
           setInitialData({ ...adjustedData });
         });
@@ -91,9 +95,7 @@ export const IssueDialog = ({
       .min(6, t('issueDialog.validation.title.minLength'))
       .max(50, t('issueDialog.validation.title.maxLength'))
       .required(t('issueDialog.validation.title.required')),
-    description: Yup.string()
-      .max(2000, t('issueDialog.validation.description.maxLength'))
-      .required(t('issueDialog.validation.description.required')),
+    description: Yup.string().required(t('issueDialog.validation.description.required')),
     sprintId: Yup.string().nullable(),
     estimateStoryPoints: Yup.string().nullable(),
     estimateHours: Yup.string().nullable(),
@@ -116,23 +118,18 @@ export const IssueDialog = ({
   const onSubmit = async (values: IssueData) => {
     let result: Response;
 
-    startLoading();
-
     if (!issueId && mode === ISSUE_DIALOG_MODES.ADD) {
       result = await Api.post('issues', {
         ...values,
         projectId: currentProject.id
       });
     } else {
-      console.log({ values });
       result = await Api.put(`issues/${issueId}`, { ...values });
     }
 
     if ([201, 204].includes(result.status)) {
       handleSubmitting();
     }
-
-    stopLoading();
   };
 
   const handleEstimateChangeFactory =
@@ -170,12 +167,12 @@ export const IssueDialog = ({
         touched,
         handleSubmit,
         isValid,
+        initialValues,
         setFieldValue,
         values
       }: FormikProps<IssueData>) => (
         <Form name="issue" method="POST" onSubmit={handleSubmit}>
-          <LoadingModalDialog
-            isLoading={isLoading}
+          <ModalDialog
             header={t(`issueDialog.header.${mode.toLowerCase()}`)}
             footer={renderFooter(!isValid)}
           >
@@ -188,20 +185,22 @@ export const IssueDialog = ({
                   type="text"
                 />
               </FormField>
-              <FormField label={t('issueDialog.type')} name="type">
-                <SingleSelectDropdown
-                  options={mapIssueTypesToDropdownOptions()}
-                  value={values.type}
-                  onChange={(value: Nullable<string>) => setFieldValue('type', value)}
-                />
-              </FormField>
-              <FormField label={t('issueDialog.priority')} name="priority">
-                <SingleSelectDropdown
-                  options={mapIssuePrioritiesToDropdownOptions()}
-                  value={values.priority}
-                  onChange={(value: Nullable<string>) => setFieldValue('priority', value)}
-                />
-              </FormField>
+              <StyledHorizontalFieldContainer>
+                <FormField label={t('issueDialog.type')} name="type">
+                  <SingleSelectDropdown
+                    options={mapIssueTypesToDropdownOptions()}
+                    value={values.type}
+                    onChange={(value: Nullable<string>) => setFieldValue('type', value)}
+                  />
+                </FormField>
+                <FormField label={t('issueDialog.priority')} name="priority">
+                  <SingleSelectDropdown
+                    options={mapIssuePrioritiesToDropdownOptions()}
+                    value={values.priority}
+                    onChange={(value: Nullable<string>) => setFieldValue('priority', value)}
+                  />
+                </FormField>
+              </StyledHorizontalFieldContainer>
               {currentProject.methodology === PROJECT_METHODOLOGIES.AGILE && (
                 <FormField label={t('issueDialog.estimateStoryPoints')} name="estimateStoryPoints">
                   <TextInput
@@ -244,14 +243,15 @@ export const IssueDialog = ({
                 </FormField>
               )}
               <FormField label={t('issueDialog.description')} name="description" required>
-                <TextArea
-                  valid={!errors.description && touched.description}
-                  error={errors.description && touched.description}
-                  name="description"
+                <WysiwygEditor
+                  onChange={(value: string) => {
+                    setFieldValue('description', value);
+                  }}
+                  initialValue={initialValues.description}
                 />
               </FormField>
             </StyledDialogContent>
-          </LoadingModalDialog>
+          </ModalDialog>
         </Form>
       )}
     </Formik>

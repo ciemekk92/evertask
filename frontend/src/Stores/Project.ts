@@ -11,7 +11,6 @@ import { ActionTypes } from './constants';
 import { AppThunkAction } from './store';
 
 export interface ProjectState {
-  isLoading: boolean;
   organisationProjects: Project.ProjectEntity[];
   selectedProject: Project.ProjectEntity;
   activeMembers: User.UserEntity[];
@@ -50,29 +49,18 @@ interface SetProjectLastIssues {
   lastIssues: Issue.IssueEntity[];
 }
 
-interface SetProjectLoadingAction {
-  type: typeof ActionTypes.SET_PROJECT_LOADING;
-  isLoading: boolean;
-}
-
 export type ProjectActionTypes =
   | SetOrganisationProjectsAction
   | SetSelectedProjectAction
   | SetActiveProjectMembersAction
   | SetProjectSprints
   | SetProjectNotCompletedSprints
-  | SetProjectLastIssues
-  | SetProjectLoadingAction;
+  | SetProjectLastIssues;
 
 export const actionCreators = {
   getOrganisationsProjects:
     (): AppThunkAction<ProjectActionTypes> => async (dispatch, getState) => {
       const appState = getState();
-
-      dispatch({
-        type: ActionTypes.SET_PROJECT_LOADING,
-        isLoading: true
-      });
 
       if (appState && appState.project) {
         const result = await Api.get('projects/organisation');
@@ -105,11 +93,6 @@ export const actionCreators = {
     async (dispatch, getState) => {
       const appState = getState();
 
-      dispatch({
-        type: ActionTypes.SET_PROJECT_LOADING,
-        isLoading: true
-      });
-
       if (appState && appState.project) {
         const result = await Api.get(`projects/${id}`);
 
@@ -120,11 +103,6 @@ export const actionCreators = {
             type: ActionTypes.SET_SELECTED_PROJECT,
             selectedProject: json
           });
-        } else {
-          dispatch({
-            type: ActionTypes.SET_PROJECT_LOADING,
-            isLoading: false
-          });
         }
       }
     },
@@ -132,11 +110,6 @@ export const actionCreators = {
     (id: Id): AppThunkAction<ProjectActionTypes> =>
     async (dispatch, getState) => {
       const appState = getState();
-
-      dispatch({
-        type: ActionTypes.SET_PROJECT_LOADING,
-        isLoading: true
-      });
 
       if (appState && appState.project) {
         const result = await Api.get(`projects/${id}/active_members`);
@@ -148,11 +121,6 @@ export const actionCreators = {
             type: ActionTypes.SET_PROJECT_ACTIVE_MEMBERS,
             activeMembers: json
           });
-        } else {
-          dispatch({
-            type: ActionTypes.SET_PROJECT_LOADING,
-            isLoading: false
-          });
         }
       }
     },
@@ -160,11 +128,6 @@ export const actionCreators = {
     (id: Id): AppThunkAction<ProjectActionTypes> =>
     async (dispatch, getState) => {
       const appState = getState();
-
-      dispatch({
-        type: ActionTypes.SET_PROJECT_LOADING,
-        isLoading: true
-      });
 
       if (appState && appState.project) {
         const result = await Api.get(`projects/${id}/sprints`);
@@ -176,11 +139,6 @@ export const actionCreators = {
             type: ActionTypes.SET_PROJECT_SPRINTS,
             sprints: json
           });
-        } else {
-          dispatch({
-            type: ActionTypes.SET_PROJECT_LOADING,
-            isLoading: false
-          });
         }
       }
     },
@@ -188,11 +146,6 @@ export const actionCreators = {
     (id: Id): AppThunkAction<ProjectActionTypes> =>
     async (dispatch, getState) => {
       const appState = getState();
-
-      dispatch({
-        type: ActionTypes.SET_PROJECT_LOADING,
-        isLoading: true
-      });
 
       if (appState && appState.project) {
         const result = await Api.get(`projects/${id}/sprints_not_completed`);
@@ -204,11 +157,6 @@ export const actionCreators = {
             type: ActionTypes.SET_NOT_COMPLETED_SPRINTS,
             notCompletedSprints: json
           });
-        } else {
-          dispatch({
-            type: ActionTypes.SET_PROJECT_LOADING,
-            isLoading: false
-          });
         }
       }
     },
@@ -216,11 +164,6 @@ export const actionCreators = {
     (id: Id): AppThunkAction<ProjectActionTypes> =>
     async (dispatch, getState) => {
       const appState = getState();
-
-      dispatch({
-        type: ActionTypes.SET_PROJECT_LOADING,
-        isLoading: true
-      });
 
       if (appState && appState.project) {
         const result = await Api.get(`projects/${id}/last_issues`);
@@ -232,18 +175,12 @@ export const actionCreators = {
             type: ActionTypes.SET_PROJECT_LAST_ISSUES,
             lastIssues: json
           });
-        } else {
-          dispatch({
-            type: ActionTypes.SET_PROJECT_LOADING,
-            isLoading: false
-          });
         }
       }
     }
 };
 
 const initialState: ProjectState = {
-  isLoading: false,
   selectedProject: {
     name: '',
     description: '',
@@ -276,43 +213,32 @@ export const reducer: Reducer<ProjectState> = (
     case ActionTypes.SET_SELECTED_PROJECT:
       return {
         ...state,
-        isLoading: false,
         selectedProject: action.selectedProject
       };
     case ActionTypes.SET_ORGANISATION_PROJECTS:
       return {
         ...state,
-        isLoading: false,
         organisationProjects: action.organisationProjects
       };
     case ActionTypes.SET_PROJECT_ACTIVE_MEMBERS:
       return {
         ...state,
-        isLoading: false,
         activeMembers: action.activeMembers
       };
     case ActionTypes.SET_PROJECT_SPRINTS:
       return {
         ...state,
-        isLoading: false,
         sprints: action.sprints
       };
     case ActionTypes.SET_PROJECT_LAST_ISSUES:
       return {
         ...state,
-        isLoading: false,
         lastIssues: action.lastIssues
       };
     case ActionTypes.SET_NOT_COMPLETED_SPRINTS:
       return {
         ...state,
-        isLoading: false,
         notCompletedSprints: action.notCompletedSprints
-      };
-    case ActionTypes.SET_PROJECT_LOADING:
-      return {
-        ...state,
-        isLoading: action.isLoading
       };
     default:
       return state;

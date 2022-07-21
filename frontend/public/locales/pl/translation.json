@@ -32,6 +32,9 @@
     "setActive": "Aktywuj",
     "yes": "Tak",
     "no": "Nie",
+    "startSprint": "Rozpocznij sprint",
+    "endSprint": "Zakończ sprint",
+    "backlog": "Backlog",
     "notSet": "Nie ustawiono",
     "change": "Zmień",
     "code": "Kod autentykatora",
@@ -264,6 +267,13 @@
       }
     }
   },
+  "startEndSprintDialog": {
+    "title": {
+      "start": "Rozpocznij sprint",
+      "end": "Zakończ sprint"
+    },
+    "sprintIdToMoveTo": "Przenieś nieukończone zadania do"
+  },
   "sprintPage": {
     "infoTitle": "Informacje",
     "createdAt": "Stworzony: ",
@@ -286,6 +296,33 @@
     },
     "unassigned": {
       "title": "Nieprzypisane zadania"
+    }
+  },
+  "issuePage": {
+    "center": {
+      "title": "Szczegóły",
+      "type": "Typ",
+      "status": "Status",
+      "priority": "Priorytet",
+      "sprint": "Sprint",
+      "storyPoints": "Punkty story"
+    },
+    "right": {
+      "title": "Czas i osoby",
+      "assignee": "Osoba przypisana:",
+      "reporter": "Osoba raportująca:",
+      "unassigned": "Nie przypisano",
+      "createdAt": "Zgłoszono:",
+      "updatedAt": "Zaktualizowano:"
+    },
+    "timeTracking": {
+      "title": "Śledzenie czasu",
+      "estimatedHours": "Oszacowano:",
+      "totalReportedHours": "Zaraportowano:",
+      "remainingHours": "Pozostało:"
+    },
+    "description": {
+      "title": "Opis"
     }
   },
   "confirmationDialog": {

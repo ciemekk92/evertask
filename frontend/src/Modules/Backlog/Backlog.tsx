@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
-import { Container, useLoading } from 'Hooks/useLoading';
 import { DialogComponent, useDialog } from 'Hooks/useDialog';
 import { ISSUE_DIALOG_MODES, IssueDialog } from 'Modules/IssueDialog';
 import { ApplicationState } from 'Stores/store';
@@ -20,7 +20,7 @@ import { SprintSection, UnassignedIssues } from './components';
 export const Backlog = (): Nullable<JSX.Element> => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { startLoading, stopLoading, isLoading } = useLoading();
+  const navigate = useNavigate();
   const issueDialogConfig = useDialog<ISSUE_DIALOG_MODES>(ISSUE_DIALOG_MODES.ADD);
 
   const projectState: Nullable<ProjectState> = useSelector(
@@ -56,6 +56,12 @@ export const Backlog = (): Nullable<JSX.Element> => {
     return null;
   }
 
+  const handleViewingIssue =
+    (issueId: Id): VoidFunctionNoArgs =>
+    () => {
+      navigate(`/issue/${issueId}`);
+    };
+
   const handleRefreshingData = () => {
     if (currentProject.methodology === PROJECT_METHODOLOGIES.AGILE) {
       dispatch(projectActionCreators.getNotCompletedSprints(currentProject.id));
@@ -90,6 +96,7 @@ export const Backlog = (): Nullable<JSX.Element> => {
           sprint={sprint}
           handleOpeningAddIssue={handleOpeningAddIssue}
           handleOpeningEditIssue={handleOpeningEditIssue}
+          handleViewingIssue={handleViewingIssue}
         />
       ));
     }
@@ -98,10 +105,7 @@ export const Backlog = (): Nullable<JSX.Element> => {
   };
 
   const onDragEnd = async (result: DropResult): Promise<void> => {
-    startLoading();
-
     if (!result.destination || result.source.droppableId === result.destination.droppableId) {
-      stopLoading();
       return;
     }
 
@@ -116,12 +120,10 @@ export const Backlog = (): Nullable<JSX.Element> => {
       dispatch(projectActionCreators.getNotCompletedSprints(currentProject.id));
       dispatch(issueActionCreators.getIssuesUnassignedToSprint(currentProject.id));
     }
-    stopLoading();
   };
 
   return (
     <VerticalPageWrapper alignItems="unset">
-      <Container isLoading={isLoading || projectState.isLoading} />
       <Heading5>{t('backlog.title')}</Heading5>
       <StyledVerticalContainer>
         <DragDropContext onDragEnd={onDragEnd}>
@@ -130,6 +132,7 @@ export const Backlog = (): Nullable<JSX.Element> => {
             issues={issueState.issuesUnassignedToSprint}
             handleOpeningAddIssue={handleOpeningAddIssue}
             handleOpeningEditIssue={handleOpeningEditIssue}
+            handleViewingIssue={handleViewingIssue}
           />
         </DragDropContext>
       </StyledVerticalContainer>

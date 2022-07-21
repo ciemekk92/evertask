@@ -1,10 +1,10 @@
 import { ISSUE_PRIORITY, ISSUE_STATUS, ISSUE_TYPE } from 'Shared/constants';
+import { Project } from '../Project';
+import { Sprint } from '../Sprint';
+import { User } from '../User';
 
 declare namespace Issue {
-  export interface IssueEntity {
-    readonly id: Id;
-    readonly createdAt: string;
-    readonly updatedAt: string;
+  interface IssueBase extends AuditedEntity {
     key: number;
     title: string;
     description: string;
@@ -13,12 +13,22 @@ declare namespace Issue {
     pullRequestUrl: string;
     status: ISSUE_STATUS;
     type: ISSUE_TYPE;
-    priority: ISSUE_PRIORITY;
-    projectId: Id;
     parentId: Id;
+    priority: ISSUE_PRIORITY;
+    subtasks: IssueEntity[];
+  }
+
+  export interface IssueEntity extends IssueBase {
+    projectId: Id;
     assigneeId: Id;
     reporterId: Id;
     sprintId: Id;
-    subtasks: Issue.IssueEntity[];
+  }
+
+  export interface IssueFullEntity extends IssueBase {
+    project: Project.ProjectInfoEntity;
+    sprint: Nullable<Sprint.SprintInfoEntity>;
+    assignee: Nullable<User.UserBasicEntity>;
+    reporter: User.UserBasicEntity;
   }
 }

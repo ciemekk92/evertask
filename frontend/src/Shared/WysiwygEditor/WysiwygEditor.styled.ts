@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const StyledEditorWrapper = styled.div`
-  width: 95%;
+  width: 100%;
 
   & .rdw-editor-wrapper {
     background: ${(props) => props.theme.surfaceSecondary};
@@ -125,10 +125,14 @@ export const StyledEditorWrapper = styled.div`
     }
 
     & .rdw-editor-main {
-      height: 30rem;
+      height: 25rem;
       padding: 1rem;
       border-top: 1px solid ${(props) => props.theme.primary};
       font-size: 1.6rem;
+
+      & .DraftEditor-editorContainer {
+        height: revert;
+      }
     }
 
     & .rdw-dropdown-wrapper {

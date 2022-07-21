@@ -12,7 +12,7 @@ export const convertNullFieldsToEmptyString = (input: NullableCandidate): Conver
   for (const [key, value] of converted) {
     if (input[key] === null) {
       converted.set(key, '');
-    } else if (typeof input[key] === 'object' && !Array.isArray(input)) {
+    } else if (typeof input[key] === 'object' && !Array.isArray(input[key])) {
       converted.set(key, convertNullFieldsToEmptyString(input[key]));
     } else {
       converted.set(key, value);

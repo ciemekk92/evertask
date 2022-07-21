@@ -21,6 +21,7 @@ public class HtmlSanitizer {
             .addAttributes("em", CLASS_ATTRIBUTE)
             .addAttributes("i", CLASS_ATTRIBUTE)
             .addAttributes("img", CLASS_ATTRIBUTE)
+            .addAttributes("img", "alt")
             .addAttributes("li", CLASS_ATTRIBUTE)
             .addAttributes("ol", CLASS_ATTRIBUTE)
             .addAttributes("p", CLASS_ATTRIBUTE)
@@ -33,7 +34,8 @@ public class HtmlSanitizer {
             .addAttributes("sub", CLASS_ATTRIBUTE)
             .addAttributes("sup", CLASS_ATTRIBUTE)
             .addAttributes("u", CLASS_ATTRIBUTE)
-            .addAttributes("ul", CLASS_ATTRIBUTE);
+            .addAttributes("ul", CLASS_ATTRIBUTE)
+            .addProtocols("img", "src", "http", "https", "data");
 
     /**
      * <p>Method allowing to sanitize HTML input from malicious code, to prevent XSS attacks.</p>

@@ -95,9 +95,7 @@ export const IssueDialog = ({
       .min(6, t('issueDialog.validation.title.minLength'))
       .max(50, t('issueDialog.validation.title.maxLength'))
       .required(t('issueDialog.validation.title.required')),
-    description: Yup.string()
-      .max(2000, t('issueDialog.validation.description.maxLength'))
-      .required(t('issueDialog.validation.description.required')),
+    description: Yup.string().required(t('issueDialog.validation.description.required')),
     sprintId: Yup.string().nullable(),
     estimateStoryPoints: Yup.string().nullable(),
     estimateHours: Yup.string().nullable(),

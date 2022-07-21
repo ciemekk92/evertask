@@ -10,6 +10,7 @@ import com.predu.evertask.repository.IssueRepository;
 import com.predu.evertask.repository.ProjectRepository;
 import com.predu.evertask.repository.SprintRepository;
 import com.predu.evertask.repository.UserRepository;
+import com.predu.evertask.util.HtmlSanitizer;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -43,6 +44,7 @@ public abstract class IssueMapper {
     EntityManager entityManager;
 
     @Mapping(target = "parentIssue", ignore = true)
+    @Mapping(target = "description", ignore = true)
     @Mapping(source = "assigneeId", target = "assignee.id")
     @Mapping(source = "sprintId", target = "sprint.id")
     @Mapping(source = "projectId", target = "project.id")
@@ -58,6 +60,7 @@ public abstract class IssueMapper {
 
     public abstract IssueFullDto issueToIssueFullDto(Issue issue);
 
+    @Mapping(target = "description", ignore = true)
     @Mapping(source = "sprintId", target = "sprint.id")
     public abstract Issue update(@MappingTarget Issue issue, IssueUpdateDto issueUpdateDto);
 
@@ -70,6 +73,10 @@ public abstract class IssueMapper {
                             .map(this::issueToIssueSaveDto)
                             .collect(Collectors.toSet())
             );
+        }
+
+        if (issueSaveDto.getDescription() != null) {
+            issue.setDescription(HtmlSanitizer.sanitize(issueSaveDto.getDescription()));
         }
 
         if (issueSaveDto.getSprintId() == null) {
@@ -102,6 +109,11 @@ public abstract class IssueMapper {
 
     @AfterMapping
     public void afterUpdate(IssueUpdateDto source, @MappingTarget Issue target) {
+
+        if (source.getDescription() != null) {
+            target.setDescription(HtmlSanitizer.sanitize(source.getDescription()));
+        }
+
         if (source.getSprintId() == null) {
             target.setSprint(null);
         }

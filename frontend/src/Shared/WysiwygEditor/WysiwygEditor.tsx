@@ -31,7 +31,7 @@ export const WysiwygEditor = ({ initialValue, onChange }: Props): JSX.Element =>
     }
   }, [initialValue]);
 
-  const onEditorStateChange = (newEditorState: EditorState) => {
+  const onEditorStateChange = (newEditorState: EditorState): void => {
     setEditorState(newEditorState);
 
     if (onChange) {

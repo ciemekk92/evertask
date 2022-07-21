@@ -40,7 +40,14 @@
     "code": "Authenticator code",
     "storyPoints": "Story points",
     "issueStatus": "Issue status",
-    "issuePriority": "Issue priority",
+    "issuePriorityTitle": "Issue priority",
+    "issuePriority": {
+      "ASAP": "ASAP",
+      "VERY_HIGH": "Very high",
+      "HIGH": "High",
+      "MEDIUM": "Medium",
+      "LOW": "Low"
+    },
     "issueType": {
       "BUG": "Bug",
       "EPIC": "Epic",

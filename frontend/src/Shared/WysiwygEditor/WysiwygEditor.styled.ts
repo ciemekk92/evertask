@@ -84,47 +84,58 @@ export const StyledEditorWrapper = styled.div`
         display: none;
       }
 
-      &[title='Bold']::after {
+      &[title='Bold']::after,
+      &[title='Pogrubienie']::after {
         content: '\\F032';
       }
 
-      &[title='Italic']::after {
+      &[title='Italic']::after,
+      &[title='Kursywa']::after {
         content: '\\F033';
       }
 
-      &[title='Underline']::after {
+      &[title='Underline']::after,
+      &[title='Podkreślenie']::after {
         content: '\\F0CD';
       }
 
-      &[title='Strikethrough']::after {
+      &[title='Strikethrough']::after,
+      &[title='Przekreślenie']::after {
         content: '\\F0CC';
       }
 
-      &[title='Unordered']::after {
+      &[title='Unordered']::after,
+      &[title='Lista nieuporządkowana']::after {
         content: '\\F0CA';
       }
 
-      &[title='Ordered']::after {
+      &[title='Ordered']::after,
+      &[title='Lista uporządkowana']::after {
         content: '\\F0CB';
       }
 
-      &[title='Left']::after {
+      &[title='Left']::after,
+      &[title='Do lewej']::after {
         content: '\\F036';
       }
 
-      &[title='Center']::after {
+      &[title='Center']::after,
+      &[title='Do środka']::after {
         content: '\\F037';
       }
 
-      &[title='Right']::after {
+      &[title='Right']::after,
+      &[title='Do prawej']::after {
         content: '\\F038';
       }
 
-      &[title='Justify']::after {
+      &[title='Justify']::after,
+      &[title='Wyjustuj']::after {
         content: '\\F039';
       }
 
-      &[title='Image']::after {
+      &[title='Image']::after,
+      &[title='Obrazek']::after {
         content: '\\F03E';
       }
     }
@@ -149,6 +160,12 @@ export const StyledEditorWrapper = styled.div`
       background: ${(props) => props.theme.surfaceTertiary};
       border: none;
       height: 26px;
+      transition: all 0.4s ease;
+
+      &:hover {
+        background: ${(props) => props.theme.primary};
+        box-shadow: revert;
+      }
 
       & .rdw-dropdown-carettoclose,
       & .rdw-dropdown-carettoopen {
@@ -158,6 +175,12 @@ export const StyledEditorWrapper = styled.div`
 
       & .rdw-dropdown-optionwrapper {
         overflow-y: unset;
+        border: none;
+        box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.4);
+
+        &:hover {
+          box-shadow: revert;
+        }
 
         & li {
           transition: all 0.4s ease;

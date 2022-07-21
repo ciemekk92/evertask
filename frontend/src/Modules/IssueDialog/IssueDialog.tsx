@@ -195,7 +195,7 @@ export const IssueDialog = ({
                 </FormField>
                 <FormField label={t('issueDialog.priority')} name="priority">
                   <SingleSelectDropdown
-                    options={mapIssuePrioritiesToDropdownOptions()}
+                    options={mapIssuePrioritiesToDropdownOptions(t)}
                     value={values.priority}
                     onChange={(value: Nullable<string>) => setFieldValue('priority', value)}
                   />

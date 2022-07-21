@@ -13,7 +13,7 @@ export const PriorityBadge = ({ priority }: Props): JSX.Element => {
   const priorityLabel: string = t(`priorityBadge.label.${priority}`);
 
   return (
-    <StyledPriorityBadge title={t('general.issuePriority')} priority={priority}>
+    <StyledPriorityBadge title={t('general.issuePriorityTitle')} priority={priority}>
       <p>{priorityLabel}</p>
     </StyledPriorityBadge>
   );

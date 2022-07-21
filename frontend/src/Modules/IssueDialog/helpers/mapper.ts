@@ -1,6 +1,7 @@
+import { TFunction } from 'react-i18next';
 import { ISSUE_PRIORITY, ISSUE_TYPE } from 'Shared/constants';
-import { capitalizeFirstLetter } from 'Utils/capitalizeFirstLetter';
 import { Sprint } from 'Types/Sprint';
+import { capitalizeFirstLetter } from 'Utils/capitalizeFirstLetter';
 
 export const mapIssueTypesToDropdownOptions = (): DropdownOption[] => {
   return Object.values(ISSUE_TYPE).map((type: string) => ({
@@ -9,10 +10,12 @@ export const mapIssueTypesToDropdownOptions = (): DropdownOption[] => {
   }));
 };
 
-export const mapIssuePrioritiesToDropdownOptions = (): DropdownOption[] => {
+export const mapIssuePrioritiesToDropdownOptions = (
+  t: TFunction<'translation'>
+): DropdownOption[] => {
   return Object.values(ISSUE_PRIORITY).map((priority: string) => ({
     value: priority,
-    label: capitalizeFirstLetter(priority.replaceAll('_', ' '))
+    label: t(`general.issuePriority.${priority}`)
   }));
 };
 

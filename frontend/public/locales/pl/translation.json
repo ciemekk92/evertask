@@ -40,7 +40,14 @@
     "code": "Kod autentykatora",
     "storyPoints": "Punkty story",
     "issueStatus": "Status zadania",
-    "issuePriority": "Priorytet zadania",
+    "issuePriorityTitle": "Priorytet zadania",
+    "issuePriority": {
+      "ASAP": "ASAP",
+      "VERY_HIGH": "Bardzo wysoki",
+      "HIGH": "Wysoki",
+      "MEDIUM": "Średni",
+      "LOW": "Niski"
+    },
     "issueType": {
       "BUG": "Bug",
       "EPIC": "Epic",

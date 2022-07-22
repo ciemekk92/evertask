@@ -3,7 +3,9 @@ package com.predu.evertask.controller;
 import com.predu.evertask.annotation.IsAllowedToIssue;
 import com.predu.evertask.config.security.CurrentUserId;
 import com.predu.evertask.domain.dto.issue.*;
+import com.predu.evertask.domain.dto.issuecomment.IssueCommentSaveDto;
 import com.predu.evertask.domain.model.User;
+import com.predu.evertask.service.IssueCommentService;
 import com.predu.evertask.service.IssueService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ import java.util.UUID;
 public class IssueController {
 
     private final IssueService issueService;
+    private final IssueCommentService issueCommentService;
 
     @GetMapping
     public ResponseEntity<List<IssueDto>> getAllIssues() {
@@ -35,6 +38,15 @@ public class IssueController {
         return issueService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @IsAllowedToIssue
+    @PostMapping("/{id}/comment")
+    public ResponseEntity<Void> addComment(@PathVariable UUID id, @RequestBody @Valid IssueCommentSaveDto toSave) {
+
+        issueCommentService.create(toSave, id);
+
+        return ResponseEntity.ok().build();
     }
 
     @IsAllowedToIssue

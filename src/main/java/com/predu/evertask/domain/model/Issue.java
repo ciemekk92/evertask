@@ -12,8 +12,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @TypeDef(name = "enum_pgsql", typeClass = EnumTypePgSql.class)
 
@@ -72,8 +72,11 @@ public class Issue extends BaseEntity {
     private Sprint sprint;
 
     @OneToMany(mappedBy = "issue")
-    private Set<IssueWorkLog> workLogs;
+    private List<IssueWorkLog> workLogs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "issue")
+    private List<IssueComment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "parentIssue")
-    private Set<Issue> subtasks = new HashSet<>();
+    private List<Issue> subtasks = new ArrayList<>();
 }

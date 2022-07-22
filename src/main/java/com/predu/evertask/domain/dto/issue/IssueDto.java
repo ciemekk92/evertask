@@ -5,8 +5,8 @@ import com.predu.evertask.domain.dto.user.UserIssueDto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,5 +26,5 @@ public class IssueDto extends BaseDto {
     private UserIssueDto assignee;
     private UserIssueDto reporter;
     private String sprintId;
-    private Set<IssueDto> subtasks = new HashSet<>();
+    private List<IssueDto> subtasks = new ArrayList<>();
 }

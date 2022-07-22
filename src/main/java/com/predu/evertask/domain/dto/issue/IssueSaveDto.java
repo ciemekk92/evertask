@@ -6,8 +6,8 @@ import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -36,5 +36,5 @@ public class IssueSaveDto extends BaseDto {
     private String assigneeId;
     private String sprintId;
 
-    private Set<IssueSaveDto> subtasks = new HashSet<>();
+    private List<IssueSaveDto> subtasks = new ArrayList<>();
 }

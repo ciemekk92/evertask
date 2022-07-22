@@ -6,8 +6,8 @@ import com.predu.evertask.domain.enums.IssueStatus;
 import com.predu.evertask.domain.enums.IssueType;
 import lombok.Data;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class IssueUpdateDto {
@@ -30,5 +30,5 @@ public class IssueUpdateDto {
     private String assigneeId;
     private String reporterId;
     private String sprintId;
-    private Set<IssueSaveDto> subtasks = new HashSet<>();
+    private List<IssueSaveDto> subtasks = new ArrayList<>();
 }

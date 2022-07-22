@@ -5,6 +5,7 @@ import com.predu.evertask.domain.dto.issue.IssueDto;
 import com.predu.evertask.domain.dto.issue.IssueFullDto;
 import com.predu.evertask.domain.dto.issue.IssueSaveDto;
 import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
+import com.predu.evertask.domain.dto.issuecomment.IssueCommentDto;
 import com.predu.evertask.domain.model.Issue;
 import com.predu.evertask.repository.IssueRepository;
 import com.predu.evertask.repository.ProjectRepository;
@@ -16,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Mapper(uses = {UUIDMapper.class, ImageMapper.class},
         componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -36,6 +37,9 @@ public abstract class IssueMapper {
 
     @Autowired
     private UserViewMapper userViewMapper;
+
+    @Autowired
+    private IssueCommentMapper issueCommentMapper;
 
     @Autowired
     private UUIDMapper uuidMapper;
@@ -58,6 +62,7 @@ public abstract class IssueMapper {
     @Mapping(target = "assignee", ignore = true)
     public abstract IssueDto issueToIssueDto(Issue issue);
 
+    @Mapping(target = "comments", ignore = true)
     public abstract IssueFullDto issueToIssueFullDto(Issue issue);
 
     @Mapping(target = "description", ignore = true)
@@ -66,12 +71,13 @@ public abstract class IssueMapper {
 
     @AfterMapping
     public void afterIssueSaveDtoToIssue(IssueSaveDto issueSaveDto, @MappingTarget Issue issue) {
+
         if (!issueSaveDto.getSubtasks().isEmpty()) {
             issueSaveDto.setSubtasks(
                     issue.getSubtasks()
                             .stream()
                             .map(this::issueToIssueSaveDto)
-                            .collect(Collectors.toSet())
+                            .toList()
             );
         }
 
@@ -97,7 +103,21 @@ public abstract class IssueMapper {
     }
 
     @AfterMapping
+    public void afterIssueToIssueFullDto(Issue source, @MappingTarget IssueFullDto target) {
+
+        if (source.getComments() != null) {
+            List<IssueCommentDto> comments = source.getComments()
+                    .stream()
+                    .map(issueCommentMapper::issueCommentToIssueCommentDto)
+                    .toList();
+
+            target.setComments(comments);
+        }
+    }
+
+    @AfterMapping
     public void afterIssueToIssueDto(Issue source, @MappingTarget IssueDto target) {
+
         if (source.getAssignee() != null) {
             target.setAssignee(userViewMapper.toUserIssueDto(source.getAssignee()));
         }

@@ -41,7 +41,7 @@ export const StyledLabelContainer = styled.div`
   justify-content: space-between;
 `;
 
-export const StyledFormLabel = styled.p`
+export const StyledFormLabel = styled.strong`
   font-size: 1.6rem;
   min-width: 18rem;
 `;

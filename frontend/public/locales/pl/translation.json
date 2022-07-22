@@ -317,11 +317,12 @@
   "issuePage": {
     "center": {
       "title": "Szczegóły",
-      "type": "Typ",
-      "status": "Status",
-      "priority": "Priorytet",
-      "sprint": "Sprint",
-      "storyPoints": "Punkty story"
+      "type": "Typ:",
+      "status": "Status:",
+      "priority": "Priorytet:",
+      "sprint": "Sprint:",
+      "storyPoints": "Punkty story:",
+      "pullRequestUrl": "Adres pull requesta:"
     },
     "right": {
       "title": "Czas i osoby",

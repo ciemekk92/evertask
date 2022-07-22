@@ -317,11 +317,12 @@
   "issuePage": {
     "center": {
       "title": "Issue details",
-      "type": "Type",
-      "status": "Status",
-      "priority": "Priority",
-      "sprint": "Sprint",
-      "storyPoints": "Story points"
+      "type": "Type:",
+      "status": "Status:",
+      "priority": "Priority:",
+      "sprint": "Sprint:",
+      "storyPoints": "Story points:",
+      "pullRequestUrl": "Pull request URL"
     },
     "right": {
       "title": "People and time",

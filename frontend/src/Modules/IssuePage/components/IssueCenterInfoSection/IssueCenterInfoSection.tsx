@@ -54,6 +54,14 @@ export const IssueCenterInfoSection = ({ issue }: Props): JSX.Element => {
               <StoryPointBadge value={issue.estimateStoryPoints} />
             </StyledField>
           )}
+          {issue.pullRequestUrl && (
+            <StyledField>
+              <StyledFieldLabel>{t('issuePage.center.pullRequestUrl')}</StyledFieldLabel>
+              <a href={issue.pullRequestUrl} target="_blank" rel="noreferrer">
+                {issue.pullRequestUrl}
+              </a>
+            </StyledField>
+          )}
         </StyledColumn>
       </StyledColumnContainer>
     </StyledSectionWrapper>

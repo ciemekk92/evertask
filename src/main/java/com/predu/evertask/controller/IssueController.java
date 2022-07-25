@@ -4,10 +4,13 @@ import com.predu.evertask.annotation.IsAllowedToIssue;
 import com.predu.evertask.config.security.CurrentUserId;
 import com.predu.evertask.domain.dto.issue.*;
 import com.predu.evertask.domain.dto.issuecomment.IssueCommentSaveDto;
+import com.predu.evertask.domain.dto.issuecomment.IssueCommentsPaginationDto;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.service.IssueCommentService;
 import com.predu.evertask.service.IssueService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -41,7 +44,18 @@ public class IssueController {
     }
 
     @IsAllowedToIssue
-    @PostMapping("/{id}/comment")
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<IssueCommentsPaginationDto> getIssueComments(@PathVariable UUID id,
+                                                                       @RequestParam(defaultValue = "0") int page,
+                                                                       @RequestParam(defaultValue = "10") int size) {
+
+        Pageable paging = PageRequest.of(page, size);
+
+        return ResponseEntity.ok(issueCommentService.findAll(id, paging));
+    }
+
+    @IsAllowedToIssue
+    @PostMapping("/{id}/comments")
     public ResponseEntity<Void> addComment(@PathVariable UUID id, @RequestBody @Valid IssueCommentSaveDto toSave) {
 
         issueCommentService.create(toSave, id);

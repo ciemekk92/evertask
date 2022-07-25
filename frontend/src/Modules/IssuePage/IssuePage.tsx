@@ -10,9 +10,9 @@ import {
   IssueDescriptionSection,
   IssueCommentsSection,
   IssueRightInfoSection,
-  IssueTimeTrackingSection,
-  TimeTrackingData
+  IssueTimeTrackingSection
 } from './components';
+import { TimeTrackingData, CommentsData } from './fixtures';
 import {
   StyledCenterSectionContainer,
   StyledHeaderWrapper,
@@ -23,6 +23,7 @@ export const IssuePage = (): Nullable<JSX.Element> => {
   const params = useParams<RouterParams>();
   const [issueData, setIssueData] = React.useState<Nullable<Issue.IssueFullEntity>>(null);
   const [timeTracking, setTimeTracking] = React.useState<Nullable<TimeTrackingData>>(null);
+  const [comments, setComments] = React.useState<Nullable<CommentsData>>(null);
 
   React.useEffect(() => {
     Api.get(`issues/${params.id}/full`)
@@ -34,10 +35,14 @@ export const IssuePage = (): Nullable<JSX.Element> => {
 
   React.useEffect(() => {
     if (issueData) {
-      Api.get(`issues/${issueData.id}/time_tracking`)
-        .then((response: ApiResponse) => response.json())
-        .then((data: TimeTrackingData) => {
-          setTimeTracking(data);
+      const timeTrackingPromise = Api.get(`issues/${issueData.id}/time_tracking`);
+      const commentsPromise = Api.get(`issues/${issueData.id}/comments`);
+
+      Promise.all([timeTrackingPromise, commentsPromise])
+        .then((values) => Promise.all(values.map((value) => value.json())))
+        .then(([timeTrackingData, commentsData]) => {
+          setTimeTracking(timeTrackingData);
+          setComments(commentsData);
         });
     }
   }, [issueData]);
@@ -46,6 +51,15 @@ export const IssuePage = (): Nullable<JSX.Element> => {
 
   const renderTitle = (): string => {
     return `[${issueData.project.code}-${issueData.key}] ${issueData.title}`;
+  };
+
+  const handleRefreshingComments = async (): Promise<void> => {
+    const result = await Api.get(`issues/${issueData.id}/comments`);
+
+    if (result.status === 200) {
+      const json = await result.json();
+      setComments(json);
+    }
   };
 
   return (
@@ -57,7 +71,13 @@ export const IssuePage = (): Nullable<JSX.Element> => {
         <StyledCenterSectionContainer>
           <IssueCenterInfoSection issue={issueData} />
           <IssueDescriptionSection description={issueData.description} />
-          <IssueCommentsSection />
+          {comments && (
+            <IssueCommentsSection
+              issueComments={comments}
+              issueId={issueData.id}
+              handleRefreshingComments={handleRefreshingComments}
+            />
+          )}
         </StyledCenterSectionContainer>
         <StyledRightSectionContainer>
           <IssueRightInfoSection issue={issueData} />

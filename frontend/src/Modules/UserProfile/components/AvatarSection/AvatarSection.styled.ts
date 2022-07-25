@@ -25,6 +25,7 @@ export const StyledAvatarSettingsContainer = styled.div`
 
 export const StyledAvatarDisclaimer = styled.p`
   font-size: 1.4rem;
+  text-align: center;
 `;
 
 export const StyledVerticalContainer = styled.div`

@@ -14,7 +14,7 @@ export const StyledColumnContainer = styled.div`
   border-radius: 0.3rem;
   background-color: ${(props) => props.theme.surface};
   min-height: 82vh;
-  width: 100%;
+  width: calc(98% / 7);
 `;
 
 export const StyledDroppableWrapper = styled.div`

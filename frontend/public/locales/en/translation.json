@@ -340,6 +340,11 @@
     },
     "description": {
       "title": "Description"
+    },
+    "comments": {
+      "title": "Comments",
+      "noComments": "No comments yet",
+      "addComment": "Add comment"
     }
   },
   "confirmationDialog": {

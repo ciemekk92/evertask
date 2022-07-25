@@ -62,7 +62,6 @@ public abstract class IssueMapper {
     @Mapping(target = "assignee", ignore = true)
     public abstract IssueDto issueToIssueDto(Issue issue);
 
-    @Mapping(target = "comments", ignore = true)
     public abstract IssueFullDto issueToIssueFullDto(Issue issue);
 
     @Mapping(target = "description", ignore = true)
@@ -99,19 +98,6 @@ public abstract class IssueMapper {
                     .orElse(null));
         } else {
             issue.setAssignee(null);
-        }
-    }
-
-    @AfterMapping
-    public void afterIssueToIssueFullDto(Issue source, @MappingTarget IssueFullDto target) {
-
-        if (source.getComments() != null) {
-            List<IssueCommentDto> comments = source.getComments()
-                    .stream()
-                    .map(issueCommentMapper::issueCommentToIssueCommentDto)
-                    .toList();
-
-            target.setComments(comments);
         }
     }
 

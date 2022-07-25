@@ -25,7 +25,7 @@ public class IssueCommentService {
     private final IssueCommentRepository issueCommentRepository;
     private final IssueRepository issueRepository;
 
-    public IssueCommentsPaginationDto findAll(UUID issueId, Pageable paging) {
+    public IssueCommentsPaginationDto findAllWithNoParent(UUID issueId, Pageable paging) {
 
         Page<IssueComment> pagedComments = issueCommentRepository.findAllByIssueIdAndParentIsNullOrderByCreatedAtDesc(issueId, paging);
         List<IssueCommentDto> comments = pagedComments

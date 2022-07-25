@@ -19,7 +19,7 @@ import { isEmpty } from 'Utils/isEmpty';
 import { BoardColumn } from './components';
 import {
   StyledDragDropContextContainer,
-  StyledListGrid,
+  StyledListContainer,
   StyledMessageContainer
 } from './Board.styled';
 
@@ -109,7 +109,7 @@ export const Board = () => {
     return (
       <StyledDragDropContextContainer>
         <DragDropContext onDragEnd={onDragEnd}>
-          <StyledListGrid>
+          <StyledListContainer>
             {Object.values(ISSUE_STATUS).map((status: ISSUE_STATUS) => (
               <BoardColumn
                 handleViewingIssue={handleViewingIssue}
@@ -118,7 +118,7 @@ export const Board = () => {
                 elements={currentIssues[status]}
               />
             ))}
-          </StyledListGrid>
+          </StyledListContainer>
         </DragDropContext>
       </StyledDragDropContextContainer>
     );
@@ -132,7 +132,7 @@ export const Board = () => {
     return (
       <StyledDragDropContextContainer>
         <DragDropContext onDragEnd={onDragEnd}>
-          <StyledListGrid>
+          <StyledListContainer>
             {Object.values(ISSUE_STATUS).map((status: ISSUE_STATUS) => (
               <BoardColumn
                 handleViewingIssue={handleViewingIssue}
@@ -141,7 +141,7 @@ export const Board = () => {
                 elements={currentIssues[status]}
               />
             ))}
-          </StyledListGrid>
+          </StyledListContainer>
         </DragDropContext>
       </StyledDragDropContextContainer>
     );

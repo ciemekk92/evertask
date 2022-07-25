@@ -51,7 +51,7 @@ public class IssueController {
 
         Pageable paging = PageRequest.of(page, size);
 
-        return ResponseEntity.ok(issueCommentService.findAll(id, paging));
+        return ResponseEntity.ok(issueCommentService.findAllWithNoParent(id, paging));
     }
 
     @IsAllowedToIssue

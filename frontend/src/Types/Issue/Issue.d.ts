@@ -15,7 +15,13 @@ declare namespace Issue {
     type: ISSUE_TYPE;
     parentId: Id;
     priority: ISSUE_PRIORITY;
-    subtasks: IssueEntity[];
+    subtasks: Issue.IssueEntity[];
+  }
+
+  interface IssueComment extends AuditedEntity {
+    createdBy: User.UserBasicEntity;
+    content: string;
+    replies: Issue.IssueComment[];
   }
 
   export interface IssueEntity extends IssueBase {

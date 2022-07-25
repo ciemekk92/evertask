@@ -30,5 +30,4 @@ public class IssueFullDto extends BaseDto {
     private UserIssueDto reporter;
     private SprintInfoDto sprint;
     private List<IssueDto> subtasks = new ArrayList<>();
-    private List<IssueCommentDto> comments = new ArrayList<>();
 }

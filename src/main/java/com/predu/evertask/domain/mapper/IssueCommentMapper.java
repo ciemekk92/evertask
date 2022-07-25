@@ -8,6 +8,7 @@ import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.IssueCommentRepository;
 import com.predu.evertask.repository.IssueRepository;
 import com.predu.evertask.repository.UserRepository;
+import com.predu.evertask.util.HtmlSanitizer;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -46,6 +47,11 @@ public abstract class IssueCommentMapper {
 
     @AfterMapping
     public void afterIssueCommentSaveDtoToIssueComment(IssueCommentSaveDto source, @MappingTarget IssueComment target) {
+
+        if (source.getContent() != null) {
+
+            target.setContent(HtmlSanitizer.sanitize(source.getContent()));
+        }
 
         if (source.getParentId() != null) {
 

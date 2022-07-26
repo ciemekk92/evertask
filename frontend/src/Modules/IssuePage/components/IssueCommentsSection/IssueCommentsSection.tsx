@@ -18,8 +18,8 @@ interface Props {
 export const IssueCommentsSection = ({
                                        issueComments,
                                        issueId,
-  handleRefreshingComments
-}: Props): JSX.Element => {
+                                       handleRefreshingComments
+                                     }: Props): JSX.Element => {
   const {t} = useTranslation();
   const [isAddingComment, setIsAddingComment] = React.useState<boolean>(false);
 

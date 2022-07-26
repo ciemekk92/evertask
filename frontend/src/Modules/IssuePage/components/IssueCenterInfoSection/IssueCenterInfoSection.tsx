@@ -2,14 +2,15 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyledSectionHeaderRow, StyledSectionWrapper } from 'Shared/PageWrappers';
 import { Heading6 } from 'Shared/Typography';
+import { IssueTypeIcon } from 'Shared/IssueTypeIcon';
+import { PriorityBadge } from 'Shared/PriorityBadge';
+import { StatusBadge } from 'Shared/StatusBadge';
+import { StoryPointBadge } from 'Shared/StoryPointBadge';
+import { PROJECT_METHODOLOGIES } from 'Shared/constants';
+import { StyledFlexContainerSpaceBetween } from 'Shared/SharedStyles.styled';
+import { Issue } from 'Types/Issue';
 import { StyledField, StyledFieldLabel } from '../Shared.styled';
-import { StyledColumn, StyledColumnContainer } from './IssueCenterInfoSection.styled';
-import { IssueTypeIcon } from '../../../../Shared/IssueTypeIcon';
-import { Issue } from '../../../../Types/Issue';
-import { StatusBadge } from '../../../../Shared/StatusBadge';
-import { PriorityBadge } from '../../../../Shared/PriorityBadge';
-import { PROJECT_METHODOLOGIES } from '../../../../Shared/constants';
-import { StoryPointBadge } from '../../../../Shared/StoryPointBadge';
+import { StyledColumn } from './IssueCenterInfoSection.styled';
 
 interface Props {
   issue: Issue.IssueFullEntity;
@@ -23,7 +24,7 @@ export const IssueCenterInfoSection = ({ issue }: Props): JSX.Element => {
       <StyledSectionHeaderRow>
         <Heading6>{t('issuePage.center.title')}</Heading6>
       </StyledSectionHeaderRow>
-      <StyledColumnContainer>
+      <StyledFlexContainerSpaceBetween>
         <StyledColumn>
           <StyledField>
             <StyledFieldLabel>{t('issuePage.center.type')}</StyledFieldLabel>
@@ -63,7 +64,7 @@ export const IssueCenterInfoSection = ({ issue }: Props): JSX.Element => {
             </StyledField>
           )}
         </StyledColumn>
-      </StyledColumnContainer>
+      </StyledFlexContainerSpaceBetween>
     </StyledSectionWrapper>
   );
 };

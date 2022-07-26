@@ -1,12 +1,6 @@
 import styled from 'styled-components';
+import { StyledFlexColumnContainer } from 'Shared/SharedStyles.styled';
 
-export const StyledColumnContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-export const StyledColumn = styled.div`
+export const StyledColumn = styled(StyledFlexColumnContainer)`
   width: 40%;
-  display: flex;
-  flex-direction: column;
 `;

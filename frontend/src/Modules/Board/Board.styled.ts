@@ -11,8 +11,3 @@ export const StyledDragDropContextContainer = styled.div`
   padding: 2rem;
   border-radius: 0.3rem;
 `;
-
-export const StyledListContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;

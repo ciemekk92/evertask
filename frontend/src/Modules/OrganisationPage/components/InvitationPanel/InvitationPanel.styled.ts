@@ -1,9 +1,11 @@
 import styled from 'styled-components';
+import {
+  StyledFlexColumnContainer,
+  StyledFlexContainerSpaceBetween
+} from 'Shared/SharedStyles.styled';
 
-export const StyledPanelContainer = styled.div`
-  display: flex;
+export const StyledPanelContainer = styled(StyledFlexContainerSpaceBetween)`
   padding: 0.5rem 1rem;
-  justify-content: space-between;
   background-color: ${(props) => props.theme.surfaceSecondary};
   border-radius: 0.3rem;
 
@@ -12,9 +14,7 @@ export const StyledPanelContainer = styled.div`
   }
 `;
 
-export const StyledInfoContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+export const StyledInfoContainer = styled(StyledFlexColumnContainer)`
   font-size: 1.6rem;
 
   & > p {

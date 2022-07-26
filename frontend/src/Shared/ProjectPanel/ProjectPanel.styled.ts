@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { StyledBadgeContainer } from '../MethodologyBadge/MethodologyBadge.styled';
+import { StyledBadgeContainer } from 'Shared/MethodologyBadge/MethodologyBadge.styled';
+import { StyledFlexContainer } from 'Shared/SharedStyles.styled';
 
-export const StyledProjectPanel = styled.div`
-  display: flex;
+export const StyledProjectPanel = styled(StyledFlexContainer)`
   padding: 0.8rem 1.2rem;
   background-color: ${(props) => props.theme.surfaceSecondary};
   border-radius: 0.3rem;

@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 import { StyledCircleContainer } from 'Shared/UserCircle/UserCircle.styled';
+import { StyledFlexContainerAlignCenter } from 'Shared/SharedStyles.styled';
 
-export const StyledPanelContainer = styled.div`
-  display: flex;
-  align-items: center;
+export const StyledPanelContainer = styled(StyledFlexContainerAlignCenter)`
   padding: 1rem;
 
   & ${StyledCircleContainer} {

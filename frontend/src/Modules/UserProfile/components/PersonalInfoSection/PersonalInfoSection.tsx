@@ -7,13 +7,13 @@ import { ButtonFilled, ButtonOutline, IconButton } from 'Shared/Elements/Buttons
 import { FormField } from 'Shared/Elements/Form';
 import { TextInput } from 'Shared/Elements/TextInput';
 import { TextArea } from 'Shared/Elements/TextArea';
+import { StyledFlexContainerSpaceBetween } from 'Shared/SharedStyles.styled';
 import { IUserModel, UserModel } from 'Models/UserModel';
 import { Api } from 'Utils/Api';
 import {
   StyledFooterContainer,
   StyledFormContainer,
   StyledHeaderContainer,
-  StyledHorizontalFieldContainer,
   StyledUserInfoSettingsContainer
 } from './PersonalInfoSection.styled';
 
@@ -157,7 +157,7 @@ export const PersonalInfoSection = ({ onUpdate }: Props): JSX.Element => {
             </StyledHeaderContainer>
             <StyledFormContainer>
               <Form name="issue" method="POST" onSubmit={handleSubmit}>
-                <StyledHorizontalFieldContainer>
+                <StyledFlexContainerSpaceBetween>
                   <FormField label={t('general.firstName')} name="firstName">
                     <TextInput
                       valid={!errors.firstName && touched.firstName}
@@ -176,8 +176,8 @@ export const PersonalInfoSection = ({ onUpdate }: Props): JSX.Element => {
                       value={values.lastName}
                     />
                   </FormField>
-                </StyledHorizontalFieldContainer>
-                <StyledHorizontalFieldContainer>
+                </StyledFlexContainerSpaceBetween>
+                <StyledFlexContainerSpaceBetween>
                   <FormField label={t('general.email')} name="email">
                     <TextInput
                       valid={!errors.email && touched.email}
@@ -198,7 +198,7 @@ export const PersonalInfoSection = ({ onUpdate }: Props): JSX.Element => {
                       value={values.phoneNumber ?? ''}
                     />
                   </FormField>
-                </StyledHorizontalFieldContainer>
+                </StyledFlexContainerSpaceBetween>
                 <FormField label={t('general.bio')} name="bio">
                   <TextArea
                     name="bio"

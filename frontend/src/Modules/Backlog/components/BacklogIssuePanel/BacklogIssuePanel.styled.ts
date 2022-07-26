@@ -5,18 +5,17 @@ import { StyledPriorityBadge } from 'Shared/PriorityBadge/PriorityBadge.styled';
 import { StyledBadge } from 'Shared/StoryPointBadge/StoryPointBadge.styled';
 import { StyledDropdownOption } from 'Shared/Elements/SingleSelectDropdown/SingleSelectDropdown.styled';
 import { StyledStatusBadge } from 'Shared/StatusBadge/StatusBadge.styled';
+import { StyledFlexContainerAlignCenter } from 'Shared/SharedStyles.styled';
 
 interface DraggableProps extends React.HTMLAttributes<HTMLDivElement> {
   readonly snapshot: DraggableStateSnapshot;
 }
 
-export const StyledDraggablePanel = styled.div<DraggableProps>`
+export const StyledDraggablePanel = styled(StyledFlexContainerAlignCenter)<DraggableProps>`
   background-color: ${(props) => props.theme.surfaceSecondary};
   padding: 0.8rem 1.2rem;
   border-radius: 0.3rem;
   margin-bottom: 0.8rem;
-  display: flex;
-  align-items: center;
   transition: all 0.4s ease;
 
   & span,
@@ -39,9 +38,7 @@ export const StyledDraggablePanel = styled.div<DraggableProps>`
   }
 `;
 
-export const StyledIconsContainer = styled.div`
-  display: flex;
-  align-items: center;
+export const StyledIconsContainer = styled(StyledFlexContainerAlignCenter)`
   margin-left: auto;
 `;
 

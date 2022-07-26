@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router';
 import { StyledHorizontalContainer, VerticalPageWrapper } from 'Shared/PageWrappers';
 import { Heading5 } from 'Shared/Typography';
+import { StyledFlexContainer } from 'Shared/SharedStyles.styled';
 import { Issue } from 'Types/Issue';
 import { ApiResponse } from 'Types/Response';
 import { Api } from 'Utils/Api';
@@ -13,11 +14,7 @@ import {
   IssueTimeTrackingSection
 } from './components';
 import { TimeTrackingData, CommentsData } from './fixtures';
-import {
-  StyledCenterSectionContainer,
-  StyledHeaderWrapper,
-  StyledRightSectionContainer
-} from './IssuePage.styled';
+import { StyledCenterSectionContainer, StyledRightSectionContainer } from './IssuePage.styled';
 
 export const IssuePage = (): Nullable<JSX.Element> => {
   const params = useParams<RouterParams>();
@@ -64,9 +61,9 @@ export const IssuePage = (): Nullable<JSX.Element> => {
 
   return (
     <VerticalPageWrapper alignItems="unset">
-      <StyledHeaderWrapper>
+      <StyledFlexContainer>
         <Heading5>{renderTitle()}</Heading5>
-      </StyledHeaderWrapper>
+      </StyledFlexContainer>
       <StyledHorizontalContainer>
         <StyledCenterSectionContainer>
           <IssueCenterInfoSection issue={issueData} />

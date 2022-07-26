@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { StyledFlexContainerAlignCenterSpaceBetween } from 'Shared/SharedStyles.styled';
 
 export const StyledDroppableWrapper = styled.div`
   padding: 1rem;
@@ -10,9 +11,6 @@ export const StyledDroppableWrapper = styled.div`
   }
 `;
 
-export const StyledHeaderWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+export const StyledHeaderWrapper = styled(StyledFlexContainerAlignCenterSpaceBetween)`
   margin-bottom: 1rem;
 `;

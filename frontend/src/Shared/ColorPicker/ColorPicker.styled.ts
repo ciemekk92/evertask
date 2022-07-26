@@ -6,11 +6,6 @@ interface ColorFieldProps extends React.HTMLAttributes<HTMLDivElement> {
   readonly isActive?: boolean;
 }
 
-export const StyledColorFieldsContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
 export const StyledColorField = styled.div<ColorFieldProps>`
   width: 5rem;
   height: 3rem;

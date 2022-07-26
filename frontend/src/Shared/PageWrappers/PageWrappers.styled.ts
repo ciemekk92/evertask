@@ -1,44 +1,39 @@
 import styled from 'styled-components';
 import { StyledLink } from '../StyledLink';
+import {
+  StyledFlexColumnContainer,
+  StyledFlexContainer,
+  StyledFlexContainerAlignCenterSpaceBetween
+} from '../SharedStyles.styled';
 
 interface WrapperProps {
   readonly alignItems?: string;
   readonly justifyContent?: string;
 }
 
-const PageWrapper = styled.div<WrapperProps>`
+export const HorizontalPageWrapper = styled(StyledFlexContainer)<WrapperProps>`
   justify-content: ${(props) => (props.justifyContent ? props.justifyContent : 'center')};
   align-items: ${(props) => (props.alignItems ? props.alignItems : 'center')};
   padding: 2rem;
 `;
 
-export const VerticalPageWrapper = styled(PageWrapper)`
-  display: flex;
+export const VerticalPageWrapper = styled(HorizontalPageWrapper)`
   flex-direction: column;
 `;
 
-export const HorizontalPageWrapper = styled(PageWrapper)`
-  display: flex;
-`;
-
-export const StyledHorizontalContainer = styled.div`
-  display: flex;
+export const StyledHorizontalContainer = styled(StyledFlexContainer)`
   width: 100%;
   margin-top: 1.6rem;
   justify-content: space-evenly;
 `;
 
-export const StyledVerticalContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+export const StyledVerticalContainer = styled(StyledFlexColumnContainer)`
   width: 100%;
   margin-top: 1.6rem;
 `;
 
-export const StyledSectionContainer = styled.div`
+export const StyledSectionContainer = styled(StyledFlexColumnContainer)`
   width: 48%;
-  display: flex;
-  flex-direction: column;
   height: max-content;
 
   &,
@@ -47,19 +42,14 @@ export const StyledSectionContainer = styled.div`
   }
 `;
 
-export const StyledSectionHeaderRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+export const StyledSectionHeaderRow = styled(StyledFlexContainerAlignCenterSpaceBetween)`
   padding-bottom: 1rem;
   margin-bottom: 1rem;
   height: 4rem;
   border-bottom: 1px solid ${(props) => props.theme.primary};
 `;
 
-export const StyledSectionWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+export const StyledSectionWrapper = styled(StyledFlexColumnContainer)`
   background-color: ${(props) => props.theme.surface};
   padding: 1.6rem;
 

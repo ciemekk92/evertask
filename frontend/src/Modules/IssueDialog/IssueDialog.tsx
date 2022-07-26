@@ -11,6 +11,7 @@ import { SingleSelectDropdown } from 'Shared/Elements/SingleSelectDropdown';
 import { ModalDialog } from 'Shared/ModalDialog';
 import { WysiwygEditor } from 'Shared/WysiwygEditor';
 import { ISSUE_PRIORITY, ISSUE_STATUS, ISSUE_TYPE, PROJECT_METHODOLOGIES } from 'Shared/constants';
+import { StyledFlexContainerSpaceBetween } from 'Shared/SharedStyles.styled';
 import { ApplicationState } from 'Stores/store';
 import { ApiResponse } from 'Types/Response';
 import { Api } from 'Utils/Api';
@@ -21,7 +22,7 @@ import {
   mapIssueTypesToDropdownOptions,
   mapSprintsToDropdownOptions
 } from './helpers';
-import { StyledDialogContent, StyledHorizontalFieldContainer } from './IssueDialog.styled';
+import { StyledDialogContent } from './IssueDialog.styled';
 
 interface Props {
   mode: ISSUE_DIALOG_MODES;
@@ -185,7 +186,7 @@ export const IssueDialog = ({
                   type="text"
                 />
               </FormField>
-              <StyledHorizontalFieldContainer>
+              <StyledFlexContainerSpaceBetween>
                 <FormField label={t('issueDialog.type')} name="type">
                   <SingleSelectDropdown
                     options={mapIssueTypesToDropdownOptions()}
@@ -200,7 +201,7 @@ export const IssueDialog = ({
                     onChange={(value: Nullable<string>) => setFieldValue('priority', value)}
                   />
                 </FormField>
-              </StyledHorizontalFieldContainer>
+              </StyledFlexContainerSpaceBetween>
               {currentProject.methodology === PROJECT_METHODOLOGIES.AGILE && (
                 <FormField label={t('issueDialog.estimateStoryPoints')} name="estimateStoryPoints">
                   <TextInput

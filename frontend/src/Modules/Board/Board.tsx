@@ -8,6 +8,7 @@ import { ISSUE_DIALOG_MODES, IssueDialog } from 'Modules/IssueDialog';
 import { VerticalPageWrapper } from 'Shared/PageWrappers';
 import { Heading5 } from 'Shared/Typography';
 import { ISSUE_STATUS, PROJECT_METHODOLOGIES } from 'Shared/constants';
+import { StyledFlexContainerSpaceBetween } from 'Shared/SharedStyles.styled';
 import { CurrentProjectModel } from 'Models/CurrentProjectModel';
 import { capitalizeFirstLetter } from 'Utils/capitalizeFirstLetter';
 import { Project } from 'Types/Project';
@@ -17,11 +18,7 @@ import { actionCreators } from 'Stores/Issue';
 import { Api } from 'Utils/Api';
 import { isEmpty } from 'Utils/isEmpty';
 import { BoardColumn } from './components';
-import {
-  StyledDragDropContextContainer,
-  StyledListContainer,
-  StyledMessageContainer
-} from './Board.styled';
+import { StyledDragDropContextContainer, StyledMessageContainer } from './Board.styled';
 
 export const Board = () => {
   const { t } = useTranslation();
@@ -109,7 +106,7 @@ export const Board = () => {
     return (
       <StyledDragDropContextContainer>
         <DragDropContext onDragEnd={onDragEnd}>
-          <StyledListContainer>
+          <StyledFlexContainerSpaceBetween>
             {Object.values(ISSUE_STATUS).map((status: ISSUE_STATUS) => (
               <BoardColumn
                 handleViewingIssue={handleViewingIssue}
@@ -118,7 +115,7 @@ export const Board = () => {
                 elements={currentIssues[status]}
               />
             ))}
-          </StyledListContainer>
+          </StyledFlexContainerSpaceBetween>
         </DragDropContext>
       </StyledDragDropContextContainer>
     );
@@ -132,7 +129,7 @@ export const Board = () => {
     return (
       <StyledDragDropContextContainer>
         <DragDropContext onDragEnd={onDragEnd}>
-          <StyledListContainer>
+          <StyledFlexContainerSpaceBetween>
             {Object.values(ISSUE_STATUS).map((status: ISSUE_STATUS) => (
               <BoardColumn
                 handleViewingIssue={handleViewingIssue}
@@ -141,7 +138,7 @@ export const Board = () => {
                 elements={currentIssues[status]}
               />
             ))}
-          </StyledListContainer>
+          </StyledFlexContainerSpaceBetween>
         </DragDropContext>
       </StyledDragDropContextContainer>
     );

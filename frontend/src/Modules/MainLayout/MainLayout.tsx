@@ -21,11 +21,11 @@ import { OrganisationPage } from 'Modules/OrganisationPage';
 import { SprintPage } from 'Modules/SprintPage';
 import { UserProfile } from 'Modules/UserProfile';
 import { IUserModel, UserModel } from 'Models/UserModel';
-import { actionCreators } from 'Stores/User';
+import { StyledFlexColumnContainer, StyledFlexContainer } from 'Shared/SharedStyles.styled';
 import { INTERFACE_LANGUAGE, NOTIFICATION_TYPES } from 'Shared/constants';
+import { actionCreators } from 'Stores/User';
 import { PermissionCheck } from 'Utils/PermissionCheck';
 import { AppHeader, AppMainWindow, AppSidebar } from './components';
-import { HorizontalWrapper, LayoutWrapper } from './MainLayout.styled';
 
 export const MainLayout = (): JSX.Element => {
   const [currentUser, setCurrentUser] = React.useState<IUserModel>({
@@ -97,9 +97,9 @@ export const MainLayout = (): JSX.Element => {
   );
 
   const renderLoggedInView = (): JSX.Element => (
-    <HorizontalWrapper>
+    <StyledFlexContainer>
       {PermissionCheck.isUnassignedUser ? renderForUnassignedUser() : renderForAssignedUser()}
-    </HorizontalWrapper>
+    </StyledFlexContainer>
   );
 
   const renderLoggedOutView = (): JSX.Element => (
@@ -120,10 +120,10 @@ export const MainLayout = (): JSX.Element => {
 
   return (
     <CustomRouter basename={'/'} history={history}>
-      <LayoutWrapper>
+      <StyledFlexColumnContainer>
         <AppHeader />
         {currentUser.id ? renderLoggedInView() : renderLoggedOutView()}
-      </LayoutWrapper>
+      </StyledFlexColumnContainer>
     </CustomRouter>
   );
 };

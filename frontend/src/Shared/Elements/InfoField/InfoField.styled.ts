@@ -1,7 +1,7 @@
 import styled from 'styled-components';
+import { StyledFlexContainer } from 'Shared/SharedStyles.styled';
 
-export const StyledInfoField = styled.div`
-  display: flex;
+export const StyledInfoField = styled(StyledFlexContainer)`
   width: 100%;
   padding: 1rem;
   align-items: baseline;

@@ -2,8 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { TopPortal } from 'Shared/TopPortal';
 import { Preloader } from 'Shared/Preloader';
+import { StyledFlexContainerAllCenter } from 'Shared/SharedStyles.styled';
 
-const Overlay = styled.div`
+const Overlay = styled(StyledFlexContainerAllCenter)`
   position: fixed;
   top: 0;
   left: 0;
@@ -12,9 +13,6 @@ const Overlay = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: ${(props) => props.theme.surfaceTransparent};
-  display: flex;
-  justify-content: center;
-  align-items: center;
   z-index: 15500;
 
   & circle {
@@ -26,7 +24,10 @@ interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
   isLoading: boolean;
 }
 
-export const LoadingContainer = ({ isLoading, ...props }: ContainerProps): JSX.Element | null => {
+export const LoadingContainer = ({
+  isLoading,
+  ...props
+}: ContainerProps): Nullable<JSX.Element> => {
   const ref = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {

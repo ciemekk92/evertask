@@ -1,14 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-
 import { IconButton } from 'Shared/Elements/Buttons';
+import { StyledFlexContainer } from 'Shared/SharedStyles.styled';
 import { Organisation } from 'Types/Organisation';
-import {
-  StyledButtonContainer,
-  StyledDate,
-  StyledInfoContainer,
-  StyledPanelContainer
-} from './InvitationPanel.styled';
+import { StyledDate, StyledInfoContainer, StyledPanelContainer } from './InvitationPanel.styled';
 
 interface Props {
   invitation: Organisation.OrganisationInvitation;
@@ -31,7 +26,7 @@ export const InvitationPanel = ({
           {t('general.sentAt')} {new Date(invitation.createdAt).toLocaleString()}
         </StyledDate>
       </StyledInfoContainer>
-      <StyledButtonContainer>
+      <StyledFlexContainer>
         <IconButton
           onClick={handleSendingInvitationResponse(invitation.organisation.id, true)}
           iconName="done"
@@ -44,7 +39,7 @@ export const InvitationPanel = ({
         >
           {t('general.decline')}
         </IconButton>
-      </StyledButtonContainer>
+      </StyledFlexContainer>
     </StyledPanelContainer>
   );
 };

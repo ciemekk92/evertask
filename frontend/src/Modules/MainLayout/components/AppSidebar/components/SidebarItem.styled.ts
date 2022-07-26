@@ -1,9 +1,8 @@
 import styled from 'styled-components';
+import { StyledFlexContainerAlignCenter } from 'Shared/SharedStyles.styled';
 
-export const StyledSidebarItem = styled.div`
+export const StyledSidebarItem = styled(StyledFlexContainerAlignCenter)`
   height: 5.8em;
-  display: flex;
-  align-items: center;
   cursor: pointer;
   user-select: none;
   transition: all 0.4s ease;

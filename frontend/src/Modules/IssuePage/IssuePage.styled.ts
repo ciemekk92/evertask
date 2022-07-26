@@ -1,13 +1,8 @@
 import styled from 'styled-components';
+import { StyledFlexColumnContainer } from 'Shared/SharedStyles.styled';
 
-export const StyledHeaderWrapper = styled.div`
-  display: flex;
-`;
-
-export const StyledCenterSectionContainer = styled.div`
+export const StyledCenterSectionContainer = styled(StyledFlexColumnContainer)`
   width: 63%;
-  display: flex;
-  flex-direction: column;
   height: max-content;
 
   &,

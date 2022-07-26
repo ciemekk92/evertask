@@ -1,22 +1,20 @@
 import styled from 'styled-components';
-import { StyledLink } from '../../Shared/StyledLink';
+import { StyledLink } from 'Shared/StyledLink';
+import {
+  StyledFlexColumnContainer,
+  StyledFlexContainerSpaceBetween
+} from 'Shared/SharedStyles.styled';
 
-export const StyledDashboardWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
+export const StyledDashboardWrapper = styled(StyledFlexContainerSpaceBetween)`
   width: 100%;
   padding: 2rem;
 `;
 
-export const StyledDashboardColumn = styled.div`
-  display: flex;
+export const StyledDashboardColumn = styled(StyledFlexColumnContainer)`
   width: 49%;
-  flex-direction: column;
 `;
 
-export const StyledSectionWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+export const StyledSectionWrapper = styled(StyledFlexColumnContainer)`
   width: 100%;
   border-radius: 0.3rem;
   background-color: ${(props) => props.theme.surface};
@@ -29,9 +27,7 @@ export const StyledSectionWrapper = styled.div`
   }
 `;
 
-export const StyledSectionRow = styled.div`
-  display: flex;
-  justify-content: space-between;
+export const StyledSectionRow = styled(StyledFlexContainerSpaceBetween)`
   padding-bottom: 1rem;
   margin-bottom: 1rem;
 `;

@@ -5,20 +5,20 @@ import {
 } from 'Shared/Elements/Form/FormField/FormField.styled';
 import { StyledReadonlyField, TextInput } from 'Shared/Elements/TextInput/TextInput.styled';
 import { StyledButtonFilled } from 'Shared/Elements/Buttons/ButtonFilled/ButtonFilled.styled';
+import {
+  StyledFlexColumnContainer,
+  StyledFlexContainer,
+  StyledFlexContainerAlignCenterSpaceBetween
+} from 'Shared/SharedStyles.styled';
 
-export const StyledUserInfoSettingsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+export const StyledUserInfoSettingsContainer = styled(StyledFlexColumnContainer)`
   width: 100%;
   padding: 2rem;
   background-color: ${(props) => props.theme.surface};
   height: max-content;
 `;
 
-export const StyledHeaderContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+export const StyledHeaderContainer = styled(StyledFlexContainerAlignCenterSpaceBetween)`
   margin-bottom: 1rem;
 `;
 
@@ -38,13 +38,7 @@ export const StyledFormContainer = styled.div`
   }
 `;
 
-export const StyledHorizontalFieldContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-export const StyledFooterContainer = styled.div`
-  display: flex;
+export const StyledFooterContainer = styled(StyledFlexContainer)`
   justify-content: end;
 
   & ${StyledButtonFilled} {

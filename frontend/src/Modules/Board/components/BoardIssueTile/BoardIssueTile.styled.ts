@@ -3,14 +3,16 @@ import styled from 'styled-components';
 import { DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { StyledBadge } from 'Shared/StoryPointBadge/StoryPointBadge.styled';
 import { StyledIcon } from 'Shared/Elements/Icons/Shared.styled';
+import {
+  StyledFlexColumnContainer,
+  StyledFlexContainerAlignCenter
+} from 'Shared/SharedStyles.styled';
 
 interface DraggableTileProps extends React.HTMLAttributes<HTMLDivElement> {
   readonly snapshot: DraggableStateSnapshot;
 }
 
-export const StyledTile = styled.div<DraggableTileProps>`
-  display: flex;
-  flex-direction: column;
+export const StyledTile = styled(StyledFlexColumnContainer)<DraggableTileProps>`
   width: 100%;
   padding: 1rem;
   border-radius: 0.3rem;
@@ -21,9 +23,7 @@ export const StyledTile = styled.div<DraggableTileProps>`
   }
 `;
 
-export const StyledIssueTitleContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+export const StyledIssueTitleContainer = styled(StyledFlexColumnContainer)`
   font-size: 1.4rem;
   margin-bottom: 0.5rem;
 `;
@@ -40,10 +40,7 @@ export const StyledIssueTitle = styled.p`
   margin-bottom: 1rem;
 `;
 
-export const StyledInformationContainer = styled.div`
-  display: flex;
-  align-items: center;
-
+export const StyledInformationContainer = styled(StyledFlexContainerAlignCenter)`
   & ${StyledIcon} {
     margin-right: 0.6rem;
   }

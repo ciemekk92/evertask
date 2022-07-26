@@ -1,9 +1,7 @@
 import styled from 'styled-components';
+import { StyledFlexColumnContainer } from 'Shared/SharedStyles.styled';
 
-const StyledColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-
+const StyledColumn = styled(StyledFlexColumnContainer)`
   & > div:not(:last-child) {
     margin-bottom: 3rem;
   }

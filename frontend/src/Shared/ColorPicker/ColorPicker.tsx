@@ -1,6 +1,7 @@
 import React from 'react';
 import { ACCENT_COLORS } from './fixtures';
-import { StyledColorField, StyledColorFieldsContainer } from './ColorPicker.styled';
+import { StyledFlexContainerAlignCenter } from '../SharedStyles.styled';
+import { StyledColorField } from './ColorPicker.styled';
 
 interface Props {
   selectedColor: string;
@@ -16,7 +17,7 @@ export const ColorPicker = ({ selectedColor, onSelectingColor, disabled }: Props
   };
 
   return (
-    <StyledColorFieldsContainer>
+    <StyledFlexContainerAlignCenter>
       {ACCENT_COLORS.map((color: string, index: number) => (
         <StyledColorField
           key={index}
@@ -25,6 +26,6 @@ export const ColorPicker = ({ selectedColor, onSelectingColor, disabled }: Props
           onClick={handleSelectingColorFactory(color)}
         />
       ))}
-    </StyledColorFieldsContainer>
+    </StyledFlexContainerAlignCenter>
   );
 };

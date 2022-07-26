@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { StyledSectionWrapper } from 'Shared/PageWrappers';
 import { StyledEditorWrapper } from 'Shared/WysiwygEditor/WysiwygEditor.styled';
+import { StyledFlexContainer } from 'Shared/SharedStyles.styled';
 
 export const StyledCommentsSectionWrapper = styled(StyledSectionWrapper)`
   & ${StyledEditorWrapper} {
@@ -8,8 +9,7 @@ export const StyledCommentsSectionWrapper = styled(StyledSectionWrapper)`
   }
 `;
 
-export const StyledButtonsContainer = styled.div`
-  display: flex;
+export const StyledButtonsContainer = styled(StyledFlexContainer)`
   margin-left: auto;
   margin-bottom: 1rem;
   padding: 0 1rem;

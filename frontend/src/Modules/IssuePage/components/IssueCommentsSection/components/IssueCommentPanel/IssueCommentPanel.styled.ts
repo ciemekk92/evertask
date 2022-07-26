@@ -1,8 +1,11 @@
 import styled from 'styled-components';
+import {
+  StyledFlexColumnContainer,
+  StyledFlexContainerAlignCenter,
+  StyledFlexContainerSpaceBetween
+} from 'Shared/SharedStyles.styled';
 
-export const StyledCommentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+export const StyledCommentWrapper = styled(StyledFlexColumnContainer)`
   font-size: 1.6rem;
   padding: 1rem;
   border-radius: 0.3rem;
@@ -13,16 +16,11 @@ export const StyledCommentWrapper = styled.div`
   }
 `;
 
-export const StyledCommentHeadingRow = styled.div`
-  display: flex;
-  justify-content: space-between;
+export const StyledCommentHeadingRow = styled(StyledFlexContainerSpaceBetween)`
   margin-bottom: 1rem;
 `;
 
-export const StyledUserField = styled.div`
-  display: flex;
-  align-items: center;
-
+export const StyledUserField = styled(StyledFlexContainerAlignCenter)`
   & > p {
     margin-left: 1rem;
   }

@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 import { StyledButton } from 'Shared/Elements/Buttons/IconButton/IconButton.styled';
-import { StyledLinkButton } from '../../../Shared/Elements/Buttons/ButtonLikeLink/ButtonLikeLink.styled';
+import { StyledLinkButton } from 'Shared/Elements/Buttons/ButtonLikeLink/ButtonLikeLink.styled';
+import {
+  StyledFlexColumnContainerAllCenter,
+  StyledFlexContainerAllCenter
+} from 'Shared/SharedStyles.styled';
 
-export const LoginWrapper = styled.div`
+export const LoginWrapper = styled(StyledFlexColumnContainerAllCenter)`
   text-align: center;
   width: 60rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   margin: 10rem auto 0;
   padding: 2rem 0 5rem;
   border-radius: 0.3rem;
@@ -48,12 +48,9 @@ export const LoginWrapper = styled.div`
   }
 `;
 
-export const ButtonsContainer = styled.div`
+export const ButtonsContainer = styled(StyledFlexContainerAllCenter)`
   width: 100%;
-  display: flex;
   margin-top: 3rem;
-  align-items: center;
-  justify-content: center;
 
   & button {
     width: 30%;

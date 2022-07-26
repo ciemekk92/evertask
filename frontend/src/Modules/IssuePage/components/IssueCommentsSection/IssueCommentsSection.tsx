@@ -1,13 +1,13 @@
 import React from 'react';
-import {useTranslation} from 'react-i18next';
-import {IconButton} from 'Shared/Elements/Buttons';
-import {StyledSectionHeaderRow} from 'Shared/PageWrappers';
-import {Heading6} from 'Shared/Typography';
-import {Issue} from 'Types/Issue';
-import {Api} from 'Utils/Api';
-import {CommentFormData, CommentsData} from '../../fixtures';
-import {IssueCommentForm, IssueCommentPanel} from './components';
-import {StyledCommentsSectionWrapper} from './IssueCommentsSection.styled';
+import { useTranslation } from 'react-i18next';
+import { IconButton } from 'Shared/Elements/Buttons';
+import { StyledSectionHeaderRow } from 'Shared/PageWrappers';
+import { Heading6 } from 'Shared/Typography';
+import { Issue } from 'Types/Issue';
+import { Api } from 'Utils/Api';
+import { CommentFormData, CommentsData } from '../../fixtures';
+import { IssueCommentForm, IssueCommentPanel } from './components';
+import { StyledCommentsSectionWrapper } from './IssueCommentsSection.styled';
 
 interface Props {
   issueComments: CommentsData;
@@ -16,11 +16,11 @@ interface Props {
 }
 
 export const IssueCommentsSection = ({
-                                       issueComments,
-                                       issueId,
-                                       handleRefreshingComments
-                                     }: Props): JSX.Element => {
-  const {t} = useTranslation();
+  issueComments,
+  issueId,
+  handleRefreshingComments
+}: Props): JSX.Element => {
+  const { t } = useTranslation();
   const [isAddingComment, setIsAddingComment] = React.useState<boolean>(false);
 
   const handleShowingMoreComments = async () => {
@@ -46,7 +46,7 @@ export const IssueCommentsSection = ({
   };
 
   const onSubmit = async (values: CommentFormData): Promise<void> => {
-    const result = await Api.post(`issues/${issueId}/comments`, {...values});
+    const result = await Api.post(`issues/${issueId}/comments`, { ...values });
     if (result.status === 200) {
       await handleRefreshingComments();
       setIsAddingComment(false);
@@ -63,7 +63,7 @@ export const IssueCommentsSection = ({
       return null;
     }
 
-    return <IssueCommentForm onSubmit={onSubmit} onClose={handleTogglingEditing}/>;
+    return <IssueCommentForm onSubmit={onSubmit} onClose={handleTogglingEditing} />;
   };
 
   return (

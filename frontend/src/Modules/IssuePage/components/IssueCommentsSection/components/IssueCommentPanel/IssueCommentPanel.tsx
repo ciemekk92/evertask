@@ -1,13 +1,13 @@
 import React from 'react';
-import {useTranslation} from 'react-i18next';
-import {ButtonLikeLink, IconButton} from 'Shared/Elements/Buttons';
-import {UserCircle} from 'Shared/UserCircle';
-import {StyledFlexColumnContainer, StyledFlexContainer} from 'Shared/SharedStyles.styled';
-import {Issue} from 'Types/Issue';
-import {Api} from 'Utils/Api';
-import {formatDateForDisplayWithTime} from 'Utils/formatDate';
-import {IssueCommentForm} from '..';
-import {CommentFormData} from '../../../../fixtures';
+import { useTranslation } from 'react-i18next';
+import { ButtonLikeLink, IconButton } from 'Shared/Elements/Buttons';
+import { UserCircle } from 'Shared/UserCircle';
+import { StyledFlexColumnContainer, StyledFlexContainer } from 'Shared/SharedStyles.styled';
+import { Issue } from 'Types/Issue';
+import { Api } from 'Utils/Api';
+import { formatDateForDisplayWithTime } from 'Utils/formatDate';
+import { IssueCommentForm } from '..';
+import { CommentFormData } from '../../../../fixtures';
 import {
   StyledCommentContent,
   StyledCommentHeadingRow,
@@ -25,13 +25,13 @@ interface Props {
 }
 
 export const IssueCommentPanel = ({
-                                    comment,
-                                    issueId,
-                                    handleShowingMoreComments,
-                                    handleRefreshingComments,
-                                    isChildPanel
-                                  }: Props): JSX.Element => {
-  const {t} = useTranslation();
+  comment,
+  issueId,
+  handleShowingMoreComments,
+  handleRefreshingComments,
+  isChildPanel
+}: Props): JSX.Element => {
+  const { t } = useTranslation();
   const [isReplying, setIsReplying] = React.useState<boolean>(false);
   const userFullName = React.useMemo(
     () => `${comment.createdBy.firstName} ${comment.createdBy.lastName}`,
@@ -62,7 +62,7 @@ export const IssueCommentPanel = ({
 
     return (
       <StyledFlexColumnContainer>
-        <IssueCommentForm onClose={handleTogglingReplying} onSubmit={handleSubmittingReply}/>
+        <IssueCommentForm onClose={handleTogglingReplying} onSubmit={handleSubmittingReply} />
       </StyledFlexColumnContainer>
     );
   };
@@ -93,12 +93,12 @@ export const IssueCommentPanel = ({
       <StyledSingleCommentWrapper>
         <StyledCommentHeadingRow>
           <StyledUserField>
-            <UserCircle label={userFullName} imageSrc={comment.createdBy.avatar}/>
+            <UserCircle label={userFullName} imageSrc={comment.createdBy.avatar} />
             <p>{userFullName}</p>
           </StyledUserField>
           <p>{formatDateForDisplayWithTime(comment.createdAt)}</p>
         </StyledCommentHeadingRow>
-        <StyledCommentContent dangerouslySetInnerHTML={{__html: comment.content}}/>
+        <StyledCommentContent dangerouslySetInnerHTML={{ __html: comment.content }} />
         {!isReplying && (
           <StyledFlexContainer>
             <IconButton onClick={handleTogglingReplying} iconName="reply">

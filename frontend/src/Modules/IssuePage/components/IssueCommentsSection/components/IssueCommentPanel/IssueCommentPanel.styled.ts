@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import {Form} from 'Shared/Elements/Form';
-import {StyledLinkButton} from 'Shared/Elements/Buttons/ButtonLikeLink/ButtonLikeLink.styled';
+import { Form } from 'Shared/Elements/Form';
+import { StyledLinkButton } from 'Shared/Elements/Buttons/ButtonLikeLink/ButtonLikeLink.styled';
 import {
   StyledFlexColumnContainer,
   StyledFlexContainerAlignCenter,

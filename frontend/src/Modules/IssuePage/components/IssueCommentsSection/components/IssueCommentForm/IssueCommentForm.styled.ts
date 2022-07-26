@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {StyledFlexContainer} from 'Shared/SharedStyles.styled';
+import { StyledFlexContainer } from 'Shared/SharedStyles.styled';
 
 export const StyledButtonsContainer = styled(StyledFlexContainer)`
   margin: 0 0 1rem auto;

@@ -344,7 +344,9 @@
     "comments": {
       "title": "Komentarze",
       "noComments": "Brak komentarzy",
-      "addComment": "Dodaj komentarz"
+      "addComment": "Dodaj komentarz",
+      "reply": "Odpowiedz",
+      "showMore": "Pokaż więcej"
     }
   },
   "confirmationDialog": {

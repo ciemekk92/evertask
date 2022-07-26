@@ -58,6 +58,7 @@ export const StyledEditorWrapper = styled.div`
 
     & .rdw-editor-toolbar {
       border: none;
+      border-bottom: 1px solid #cc8a22;
       background: ${(props) => props.theme.surfaceSecondary};
     }
 
@@ -148,7 +149,6 @@ export const StyledEditorWrapper = styled.div`
     & .rdw-editor-main {
       height: 25rem;
       padding: 1rem;
-      border-top: 1px solid ${(props) => props.theme.primary};
       font-size: 1.6rem;
 
       & .DraftEditor-editorContainer {

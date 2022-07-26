@@ -12,6 +12,7 @@ import com.predu.evertask.util.HtmlSanitizer;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Comparator;
 import java.util.UUID;
 
 @Mapper(uses = {UUIDMapper.class}, componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -30,6 +31,8 @@ public abstract class IssueCommentMapper {
     private IssueCommentRepository issueCommentRepository;
 
     @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "hasMoreReplies", ignore = true)
+    @Mapping(target = "firstReply", ignore = true)
     public abstract IssueCommentDto issueCommentToIssueCommentDto(IssueComment issueComment);
 
     @Mapping(target = "parent", ignore = true)
@@ -42,6 +45,18 @@ public abstract class IssueCommentMapper {
             User user = userRepository.findById(source.getCreatedBy())
                     .orElseThrow(() -> new NotFoundException(User.class, source.getCreatedBy()));
             target.setCreatedBy(userViewMapper.toUserIssueDto(user));
+        }
+
+        if (!source.getReplies().isEmpty()) {
+            int repliesCount = source.getReplies().size();
+            target.setHasMoreReplies(repliesCount > 1);
+
+            IssueComment firstReply = source.getReplies()
+                    .stream()
+                    .min(Comparator.comparing(IssueComment::getCreatedAt))
+                    .orElseThrow(() -> new NotFoundException(IssueComment.class, source.getIssue().getId()));
+
+            target.setFirstReply(issueCommentToIssueCommentDto(firstReply));
         }
     }
 

@@ -344,7 +344,9 @@
     "comments": {
       "title": "Comments",
       "noComments": "No comments yet",
-      "addComment": "Add comment"
+      "addComment": "Add comment",
+      "reply": "Reply",
+      "showMore": "Show more"
     }
   },
   "confirmationDialog": {

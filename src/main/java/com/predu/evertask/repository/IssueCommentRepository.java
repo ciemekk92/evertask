@@ -11,4 +11,5 @@ public interface IssueCommentRepository extends BaseRepository<IssueComment, UUI
         JpaRepository<IssueComment, UUID> {
 
     Page<IssueComment> findAllByIssueIdAndParentIsNullOrderByCreatedAtDesc(UUID id, Pageable pageable);
+
 }

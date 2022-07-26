@@ -12,3 +12,7 @@ export interface CommentsData {
   totalItems: number;
   totalPages: number;
 }
+
+export interface CommentFormData {
+  content: string;
+}

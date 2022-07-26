@@ -13,7 +13,7 @@ declare namespace Issue {
     pullRequestUrl: string;
     status: ISSUE_STATUS;
     type: ISSUE_TYPE;
-    parentId: Id;
+    parentId: Nullable<Id>;
     priority: ISSUE_PRIORITY;
     subtasks: Issue.IssueEntity[];
   }
@@ -21,7 +21,8 @@ declare namespace Issue {
   interface IssueComment extends AuditedEntity {
     createdBy: User.UserBasicEntity;
     content: string;
-    replies: Issue.IssueComment[];
+    firstReply: Nullable<Issue.IssueComment>;
+    hasMoreReplies: boolean;
   }
 
   export interface IssueEntity extends IssueBase {

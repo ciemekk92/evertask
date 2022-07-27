@@ -55,6 +55,18 @@ public class IssueController {
     }
 
     @IsAllowedToIssue
+    @GetMapping("/{id}/comments/{commentId}/replies")
+    public ResponseEntity<IssueCommentsPaginationDto> getRepliesToComment(@PathVariable UUID id,
+                                                                          @PathVariable UUID commentId,
+                                                                          @RequestParam(defaultValue = "0") int page,
+                                                                          @RequestParam(defaultValue = "10") int size) {
+
+        Pageable paging = PageRequest.of(page, size);
+
+        return ResponseEntity.ok(issueCommentService.findCommentReplies(id, commentId, paging));
+    }
+
+    @IsAllowedToIssue
     @PostMapping("/{id}/comments")
     public ResponseEntity<Void> addComment(@PathVariable UUID id, @RequestBody @Valid IssueCommentSaveDto toSave) {
 

@@ -27,7 +27,7 @@ public class IssueCommentService {
 
     public IssueCommentsPaginationDto findAllWithNoParent(UUID issueId, Pageable paging) {
 
-        Page<IssueComment> pagedComments = issueCommentRepository.findAllByIssueIdAndParentIsNullOrderByCreatedAtDesc(issueId, paging);
+        Page<IssueComment> pagedComments = issueCommentRepository.findAllByIssueIdAndParentIsNullOrderByCreatedAtAsc(issueId, paging);
         List<IssueCommentDto> comments = pagedComments
                 .stream()
                 .map(issueCommentMapper::issueCommentToIssueCommentDto)
@@ -38,6 +38,22 @@ public class IssueCommentService {
                 .totalItems(pagedComments.getTotalElements())
                 .totalPages(pagedComments.getTotalPages())
                 .comments(comments)
+                .build();
+    }
+
+    public IssueCommentsPaginationDto findCommentReplies(UUID issueId, UUID commentId, Pageable paging) {
+
+        Page<IssueComment> pagedReplies = issueCommentRepository.findAllByIssueIdAndParentIdOrderByCreatedAtAsc(issueId, commentId, paging);
+        List<IssueCommentDto> replies = pagedReplies
+                .stream()
+                .map(issueCommentMapper::issueCommentToIssueCommentDto)
+                .toList();
+
+        return IssueCommentsPaginationDto.builder()
+                .currentPage(pagedReplies.getNumber())
+                .totalItems(pagedReplies.getTotalElements())
+                .totalPages(pagedReplies.getTotalPages())
+                .comments(replies)
                 .build();
     }
 

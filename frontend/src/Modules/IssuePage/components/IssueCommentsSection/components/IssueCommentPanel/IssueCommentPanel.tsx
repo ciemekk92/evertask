@@ -19,9 +19,11 @@ import {
 interface Props {
   comment: Issue.IssueComment;
   issueId: Id;
-  handleShowingMoreComments: VoidFunctionNoArgs;
+  handleShowingMoreComments: (commentId: Id) => VoidFunctionNoArgs;
   handleRefreshingComments: () => Promise<void>;
   isChildPanel?: boolean;
+  isExpanded?: boolean;
+  isReply?: boolean;
 }
 
 export const IssueCommentPanel = ({
@@ -29,7 +31,9 @@ export const IssueCommentPanel = ({
   issueId,
   handleShowingMoreComments,
   handleRefreshingComments,
-  isChildPanel
+  isChildPanel,
+  isExpanded,
+  isReply
 }: Props): JSX.Element => {
   const { t } = useTranslation();
   const [isReplying, setIsReplying] = React.useState<boolean>(false);
@@ -68,7 +72,7 @@ export const IssueCommentPanel = ({
   };
 
   const renderReplies = (): Nullable<JSX.Element> => {
-    if (isChildPanel || !comment.firstReply) {
+    if (isChildPanel || !comment.firstReply || isExpanded) {
       return null;
     }
 
@@ -82,15 +86,17 @@ export const IssueCommentPanel = ({
           isChildPanel
         />
         {comment.hasMoreReplies && (
-          <ButtonLikeLink>{t('issuePage.comments.showMore')}</ButtonLikeLink>
+          <ButtonLikeLink onClick={handleShowingMoreComments(comment.id)}>
+            {t('issuePage.comments.showMore')}
+          </ButtonLikeLink>
         )}
       </StyledFlexColumnContainer>
     );
   };
 
   return (
-    <StyledCommentWrapper>
-      <StyledSingleCommentWrapper>
+    <StyledCommentWrapper isReply={isReply} isChildPanel={isChildPanel}>
+      <StyledSingleCommentWrapper isReply={isReply}>
         <StyledCommentHeadingRow>
           <StyledUserField>
             <UserCircle label={userFullName} imageSrc={comment.createdBy.avatar} />

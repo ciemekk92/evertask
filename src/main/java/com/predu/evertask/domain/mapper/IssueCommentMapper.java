@@ -33,6 +33,7 @@ public abstract class IssueCommentMapper {
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "hasMoreReplies", ignore = true)
     @Mapping(target = "firstReply", ignore = true)
+    @Mapping(target = "parentId", source = "parent.id")
     public abstract IssueCommentDto issueCommentToIssueCommentDto(IssueComment issueComment);
 
     @Mapping(target = "parent", ignore = true)

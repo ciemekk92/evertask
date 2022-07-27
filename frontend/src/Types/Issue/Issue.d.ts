@@ -19,6 +19,7 @@ declare namespace Issue {
   }
 
   interface IssueComment extends AuditedEntity {
+    parentId?: Nullable<Id>;
     createdBy: User.UserBasicEntity;
     content: string;
     firstReply: Nullable<Issue.IssueComment>;

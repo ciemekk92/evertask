@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class IssueCommentDto extends BaseDto {
 
+    private String parentId;
     private UserIssueDto createdBy;
     private String content;
     private IssueCommentDto firstReply;

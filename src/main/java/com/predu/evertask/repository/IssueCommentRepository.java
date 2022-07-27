@@ -10,6 +10,11 @@ import java.util.UUID;
 public interface IssueCommentRepository extends BaseRepository<IssueComment, UUID>,
         JpaRepository<IssueComment, UUID> {
 
-    Page<IssueComment> findAllByIssueIdAndParentIsNullOrderByCreatedAtDesc(UUID id, Pageable pageable);
+    Page<IssueComment> findAllByIssueIdAndParentIsNullOrderByCreatedAtAsc(UUID id, Pageable pageable);
+
+    Page<IssueComment> findAllByIssueIdAndParentIdOrderByCreatedAtAsc(UUID issueId,
+                                                                       UUID parentId,
+                                                                       Pageable pageable);
+
 
 }

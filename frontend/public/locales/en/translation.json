@@ -346,7 +346,8 @@
       "noComments": "No comments yet",
       "addComment": "Add comment",
       "reply": "Reply",
-      "showMore": "Show more"
+      "showMore": "Show more replies",
+      "goBack": "Go back"
     }
   },
   "confirmationDialog": {

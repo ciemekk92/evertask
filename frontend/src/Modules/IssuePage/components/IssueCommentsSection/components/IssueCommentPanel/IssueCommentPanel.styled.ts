@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 import { Form } from 'Shared/Elements/Form';
 import { StyledLinkButton } from 'Shared/Elements/Buttons/ButtonLikeLink/ButtonLikeLink.styled';
@@ -7,9 +8,16 @@ import {
   StyledFlexContainerSpaceBetween
 } from 'Shared/SharedStyles.styled';
 
-export const StyledCommentWrapper = styled(StyledFlexColumnContainer)`
+interface WrapperProps extends React.HTMLAttributes<HTMLDivElement> {
+  readonly isReply?: boolean;
+  readonly isChildPanel?: boolean;
+}
+
+export const StyledCommentWrapper = styled(StyledFlexColumnContainer)<WrapperProps>`
   font-size: 1.6rem;
-  padding: 0.3rem 1rem;
+  width: ${(props) => (props.isReply || props.isChildPanel ? '96%' : 'inherit')};
+  margin-left: ${(props) => (props.isReply || props.isChildPanel ? 'auto' : 'inherit')};
+  margin-bottom: ${(props) => (!props.isReply && !props.isChildPanel ? '0.4rem' : 'inherit')};
 
   & ${Form} {
     margin-top: 0.4rem;
@@ -25,7 +33,7 @@ export const StyledCommentWrapper = styled(StyledFlexColumnContainer)`
   }
 `;
 
-export const StyledSingleCommentWrapper = styled(StyledFlexColumnContainer)`
+export const StyledSingleCommentWrapper = styled(StyledFlexColumnContainer)<WrapperProps>`
   background-color: ${(props) => props.theme.surfaceSecondary};
   padding: 1rem;
   border-radius: 0.3rem;

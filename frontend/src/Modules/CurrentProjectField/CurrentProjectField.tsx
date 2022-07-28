@@ -9,7 +9,7 @@ import { Project } from 'Types/Project';
 import { CurrentProjectModel } from 'Models/CurrentProjectModel';
 import { StyledLabel } from './CurrentProjectField.styled';
 
-export const CurrentProjectField = () => {
+export const CurrentProjectField = (): Nullable<JSX.Element> => {
   const [currentProjectValue, setCurrentProjectValue] = React.useState<Id>('');
   const { t } = useTranslation();
   const organisationProjects = useSelector(
@@ -27,7 +27,11 @@ export const CurrentProjectField = () => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [CurrentProjectModel.currentProject]);
+  }, []);
+
+  if (!organisationProjects.length) {
+    return null;
+  }
 
   const handleSelectingCurrentProject = (value: Nullable<string>) => {
     const project = organisationProjects.find(

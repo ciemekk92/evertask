@@ -32,7 +32,7 @@ export const StyledDraggablePanel = styled(StyledFlexContainerAlignCenter)<Dragg
   }
 
   &:hover {
-    background-color: ${(props) => props.theme.primaryDark};
+    background-color: ${(props) => props.theme.primary};
     color: ${(props) => props.theme.textOnPrimary};
     transform: translateY(-0.2rem);
   }

@@ -29,12 +29,14 @@ public class User implements UserDetails, Serializable {
     private Date createdAt;
     private Date updatedAt;
 
+    @Column(unique = true)
     @Length(min = 6)
     private String username;
 
     @Length(min = 8)
     private String password;
 
+    @Column(unique = true)
     @Email
     @Length(max = 60)
     private String email;

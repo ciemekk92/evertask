@@ -53,7 +53,6 @@ export const ButtonsContainer = styled(StyledFlexContainerAllCenter)`
   margin-top: 3rem;
 
   & button {
-    width: 30%;
     margin-bottom: 2rem;
 
     &:not(:last-child) {

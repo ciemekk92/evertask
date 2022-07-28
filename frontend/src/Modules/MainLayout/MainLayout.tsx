@@ -39,6 +39,7 @@ export const MainLayout = (): JSX.Element => {
     phoneNumber: null,
     authorities: [],
     avatar: '',
+    organisationId: null,
     mfaEnabled: false,
     userSettings: {
       darkMode: false,

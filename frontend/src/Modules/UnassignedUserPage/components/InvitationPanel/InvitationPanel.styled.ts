@@ -9,6 +9,10 @@ export const StyledPanelContainer = styled(StyledFlexContainerAlignCenterSpaceBe
   font-size: 1.6rem;
   padding: 1rem;
   border-radius: 0.3rem;
+
+  & button:first-child {
+    margin-right: 1rem;
+  }
 `;
 
 export const StyledInfoContainer = styled(StyledFlexColumnContainer)`

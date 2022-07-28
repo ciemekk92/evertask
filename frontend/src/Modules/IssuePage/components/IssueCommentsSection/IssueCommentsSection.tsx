@@ -1,8 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { DialogComponent, useDialog } from 'Hooks/useDialog';
 import { ButtonLikeLink, IconButton } from 'Shared/Elements/Buttons';
 import { StyledSectionHeaderRow } from 'Shared/PageWrappers';
 import { Heading6 } from 'Shared/Typography';
+import { CONFIRMATION_DIALOG_MODES, ConfirmationDialog } from 'Shared/ConfirmationDialog';
 import { Issue } from 'Types/Issue';
 import { Api } from 'Utils/Api';
 import { CommentFormData, CommentsData } from '../../fixtures';
@@ -21,6 +23,7 @@ export const IssueCommentsSection = ({
   handleRefreshingComments
 }: Props): JSX.Element => {
   const { t } = useTranslation();
+  const confirmationDialogConfig = useDialog(CONFIRMATION_DIALOG_MODES.CONFIRM);
   const [isAddingComment, setIsAddingComment] = React.useState<boolean>(false);
   const [repliesData, setRepliesData] = React.useState<Nullable<CommentsData>>(null);
   const [commentBeingShown, setCommentBeingShown] =
@@ -31,14 +34,38 @@ export const IssueCommentsSection = ({
 
     if (result.status === 200) {
       const json = (await result.json()) as CommentsData;
-      const shownComment = issueComments.comments.find(
+      let shownComment = issueComments.comments.find(
         (value: Issue.IssueComment) => value.id === commentId
       );
 
+      if (!shownComment) {
+        shownComment =
+          issueComments.comments.find(
+            (value) => value.firstReply && value.firstReply.id === commentId
+          )?.firstReply ?? undefined;
+      }
+
       setRepliesData(json);
+
       if (shownComment) {
         setCommentBeingShown(shownComment);
       }
+    }
+  };
+
+  const handleEditingComment = () => {};
+
+  const handleConfirmingDelete = (commentId: Id) => async () => {
+    await confirmationDialogConfig.handleOpen(CONFIRMATION_DIALOG_MODES.CONFIRM, { commentId });
+  };
+
+  const handleDeletingComment = async () => {
+    const dialogResult = await Api.delete(
+      `issues/${issueId}/comments/${confirmationDialogConfig.params.commentId}`
+    );
+
+    if (dialogResult.status === 204) {
+      await handleRefreshingComments();
     }
   };
 
@@ -46,6 +73,8 @@ export const IssueCommentsSection = ({
     <IssueCommentPanel
       handleShowingMoreComments={handleShowingMoreComments}
       handleRefreshingComments={handleRefreshingComments}
+      handleEditingComment={handleEditingComment}
+      handleConfirmingDelete={handleConfirmingDelete(value.id)}
       key={value.id}
       comment={value}
       issueId={issueId}
@@ -87,6 +116,8 @@ export const IssueCommentsSection = ({
         <IssueCommentPanel
           comment={commentBeingShown}
           issueId={issueId}
+          handleEditingComment={handleEditingComment}
+          handleConfirmingDelete={handleConfirmingDelete(commentBeingShown.id)}
           handleShowingMoreComments={handleShowingMoreComments}
           handleRefreshingComments={handleRefreshingComments}
           isExpanded={!!repliesData}
@@ -126,6 +157,15 @@ export const IssueCommentsSection = ({
       {renderCommentForm()}
       {renderCommentBeingShown()}
       {renderComments()}
+      <DialogComponent
+        isOpen={confirmationDialogConfig.isOpen}
+        handleClose={confirmationDialogConfig.handleClose}
+      >
+        <ConfirmationDialog
+          handleClose={confirmationDialogConfig.handleClose}
+          handleConfirm={handleDeletingComment}
+        />
+      </DialogComponent>
     </StyledCommentsSectionWrapper>
   );
 };

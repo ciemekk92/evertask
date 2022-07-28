@@ -3,6 +3,7 @@ import { INTERFACE_LANGUAGE, USER_ROLES } from 'Shared/constants';
 import { User } from 'Types/User';
 
 export interface IUserModel extends User.UserFullInfo {
+  organisationId: Nullable<Id>;
   mfaEnabled: boolean;
   accessToken: string;
   authorities: USER_ROLES[];
@@ -17,6 +18,7 @@ const currentUserSubject = new BehaviorSubject<IUserModel>({
   bio: null,
   phoneNumber: null,
   mfaEnabled: false,
+  organisationId: null,
   accessToken: '',
   avatar: '',
   authorities: [],

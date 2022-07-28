@@ -7,6 +7,7 @@ import {
   StyledFlexContainerAlignCenter,
   StyledFlexContainerSpaceBetween
 } from 'Shared/SharedStyles.styled';
+import { StyledButton } from 'Shared/Elements/Buttons/IconButton/IconButton.styled';
 
 interface WrapperProps extends React.HTMLAttributes<HTMLDivElement> {
   readonly isReply?: boolean;
@@ -17,7 +18,8 @@ export const StyledCommentWrapper = styled(StyledFlexColumnContainer)<WrapperPro
   font-size: 1.6rem;
   width: ${(props) => (props.isReply || props.isChildPanel ? '96%' : 'inherit')};
   margin-left: ${(props) => (props.isReply || props.isChildPanel ? 'auto' : 'inherit')};
-  margin-bottom: ${(props) => (!props.isReply && !props.isChildPanel ? '0.4rem' : 'inherit')};
+  margin-bottom: ${(props) =>
+    (!props.isReply && !props.isChildPanel) || props.isReply ? '0.4rem' : 'inherit'};
 
   & ${Form} {
     margin-top: 0.4rem;
@@ -25,11 +27,15 @@ export const StyledCommentWrapper = styled(StyledFlexColumnContainer)<WrapperPro
 
   & > ${StyledFlexColumnContainer} {
     padding-top: 0.4rem;
-    padding-bottom: 0.4rem;
+    padding-bottom: ${(props) => (props.isReply || props.isChildPanel ? '0.4rem' : 'inherit')};
   }
 
   & ${StyledLinkButton} {
     margin-top: 0.4rem;
+  }
+
+  & ${StyledButton}:not(:last-child) {
+    margin-right: 1rem;
   }
 `;
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { UserModel } from 'Models/UserModel';
 import { ButtonLikeLink, IconButton } from 'Shared/Elements/Buttons';
 import { UserCircle } from 'Shared/UserCircle';
 import { StyledFlexColumnContainer, StyledFlexContainer } from 'Shared/SharedStyles.styled';
@@ -21,6 +22,8 @@ interface Props {
   issueId: Id;
   handleShowingMoreComments: (commentId: Id) => VoidFunctionNoArgs;
   handleRefreshingComments: () => Promise<void>;
+  handleConfirmingDelete: VoidFunctionNoArgs;
+  handleEditingComment: VoidFunctionNoArgs;
   isChildPanel?: boolean;
   isExpanded?: boolean;
   isReply?: boolean;
@@ -28,39 +31,39 @@ interface Props {
 
 export const IssueCommentPanel = ({
   comment,
-  issueId,
-  handleShowingMoreComments,
-  handleRefreshingComments,
   isChildPanel,
   isExpanded,
-  isReply
+  isReply,
+  ...rest
 }: Props): JSX.Element => {
   const { t } = useTranslation();
-  const [isReplying, setIsReplying] = React.useState<boolean>(false);
+  const [isEditorOpen, setIsEditorOpen] = React.useState<boolean>(false);
   const userFullName = React.useMemo(
     () => `${comment.createdBy.firstName} ${comment.createdBy.lastName}`,
     [comment]
   );
 
+  const currentUser = UserModel.currentUserValue;
+
   const handleTogglingReplying = (e: React.MouseEvent): void => {
     e.preventDefault();
-    setIsReplying(!isReplying);
+    setIsEditorOpen(!isEditorOpen);
   };
 
   const handleSubmittingReply = async (values: CommentFormData) => {
-    const result = await Api.post(`issues/${issueId}/comments`, {
+    const result = await Api.post(`issues/${rest.issueId}/comments`, {
       ...values,
       parentId: comment.id
     });
 
     if (result.status === 200) {
-      await handleRefreshingComments();
-      setIsReplying(false);
+      await rest.handleRefreshingComments();
+      setIsEditorOpen(false);
     }
   };
 
-  const renderReplyEditor = (): Nullable<JSX.Element> => {
-    if (!isReplying) {
+  const renderEditor = (): Nullable<JSX.Element> => {
+    if (!isEditorOpen) {
       return null;
     }
 
@@ -72,21 +75,25 @@ export const IssueCommentPanel = ({
   };
 
   const renderReplies = (): Nullable<JSX.Element> => {
-    if (isChildPanel || !comment.firstReply || isExpanded) {
+    if (!comment.firstReply || isExpanded) {
       return null;
+    }
+
+    if (isChildPanel && comment.firstReply.hasMoreReplies) {
+      return (
+        <StyledFlexColumnContainer>
+          <ButtonLikeLink onClick={rest.handleShowingMoreComments(comment.firstReply.id)}>
+            {t('issuePage.comments.showMore')}
+          </ButtonLikeLink>
+        </StyledFlexColumnContainer>
+      );
     }
 
     return (
       <StyledFlexColumnContainer>
-        <IssueCommentPanel
-          handleShowingMoreComments={handleShowingMoreComments}
-          handleRefreshingComments={handleRefreshingComments}
-          issueId={issueId}
-          comment={comment.firstReply}
-          isChildPanel
-        />
+        <IssueCommentPanel {...rest} comment={comment.firstReply} isChildPanel />
         {comment.hasMoreReplies && (
-          <ButtonLikeLink onClick={handleShowingMoreComments(comment.id)}>
+          <ButtonLikeLink onClick={rest.handleShowingMoreComments(comment.id)}>
             {t('issuePage.comments.showMore')}
           </ButtonLikeLink>
         )}
@@ -105,15 +112,23 @@ export const IssueCommentPanel = ({
           <p>{formatDateForDisplayWithTime(comment.createdAt)}</p>
         </StyledCommentHeadingRow>
         <StyledCommentContent dangerouslySetInnerHTML={{ __html: comment.content }} />
-        {!isReplying && (
-          <StyledFlexContainer>
-            <IconButton onClick={handleTogglingReplying} iconName="reply">
-              {t('issuePage.comments.reply')}
-            </IconButton>
-          </StyledFlexContainer>
-        )}
+        <StyledFlexContainer>
+          <IconButton onClick={handleTogglingReplying} iconName="reply">
+            {t('issuePage.comments.reply')}
+          </IconButton>
+          {currentUser.id === comment.createdBy.id && (
+            <React.Fragment>
+              <IconButton onClick={rest.handleEditingComment} iconName="edit">
+                {t('general.edit')}
+              </IconButton>
+              <IconButton onClick={rest.handleConfirmingDelete} iconName="delete">
+                {t('general.delete')}
+              </IconButton>
+            </React.Fragment>
+          )}
+        </StyledFlexContainer>
       </StyledSingleCommentWrapper>
-      {renderReplyEditor()}
+      {renderEditor()}
       {renderReplies()}
     </StyledCommentWrapper>
   );

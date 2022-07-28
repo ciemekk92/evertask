@@ -15,6 +15,7 @@ type UserDetailsFullResponse = {
   refreshToken: string;
   accessToken: string;
   mfaEnabled: boolean;
+  organisationId: Nullable<Id>;
   message?: string;
   authorities: USER_ROLES[];
 } & User.UserFullInfo;
@@ -165,12 +166,14 @@ export const actionCreators = {
               authorities,
               message,
               refreshToken,
+              organisationId,
               ...rest
             }: UserDetailsFullResponse = await result.json();
             if (result.status === 200) {
               UserModel.currentUserSubject.next({
                 accessToken,
                 authorities,
+                organisationId,
                 ...rest
               });
 
@@ -181,7 +184,9 @@ export const actionCreators = {
                 }
               });
 
-              dispatch(projectActionCreators.getOrganisationsProjects());
+              if (organisationId) {
+                dispatch(projectActionCreators.getOrganisationsProjects());
+              }
 
               setTimeout(() => {
                 dispatch(actionCreators.refresh());
@@ -208,6 +213,7 @@ export const actionCreators = {
 
         currentUserSubject.next({
           ...json,
+          organisationId: currentUserValue.organisationId,
           mfaEnabled: currentUserValue.mfaEnabled,
           accessToken: currentUserValue.accessToken,
           authorities: currentUserValue.authorities

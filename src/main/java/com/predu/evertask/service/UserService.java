@@ -213,7 +213,7 @@ public class UserService implements UserDetailsService {
         if (query == null) {
             userList = userRepository.findUnassigned();
         } else {
-            userList = userRepository.findUnassignedByUsernameOrEmail(query, query);
+            userList = userRepository.findUnassignedByUsernameOrEmail(query);
         }
 
         return userList.stream()

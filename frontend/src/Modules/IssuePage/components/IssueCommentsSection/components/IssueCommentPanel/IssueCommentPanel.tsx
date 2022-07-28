@@ -20,9 +20,9 @@ import {
 interface Props {
   comment: Issue.IssueComment;
   issueId: Id;
-  handleShowingMoreComments: (commentId: Id) => VoidFunctionNoArgs;
+  handleShowingMoreComments: (comment: Issue.IssueComment) => VoidFunctionNoArgs;
   handleRefreshingComments: () => Promise<void>;
-  handleConfirmingDelete: VoidFunctionNoArgs;
+  handleConfirmingDelete: (id: Id) => () => Promise<void>;
   handleEditingComment: VoidFunctionNoArgs;
   isChildPanel?: boolean;
   isExpanded?: boolean;
@@ -82,7 +82,7 @@ export const IssueCommentPanel = ({
     if (isChildPanel && comment.firstReply.hasMoreReplies) {
       return (
         <StyledFlexColumnContainer>
-          <ButtonLikeLink onClick={rest.handleShowingMoreComments(comment.firstReply.id)}>
+          <ButtonLikeLink onClick={rest.handleShowingMoreComments(comment.firstReply)}>
             {t('issuePage.comments.showMore')}
           </ButtonLikeLink>
         </StyledFlexColumnContainer>
@@ -93,7 +93,7 @@ export const IssueCommentPanel = ({
       <StyledFlexColumnContainer>
         <IssueCommentPanel {...rest} comment={comment.firstReply} isChildPanel />
         {comment.hasMoreReplies && (
-          <ButtonLikeLink onClick={rest.handleShowingMoreComments(comment.id)}>
+          <ButtonLikeLink onClick={rest.handleShowingMoreComments(comment)}>
             {t('issuePage.comments.showMore')}
           </ButtonLikeLink>
         )}
@@ -121,7 +121,7 @@ export const IssueCommentPanel = ({
               <IconButton onClick={rest.handleEditingComment} iconName="edit">
                 {t('general.edit')}
               </IconButton>
-              <IconButton onClick={rest.handleConfirmingDelete} iconName="delete">
+              <IconButton onClick={rest.handleConfirmingDelete(comment.id)} iconName="delete">
                 {t('general.delete')}
               </IconButton>
             </React.Fragment>

@@ -29,27 +29,14 @@ export const IssueCommentsSection = ({
   const [commentBeingShown, setCommentBeingShown] =
     React.useState<Nullable<Issue.IssueComment>>(null);
 
-  const handleShowingMoreComments = (commentId: Id) => async (): Promise<void> => {
-    const result = await Api.get(`issues/${issueId}/comments/${commentId}/replies`);
+  const handleShowingMoreComments = (comment: Issue.IssueComment) => async (): Promise<void> => {
+    const result = await Api.get(`issues/${issueId}/comments/${comment.id}/replies`);
 
     if (result.status === 200) {
       const json = (await result.json()) as CommentsData;
-      let shownComment = issueComments.comments.find(
-        (value: Issue.IssueComment) => value.id === commentId
-      );
-
-      if (!shownComment) {
-        shownComment =
-          issueComments.comments.find(
-            (value) => value.firstReply && value.firstReply.id === commentId
-          )?.firstReply ?? undefined;
-      }
 
       setRepliesData(json);
-
-      if (shownComment) {
-        setCommentBeingShown(shownComment);
-      }
+      setCommentBeingShown(comment);
     }
   };
 
@@ -74,7 +61,7 @@ export const IssueCommentsSection = ({
       handleShowingMoreComments={handleShowingMoreComments}
       handleRefreshingComments={handleRefreshingComments}
       handleEditingComment={handleEditingComment}
-      handleConfirmingDelete={handleConfirmingDelete(value.id)}
+      handleConfirmingDelete={handleConfirmingDelete}
       key={value.id}
       comment={value}
       issueId={issueId}
@@ -88,13 +75,9 @@ export const IssueCommentsSection = ({
   };
 
   const handleGoingBack = async (): Promise<void> => {
-    if (commentBeingShown && commentBeingShown.parentId) {
-      await handleShowingMoreComments(commentBeingShown.parentId)();
-    } else {
-      setRepliesData(null);
-      setCommentBeingShown(null);
-      await handleRefreshingComments();
-    }
+    setRepliesData(null);
+    setCommentBeingShown(null);
+    await handleRefreshingComments();
   };
 
   const renderCommentForm = (): Nullable<JSX.Element> => {
@@ -117,7 +100,7 @@ export const IssueCommentsSection = ({
           comment={commentBeingShown}
           issueId={issueId}
           handleEditingComment={handleEditingComment}
-          handleConfirmingDelete={handleConfirmingDelete(commentBeingShown.id)}
+          handleConfirmingDelete={handleConfirmingDelete}
           handleShowingMoreComments={handleShowingMoreComments}
           handleRefreshingComments={handleRefreshingComments}
           isExpanded={!!repliesData}

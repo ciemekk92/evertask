@@ -348,7 +348,10 @@
       "addComment": "Add comment",
       "reply": "Reply",
       "showMore": "Show more replies",
-      "goBack": "Go back"
+      "goBack": "Go back",
+      "validation": {
+        "minLength": "Comment must have a value."
+      }
     }
   },
   "confirmationDialog": {

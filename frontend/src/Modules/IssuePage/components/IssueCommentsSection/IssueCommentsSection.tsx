@@ -26,7 +26,7 @@ export const IssueCommentsSection = ({
   const [commentBeingShown, setCommentBeingShown] =
     React.useState<Nullable<Issue.IssueComment>>(null);
 
-  const handleShowingMoreComments = (commentId: Id) => async () => {
+  const handleShowingMoreComments = (commentId: Id) => async (): Promise<void> => {
     const result = await Api.get(`issues/${issueId}/comments/${commentId}/replies`);
 
     if (result.status === 200) {

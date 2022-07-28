@@ -2,6 +2,7 @@ package com.predu.evertask.domain.mapper;
 
 import com.predu.evertask.domain.dto.issuecomment.IssueCommentDto;
 import com.predu.evertask.domain.dto.issuecomment.IssueCommentSaveDto;
+import com.predu.evertask.domain.dto.issuecomment.IssueCommentUpdateDto;
 import com.predu.evertask.domain.model.IssueComment;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.exception.NotFoundException;
@@ -38,6 +39,8 @@ public abstract class IssueCommentMapper {
 
     @Mapping(target = "parent", ignore = true)
     public abstract IssueComment issueCommentSaveDtoToIssueComment(IssueCommentSaveDto toSave);
+
+    public abstract IssueComment update(@MappingTarget IssueComment issue, IssueCommentUpdateDto toUpdate);
 
     @AfterMapping
     public void afterIssueCommentToIssueCommentDto(IssueComment source, @MappingTarget IssueCommentDto target) {

@@ -1,14 +1,8 @@
 package com.predu.evertask.service;
 
-import com.predu.evertask.domain.model.Issue;
-import com.predu.evertask.domain.model.Organisation;
-import com.predu.evertask.domain.model.Project;
-import com.predu.evertask.domain.model.User;
+import com.predu.evertask.domain.model.*;
 import com.predu.evertask.exception.NotFoundException;
-import com.predu.evertask.repository.IssueRepository;
-import com.predu.evertask.repository.OrganisationRepository;
-import com.predu.evertask.repository.ProjectRepository;
-import com.predu.evertask.repository.UserRepository;
+import com.predu.evertask.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -23,8 +17,8 @@ public class AuthenticatedUserService {
     private final UserRepository userRepository;
     private final OrganisationRepository organisationRepository;
     private final ProjectRepository projectRepository;
-
     private final IssueRepository issueRepository;
+    private final IssueCommentRepository issueCommentRepository;
 
     public boolean isOrganisationAdmin(UUID id) {
         String username = ((User) SecurityContextHolder
@@ -91,5 +85,19 @@ public class AuthenticatedUserService {
                         .getId()
                         .equals(value.getOrganisation().getId()))
                 .isPresent();
+    }
+
+    public boolean isCommentAuthor(UUID id) {
+
+        UUID userId = ((User) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal())
+                .getId();
+
+        IssueComment comment = issueCommentRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(IssueComment.class, id));
+
+        return comment.getCreatedBy().equals(userId);
     }
 }

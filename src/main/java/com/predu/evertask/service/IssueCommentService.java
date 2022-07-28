@@ -2,6 +2,7 @@ package com.predu.evertask.service;
 
 import com.predu.evertask.domain.dto.issuecomment.IssueCommentDto;
 import com.predu.evertask.domain.dto.issuecomment.IssueCommentSaveDto;
+import com.predu.evertask.domain.dto.issuecomment.IssueCommentUpdateDto;
 import com.predu.evertask.domain.dto.issuecomment.IssueCommentsPaginationDto;
 import com.predu.evertask.domain.mapper.IssueCommentMapper;
 import com.predu.evertask.domain.model.Issue;
@@ -67,5 +68,18 @@ public class IssueCommentService {
         issueCommentRepository.save(comment);
 
         return toSave;
+    }
+
+    public IssueComment update(UUID commentId, IssueCommentUpdateDto toUpdate) {
+
+        IssueComment comment = issueCommentRepository.findById(commentId)
+                .orElseThrow(() -> new NotFoundException(IssueComment.class, commentId));
+
+        return issueCommentRepository.save(issueCommentMapper.update(comment, toUpdate));
+    }
+
+    public void deleteById(UUID commentId) {
+
+        issueCommentRepository.deleteById(commentId);
     }
 }

@@ -42,11 +42,11 @@ export const IssueCommentsSection = ({
 
   const handleEditingComment = () => {};
 
-  const handleConfirmingDelete = (commentId: Id) => async () => {
+  const handleConfirmingDelete = (commentId: Id) => async (): Promise<void> => {
     await confirmationDialogConfig.handleOpen(CONFIRMATION_DIALOG_MODES.CONFIRM, { commentId });
   };
 
-  const handleDeletingComment = async () => {
+  const handleDeletingComment = async (): Promise<void> => {
     const dialogResult = await Api.delete(
       `issues/${issueId}/comments/${confirmationDialogConfig.params.commentId}`
     );

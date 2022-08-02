@@ -8,6 +8,7 @@ import {
   StyledSectionContainer,
   VerticalPageWrapper
 } from 'Shared/PageWrappers';
+import { StyledFlexContainer } from 'Shared/SharedStyles.styled';
 import { ApplicationState } from 'Stores/store';
 import { actionCreators, ProjectState } from 'Stores/Project';
 import { isDefined } from 'Utils/isDefined';
@@ -18,7 +19,6 @@ import {
   ProjectLastIssuesSection,
   ProjectSprintsSection
 } from './components';
-import { StyledHeaderWrapper } from './ProjectPage.styled';
 
 export const ProjectPage = (): Nullable<JSX.Element> => {
   const params = useParams<RouterParams>();
@@ -83,9 +83,9 @@ export const ProjectPage = (): Nullable<JSX.Element> => {
 
   return (
     <VerticalPageWrapper alignItems="unset">
-      <StyledHeaderWrapper>
+      <StyledFlexContainer>
         <Heading5>{projectState.selectedProject.name}</Heading5>
-      </StyledHeaderWrapper>
+      </StyledFlexContainer>
       <StyledHorizontalContainer>
         <StyledSectionContainer>
           {renderProjectInfo()}

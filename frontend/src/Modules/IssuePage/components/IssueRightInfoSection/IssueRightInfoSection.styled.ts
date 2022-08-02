@@ -1,8 +1,7 @@
 import styled from 'styled-components';
+import { StyledFlexContainerAlignCenter } from 'Shared/SharedStyles.styled';
 
-export const StyledUserContainer = styled.div`
-  display: flex;
-  align-items: center;
+export const StyledUserContainer = styled(StyledFlexContainerAlignCenter)`
   width: 50%;
 `;
 

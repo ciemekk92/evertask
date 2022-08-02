@@ -58,6 +58,7 @@ export const StyledEditorWrapper = styled.div`
 
     & .rdw-editor-toolbar {
       border: none;
+      border-bottom: 1px solid #cc8a22;
       background: ${(props) => props.theme.surfaceSecondary};
     }
 
@@ -78,6 +79,7 @@ export const StyledEditorWrapper = styled.div`
       &:active {
         box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.4);
         background-color: ${(props) => props.theme.primary};
+        color: ${(props) => props.theme.textOnPrimary};
       }
 
       & > img {
@@ -147,12 +149,18 @@ export const StyledEditorWrapper = styled.div`
 
     & .rdw-editor-main {
       height: 25rem;
-      padding: 1rem;
-      border-top: 1px solid ${(props) => props.theme.primary};
+      padding: 0 1rem;
       font-size: 1.6rem;
 
       & .DraftEditor-editorContainer {
         height: revert;
+      }
+    }
+
+    & .rdw-dropdown-selectedtext {
+      &:hover {
+        background: ${(props) => props.theme.primary};
+        color: ${(props) => props.theme.textOnPrimary};
       }
     }
 
@@ -163,7 +171,6 @@ export const StyledEditorWrapper = styled.div`
       transition: all 0.4s ease;
 
       &:hover {
-        background: ${(props) => props.theme.primary};
         box-shadow: revert;
       }
 
@@ -177,10 +184,7 @@ export const StyledEditorWrapper = styled.div`
         overflow-y: unset;
         border: none;
         box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.4);
-
-        &:hover {
-          box-shadow: revert;
-        }
+        width: 99%;
 
         & li {
           transition: all 0.4s ease;
@@ -192,6 +196,7 @@ export const StyledEditorWrapper = styled.div`
 
         & .rdw-dropdownoption-highlighted {
           background-color: ${(props) => props.theme.primary};
+          color: ${(props) => props.theme.textOnPrimary};
         }
       }
     }

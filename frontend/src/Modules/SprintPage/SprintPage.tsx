@@ -1,19 +1,16 @@
 import React from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
+import { DialogComponent, useDialog } from 'Hooks/useDialog';
 import { StyledHorizontalContainer, VerticalPageWrapper } from 'Shared/PageWrappers';
 import { Heading5 } from 'Shared/Typography';
+import { StyledFlexContainer } from 'Shared/SharedStyles.styled';
 import { ApplicationState } from 'Stores/store';
-import { isDefined } from 'Utils/isDefined';
 import { actionCreators, SprintState } from 'Stores/Sprint';
-import { DialogComponent, useDialog } from 'Hooks/useDialog';
+import { isDefined } from 'Utils/isDefined';
 import { SprintInfoSection } from './components';
 import { SprintDialog, SPRINT_DIALOG_MODES } from '../SprintDialog';
-import {
-  StyledHeaderWrapper,
-  StyledLargeSectionContainer,
-  StyledSmallSectionContainer
-} from './SprintPage.styled';
+import { StyledLargeSectionContainer, StyledSmallSectionContainer } from './SprintPage.styled';
 
 export const SprintPage = (): Nullable<JSX.Element> => {
   const dispatch = useDispatch();
@@ -48,9 +45,9 @@ export const SprintPage = (): Nullable<JSX.Element> => {
 
   return (
     <VerticalPageWrapper alignItems="unset">
-      <StyledHeaderWrapper>
+      <StyledFlexContainer>
         <Heading5>{`Sprint ${sprintState.selectedSprint.ordinal}`}</Heading5>
-      </StyledHeaderWrapper>
+      </StyledFlexContainer>
       <StyledHorizontalContainer>
         <StyledSmallSectionContainer>{renderSprintInfo()}</StyledSmallSectionContainer>
         <StyledLargeSectionContainer></StyledLargeSectionContainer>

@@ -4,7 +4,8 @@ import { StyledSectionHeaderRow, StyledSectionWrapper } from 'Shared/PageWrapper
 import { ProgressBar } from 'Shared/ProgressBar';
 import { Heading6 } from 'Shared/Typography';
 import { convertHoursToDayHours } from 'Utils/convertHoursToDayHours';
-import { TIME_TRACKING_COLORS, TimeTrackingData } from './fixtures';
+import { TimeTrackingData } from '../../fixtures';
+import { TIME_TRACKING_COLORS } from './fixtures';
 import { StyledFieldContainer, StyledTextContainer } from './IssueTimeTrackingSection.styled';
 
 interface Props {

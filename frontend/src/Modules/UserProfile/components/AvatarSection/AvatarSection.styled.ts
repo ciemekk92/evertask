@@ -2,11 +2,9 @@ import styled from 'styled-components';
 import { StyledButtonFilled } from 'Shared/Elements/Buttons/ButtonFilled/ButtonFilled.styled';
 import { StyledCircleContainer } from 'Shared/UserCircle/UserCircle.styled';
 import { StyledErrorField } from 'Shared/Elements/ErrorField/ErrorField';
+import { StyledFlexColumnContainerAlignCenter } from 'Shared/SharedStyles.styled';
 
-export const StyledAvatarSettingsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+export const StyledAvatarSettingsContainer = styled(StyledFlexColumnContainerAlignCenter)`
   width: 100%;
   height: max-content;
   padding: 2rem;
@@ -25,13 +23,10 @@ export const StyledAvatarSettingsContainer = styled.div`
 
 export const StyledAvatarDisclaimer = styled.p`
   font-size: 1.4rem;
+  text-align: center;
 `;
 
-export const StyledVerticalContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
+export const StyledVerticalContainer = styled(StyledFlexColumnContainerAlignCenter)`
   & ${StyledErrorField} {
     margin: 1rem 0;
   }

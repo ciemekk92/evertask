@@ -19,7 +19,7 @@ declare namespace User {
     email: string;
     bio: Nullable<string>;
     phoneNumber: Nullable<string>;
-    userSettings: UserSettings;
+    userSettings: User.UserSettings;
   }
 
   export type UserBasicEntity = IdentifiedEntity & UserBasicInfo;

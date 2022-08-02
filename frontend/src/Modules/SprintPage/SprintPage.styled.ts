@@ -2,10 +2,6 @@ import styled from 'styled-components';
 import { StyledSectionContainer } from 'Shared/PageWrappers';
 import { StyledInfoField, StyledInfoLabel } from 'Shared/Elements/InfoField/InfoField.styled';
 
-export const StyledHeaderWrapper = styled.div`
-  display: flex;
-`;
-
 export const StyledSmallSectionContainer = styled(StyledSectionContainer)`
   width: 28%;
 

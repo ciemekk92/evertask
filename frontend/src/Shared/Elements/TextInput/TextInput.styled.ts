@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { errorBorderCss } from 'Themes';
+import { StyledFlexContainerAlignCenter } from 'Shared/SharedStyles.styled';
 import { InputField } from './InputField';
 
 interface TextInputProps extends React.HTMLAttributes<HTMLInputElement> {}
@@ -23,9 +24,7 @@ export const TextInput = styled(InputField)<TextInputProps>`
   ${({ error }) => error && errorBorderCss}
 `;
 
-export const StyledReadonlyField = styled.div`
-  display: flex;
-  align-items: center;
+export const StyledReadonlyField = styled(StyledFlexContainerAlignCenter)`
   font-size: 1.6rem;
   height: 4.8rem;
   padding: calc(0.5rem + 1px) calc(1rem + 1px);

@@ -24,9 +24,12 @@ export const InviteMemberDialog = ({ handleClose, organisationId }: Props): JSX.
   const [userId, setUserId] = React.useState<Id>('');
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const getUnassignedUsers = (searchQuery?: string) => {
-    dispatch(organisationActionCreators.getUnassignedUsers(searchQuery));
-  };
+  const getUnassignedUsers = React.useCallback(
+    (searchQuery?: string) => {
+      dispatch(organisationActionCreators.getUnassignedUsers(searchQuery));
+    },
+    [dispatch]
+  );
 
   React.useEffect(() => {
     getUnassignedUsers();

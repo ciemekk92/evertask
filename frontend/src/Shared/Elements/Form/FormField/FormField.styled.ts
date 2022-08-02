@@ -1,13 +1,12 @@
 import styled from 'styled-components';
 import React from 'react';
+import { StyledFlexColumnContainer, StyledFlexContainer } from 'Shared/SharedStyles.styled';
 
 interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
   readonly alignItems?: string;
 }
 
-export const StyledFieldContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+export const StyledFieldContainer = styled(StyledFlexColumnContainer)`
   margin-bottom: 2rem;
 
   & input {
@@ -15,8 +14,7 @@ export const StyledFieldContainer = styled.div`
   }
 `;
 
-export const StyledLabelAndInputContainer = styled.div<ContainerProps>`
-  display: flex;
+export const StyledLabelAndInputContainer = styled(StyledFlexContainer)<ContainerProps>`
   align-items: ${({ alignItems }) => alignItems ?? 'baseline'};
 
   & input,
@@ -25,20 +23,14 @@ export const StyledLabelAndInputContainer = styled.div<ContainerProps>`
   }
 `;
 
-export const StyledChildrenContainer = styled.div`
+export const StyledChildrenContainer = styled(StyledFlexContainer)`
   width: 100%;
-  display: flex;
 
   & > div {
     &:not(:last-child) {
       margin-right: 1.5rem;
     }
   }
-`;
-
-export const StyledLabelContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
 `;
 
 export const StyledFormLabel = styled.strong`

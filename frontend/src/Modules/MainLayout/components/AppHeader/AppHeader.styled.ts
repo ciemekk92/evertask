@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { StyledFlexContainer } from 'Shared/SharedStyles.styled';
 
 export const HeaderBody = styled.nav`
   width: 100%;
@@ -18,7 +19,6 @@ export const HeaderBody = styled.nav`
   }
 `;
 
-export const LoginContainer = styled.div`
-  display: flex;
+export const LoginContainer = styled(StyledFlexContainer)`
   margin-left: auto;
 `;

@@ -20,6 +20,7 @@
     "submit": "Wyślij",
     "view": "Zobacz",
     "edit": "Edytuj",
+    "delete": "Usuń",
     "accept": "Zaakceptuj",
     "decline": "Odrzuć",
     "enable": "Włącz",
@@ -340,6 +341,17 @@
     },
     "description": {
       "title": "Opis"
+    },
+    "comments": {
+      "title": "Komentarze",
+      "noComments": "Brak komentarzy",
+      "addComment": "Dodaj komentarz",
+      "reply": "Odpowiedz",
+      "showMore": "Pokaż więcej odpowiedzi",
+      "goBack": "Wróć",
+      "validation": {
+        "minLength": "Komentarz musi mieć treść"
+      }
     }
   },
   "confirmationDialog": {

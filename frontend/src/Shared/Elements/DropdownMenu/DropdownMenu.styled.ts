@@ -3,6 +3,7 @@ import React from 'react';
 import { DROPDOWN_MENU_POSITION } from './fixtures';
 import { StyledIcon } from '../Icons/Shared.styled';
 import { StyledDropdownOption } from '../SingleSelectDropdown/SingleSelectDropdown.styled';
+import { StyledFlexColumnContainer, StyledFlexContainer } from 'Shared/SharedStyles.styled';
 
 interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
   readonly isOpen: boolean;
@@ -12,8 +13,7 @@ interface OptionsListProps extends React.HTMLAttributes<HTMLDivElement> {
   readonly position?: DROPDOWN_MENU_POSITION;
 }
 
-export const StyledDropdownContainer = styled.div<ContainerProps>`
-  display: flex;
+export const StyledDropdownContainer = styled(StyledFlexContainer)<ContainerProps>`
   position: relative;
   z-index: ${({ isOpen }) => (isOpen ? 10 : 5)};
 
@@ -24,10 +24,8 @@ export const StyledDropdownContainer = styled.div<ContainerProps>`
   }
 `;
 
-export const StyledDropdownOptionsList = styled.div<OptionsListProps>`
+export const StyledDropdownOptionsList = styled(StyledFlexColumnContainer)<OptionsListProps>`
   width: max-content;
-  display: flex;
-  flex-direction: column;
   position: absolute;
   top: 0;
   ${(props) => {

@@ -12,11 +12,12 @@ import java.util.Set;
 public class UserAuthDto extends UserDto {
 
     public UserAuthDto(UserDto userDto, String accessToken, String refreshToken,
-                       Set<Role> authorities, boolean mfaEnabled) {
+                       Set<Role> authorities, String organisationId, boolean mfaEnabled) {
         super(userDto);
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.mfaEnabled = mfaEnabled;
+        this.organisationId = organisationId;
         this.authorities = authorities
                 .stream()
                 .map(Role::getAuthority)
@@ -25,9 +26,10 @@ public class UserAuthDto extends UserDto {
 
     private String accessToken;
     private String refreshToken;
-
+    private String organisationId;
     private boolean mfaEnabled;
     private List<String> authorities;
+
 
     @Override
     public boolean equals(Object obj) {

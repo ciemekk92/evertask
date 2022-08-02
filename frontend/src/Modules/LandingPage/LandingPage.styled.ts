@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { StyledFlexContainerSpaceBetween } from 'Shared/SharedStyles.styled';
 
 export const LandingContainer = styled.section`
   display: flex;
@@ -12,9 +13,7 @@ export const LandingContainer = styled.section`
   box-shadow: 0.2rem 0.3rem 0.5rem rgba(0, 0, 0, 0.2);
 `;
 
-export const ButtonsContainer = styled.div`
-  display: flex;
+export const ButtonsContainer = styled(StyledFlexContainerSpaceBetween)`
   width: 30rem;
-  justify-content: space-between;
   margin-top: 2rem;
 `;

@@ -1,11 +1,12 @@
 import styled from 'styled-components';
+import {
+  StyledFlexColumnContainer,
+  StyledFlexColumnContainerAllCenter,
+  StyledFlexContainer
+} from 'Shared/SharedStyles.styled';
 
-export const StyledPageWrapper = styled.div`
+export const StyledPageWrapper = styled(StyledFlexColumnContainerAllCenter)`
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   padding: 3rem;
 
   & h5 {
@@ -19,8 +20,7 @@ export const StyledPageWrapper = styled.div`
   }
 `;
 
-export const StyledHorizontalContainer = styled.div`
-  display: flex;
+export const StyledHorizontalContainer = styled(StyledFlexContainer)`
   width: 100%;
   justify-content: space-evenly;
 
@@ -34,9 +34,7 @@ export const StyledHorizontalContainer = styled.div`
   }
 `;
 
-export const StyledFormContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+export const StyledFormContainer = styled(StyledFlexColumnContainer)`
   width: 50%;
 
   & form {
@@ -49,9 +47,7 @@ export const StyledFormContainer = styled.div`
   }
 `;
 
-export const StyledInvitationsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+export const StyledInvitationsContainer = styled(StyledFlexColumnContainer)`
   width: 50%;
 
   & > p {

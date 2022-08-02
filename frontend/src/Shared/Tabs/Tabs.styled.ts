@@ -1,14 +1,13 @@
 import styled from 'styled-components';
 import React from 'react';
 import { StyledButtonOutline } from 'Shared/Elements/Buttons/ButtonOutline/ButtonOutline.styled';
+import { StyledFlexColumnContainer } from 'Shared/SharedStyles.styled';
 
 interface MenuItemProps extends React.HTMLAttributes<HTMLLIElement> {
   readonly isActive: boolean;
 }
 
-export const StyledTabsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+export const StyledTabsContainer = styled(StyledFlexColumnContainer)`
   padding: 1rem;
 `;
 

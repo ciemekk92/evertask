@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 import { StyledIcon } from 'Shared/Elements/Icons/Shared.styled';
 import { StyledPriorityBadge } from '../PriorityBadge/PriorityBadge.styled';
+import { StyledFlexContainerAlignCenter } from '../SharedStyles.styled';
 
-export const StyledIssuePanel = styled.div`
-  display: flex;
-  align-items: center;
+export const StyledIssuePanel = styled(StyledFlexContainerAlignCenter)`
   padding: 0.6rem 1.2rem;
   background-color: ${(props) => props.theme.surfaceSecondary};
   border-radius: 0.3rem;
@@ -26,7 +25,5 @@ export const StyledIssuePanel = styled.div`
     transform: translateY(-0.2rem);
   }
 `;
-
-export const StyledCodeId = styled.strong``;
 
 export const StyledIssueName = styled.p``;

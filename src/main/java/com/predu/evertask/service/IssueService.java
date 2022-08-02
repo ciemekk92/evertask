@@ -131,13 +131,10 @@ public class IssueService {
     }
 
     public Issue update(UUID id, IssueUpdateDto toUpdate) {
-        Optional<Issue> optionalIssue = issueRepository.findById(id);
+        Issue issue = issueRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(Issue.class, id));
 
-        if (optionalIssue.isEmpty()) {
-            throw new NotFoundException(Issue.class, id);
-        }
-
-        Issue result = issueMapper.update(optionalIssue.get(), toUpdate);
+        Issue result = issueMapper.update(issue, toUpdate);
 
         return issueRepository.save(result);
     }

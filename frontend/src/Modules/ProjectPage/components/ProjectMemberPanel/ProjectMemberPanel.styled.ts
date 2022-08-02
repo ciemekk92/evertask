@@ -1,7 +1,7 @@
 import styled from 'styled-components';
+import { StyledFlexContainer } from 'Shared/SharedStyles.styled';
 
-export const StyledPanelContainer = styled.div`
-  display: flex;
+export const StyledPanelContainer = styled(StyledFlexContainer)`
   padding: 1rem;
 
   &:not(:last-child) {

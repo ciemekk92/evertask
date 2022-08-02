@@ -1,14 +1,15 @@
 package com.predu.evertask.domain.dto.issue;
 
 import com.predu.evertask.domain.dto.BaseDto;
+import com.predu.evertask.domain.dto.issuecomment.IssueCommentDto;
 import com.predu.evertask.domain.dto.project.ProjectInfoDto;
 import com.predu.evertask.domain.dto.sprint.SprintInfoDto;
 import com.predu.evertask.domain.dto.user.UserIssueDto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,5 +29,5 @@ public class IssueFullDto extends BaseDto {
     private UserIssueDto assignee;
     private UserIssueDto reporter;
     private SprintInfoDto sprint;
-    private Set<IssueDto> subtasks = new HashSet<>();
+    private List<IssueDto> subtasks = new ArrayList<>();
 }

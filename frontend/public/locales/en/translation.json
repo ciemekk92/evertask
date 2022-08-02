@@ -20,6 +20,7 @@
     "submit": "Submit",
     "view": "View",
     "edit": "Edit",
+    "delete": "Delete",
     "accept": "Accept",
     "decline": "Decline",
     "enable": "Enable",
@@ -340,6 +341,17 @@
     },
     "description": {
       "title": "Description"
+    },
+    "comments": {
+      "title": "Comments",
+      "noComments": "No comments yet",
+      "addComment": "Add comment",
+      "reply": "Reply",
+      "showMore": "Show more replies",
+      "goBack": "Go back",
+      "validation": {
+        "minLength": "Comment must have a value."
+      }
     }
   },
   "confirmationDialog": {

@@ -44,7 +44,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody @Valid AuthRequest request,
-                                                 HttpServletResponse response) throws InvalidMFACodeException {
+                                                 HttpServletResponse response) {
 
         Authentication authenticate = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
@@ -134,8 +134,9 @@ public class AuthController {
 
         UserDto userDto = userViewMapper.toUserDto(user);
         String newAccessToken = jwtTokenUtil.generateAccessToken(user, true);
+        String organisationId = user.getOrganisation() != null ? user.getOrganisation().getId().toString() : null;
 
-        UserAuthDto userAuthDto = new UserAuthDto(userDto, newAccessToken, refreshToken, user.getAuthorities(), user.isMfaEnabled());
+        UserAuthDto userAuthDto = new UserAuthDto(userDto, newAccessToken, refreshToken, user.getAuthorities(), organisationId, user.isMfaEnabled());
 
         return ResponseEntity.status(200).body(userAuthDto);
     }

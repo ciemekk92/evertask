@@ -1,13 +1,12 @@
 import React from 'react';
 import { ErrorMessage } from 'formik';
 import { TextInputErrorMessage } from 'Shared/Elements/TextInput';
-
+import { StyledFlexContainerSpaceBetween } from 'Shared/SharedStyles.styled';
 import {
   StyledChildrenContainer,
   StyledFieldContainer,
   StyledFormLabel,
   StyledLabelAndInputContainer,
-  StyledLabelContainer,
   StyledRequiredMark
 } from './FormField.styled';
 
@@ -23,11 +22,11 @@ export const FormField = ({ label, name, required, children, alignItems }: Props
   return (
     <StyledFieldContainer>
       <StyledLabelAndInputContainer alignItems={alignItems}>
-        <StyledLabelContainer>
+        <StyledFlexContainerSpaceBetween>
           <StyledFormLabel>
             {label} {required && <StyledRequiredMark>*</StyledRequiredMark>}
           </StyledFormLabel>
-        </StyledLabelContainer>
+        </StyledFlexContainerSpaceBetween>
         <StyledChildrenContainer>{children}</StyledChildrenContainer>
       </StyledLabelAndInputContainer>
       <ErrorMessage name={name}>

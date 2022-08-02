@@ -1,14 +1,11 @@
 import styled from 'styled-components';
+import { StyledFlexColumnContainerAlignCenter } from 'Shared/SharedStyles.styled';
 
 export const StyledDialogContent = styled.div`
   width: 70rem;
 `;
 
-export const StyledMessageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
+export const StyledMessageContainer = styled(StyledFlexColumnContainerAlignCenter)`
   & > p {
     font-size: 1.8rem;
     margin-bottom: 2rem;

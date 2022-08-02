@@ -1,18 +1,16 @@
 import React, { HTMLAttributes } from 'react';
 import styled, { css } from 'styled-components';
+import {
+  StyledFlexColumnContainer,
+  StyledFlexContainer,
+  StyledTextEllipsis
+} from 'Shared/SharedStyles.styled';
 
 interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   readonly isOpen: boolean;
 }
 
 const shouldRenderBorderRadius = (isOpen: boolean) => (isOpen ? '0' : '0.3rem');
-
-const EllipsisStyles = css`
-  text-align: left;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-`;
 
 const DropdownButtonStyles = css<{ disabled?: boolean } & React.HTMLAttributes<HTMLButtonElement>>`
   width: 100%;
@@ -24,7 +22,7 @@ const DropdownButtonStyles = css<{ disabled?: boolean } & React.HTMLAttributes<H
   border: none;
   cursor: pointer;
   transition: all 0.4s ease;
-  ${EllipsisStyles};
+  ${StyledTextEllipsis};
 
   &:hover {
     background-color: ${(props) => (props.disabled ? props.theme.disabled : props.theme.primary)};
@@ -32,8 +30,7 @@ const DropdownButtonStyles = css<{ disabled?: boolean } & React.HTMLAttributes<H
   }
 `;
 
-export const StyledDropdownContainer = styled.div`
-  display: flex;
+export const StyledDropdownContainer = styled(StyledFlexContainer)`
   position: relative;
   width: 20rem;
   margin-right: 1rem;
@@ -55,13 +52,11 @@ export const StyledDropdownButton = styled.button<ButtonProps>`
 `;
 
 export const StyledDropdownLabelContainer = styled.div`
-  ${EllipsisStyles};
+  ${StyledTextEllipsis};
 `;
 
-export const StyledDropdownOptionsList = styled.div`
+export const StyledDropdownOptionsList = styled(StyledFlexColumnContainer)`
   width: 100%;
-  display: flex;
-  flex-direction: column;
   position: absolute;
   top: 3rem;
   left: 0;

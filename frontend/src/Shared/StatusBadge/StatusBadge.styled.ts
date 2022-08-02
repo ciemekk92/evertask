@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import React from 'react';
 import { ISSUE_STATUS } from '../constants';
+import { StyledBadge, StyledFlexContainerAllCenter } from '../SharedStyles.styled';
 
 interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
   readonly status: ISSUE_STATUS;
@@ -18,18 +19,9 @@ const getBadgeColor = (status: ISSUE_STATUS): string => {
   }[status];
 };
 
-export const StyledStatusBadge = styled.div<BadgeProps>`
-  display: flex;
+export const StyledStatusBadge = styled(StyledFlexContainerAllCenter)<BadgeProps>`
+  ${StyledBadge};
   width: 9.6rem;
-  height: 2rem;
-  padding: 0.3rem 0.5rem;
-  font-weight: 600;
-  font-size: 1rem;
-  justify-content: center;
-  align-items: center;
-  cursor: default;
-  border-radius: 0.3rem;
-  box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.4);
   background-color: ${(props) => getBadgeColor(props.status)};
   color: ${(props) => props.theme.textOnPrimary};
 `;

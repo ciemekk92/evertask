@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { FormikRadioField } from './FormikRadioField';
+import { StyledFlexContainerAlignCenter } from 'Shared/SharedStyles.styled';
 
 interface CheckProps extends React.HTMLAttributes<HTMLDivElement> {
   readonly disabled?: boolean;
@@ -31,10 +32,8 @@ export const StyledCheck = styled.div<CheckProps>`
   }
 `;
 
-export const StyledContainer = styled.div`
+export const StyledContainer = styled(StyledFlexContainerAlignCenter)`
   position: relative;
-  display: flex;
-  align-items: center;
   min-width: 13rem;
   height: 4rem;
 

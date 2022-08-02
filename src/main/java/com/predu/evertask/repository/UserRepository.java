@@ -29,11 +29,12 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @Query(value = "SELECT * FROM users u " +
             "INNER JOIN user_roles ur ON u.id = ur.user_id " +
             "INNER JOIN roles r ON ur.role_id = r.id " +
-            "WHERE (u.username ~ ?1 OR u.email ~ ?2) AND r.authority = 'ROLE_UNASSIGNED_USER' " +
+            "WHERE (u.username ~ ?1 OR u.email ~ ?1 OR u.first_name ~ ?1 OR u.last_name ~ ?1) " +
+            "AND r.authority = 'ROLE_UNASSIGNED_USER' " +
             "AND u.id NOT IN " +
             "(SELECT DISTINCT oi.user_id " +
             "FROM organisation_invitations oi)", nativeQuery = true)
-    List<User> findUnassignedByUsernameOrEmail(String username, String email);
+    List<User> findUnassignedByUsernameOrEmail(String username);
 
     @Query(value = "SELECT * FROM users u " +
             "INNER JOIN user_roles ur ON u.id = ur.user_id " +

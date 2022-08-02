@@ -2,13 +2,14 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { shallowEqual, useSelector } from 'react-redux';
 import { SingleSelectDropdown } from 'Shared/Elements/SingleSelectDropdown';
+import { CURRENT_PROJECT_KEY } from 'Shared/constants';
+import { StyledFlexContainerAlignCenter } from 'Shared/SharedStyles.styled';
 import { ApplicationState } from 'Stores/store';
 import { Project } from 'Types/Project';
 import { CurrentProjectModel } from 'Models/CurrentProjectModel';
-import { StyledFieldContainer, StyledLabel } from './CurrentProjectField.styled';
-import { CURRENT_PROJECT_KEY } from '../../Shared/constants';
+import { StyledLabel } from './CurrentProjectField.styled';
 
-export const CurrentProjectField = () => {
+export const CurrentProjectField = (): Nullable<JSX.Element> => {
   const [currentProjectValue, setCurrentProjectValue] = React.useState<Id>('');
   const { t } = useTranslation();
   const organisationProjects = useSelector(
@@ -26,7 +27,11 @@ export const CurrentProjectField = () => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [CurrentProjectModel.currentProject]);
+  }, []);
+
+  if (!organisationProjects.length) {
+    return null;
+  }
 
   const handleSelectingCurrentProject = (value: Nullable<string>) => {
     const project = organisationProjects.find(
@@ -46,13 +51,13 @@ export const CurrentProjectField = () => {
   }));
 
   return (
-    <StyledFieldContainer>
+    <StyledFlexContainerAlignCenter>
       <StyledLabel>{t('header.currentProject')}</StyledLabel>
       <SingleSelectDropdown
         options={mappedProjects}
         value={currentProjectValue}
         onChange={handleSelectingCurrentProject}
       />
-    </StyledFieldContainer>
+    </StyledFlexContainerAlignCenter>
   );
 };

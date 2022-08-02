@@ -4,6 +4,7 @@ import { Form } from 'Shared/Elements/Form';
 import { StyledLinkButton } from 'Shared/Elements/Buttons/ButtonLikeLink/ButtonLikeLink.styled';
 import {
   StyledFlexColumnContainer,
+  StyledFlexContainer,
   StyledFlexContainerAlignCenter,
   StyledFlexContainerSpaceBetween
 } from 'Shared/SharedStyles.styled';
@@ -43,6 +44,10 @@ export const StyledSingleCommentWrapper = styled(StyledFlexColumnContainer)<Wrap
   background-color: ${(props) => props.theme.surfaceSecondary};
   padding: 1rem;
   border-radius: 0.3rem;
+
+  & ${StyledFlexContainer}:last-child {
+    margin-bottom: 0.6rem;
+  }
 `;
 
 export const StyledCommentHeadingRow = styled(StyledFlexContainerSpaceBetween)`

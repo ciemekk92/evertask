@@ -149,7 +149,7 @@ export const StyledEditorWrapper = styled.div`
 
     & .rdw-editor-main {
       height: 25rem;
-      padding: 1rem;
+      padding: 0 1rem;
       font-size: 1.6rem;
 
       & .DraftEditor-editorContainer {

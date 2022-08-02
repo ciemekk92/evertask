@@ -11,12 +11,15 @@ import { StyledButtonsContainer } from './IssueCommentForm.styled';
 interface Props {
   onClose: (e: React.MouseEvent) => void;
   onSubmit: (values: CommentFormData) => Promise<void>;
+  initialFormData?: CommentFormData;
 }
 
-export const IssueCommentForm = ({ onClose, onSubmit }: Props): JSX.Element => {
+export const IssueCommentForm = ({
+  onClose,
+  onSubmit,
+  initialFormData = { content: '' }
+}: Props): JSX.Element => {
   const { t } = useTranslation();
-  const [initialData, setInitialData] = React.useState<CommentFormData>({ content: '' });
-
   const validationSchema = Yup.object().shape({
     content: Yup.string().min(9, t('issuePage.comments.validation.minLength'))
   });
@@ -25,7 +28,7 @@ export const IssueCommentForm = ({ onClose, onSubmit }: Props): JSX.Element => {
     <Formik
       validateOnMount
       validationSchema={validationSchema}
-      initialValues={initialData}
+      initialValues={initialFormData}
       onSubmit={onSubmit}
       enableReinitialize
     >

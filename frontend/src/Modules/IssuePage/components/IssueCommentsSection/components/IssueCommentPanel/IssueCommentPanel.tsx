@@ -9,6 +9,7 @@ import { Api } from 'Utils/Api';
 import { formatDateForDisplayWithTime } from 'Utils/formatDate';
 import { IssueCommentForm } from '..';
 import { CommentFormData } from '../../../../fixtures';
+import { COMMENT_MODE } from './fixtures';
 import {
   StyledCommentContent,
   StyledCommentHeadingRow,
@@ -38,6 +39,8 @@ export const IssueCommentPanel = ({
 }: Props): JSX.Element => {
   const { t } = useTranslation();
   const [isEditorOpen, setIsEditorOpen] = React.useState<boolean>(false);
+  const [commentMode, setCommentMode] = React.useState<COMMENT_MODE>(COMMENT_MODE.REPLY);
+
   const userFullName = React.useMemo(
     () => `${comment.createdBy.firstName} ${comment.createdBy.lastName}`,
     [comment]
@@ -45,18 +48,27 @@ export const IssueCommentPanel = ({
 
   const currentUser = UserModel.currentUserValue;
 
-  const handleTogglingReplying = (e: React.MouseEvent): void => {
-    e.preventDefault();
-    setIsEditorOpen(!isEditorOpen);
-  };
+  const handleTogglingEditor =
+    (mode: COMMENT_MODE) =>
+    (e: React.MouseEvent): void => {
+      e.preventDefault();
+      setCommentMode(mode);
+      setIsEditorOpen(!isEditorOpen);
+    };
 
-  const handleSubmittingReply = async (values: CommentFormData) => {
-    const result = await Api.post(`issues/${rest.issueId}/comments`, {
-      ...values,
-      parentId: comment.id
-    });
+  const handleSubmitting = (mode: COMMENT_MODE) => async (values: CommentFormData) => {
+    let result: Response;
 
-    if (result.status === 200) {
+    if (mode === COMMENT_MODE.REPLY) {
+      result = await Api.post(`issues/${rest.issueId}/comments`, {
+        ...values,
+        parentId: comment.id
+      });
+    } else {
+      result = await Api.put(`issues/${rest.issueId}/comments/${comment.id}`, { ...values });
+    }
+
+    if ([200, 204].includes(result.status)) {
       await rest.handleRefreshingComments();
       setIsEditorOpen(false);
     }
@@ -67,9 +79,16 @@ export const IssueCommentPanel = ({
       return null;
     }
 
+    const initialEditorData: CommentFormData | undefined =
+      commentMode === COMMENT_MODE.EDIT ? { content: comment.content } : undefined;
+
     return (
       <StyledFlexColumnContainer>
-        <IssueCommentForm onClose={handleTogglingReplying} onSubmit={handleSubmittingReply} />
+        <IssueCommentForm
+          initialFormData={initialEditorData}
+          onClose={handleTogglingEditor(commentMode)}
+          onSubmit={handleSubmitting(commentMode)}
+        />
       </StyledFlexColumnContainer>
     );
   };
@@ -113,12 +132,12 @@ export const IssueCommentPanel = ({
         </StyledCommentHeadingRow>
         <StyledCommentContent dangerouslySetInnerHTML={{ __html: comment.content }} />
         <StyledFlexContainer>
-          <IconButton onClick={handleTogglingReplying} iconName="reply">
+          <IconButton onClick={handleTogglingEditor(COMMENT_MODE.REPLY)} iconName="reply">
             {t('issuePage.comments.reply')}
           </IconButton>
           {currentUser.id === comment.createdBy.id && (
             <React.Fragment>
-              <IconButton onClick={rest.handleEditingComment} iconName="edit">
+              <IconButton onClick={handleTogglingEditor(COMMENT_MODE.EDIT)} iconName="edit">
                 {t('general.edit')}
               </IconButton>
               <IconButton onClick={rest.handleConfirmingDelete(comment.id)} iconName="delete">

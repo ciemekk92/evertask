@@ -5,8 +5,9 @@ import com.predu.evertask.domain.dto.issue.IssueDto;
 import com.predu.evertask.domain.dto.issue.IssueFullDto;
 import com.predu.evertask.domain.dto.issue.IssueSaveDto;
 import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
-import com.predu.evertask.domain.dto.issuecomment.IssueCommentDto;
 import com.predu.evertask.domain.model.Issue;
+import com.predu.evertask.domain.model.Sprint;
+import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.IssueRepository;
 import com.predu.evertask.repository.ProjectRepository;
 import com.predu.evertask.repository.SprintRepository;
@@ -17,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
+import java.util.UUID;
 
 @Mapper(uses = {UUIDMapper.class, ImageMapper.class},
         componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -86,6 +87,11 @@ public abstract class IssueMapper {
 
         if (issueSaveDto.getSprintId() == null) {
             issue.setSprint(null);
+        } else {
+            Sprint sprint = sprintRepository.findById(UUID.fromString(issueSaveDto.getSprintId()))
+                    .orElseThrow(() -> new NotFoundException(Sprint.class, issueSaveDto.getSprintId()));
+
+            issue.setSprint(sprint);
         }
 
         if (issueSaveDto.getParentId() != null) {

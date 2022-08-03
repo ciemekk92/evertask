@@ -2,14 +2,20 @@ package com.predu.evertask.domain.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,21 +24,31 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = "users")
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class User implements UserDetails, Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id", insertable = false, updatable = false, nullable = false)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", insertable = false, updatable = false, nullable = false)
     private UUID id;
 
+    @CreatedDate
     private Date createdAt;
+
+    @LastModifiedDate
     private Date updatedAt;
 
     @Column(unique = true)
     @Length(min = 6)
     private String username;
 
+    @NotAudited
     @Length(min = 8)
     private String password;
 
@@ -51,7 +67,11 @@ public class User implements UserDetails, Serializable {
     private String phoneNumber;
 
     private String bio;
+
+    @NotAudited
     private String refreshToken;
+
+    @NotAudited
     private Date refreshTokenExpiryDate;
 
     private boolean locked;
@@ -59,15 +79,19 @@ public class User implements UserDetails, Serializable {
     private boolean enabled;
     private boolean verified;
 
+    @NotAudited
     @NotNull
     private boolean mfaEnabled;
 
+    @NotAudited
     private String secret;
 
+    @NotAudited
     @OneToOne
     @JoinColumn(name = "user_settings_id")
     private UserSettings userSettings;
 
+    @NotAudited
     @ManyToOne
     @JoinColumn(name = "avatar_id")
     private Image avatar;
@@ -78,6 +102,7 @@ public class User implements UserDetails, Serializable {
     @OneToMany(mappedBy = "reporter")
     private Set<Issue> reportedIssues = new HashSet<>();
 
+    @NotAudited
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -88,9 +113,11 @@ public class User implements UserDetails, Serializable {
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
 
+    @NotAudited
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private Set<OrganisationInvitation> organisationInvitations = new HashSet<>();
 
+    @NotAudited
     @ManyToMany
     @JoinTable(name = "user_projects",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -110,15 +137,5 @@ public class User implements UserDetails, Serializable {
     @Override
     public boolean isCredentialsNonExpired() {
         return enabled;
-    }
-
-    @PrePersist
-    void prePersist() {
-        createdAt = Date.from(Instant.now());
-    }
-
-    @PreUpdate
-    void preUpdate() {
-        updatedAt = Date.from(Instant.now());
     }
 }

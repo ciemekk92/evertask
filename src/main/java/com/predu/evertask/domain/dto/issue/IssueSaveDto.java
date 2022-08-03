@@ -1,6 +1,7 @@
 package com.predu.evertask.domain.dto.issue;
 
 import com.predu.evertask.annotation.RequiredWhenStatus;
+import com.predu.evertask.annotation.UUID;
 import com.predu.evertask.domain.dto.BaseDto;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -30,10 +31,16 @@ public class IssueSaveDto extends BaseDto {
     private String priority;
 
     @NotBlank
+    @UUID
     private String projectId;
 
+    @UUID
     private String parentId;
+
+    @UUID
     private String assigneeId;
+
+    @UUID
     private String sprintId;
 
     private List<IssueSaveDto> subtasks = new ArrayList<>();

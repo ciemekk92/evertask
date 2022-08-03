@@ -5,12 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
@@ -23,13 +28,18 @@ import java.util.UUID;
 public class BaseEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id", insertable = false, updatable = false, nullable = false)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )    @Column(name="id", insertable = false, updatable = false, nullable = false)
     private UUID id;
 
     @Column(updatable = false)
+    @CreatedDate
     private Date createdAt;
 
+    @LastModifiedDate
     private Date updatedAt;
 
     @CreatedBy
@@ -38,14 +48,4 @@ public class BaseEntity implements Serializable {
 
     @LastModifiedBy
     private UUID modifiedBy;
-
-    @PrePersist
-    void prePersist() {
-        createdAt = Date.from(Instant.now());
-    }
-
-    @PreUpdate
-    void preUpdate() {
-        updatedAt = Date.from(Instant.now());
-    }
 }

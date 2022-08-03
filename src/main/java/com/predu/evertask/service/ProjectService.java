@@ -114,7 +114,7 @@ public class ProjectService {
             sprintToMoveTo = sprintRepository.findById(UUID.fromString(dto.getSprintIdToMoveTo()));
         }
 
-        Set<Issue> sprintIssues = sprint.getIssues();
+        List<Issue> sprintIssues = sprint.getIssues();
         for (Issue issue : sprintIssues) {
             issue.setSprint(sprintToMoveTo.orElse(null));
         }

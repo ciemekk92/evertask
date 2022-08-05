@@ -1,10 +1,8 @@
 package com.predu.evertask.domain.mapper;
 
 import com.predu.evertask.annotation.IncludeBeforeMapping;
-import com.predu.evertask.domain.dto.issue.IssueDto;
-import com.predu.evertask.domain.dto.issue.IssueFullDto;
-import com.predu.evertask.domain.dto.issue.IssueSaveDto;
-import com.predu.evertask.domain.dto.issue.IssueUpdateDto;
+import com.predu.evertask.domain.dto.issue.*;
+import com.predu.evertask.domain.history.IssueHistory;
 import com.predu.evertask.domain.model.Issue;
 import com.predu.evertask.domain.model.Sprint;
 import com.predu.evertask.exception.NotFoundException;
@@ -20,7 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.UUID;
 
-@Mapper(uses = {UUIDMapper.class, ImageMapper.class},
+@Mapper(uses = {UUIDMapper.class, ImageMapper.class, RevisionTypeMapper.class},
         componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public abstract class IssueMapper {
 
@@ -57,6 +55,8 @@ public abstract class IssueMapper {
 
     @InheritInverseConfiguration(name = "issueSaveDtoToIssue")
     public abstract IssueSaveDto issueToIssueSaveDto(Issue issue);
+
+    public abstract IssueHistoryDto issueHistoryToIssueHistoryDto(IssueHistory issueHistory);
 
     @Mapping(source = "project.id", target = "projectId")
     @Mapping(source = "sprint.id", target = "sprintId")

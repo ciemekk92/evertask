@@ -1,7 +1,7 @@
 package com.predu.evertask.repository;
 
-import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.domain.model.User;
+import com.predu.evertask.exception.NotFoundException;
 import lombok.NonNull;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -23,6 +23,10 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     <S extends User> S save(S entity);
 
     Optional<User> findById(UUID id);
+
+    Optional<User> findByReportedIssuesId(UUID id);
+
+    Optional<User> findByAssignedIssuesId(UUID id);
 
     Optional<User> findByRefreshToken(String token);
 

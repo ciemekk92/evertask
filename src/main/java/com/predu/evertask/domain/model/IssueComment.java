@@ -2,6 +2,9 @@ package com.predu.evertask.domain.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.envers.AuditOverride;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -13,6 +16,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "issue_comments")
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+@AuditOverride(forClass = BaseEntity.class)
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class IssueComment extends BaseEntity {

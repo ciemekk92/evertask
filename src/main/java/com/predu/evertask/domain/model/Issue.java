@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import org.hibernate.envers.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -20,11 +21,15 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "issues")
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+@AuditOverride(forClass = BaseEntity.class)
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Issue extends BaseEntity {
 
+    @NotAudited
     private Integer key;
+
     private String title;
     private String description;
 
@@ -54,6 +59,7 @@ public class Issue extends BaseEntity {
     @JoinColumn(name = "parent_id")
     private Issue parentIssue;
 
+    @NotAudited
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;

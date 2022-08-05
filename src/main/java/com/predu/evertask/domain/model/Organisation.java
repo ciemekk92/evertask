@@ -2,6 +2,10 @@ package com.predu.evertask.domain.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.envers.AuditOverride;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -12,6 +16,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+@AuditOverride(forClass = BaseEntity.class)
 @Table(name = "organisations")
 @EntityListeners(AuditingEntityListener.class)
 public class Organisation extends BaseEntity {
@@ -24,9 +30,11 @@ public class Organisation extends BaseEntity {
     @OneToMany(mappedBy = "organisation")
     private Set<User> members = new HashSet<>();
 
+    @NotAudited
     @OneToMany(mappedBy = "organisation", cascade = CascadeType.REMOVE)
     private Set<OrganisationInvitation> organisationInvitations = new HashSet<>();
 
+    @NotAudited
     @OneToMany(cascade = CascadeType.MERGE, orphanRemoval = true)
     @JoinTable(
         name = "organisation_admins",

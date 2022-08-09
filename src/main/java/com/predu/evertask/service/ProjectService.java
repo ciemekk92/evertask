@@ -5,6 +5,7 @@ import com.predu.evertask.domain.dto.project.ProjectDto;
 import com.predu.evertask.domain.dto.project.ProjectUpdateDto;
 import com.predu.evertask.domain.dto.sprint.EndSprintDto;
 import com.predu.evertask.domain.dto.sprint.StartSprintDto;
+import com.predu.evertask.domain.enums.IssueStatus;
 import com.predu.evertask.domain.mapper.ProjectMapper;
 import com.predu.evertask.domain.model.*;
 import com.predu.evertask.exception.InvalidOperationException;
@@ -116,7 +117,9 @@ public class ProjectService {
 
         List<Issue> sprintIssues = sprint.getIssues();
         for (Issue issue : sprintIssues) {
-            issue.setSprint(sprintToMoveTo.orElse(null));
+            if (issue.getStatus() != IssueStatus.ACCEPTED)  {
+                issue.setSprint(sprintToMoveTo.orElse(null));
+            }
         }
 
         issueRepository.saveAll(sprintIssues);

@@ -354,6 +354,9 @@
       }
     }
   },
+  "statistics": {
+    "title": "Statistics"
+  },
   "confirmationDialog": {
     "header": "Are you sure?"
   },

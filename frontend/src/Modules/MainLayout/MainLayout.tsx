@@ -26,6 +26,7 @@ import { INTERFACE_LANGUAGE, NOTIFICATION_TYPES } from 'Shared/constants';
 import { actionCreators } from 'Stores/User';
 import { PermissionCheck } from 'Utils/PermissionCheck';
 import { AppHeader, AppMainWindow, AppSidebar } from './components';
+import { Statistics } from '../Statistics';
 
 export const MainLayout = (): JSX.Element => {
   const [currentUser, setCurrentUser] = React.useState<IUserModel>({
@@ -79,6 +80,7 @@ export const MainLayout = (): JSX.Element => {
             <Route path={'/board'} element={<Board />} />
             <Route path={'/backlog'} element={<Backlog />} />
             <Route path={'/organisation'} element={<OrganisationPage />} />
+            <Route path={'/statistics'} element={<Statistics />} />
             <Route path={'/profile'} element={<UserProfile />} />
           </ReactRoutes>
         </GlobalErrorBoundary>

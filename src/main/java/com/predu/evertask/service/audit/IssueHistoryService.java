@@ -45,19 +45,40 @@ public class IssueHistoryService implements AbstractHistoryService<IssueHistory>
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+    public List<IssueHistory> findRevisionsBySprintId(UUID sprintId) {
+
+        AuditReader auditReader = AuditReaderFactory.get(entityManager);
+
+        AuditQuery auditQuery = auditReader.createQuery()
+                .forRevisionsOfEntity(Issue.class, false, false)
+                .add(AuditEntity.property("sprintId").eq(sprintId));
+
+        return AuditQueryUtils.getAuditQueryResults(auditQuery, Issue.class)
+                .stream()
+                .map(this::getIssueHistory)
+                .toList();
+    }
+
     private IssueHistory getIssueHistory(AuditQueryResult<Issue> auditQueryResult) {
         Issue issue = auditQueryResult.getEntity();
         issue.setSprint(sprintRepository
                 .findByIssuesId(issue.getId())
                 .orElse(null));
 
-        issue.setReporter(userRepository.findByReportedIssuesId(issue.getId()).orElse(null));
-        issue.setAssignee(userRepository.findByAssignedIssuesId(issue.getId()).orElse(null));
+        issue.setReporter(userRepository
+                .findByReportedIssuesId(issue.getId())
+                .orElse(null));
+
+        issue.setAssignee(userRepository
+                .findByAssignedIssuesId(issue.getId())
+                .orElse(null));
 
         return new IssueHistory(
                 issue,
                 auditQueryResult.getRevision().getId(),
-                auditQueryResult.getType()
+                auditQueryResult.getType(),
+                auditQueryResult.getRevision().getRevisionDate()
         );
     }
 }

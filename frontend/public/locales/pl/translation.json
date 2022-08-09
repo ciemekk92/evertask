@@ -354,6 +354,9 @@
       }
     }
   },
+  "statistics": {
+    "title": "Statystyki"
+  },
   "confirmationDialog": {
     "header": "Na pewno?"
   },

@@ -78,6 +78,7 @@ export const SprintDialog = ({ mode, handleClose, projectId, sprintId }: Props):
       if ([201, 204].includes(result.status)) {
         handleClose();
         dispatch(projectActionCreators.getSprints(projectId));
+        dispatch(projectActionCreators.getNotCompletedSprints(projectId));
         sprintId && dispatch(sprintActionCreators.getSelectedSprint(sprintId));
       }
     }

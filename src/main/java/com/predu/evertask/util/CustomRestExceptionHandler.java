@@ -1,9 +1,6 @@
 package com.predu.evertask.util;
 
-import com.predu.evertask.exception.InvalidMFACodeException;
-import com.predu.evertask.exception.InvalidOperationException;
-import com.predu.evertask.exception.InvalidTokenException;
-import com.predu.evertask.exception.NotFoundException;
+import com.predu.evertask.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -52,6 +49,14 @@ public class CustomRestExceptionHandler {
     @ExceptionHandler(InvalidOperationException.class)
     public ResponseEntity<RestMessage> handleInvalidOperationException(InvalidOperationException ex, Locale locale) {
         String message = messageSource.getMessage("message.operation." + ex.getMessage(), null, locale);
+
+        return new ResponseEntity<>(new RestMessage(message), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NoChartsDataException.class)
+    public ResponseEntity<RestMessage> handleNoChartsDataException(NoChartsDataException ex, Locale locale) {
+
+        String message = messageSource.getMessage("message.charts." + ex.getMessage(), null, locale);
 
         return new ResponseEntity<>(new RestMessage(message), HttpStatus.BAD_REQUEST);
     }

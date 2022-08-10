@@ -7,8 +7,8 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @SuperBuilder
-public class BurndownChartPointDto extends ChartPointBaseDto {
+public class VelocityChartPointDto extends ChartPointBaseDto {
 
-    private Double remaining;
-    private Double trend;
+    private Double commitment;
+    private Double completed;
 }

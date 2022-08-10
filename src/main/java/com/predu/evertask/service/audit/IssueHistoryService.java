@@ -52,7 +52,7 @@ public class IssueHistoryService implements AbstractHistoryService<IssueHistory>
 
         AuditQuery auditQuery = auditReader.createQuery()
                 .forRevisionsOfEntity(Issue.class, false, false)
-                .add(AuditEntity.property("sprintId").eq(sprintId));
+                .add(AuditEntity.property("sprint_id").eq(sprintId));
 
         return AuditQueryUtils.getAuditQueryResults(auditQuery, Issue.class)
                 .stream()

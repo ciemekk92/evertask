@@ -129,7 +129,7 @@ export const actionCreators = {
     async (dispatch, getState) => {
       const appState = getState();
 
-      if (appState && appState.project) {
+      if (appState && appState.project && id.length) {
         const result = await Api.get(`projects/${id}/sprints`);
 
         if (result.status === 200) {

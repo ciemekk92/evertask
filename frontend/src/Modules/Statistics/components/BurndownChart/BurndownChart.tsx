@@ -11,21 +11,16 @@ import {
   XAxis,
   YAxis
 } from 'recharts';
+import { BurndownChartData } from '../../fixtures';
 import { StyledChartContainer } from '../Shared.styled';
 
 interface Props {
   sprintId: Id;
 }
 
-interface BurndownPoint {
-  name: string;
-  remaining: number;
-  trend: number;
-}
-
 export const BurndownChart = ({ sprintId }: Props): JSX.Element => {
   const { t } = useTranslation();
-  const [chartData, setChartData] = React.useState<BurndownPoint[]>([]);
+  const [chartData, setChartData] = React.useState<BurndownChartData[]>([]);
 
   React.useEffect(() => {
     Api.get(`statistics/burndown/${sprintId}`)

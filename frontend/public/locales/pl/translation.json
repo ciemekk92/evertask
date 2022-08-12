@@ -51,6 +51,7 @@
     "cancel": "Anuluj",
     "change": "Zmień",
     "code": "Kod autentykatora",
+    "days": "Dni",
     "decline": "Odrzuć",
     "delete": "Usuń",
     "disable": "Wyłącz",
@@ -415,6 +416,7 @@
     }
   },
   "statistics": {
+    "averageAgeChart": "Średni wiek zadań",
     "burndownChart": "Wykres burndown",
     "createdVsResolvedChart": "Stworzone vs rozwiązane",
     "selectSprint": "Wybierz sprint",

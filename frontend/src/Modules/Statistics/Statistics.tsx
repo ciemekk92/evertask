@@ -10,7 +10,12 @@ import { StyledFlexContainer } from 'Shared/SharedStyles.styled';
 import { ApplicationState } from 'Stores/store';
 import { actionCreators } from 'Stores/Project';
 import { Sprint } from 'Types/Sprint';
-import { BurndownChart, CreatedVsResolvedChart, VelocityChart } from './components';
+import {
+  AverageAgeChart,
+  BurndownChart,
+  CreatedVsResolvedChart,
+  VelocityChart
+} from './components';
 
 export const Statistics = (): JSX.Element => {
   const { t } = useTranslation();
@@ -66,6 +71,9 @@ export const Statistics = (): JSX.Element => {
           </Tabs.Panel>
           <Tabs.Panel title={t('statistics.createdVsResolvedChart')}>
             <CreatedVsResolvedChart projectId={currentProject.id} />
+          </Tabs.Panel>
+          <Tabs.Panel title={t('statistics.averageAgeChart')}>
+            <AverageAgeChart projectId={currentProject.id} />
           </Tabs.Panel>
         </Tabs>
       )}

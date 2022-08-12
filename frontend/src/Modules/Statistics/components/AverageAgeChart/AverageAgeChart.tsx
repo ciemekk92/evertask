@@ -1,6 +1,6 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { subDays } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 import {
   Bar,
   BarChart,
@@ -11,27 +11,27 @@ import {
   XAxis,
   YAxis
 } from 'recharts';
-import { HTMLDateInput } from 'Shared/Elements/DateInput';
 import { Api } from 'Utils/Api';
 import { getISODateStringFromDate } from 'Utils/getISODateStringFromDate';
-import { CreatedVsResolvedChartData } from '../../fixtures';
+import { AverageAgeChartData } from '../../fixtures';
 import { StyledChartContainer } from '../Shared.styled';
+import { HTMLDateInput } from '../../../../Shared/Elements/DateInput';
 
 interface Props {
   projectId: Id;
 }
 
-export const CreatedVsResolvedChart = ({ projectId }: Props): JSX.Element => {
+export const AverageAgeChart = ({ projectId }: Props): JSX.Element => {
   const { t } = useTranslation();
 
-  const [chartData, setChartData] = React.useState<CreatedVsResolvedChartData[]>([]);
+  const [chartData, setChartData] = React.useState<AverageAgeChartData[]>([]);
   const [inputData, setInputData] = React.useState({
     startDate: getISODateStringFromDate(subDays(new Date(), 7)),
     finishDate: getISODateStringFromDate(new Date())
   });
 
   React.useEffect(() => {
-    Api.get(`statistics/created_resolved/${projectId}`, {
+    Api.get(`statistics/average_age/${projectId}`, {
       startDate: inputData.startDate,
       finishDate: inputData.finishDate
     })
@@ -75,12 +75,14 @@ export const CreatedVsResolvedChart = ({ projectId }: Props): JSX.Element => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" interval={chartData.length > 15 ? 2 : 1} />
-          <YAxis label={{ value: t('general.issueCount'), angle: -90, position: 'insideLeft' }} />
+          <XAxis dataKey="name" />
+          <YAxis
+            label={{ value: t('general.days'), angle: -90, position: 'insideLeft' }}
+            allowDecimals={false}
+          />
           <Tooltip />
           <Legend />
-          <Bar dataKey="created" fill="#ff0000" />
-          <Bar dataKey="resolved" fill="#00ff00" />
+          <Bar dataKey="averageAge" fill="#ff0000" />
         </BarChart>
       </ResponsiveContainer>
     </StyledChartContainer>

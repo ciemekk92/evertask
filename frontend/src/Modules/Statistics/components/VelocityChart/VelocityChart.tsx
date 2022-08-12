@@ -11,22 +11,17 @@ import {
   YAxis
 } from 'recharts';
 import { Api } from 'Utils/Api';
+import { VelocityChartData } from '../../fixtures';
 import { StyledChartContainer } from '../Shared.styled';
 
 interface Props {
   projectId: Id;
 }
 
-interface VelocityPoint {
-  name: string;
-  commitment: number;
-  completed: number;
-}
-
 export const VelocityChart = ({ projectId }: Props): JSX.Element => {
   const { t } = useTranslation();
 
-  const [chartData, setChartData] = React.useState<VelocityPoint[]>([]);
+  const [chartData, setChartData] = React.useState<VelocityChartData[]>([]);
 
   React.useEffect(() => {
     Api.get(`statistics/velocity/${projectId}`)

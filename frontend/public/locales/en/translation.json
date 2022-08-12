@@ -51,6 +51,7 @@
     "cancel": "Cancel",
     "change": "Change",
     "code": "Authenticator code",
+    "days": "Days",
     "decline": "Decline",
     "delete": "Delete",
     "disable": "Disable",
@@ -415,6 +416,7 @@
     }
   },
   "statistics": {
+    "averageAgeChart": "Average issue age",
     "burndownChart": "Burndown chart",
     "createdVsResolvedChart": "Created vs resolved",
     "selectSprint": "Select sprint",

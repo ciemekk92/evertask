@@ -1,5 +1,6 @@
 package com.predu.evertask.service;
 
+import com.predu.evertask.domain.dto.statistics.AverageAgeChartPointDto;
 import com.predu.evertask.domain.dto.statistics.BurndownChartPointDto;
 import com.predu.evertask.domain.dto.statistics.CreatedVsResolvedChartPointDto;
 import com.predu.evertask.domain.dto.statistics.VelocityChartPointDto;
@@ -21,7 +22,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.*;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RequiredArgsConstructor
 @Service
@@ -30,12 +31,6 @@ public class StatisticsService {
     private final IssueHistoryService issueHistoryService;
     private final SprintRepository sprintRepository;
     private final IssueRepository issueRepository;
-
-
-    /*
-        Average age chart
-        Created vs Resolved
-     */
 
     public List<BurndownChartPointDto> getBurndownData(UUID sprintId) throws NoChartsDataException {
 
@@ -87,12 +82,11 @@ public class StatisticsService {
             LocalDate finishDate = sprint.getFinishDate().toLocalDate();
 
             List<IssueHistory> sprintIssuesRevisions = issueHistoryService.findRevisionsBySprintId(sprint.getId());
-            List<IssueHistory> revisionsAtStart = filterIssuesRevisions(sprintIssuesRevisions, startDate, false);
-            List<IssueHistory> revisionsAtEnd = filterIssuesRevisions(sprintIssuesRevisions, finishDate, true);
+            List<IssueHistory> revisionsAtStart = issueHistoryService.filterIssuesRevisions(sprintIssuesRevisions, startDate, false);
+            List<IssueHistory> revisionsAtEnd = issueHistoryService.filterIssuesRevisions(sprintIssuesRevisions, finishDate, true);
 
-
-            double commitment = sumRevisionStoryPoints(revisionsAtStart);
-            double completed = sumRevisionStoryPoints(revisionsAtEnd);
+            double commitment = issueHistoryService.sumRevisionStoryPoints(revisionsAtStart);
+            double completed = issueHistoryService.sumRevisionStoryPoints(revisionsAtEnd);
 
             VelocityChartPointDto dto = VelocityChartPointDto.builder()
                     .name("Sprint " + sprint.getOrdinal())
@@ -134,6 +128,55 @@ public class StatisticsService {
         return chartPoints;
     }
 
+    public List<AverageAgeChartPointDto> getAverageAgeData(UUID projectId, LocalDate startDate, LocalDate finishDate) throws NoChartsDataException {
+
+        List<IssueHistory> revisions = issueHistoryService.findRevisionsByProjectId(projectId);
+        List<AverageAgeChartPointDto> chartPoints = new ArrayList<>();
+
+        for (long i = 0; i <= Period.between(startDate, finishDate).getDays(); i++) {
+            AtomicInteger totalIssueAge = new AtomicInteger();
+            AtomicInteger issueCount = new AtomicInteger();
+
+            try {
+                long finalI = i;
+                Collection<List<IssueHistory>> groupedRevisions = issueHistoryService.groupRevisionsInDateRangeById(revisions, startDate, finalI);
+
+                groupedRevisions
+                        .forEach(list -> {
+                            issueCount.getAndIncrement();
+
+                            var earliestRevision = list.stream().min(Comparator.comparing(BaseHistory::getRevisionDate)).orElseThrow();
+                            var firstAcceptedRevision = list.stream()
+                                    .filter(rev -> rev.getIssue().getStatus() == IssueStatus.ACCEPTED)
+                                    .min(Comparator.comparing(BaseHistory::getRevisionDate))
+                                    .orElse(null);
+
+                            totalIssueAge.getAndAdd((int) Duration.between(
+                                    earliestRevision.getRevisionDate(),
+                                    firstAcceptedRevision != null
+                                            ? firstAcceptedRevision.getRevisionDate()
+                                            : DateUtil.addDaysToDateAndConvertToODTEndOfDay(startDate, finalI)
+                            ).toDays());
+                        });
+
+                if (issueCount.get() > 0) {
+                    AverageAgeChartPointDto dto = AverageAgeChartPointDto
+                            .builder()
+                            .name(startDate.plusDays(i).toString())
+                            .averageAge(totalIssueAge.get() / issueCount.get())
+                            .build();
+
+                    chartPoints.add(dto);
+                }
+
+            } catch (NoSuchElementException e) {
+                throw new NoChartsDataException("noData");
+            }
+        }
+
+        return chartPoints;
+    }
+
     private int getResolvedIssuesCount(LocalDate startDate, List<IssueHistory> revisions, long finalI) {
         return revisions
                 .stream()
@@ -156,13 +199,6 @@ public class StatisticsService {
                 })
                 .toList()
                 .size();
-    }
-
-    private double sumRevisionStoryPoints(List<IssueHistory> revisions) {
-
-        return revisions.stream()
-                .mapToInt(history -> history.getIssue().getEstimateStoryPoints() == null ? 0 : history.getIssue().getEstimateStoryPoints())
-                .sum();
     }
 
     private int getTotalStoryPoints(Sprint sprint) throws NoChartsDataException {
@@ -191,7 +227,7 @@ public class StatisticsService {
                 })
                 .toList();
 
-        return sumRevisionStoryPoints(filteredRevisions);
+        return issueHistoryService.sumRevisionStoryPoints(filteredRevisions);
     }
 
     private long getTrendMultiplierForDate(LocalDate date, long dayOrdinal, long weekendDaysCount) {
@@ -200,25 +236,5 @@ public class StatisticsService {
             case SATURDAY, SUNDAY -> dayOrdinal >= 1 ? dayOrdinal - 1 - weekendDaysCount : 0;
             default -> dayOrdinal - weekendDaysCount;
         };
-    }
-
-    private List<IssueHistory> filterIssuesRevisions(List<IssueHistory> revisions,
-                                                     LocalDate borderDate,
-                                                     boolean shouldFilterOnlyAccepted) throws NoChartsDataException {
-
-        try {
-            return revisions
-                    .stream()
-                    .filter(rev -> borderDate.isAfter(rev.getRevisionDate().toLocalDate())
-                            && (shouldFilterOnlyAccepted == rev.getIssue().getStatus().equals(IssueStatus.ACCEPTED)))
-                    .collect(Collectors.groupingBy(rev -> rev.getIssue().getId()))
-                    .values().stream()
-                    .map(list -> list
-                            .stream()
-                            .max(Comparator.comparing(BaseHistory::getRevisionDate)).orElseThrow())
-                    .toList();
-        } catch (NoSuchElementException e) {
-            throw new NoChartsDataException("noData");
-        }
     }
 }

@@ -1,12 +1,16 @@
 package com.predu.evertask.service.audit;
 
+import com.predu.evertask.domain.enums.IssueStatus;
+import com.predu.evertask.domain.history.BaseHistory;
 import com.predu.evertask.domain.history.IssueHistory;
 import com.predu.evertask.domain.model.Issue;
 import com.predu.evertask.domain.query.AuditQueryResult;
 import com.predu.evertask.domain.query.AuditQueryUtils;
+import com.predu.evertask.exception.NoChartsDataException;
 import com.predu.evertask.repository.ProjectRepository;
 import com.predu.evertask.repository.SprintRepository;
 import com.predu.evertask.repository.UserRepository;
+import com.predu.evertask.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
@@ -17,9 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
+
 
 @RequiredArgsConstructor
 @Service
@@ -66,6 +72,40 @@ public class IssueHistoryService implements AbstractHistoryService<IssueHistory>
                 .add(AuditEntity.property("project_id").eq(projectId));
 
         return getIssueHistories(auditQuery);
+    }
+
+    public Collection<List<IssueHistory>> groupRevisionsInDateRangeById(List<IssueHistory> revisions, LocalDate startDate, long dateRangeOffset) {
+        return revisions
+                .stream()
+                .filter(rev -> DateUtil.addDaysToDateAndConvertToODTEndOfDay(startDate, dateRangeOffset).isAfter(rev.getRevisionDate()))
+                .collect(Collectors.groupingBy(rev -> rev.getIssue().getId()))
+                .values();
+    }
+
+    public List<IssueHistory> filterIssuesRevisions(List<IssueHistory> revisions,
+                                                     LocalDate borderDate,
+                                                     boolean shouldFilterOnlyAccepted) throws NoChartsDataException {
+
+        try {
+            return revisions
+                    .stream()
+                    .filter(rev -> borderDate.isAfter(rev.getRevisionDate().toLocalDate())
+                            && (shouldFilterOnlyAccepted == rev.getIssue().getStatus().equals(IssueStatus.ACCEPTED)))
+                    .collect(Collectors.groupingBy(rev -> rev.getIssue().getId()))
+                    .values().stream()
+                    .map(list -> list
+                            .stream()
+                            .max(Comparator.comparing(BaseHistory::getRevisionDate)).orElseThrow())
+                    .toList();
+        } catch (NoSuchElementException e) {
+            throw new NoChartsDataException("noData");
+        }
+    }
+
+    public double sumRevisionStoryPoints(List<IssueHistory> revisions) {
+        return revisions.stream()
+                .mapToInt(history -> history.getIssue().getEstimateStoryPoints() == null ? 0 : history.getIssue().getEstimateStoryPoints())
+                .sum();
     }
 
     private List<IssueHistory> getIssueHistories(AuditQuery auditQuery) {

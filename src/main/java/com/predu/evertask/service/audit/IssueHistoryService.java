@@ -4,6 +4,7 @@ import com.predu.evertask.domain.history.IssueHistory;
 import com.predu.evertask.domain.model.Issue;
 import com.predu.evertask.domain.query.AuditQueryResult;
 import com.predu.evertask.domain.query.AuditQueryUtils;
+import com.predu.evertask.repository.ProjectRepository;
 import com.predu.evertask.repository.SprintRepository;
 import com.predu.evertask.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +30,7 @@ public class IssueHistoryService implements AbstractHistoryService<IssueHistory>
 
     private final SprintRepository sprintRepository;
     private final UserRepository userRepository;
+    private final ProjectRepository projectRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -39,10 +42,7 @@ public class IssueHistoryService implements AbstractHistoryService<IssueHistory>
                 .forRevisionsOfEntity(Issue.class, false, true)
                 .add(AuditEntity.id().eq(issueID));
 
-        return AuditQueryUtils.getAuditQueryResults(auditQuery, Issue.class)
-                .stream()
-                .map(this::getIssueHistory)
-                .toList();
+        return getIssueHistories(auditQuery);
     }
 
     @Transactional(readOnly = true)
@@ -54,6 +54,21 @@ public class IssueHistoryService implements AbstractHistoryService<IssueHistory>
                 .forRevisionsOfEntity(Issue.class, false, false)
                 .add(AuditEntity.property("sprint_id").eq(sprintId));
 
+        return getIssueHistories(auditQuery);
+    }
+
+    public List<IssueHistory> findRevisionsByProjectId(UUID projectId) {
+
+        AuditReader auditReader = AuditReaderFactory.get(entityManager);
+
+        AuditQuery auditQuery = auditReader.createQuery()
+                .forRevisionsOfEntity(Issue.class, false, false)
+                .add(AuditEntity.property("project_id").eq(projectId));
+
+        return getIssueHistories(auditQuery);
+    }
+
+    private List<IssueHistory> getIssueHistories(AuditQuery auditQuery) {
         return AuditQueryUtils.getAuditQueryResults(auditQuery, Issue.class)
                 .stream()
                 .map(this::getIssueHistory)
@@ -74,11 +89,15 @@ public class IssueHistoryService implements AbstractHistoryService<IssueHistory>
                 .findByAssignedIssuesId(issue.getId())
                 .orElse(null));
 
+        issue.setProject(projectRepository
+                .findByIssuesId(issue.getId())
+                .orElse(null));
+
         return new IssueHistory(
                 issue,
                 auditQueryResult.getRevision().getId(),
                 auditQueryResult.getType(),
-                auditQueryResult.getRevision().getRevisionDate()
+                auditQueryResult.getRevision().getRevisionDate().toInstant().atOffset(ZoneOffset.UTC)
         );
     }
 }

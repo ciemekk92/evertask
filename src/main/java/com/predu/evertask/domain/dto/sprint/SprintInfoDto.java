@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 @Getter
 @Setter
@@ -16,8 +16,8 @@ public class SprintInfoDto {
     private boolean isCompleted;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss Z")
-    private Date startDate;
+    private OffsetDateTime startDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss Z")
-    private Date finishDate;
+    private OffsetDateTime finishDate;
 }

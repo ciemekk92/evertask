@@ -1,7 +1,10 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { DateField } from './DateField';
+import React from 'react';
 
-export const DateInput = styled(DateField)`
+interface DateInputProps extends React.HTMLAttributes<HTMLInputElement> {}
+
+const DateInputStyles = css`
   height: 4.8rem;
   min-width: 24rem;
   border: 1px solid ${(props) => props.theme.primary};
@@ -16,4 +19,12 @@ export const DateInput = styled(DateField)`
   &::-webkit-calendar-picker-indicator {
     color: #fff;
   }
+`;
+
+export const FormikDateInput = styled(DateField)<DateInputProps>`
+  ${DateInputStyles};
+`;
+
+export const HTMLDateInput = styled.input.attrs({ type: 'date' })<DateInputProps>`
+  ${DateInputStyles};
 `;

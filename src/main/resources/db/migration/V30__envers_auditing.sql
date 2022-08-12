@@ -41,6 +41,7 @@ CREATE TABLE issues_audit
     priority              issue_priority,
     reporter_id           UUID                     NOT NULL,
     sprint_id             UUID,
+    project_id            UUID                     NOT NULL,
     parent_id             UUID,
     assignee_id           UUID,
     PRIMARY KEY (revision_id, id),

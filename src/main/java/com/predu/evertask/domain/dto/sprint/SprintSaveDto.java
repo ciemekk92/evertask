@@ -2,13 +2,13 @@ package com.predu.evertask.domain.dto.sprint;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 @Data
 public class SprintSaveDto {
 
     private String description;
-    private Date startDate;
-    private Date finishDate;
+    private OffsetDateTime startDate;
+    private OffsetDateTime finishDate;
     private String projectId;
 }

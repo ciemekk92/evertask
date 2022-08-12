@@ -59,6 +59,7 @@
     "enable": "Enable",
     "endSprint": "End sprint",
     "firstName": "First name",
+    "issueCount": "Issue count",
     "issuePriority": {
       "ASAP": "ASAP",
       "HIGH": "High",
@@ -415,6 +416,7 @@
   },
   "statistics": {
     "burndownChart": "Burndown chart",
+    "createdVsResolvedChart": "Created vs resolved",
     "selectSprint": "Select sprint",
     "title": "Statistics",
     "velocityChart": "Velocity chart"

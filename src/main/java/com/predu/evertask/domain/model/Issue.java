@@ -59,7 +59,6 @@ public class Issue extends BaseEntity {
     @JoinColumn(name = "parent_id")
     private Issue parentIssue;
 
-    @NotAudited
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;

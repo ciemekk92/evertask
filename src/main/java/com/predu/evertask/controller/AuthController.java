@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.ValidationException;
-import java.util.Calendar;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -106,9 +106,8 @@ public class AuthController {
         }
 
         User user = verificationToken.getUser();
-        Calendar cal = Calendar.getInstance();
 
-        if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
+        if ((verificationToken.getExpiryDate().toEpochSecond() - OffsetDateTime.now().toEpochSecond()) <= 0) {
             throw new InvalidTokenException("expired");
         }
 
@@ -126,7 +125,7 @@ public class AuthController {
 
         User user = userService.findByRefreshToken(refreshToken);
 
-        if (user.getRefreshTokenExpiryDate().getTime() < System.currentTimeMillis()) {
+        if (user.getRefreshTokenExpiryDate().toInstant().toEpochMilli() < System.currentTimeMillis()) {
             userService.updateRefreshToken(user, null, null);
 
             throw new InvalidTokenException("expired");

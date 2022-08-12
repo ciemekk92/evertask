@@ -16,7 +16,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -39,10 +39,10 @@ public class User implements UserDetails, Serializable {
     private UUID id;
 
     @CreatedDate
-    private Date createdAt;
+    private OffsetDateTime createdAt;
 
     @LastModifiedDate
-    private Date updatedAt;
+    private OffsetDateTime updatedAt;
 
     @Column(unique = true)
     @Length(min = 6)
@@ -72,7 +72,7 @@ public class User implements UserDetails, Serializable {
     private String refreshToken;
 
     @NotAudited
-    private Date refreshTokenExpiryDate;
+    private OffsetDateTime refreshTokenExpiryDate;
 
     private boolean locked;
     private boolean expired;

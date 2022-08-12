@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
 import { Form, FormField } from 'Shared/Elements/Form';
 import { ModalDialog } from 'Shared/ModalDialog';
-import { DateInput } from 'Shared/Elements/DateInput';
+import { FormikDateInput } from 'Shared/Elements/DateInput';
 import { SingleSelectDropdown } from 'Shared/Elements/SingleSelectDropdown';
 import { ApplicationState } from 'Stores/store';
 import { Sprint } from 'Types/Sprint';
@@ -120,11 +120,11 @@ export const StartEndSprintDialog = ({
             <StyledDialogContent>
               {mode === START_END_SPRINT_DIALOG_MODES.START && (
                 <FormField label={t('sprintDialog.startDate')} name="startDate">
-                  <DateInput name="startDate" />
+                  <FormikDateInput name="startDate" />
                 </FormField>
               )}
               <FormField label={t('sprintDialog.finishDate')} name="finishDate">
-                <DateInput name="finishDate" />
+                <FormikDateInput name="finishDate" />
               </FormField>
               {mode === START_END_SPRINT_DIALOG_MODES.END && (
                 <FormField

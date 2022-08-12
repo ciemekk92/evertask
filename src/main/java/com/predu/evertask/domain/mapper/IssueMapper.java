@@ -4,6 +4,7 @@ import com.predu.evertask.annotation.IncludeBeforeMapping;
 import com.predu.evertask.domain.dto.issue.*;
 import com.predu.evertask.domain.history.IssueHistory;
 import com.predu.evertask.domain.model.Issue;
+import com.predu.evertask.domain.model.Project;
 import com.predu.evertask.domain.model.Sprint;
 import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.IssueRepository;
@@ -48,9 +49,9 @@ public abstract class IssueMapper {
 
     @Mapping(target = "parentIssue", ignore = true)
     @Mapping(target = "description", ignore = true)
-    @Mapping(source = "assigneeId", target = "assignee.id")
-    @Mapping(source = "sprintId", target = "sprint.id")
-    @Mapping(source = "projectId", target = "project.id")
+    @Mapping(target = "assignee.id", ignore = true)
+    @Mapping(target = "sprint.id", ignore = true)
+    @Mapping(target = "project.id", ignore = true)
     public abstract Issue issueSaveDtoToIssue(IssueSaveDto issueSaveDto);
 
     @InheritInverseConfiguration(name = "issueSaveDtoToIssue")
@@ -88,14 +89,17 @@ public abstract class IssueMapper {
         if (issueSaveDto.getSprintId() == null) {
             issue.setSprint(null);
         } else {
-            Sprint sprint = sprintRepository.findById(UUID.fromString(issueSaveDto.getSprintId()))
+            Sprint sprint = sprintRepository
+                    .findById(UUID.fromString(issueSaveDto.getSprintId()))
                     .orElseThrow(() -> new NotFoundException(Sprint.class, issueSaveDto.getSprintId()));
 
             issue.setSprint(sprint);
         }
 
         if (issueSaveDto.getParentId() != null) {
-            issue.setParentIssue(issueRepository.findById(uuidMapper.stringToUUID(issueSaveDto.getParentId())).orElse(null));
+            issue.setParentIssue(issueRepository
+                    .findById(uuidMapper.stringToUUID(issueSaveDto.getParentId()))
+                    .orElse(null));
         }
 
         if (issueSaveDto.getAssigneeId() != null) {
@@ -104,6 +108,12 @@ public abstract class IssueMapper {
                     .orElse(null));
         } else {
             issue.setAssignee(null);
+        }
+
+        if (issueSaveDto.getProjectId() != null) {
+            issue.setProject(projectRepository
+                    .findById(uuidMapper.stringToUUID(issueSaveDto.getProjectId()))
+                    .orElseThrow(() -> new NotFoundException(Project.class, issueSaveDto.getProjectId())));
         }
     }
 

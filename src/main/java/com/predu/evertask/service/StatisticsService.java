@@ -1,13 +1,16 @@
 package com.predu.evertask.service;
 
 import com.predu.evertask.domain.dto.statistics.BurndownChartPointDto;
+import com.predu.evertask.domain.dto.statistics.CreatedVsResolvedChartPointDto;
 import com.predu.evertask.domain.dto.statistics.VelocityChartPointDto;
 import com.predu.evertask.domain.enums.IssueStatus;
 import com.predu.evertask.domain.history.BaseHistory;
 import com.predu.evertask.domain.history.IssueHistory;
+import com.predu.evertask.domain.model.Issue;
 import com.predu.evertask.domain.model.Sprint;
 import com.predu.evertask.exception.NoChartsDataException;
 import com.predu.evertask.exception.NotFoundException;
+import com.predu.evertask.repository.IssueRepository;
 import com.predu.evertask.repository.SprintRepository;
 import com.predu.evertask.service.audit.IssueHistoryService;
 import com.predu.evertask.util.DateUtil;
@@ -16,9 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.DayOfWeek;
-import java.time.Duration;
-import java.time.LocalDate;
+import java.time.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,13 +29,12 @@ public class StatisticsService {
 
     private final IssueHistoryService issueHistoryService;
     private final SprintRepository sprintRepository;
+    private final IssueRepository issueRepository;
 
 
     /*
-        Velocity chart
         Average age chart
         Created vs Resolved
-        User workload
      */
 
     public List<BurndownChartPointDto> getBurndownData(UUID sprintId) throws NoChartsDataException {
@@ -45,9 +45,8 @@ public class StatisticsService {
         List<IssueHistory> issueRevisions = issueHistoryService.findRevisionsBySprintId(sprintId);
         List<BurndownChartPointDto> chartPoints = new ArrayList<>();
 
-        LocalDate startDate = DateUtil.dateToLocalDate(sprint.getStartDate());
-        LocalDate finishDate = DateUtil.dateToLocalDate(sprint.getFinishDate());
-        getVelocityData(sprint.getProject().getId());
+        LocalDate startDate = sprint.getStartDate().toLocalDate();
+        LocalDate finishDate = sprint.getFinishDate().toLocalDate();
 
         long sprintLengthInDaysWithWeekends = Duration.between(startDate.atStartOfDay(), finishDate.atStartOfDay()).toDays();
         long sprintLengthInDays = DateUtil.numberOfDaysWithoutWeekends(startDate, finishDate);
@@ -84,8 +83,8 @@ public class StatisticsService {
         List<VelocityChartPointDto> chartPoints = new ArrayList<>();
 
         for (Sprint sprint : sprints) {
-            LocalDate startDate = DateUtil.dateToLocalDate(sprint.getStartDate());
-            LocalDate finishDate = DateUtil.dateToLocalDate(sprint.getFinishDate());
+            LocalDate startDate = sprint.getStartDate().toLocalDate();
+            LocalDate finishDate = sprint.getFinishDate().toLocalDate();
 
             List<IssueHistory> sprintIssuesRevisions = issueHistoryService.findRevisionsBySprintId(sprint.getId());
             List<IssueHistory> revisionsAtStart = filterIssuesRevisions(sprintIssuesRevisions, startDate, false);
@@ -105,6 +104,58 @@ public class StatisticsService {
         }
 
         return chartPoints;
+    }
+
+    public List<CreatedVsResolvedChartPointDto> getCreatedVsResolvedData(UUID projectId, LocalDate startDate, LocalDate finishDate) {
+
+        List<IssueHistory> revisions = issueHistoryService.findRevisionsByProjectId(projectId);
+        List<Issue> createdIssues = issueRepository.findAllByProjectIdAndCreatedAtBetween(
+                projectId,
+                startDate.atStartOfDay(ZoneId.systemDefault()).toOffsetDateTime(),
+                finishDate.atStartOfDay(ZoneId.systemDefault()).withHour(23).withMinute(59).withSecond(59).toOffsetDateTime());
+
+        List<CreatedVsResolvedChartPointDto> chartPoints = new ArrayList<>();
+        long daysBetween = Period.between(startDate, finishDate).getDays();
+
+        for (long i = 0; i <= daysBetween; i++) {
+            int created = getCreatedIssuesCount(startDate, createdIssues, i);
+            int resolved = getResolvedIssuesCount(startDate, revisions, i);
+
+            CreatedVsResolvedChartPointDto dto = CreatedVsResolvedChartPointDto
+                    .builder()
+                    .name(startDate.plusDays(i).toString())
+                    .created(created)
+                    .resolved(resolved)
+                    .build();
+
+            chartPoints.add(dto);
+        }
+
+        return chartPoints;
+    }
+
+    private int getResolvedIssuesCount(LocalDate startDate, List<IssueHistory> revisions, long finalI) {
+        return revisions
+                .stream()
+                .filter(rev -> {
+                    LocalDate revisionDate = rev.getRevisionDate().toLocalDate();
+
+                    return revisionDate.isEqual(startDate.plusDays(finalI)) && rev.getIssue().getStatus() == IssueStatus.ACCEPTED;
+                })
+                .toList()
+                .size();
+    }
+
+    private int getCreatedIssuesCount(LocalDate startDate, List<Issue> createdIssues, long finalI) {
+        return createdIssues
+                .stream()
+                .filter(issue -> {
+                    LocalDate issueCreatedAt = issue.getCreatedAt().toLocalDate();
+
+                    return startDate.plusDays(finalI).isEqual(issueCreatedAt);
+                })
+                .toList()
+                .size();
     }
 
     private double sumRevisionStoryPoints(List<IssueHistory> revisions) {
@@ -131,9 +182,9 @@ public class StatisticsService {
         List<IssueHistory> filteredRevisions = revisions
                 .stream()
                 .filter(rev -> {
-                    var revisionDate = DateUtil.dateToLocalDate(rev.getRevisionDate()).atStartOfDay();
-                    var isRevisionDateInRange = (revisionDate.isAfter(startDate.atStartOfDay()) || revisionDate.equals(startDate.atStartOfDay()))
-                            && (revisionDate.isBefore(finishDate.atStartOfDay()) || revisionDate.equals(finishDate.atStartOfDay()));
+                    var revisionDate = rev.getRevisionDate().toLocalDate();
+                    var isRevisionDateInRange = (revisionDate.isAfter(startDate) || revisionDate.equals(startDate))
+                            && (revisionDate.isBefore(finishDate) || revisionDate.equals(finishDate));
 
                     return isRevisionDateInRange
                             && (rev.getIssue().getStatus() == IssueStatus.ACCEPTED);
@@ -158,7 +209,7 @@ public class StatisticsService {
         try {
             return revisions
                     .stream()
-                    .filter(rev -> borderDate.isAfter(DateUtil.dateToLocalDate(rev.getRevisionDate()))
+                    .filter(rev -> borderDate.isAfter(rev.getRevisionDate().toLocalDate())
                             && (shouldFilterOnlyAccepted == rev.getIssue().getStatus().equals(IssueStatus.ACCEPTED)))
                     .collect(Collectors.groupingBy(rev -> rev.getIssue().getId()))
                     .values().stream()

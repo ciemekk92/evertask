@@ -5,7 +5,7 @@ import { Formik, FormikProps } from 'formik';
 import * as Yup from 'yup';
 import { ModalDialog } from 'Shared/ModalDialog';
 import { Form, FormField } from 'Shared/Elements/Form';
-import { DateInput } from 'Shared/Elements/DateInput';
+import { FormikDateInput } from 'Shared/Elements/DateInput';
 import { TextArea } from 'Shared/Elements/TextArea';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
 import { Api } from 'Utils/Api';
@@ -108,10 +108,10 @@ export const SprintDialog = ({ mode, handleClose, projectId, sprintId }: Props):
           >
             <StyledDialogContent>
               <FormField label={t('sprintDialog.startDate')} name="startDate">
-                <DateInput name="startDate" />
+                <FormikDateInput name="startDate" />
               </FormField>
               <FormField label={t('sprintDialog.finishDate')} name="finishDate">
-                <DateInput name="finishDate" />
+                <FormikDateInput name="finishDate" />
               </FormField>
               <FormField label={t('sprintDialog.description')} name="description">
                 <TextArea

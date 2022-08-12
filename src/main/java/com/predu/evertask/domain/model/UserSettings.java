@@ -14,7 +14,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @TypeDef(name = "enum_pgsql", typeClass = EnumTypePgSql.class)
@@ -36,9 +36,9 @@ public class UserSettings implements Serializable {
     private UUID id;
 
     @Column(updatable = false)
-    private Date createdAt;
+    private OffsetDateTime createdAt;
 
-    private Date updatedAt;
+    private OffsetDateTime updatedAt;
 
     @NotNull
     private boolean darkMode;
@@ -57,11 +57,11 @@ public class UserSettings implements Serializable {
 
     @PrePersist
     void prePersist() {
-        createdAt = Date.from(Instant.now());
+        createdAt = OffsetDateTime.from(Instant.now());
     }
 
     @PreUpdate
     void preUpdate() {
-        updatedAt = Date.from(Instant.now());
+        updatedAt = OffsetDateTime.from(Instant.now());
     }
 }

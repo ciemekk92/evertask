@@ -59,6 +59,7 @@
     "enable": "Włącz",
     "endSprint": "Zakończ sprint",
     "firstName": "Imię",
+    "issueCount": "Liczba zadań",
     "issuePriority": {
       "ASAP": "ASAP",
       "HIGH": "Wysoki",
@@ -415,6 +416,7 @@
   },
   "statistics": {
     "burndownChart": "Wykres burndown",
+    "createdVsResolvedChart": "Stworzone vs rozwiązane",
     "selectSprint": "Wybierz sprint",
     "title": "Statystyki",
     "velocityChart": "Wykres velocity"

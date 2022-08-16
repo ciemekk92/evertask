@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTheme } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { subDays } from 'date-fns';
 import {
@@ -12,10 +13,13 @@ import {
   YAxis
 } from 'recharts';
 import { HTMLDateInput } from 'Shared/Elements/DateInput';
+import { getDarkTheme } from 'Themes';
 import { Api } from 'Utils/Api';
 import { getISODateStringFromDate } from 'Utils/getISODateStringFromDate';
-import { CreatedVsResolvedChartData } from '../../fixtures';
+import { CreatedVsResolvedChartData, DateRangeData } from '../../fixtures';
+import { formatLegendText, formatTooltipText } from '../../helpers';
 import { StyledChartContainer } from '../Shared.styled';
+import { DateRangeSelect } from '../DateRangeSelect/DateRangeSelect';
 
 interface Props {
   projectId: Id;
@@ -25,43 +29,30 @@ export const CreatedVsResolvedChart = ({ projectId }: Props): JSX.Element => {
   const { t } = useTranslation();
 
   const [chartData, setChartData] = React.useState<CreatedVsResolvedChartData[]>([]);
-  const [inputData, setInputData] = React.useState({
-    startDate: getISODateStringFromDate(subDays(new Date(), 7)),
-    finishDate: getISODateStringFromDate(new Date())
-  });
+  const theme = useTheme() as ReturnType<typeof getDarkTheme>;
+
+  const handleDateChange = React.useCallback(
+    (values: DateRangeData): void => {
+      Api.get(`statistics/created_resolved/${projectId}`, {
+        startDate: values.startDate,
+        finishDate: values.finishDate
+      })
+        .then((response) => response.json())
+        .then((data) => setChartData(data));
+    },
+    [projectId]
+  );
 
   React.useEffect(() => {
-    Api.get(`statistics/created_resolved/${projectId}`, {
-      startDate: inputData.startDate,
-      finishDate: inputData.finishDate
-    })
-      .then((response) => response.json())
-      .then((data) => setChartData(data));
-  }, [projectId, inputData.startDate, inputData.finishDate]);
-
-  const handleDateChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    setInputData((prevState) => ({
-      ...prevState,
-      [target.name]: target.value
-    }));
-  };
+    handleDateChange({
+      startDate: getISODateStringFromDate(subDays(new Date(), 7)),
+      finishDate: getISODateStringFromDate(new Date())
+    });
+  }, [handleDateChange]);
 
   return (
     <StyledChartContainer>
-      <HTMLDateInput
-        name="startDate"
-        min={getISODateStringFromDate(subDays(new Date(), 30))}
-        max={getISODateStringFromDate(new Date())}
-        value={inputData.startDate}
-        onChange={handleDateChange}
-      />
-      <HTMLDateInput
-        name="finishDate"
-        min={getISODateStringFromDate(subDays(new Date(), 30))}
-        max={getISODateStringFromDate(new Date())}
-        value={inputData.finishDate}
-        onChange={handleDateChange}
-      />
+      <DateRangeSelect handleDateChange={handleDateChange} />
       <ResponsiveContainer width="90%" height={600}>
         <BarChart
           data={chartData}
@@ -76,11 +67,16 @@ export const CreatedVsResolvedChart = ({ projectId }: Props): JSX.Element => {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" interval={chartData.length > 15 ? 2 : 1} />
-          <YAxis label={{ value: t('general.issueCount'), angle: -90, position: 'insideLeft' }} />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="created" fill="#ff0000" />
-          <Bar dataKey="resolved" fill="#00ff00" />
+          <YAxis
+            label={{ value: t('general.issueCount'), angle: -90, position: 'insideLeft' }}
+            allowDecimals={false}
+          />
+          <Tooltip
+            formatter={(value: string | number, name: string) => formatTooltipText(value, name, t)}
+          />
+          <Legend formatter={(value) => formatLegendText(value, t)} />
+          <Bar dataKey="created" fill={theme.chartPrimary} />
+          <Bar dataKey="resolved" fill={theme.chartSecondary} />
         </BarChart>
       </ResponsiveContainer>
     </StyledChartContainer>

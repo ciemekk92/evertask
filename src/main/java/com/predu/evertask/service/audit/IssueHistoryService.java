@@ -74,7 +74,7 @@ public class IssueHistoryService implements AbstractHistoryService<IssueHistory>
         return getIssueHistories(auditQuery);
     }
 
-    public Collection<List<IssueHistory>> groupRevisionsInDateRangeById(List<IssueHistory> revisions, LocalDate startDate, long dateRangeOffset) {
+    public Collection<List<IssueHistory>> groupRevisionsInDateRangeById(Collection<IssueHistory> revisions, LocalDate startDate, long dateRangeOffset) {
         return revisions
                 .stream()
                 .filter(rev -> DateUtil.addDaysToDateAndConvertToODTEndOfDay(startDate, dateRangeOffset).isAfter(rev.getRevisionDate()))
@@ -82,7 +82,7 @@ public class IssueHistoryService implements AbstractHistoryService<IssueHistory>
                 .values();
     }
 
-    public List<IssueHistory> filterIssuesRevisions(List<IssueHistory> revisions,
+    public List<IssueHistory> filterIssuesRevisions(Collection<IssueHistory> revisions,
                                                      LocalDate borderDate,
                                                      boolean shouldFilterOnlyAccepted) throws NoChartsDataException {
 
@@ -102,7 +102,7 @@ public class IssueHistoryService implements AbstractHistoryService<IssueHistory>
         }
     }
 
-    public double sumRevisionStoryPoints(List<IssueHistory> revisions) {
+    public double sumRevisionStoryPoints(Collection<IssueHistory> revisions) {
         return revisions.stream()
                 .mapToInt(history -> history.getIssue().getEstimateStoryPoints() == null ? 0 : history.getIssue().getEstimateStoryPoints())
                 .sum();

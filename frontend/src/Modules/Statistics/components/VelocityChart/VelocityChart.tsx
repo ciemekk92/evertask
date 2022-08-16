@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTheme } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import {
   Bar,
@@ -10,8 +11,10 @@ import {
   XAxis,
   YAxis
 } from 'recharts';
+import { getDarkTheme } from 'Themes';
 import { Api } from 'Utils/Api';
 import { VelocityChartData } from '../../fixtures';
+import { formatLegendText, formatTooltipText } from '../../helpers';
 import { StyledChartContainer } from '../Shared.styled';
 
 interface Props {
@@ -22,6 +25,7 @@ export const VelocityChart = ({ projectId }: Props): JSX.Element => {
   const { t } = useTranslation();
 
   const [chartData, setChartData] = React.useState<VelocityChartData[]>([]);
+  const theme = useTheme() as ReturnType<typeof getDarkTheme>;
 
   React.useEffect(() => {
     Api.get(`statistics/velocity/${projectId}`)
@@ -46,10 +50,12 @@ export const VelocityChart = ({ projectId }: Props): JSX.Element => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis label={{ value: t('general.storyPoints'), angle: -90, position: 'insideLeft' }} />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="commitment" fill="#ff0000" />
-          <Bar dataKey="completed" fill="#00ff00" />
+          <Tooltip
+            formatter={(value: string | number, name: string) => formatTooltipText(value, name, t)}
+          />
+          <Legend formatter={(value) => formatLegendText(value, t)} />
+          <Bar dataKey="commitment" fill={theme.chartPrimary} />
+          <Bar dataKey="completed" fill={theme.chartSecondary} />
         </BarChart>
       </ResponsiveContainer>
     </StyledChartContainer>

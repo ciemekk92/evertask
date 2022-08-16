@@ -416,11 +416,19 @@
     }
   },
   "statistics": {
+    "averageAge": "Średni wiek",
     "averageAgeChart": "Średni wiek zadań",
     "burndownChart": "Wykres burndown",
+    "commitment": "Zadeklarowane",
+    "completed": "Ukończone",
+    "created": "Stworzone",
     "createdVsResolvedChart": "Stworzone vs rozwiązane",
+    "noIssuesCreatedYet": "Brak danych dla wybranego zakresu dat",
+    "remaining": "Pozostało",
+    "resolved": "Rozwiązane",
     "selectSprint": "Wybierz sprint",
     "title": "Statystyki",
+    "trend": "Trend",
     "velocityChart": "Wykres velocity"
   },
   "unassignedUserPage": {

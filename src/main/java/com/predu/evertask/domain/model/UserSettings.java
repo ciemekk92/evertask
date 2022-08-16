@@ -13,8 +13,9 @@ import org.hibernate.annotations.TypeDef;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @TypeDef(name = "enum_pgsql", typeClass = EnumTypePgSql.class)
@@ -57,11 +58,11 @@ public class UserSettings implements Serializable {
 
     @PrePersist
     void prePersist() {
-        createdAt = OffsetDateTime.from(Instant.now());
+        createdAt = OffsetDateTime.from(ZonedDateTime.now(ZoneId.systemDefault()));
     }
 
     @PreUpdate
     void preUpdate() {
-        updatedAt = OffsetDateTime.from(Instant.now());
+        updatedAt = OffsetDateTime.from(ZonedDateTime.now(ZoneId.systemDefault()));
     }
 }

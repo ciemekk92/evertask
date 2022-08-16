@@ -8,6 +8,8 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
@@ -48,6 +50,6 @@ public class VerificationToken {
         cal.setTimeInMillis(new Date().getTime());
         cal.add(Calendar.MINUTE, expiryTimeInMinutes);
 
-        return OffsetDateTime.from(Instant.ofEpochMilli(cal.getTime().getTime()));
+        return OffsetDateTime.from(ZonedDateTime.ofInstant(Instant.ofEpochMilli(cal.getTime().getTime()), ZoneId.systemDefault()));
     }
 }

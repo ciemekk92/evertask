@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -28,9 +29,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class StatisticsService {
 
+    private static final String DATE_FORMAT_PATTERN = "dd/MM/yyyy";
     private final IssueHistoryService issueHistoryService;
     private final SprintRepository sprintRepository;
     private final IssueRepository issueRepository;
+
 
     public List<BurndownChartPointDto> getBurndownData(UUID sprintId) throws NoChartsDataException {
 
@@ -61,7 +64,7 @@ public class StatisticsService {
             }
 
             BurndownChartPointDto dto = BurndownChartPointDto.builder()
-                    .name(startDate.plusDays(i).toString())
+                    .name(startDate.plusDays(i).format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN)))
                     .trend(trendValue)
                     .remaining(remainingStoryPoints)
                     .build();
@@ -117,7 +120,7 @@ public class StatisticsService {
 
             CreatedVsResolvedChartPointDto dto = CreatedVsResolvedChartPointDto
                     .builder()
-                    .name(startDate.plusDays(i).toString())
+                    .name(startDate.plusDays(i).format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN)))
                     .created(created)
                     .resolved(resolved)
                     .build();
@@ -145,7 +148,9 @@ public class StatisticsService {
                         .forEach(list -> {
                             issueCount.getAndIncrement();
 
-                            var earliestRevision = list.stream().min(Comparator.comparing(BaseHistory::getRevisionDate)).orElseThrow();
+                            var earliestRevision = list.stream()
+                                    .min(Comparator.comparing(BaseHistory::getRevisionDate))
+                                    .orElseThrow();
                             var firstAcceptedRevision = list.stream()
                                     .filter(rev -> rev.getIssue().getStatus() == IssueStatus.ACCEPTED)
                                     .min(Comparator.comparing(BaseHistory::getRevisionDate))
@@ -159,15 +164,14 @@ public class StatisticsService {
                             ).toDays());
                         });
 
-                if (issueCount.get() > 0) {
-                    AverageAgeChartPointDto dto = AverageAgeChartPointDto
-                            .builder()
-                            .name(startDate.plusDays(i).toString())
-                            .averageAge(totalIssueAge.get() / issueCount.get())
-                            .build();
+                AverageAgeChartPointDto dto = AverageAgeChartPointDto
+                        .builder()
+                        .name(startDate.plusDays(i).format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN)))
+                        .averageAge(issueCount.get() > 0 ? totalIssueAge.get() / issueCount.get() : 0)
+                        .build();
 
-                    chartPoints.add(dto);
-                }
+                chartPoints.add(dto);
+
 
             } catch (NoSuchElementException e) {
                 throw new NoChartsDataException("noData");
@@ -219,8 +223,8 @@ public class StatisticsService {
                 .stream()
                 .filter(rev -> {
                     var revisionDate = rev.getRevisionDate().toLocalDate();
-                    var isRevisionDateInRange = (revisionDate.isAfter(startDate) || revisionDate.equals(startDate))
-                            && (revisionDate.isBefore(finishDate) || revisionDate.equals(finishDate));
+                    var isRevisionDateInRange = (revisionDate.isAfter(startDate) || revisionDate.isEqual(startDate))
+                            && (revisionDate.isBefore(finishDate) || revisionDate.isEqual(finishDate));
 
                     return isRevisionDateInRange
                             && (rev.getIssue().getStatus() == IssueStatus.ACCEPTED);

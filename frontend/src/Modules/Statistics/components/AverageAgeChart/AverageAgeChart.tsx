@@ -1,6 +1,7 @@
 import React from 'react';
 import { subDays } from 'date-fns';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from 'styled-components';
 import {
   Bar,
   BarChart,
@@ -11,11 +12,14 @@ import {
   XAxis,
   YAxis
 } from 'recharts';
+import { Heading6 } from 'Shared/Typography';
+import { getDarkTheme } from 'Themes';
 import { Api } from 'Utils/Api';
 import { getISODateStringFromDate } from 'Utils/getISODateStringFromDate';
-import { AverageAgeChartData } from '../../fixtures';
+import { AverageAgeChartData, DateRangeData } from '../../fixtures';
+import { formatLegendText, formatTooltipText } from '../../helpers';
+import { DateRangeSelect } from '../';
 import { StyledChartContainer } from '../Shared.styled';
-import { HTMLDateInput } from '../../../../Shared/Elements/DateInput';
 
 interface Props {
   projectId: Id;
@@ -25,66 +29,73 @@ export const AverageAgeChart = ({ projectId }: Props): JSX.Element => {
   const { t } = useTranslation();
 
   const [chartData, setChartData] = React.useState<AverageAgeChartData[]>([]);
-  const [inputData, setInputData] = React.useState({
-    startDate: getISODateStringFromDate(subDays(new Date(), 7)),
-    finishDate: getISODateStringFromDate(new Date())
-  });
+  const theme = useTheme() as ReturnType<typeof getDarkTheme>;
+
+  const handleDateChange = React.useCallback(
+    (values: DateRangeData): void => {
+      Api.get(`statistics/average_age/${projectId}`, {
+        startDate: values.startDate,
+        finishDate: values.finishDate
+      })
+        .then((response) => response.json())
+        .then((data) => setChartData(data));
+    },
+    [projectId]
+  );
 
   React.useEffect(() => {
-    Api.get(`statistics/average_age/${projectId}`, {
-      startDate: inputData.startDate,
-      finishDate: inputData.finishDate
-    })
-      .then((response) => response.json())
-      .then((data) => setChartData(data));
-  }, [projectId, inputData.startDate, inputData.finishDate]);
+    if (projectId.length) {
+      handleDateChange({
+        startDate: getISODateStringFromDate(subDays(new Date(), 7)),
+        finishDate: getISODateStringFromDate(new Date())
+      });
+    }
+  }, [projectId, handleDateChange]);
 
-  const handleDateChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    setInputData((prevState) => ({
-      ...prevState,
-      [target.name]: target.value
-    }));
+  const renderChart = (): JSX.Element => (
+    <ResponsiveContainer width="90%" height={600}>
+      <BarChart
+        data={chartData}
+        width={600}
+        height={600}
+        margin={{
+          top: 10,
+          right: 30,
+          left: 20,
+          bottom: 10
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" interval={chartData.length > 15 ? 2 : 1} />
+        <YAxis
+          label={{ value: t('general.days'), angle: -90, position: 'insideLeft' }}
+          allowDecimals={false}
+        />
+        <Tooltip
+          formatter={(value: string | number, name: string) => formatTooltipText(value, name, t)}
+        />
+        <Legend formatter={(value: string) => formatLegendText(value, t)} />
+        <Bar dataKey="averageAge" fill={theme.chartPrimary} />
+      </BarChart>
+    </ResponsiveContainer>
+  );
+
+  const renderNoDataWarning = (): JSX.Element => (
+    <Heading6>{t('statistics.noIssuesCreatedYet')}</Heading6>
+  );
+
+  const renderChartContent = (): JSX.Element => {
+    if (chartData.length) {
+      return renderChart();
+    }
+
+    return renderNoDataWarning();
   };
 
   return (
     <StyledChartContainer>
-      <HTMLDateInput
-        name="startDate"
-        min={getISODateStringFromDate(subDays(new Date(), 30))}
-        max={getISODateStringFromDate(new Date())}
-        value={inputData.startDate}
-        onChange={handleDateChange}
-      />
-      <HTMLDateInput
-        name="finishDate"
-        min={getISODateStringFromDate(subDays(new Date(), 30))}
-        max={getISODateStringFromDate(new Date())}
-        value={inputData.finishDate}
-        onChange={handleDateChange}
-      />
-      <ResponsiveContainer width="90%" height={600}>
-        <BarChart
-          data={chartData}
-          width={600}
-          height={600}
-          margin={{
-            top: 10,
-            right: 30,
-            left: 20,
-            bottom: 10
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis
-            label={{ value: t('general.days'), angle: -90, position: 'insideLeft' }}
-            allowDecimals={false}
-          />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="averageAge" fill="#ff0000" />
-        </BarChart>
-      </ResponsiveContainer>
+      <DateRangeSelect handleDateChange={handleDateChange} />
+      {renderChartContent()}
     </StyledChartContainer>
   );
 };

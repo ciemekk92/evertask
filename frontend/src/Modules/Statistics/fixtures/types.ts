@@ -20,3 +20,8 @@ export interface CreatedVsResolvedChartData extends BaseChartData {
 export interface AverageAgeChartData extends BaseChartData {
   averageAge: number;
 }
+
+export interface DateRangeData {
+  startDate: string;
+  finishDate: string;
+}

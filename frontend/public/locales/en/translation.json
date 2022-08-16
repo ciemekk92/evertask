@@ -416,11 +416,19 @@
     }
   },
   "statistics": {
+    "averageAge": "Average age",
     "averageAgeChart": "Average issue age",
     "burndownChart": "Burndown chart",
+    "commitment": "Commitment",
+    "completed": "Completed",
+    "created": "Created",
     "createdVsResolvedChart": "Created vs resolved",
+    "noIssuesCreatedYet": "No data for selected date range",
+    "remaining": "Remaining",
+    "resolved": "Resolved",
     "selectSprint": "Select sprint",
     "title": "Statistics",
+    "trend": "Trend",
     "velocityChart": "Velocity chart"
   },
   "unassignedUserPage": {

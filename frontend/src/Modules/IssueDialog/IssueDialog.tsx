@@ -30,6 +30,7 @@ interface Props {
   handleSubmitting: VoidFunctionNoArgs;
   initialSprintId?: Nullable<Id>;
   issueId?: Id;
+  parentId?: Id;
   targetStatus?: ISSUE_STATUS;
 }
 
@@ -41,6 +42,7 @@ interface IssueData {
   estimateHours: Nullable<string>;
   pullRequestUrl: string;
   sprintId: Nullable<Id>;
+  parentId: Nullable<Id>;
   status: ISSUE_STATUS;
   type: ISSUE_TYPE;
   priority: ISSUE_PRIORITY;
@@ -52,6 +54,7 @@ export const IssueDialog = ({
   handleSubmitting,
   initialSprintId,
   issueId,
+  parentId,
   targetStatus
 }: Props) => {
   const [initialData, setInitialData] = React.useState<IssueData>({
@@ -63,8 +66,9 @@ export const IssueDialog = ({
     pullRequestUrl: '',
     sprintId: typeof initialSprintId !== 'undefined' ? initialSprintId : null,
     status: ISSUE_STATUS.TO_DO,
-    type: ISSUE_TYPE.TASK,
-    priority: ISSUE_PRIORITY.MEDIUM
+    type: mode === ISSUE_DIALOG_MODES.ADD_SUBTASK ? ISSUE_TYPE.SUBTASK : ISSUE_TYPE.TASK,
+    priority: ISSUE_PRIORITY.MEDIUM,
+    parentId: parentId ? parentId : null
   });
 
   const { t } = useTranslation();
@@ -119,7 +123,7 @@ export const IssueDialog = ({
   const onSubmit = async (values: IssueData) => {
     let result: Response;
 
-    if (!issueId && mode === ISSUE_DIALOG_MODES.ADD) {
+    if (!issueId && [ISSUE_DIALOG_MODES.ADD, ISSUE_DIALOG_MODES.ADD_SUBTASK].includes(mode)) {
       result = await Api.post('issues', {
         ...values,
         projectId: currentProject.id
@@ -189,6 +193,7 @@ export const IssueDialog = ({
               <StyledFlexContainerSpaceBetween>
                 <FormField label={t('issueDialog.type')} name="type">
                   <SingleSelectDropdown
+                    disabled={mode === ISSUE_DIALOG_MODES.ADD_SUBTASK}
                     options={mapIssueTypesToDropdownOptions()}
                     value={values.type}
                     onChange={(value: Nullable<string>) => setFieldValue('type', value)}

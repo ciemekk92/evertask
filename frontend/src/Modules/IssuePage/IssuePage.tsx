@@ -11,24 +11,32 @@ import {
   IssueDescriptionSection,
   IssueCommentsSection,
   IssueRightInfoSection,
-  IssueTimeTrackingSection
+  IssueTimeTrackingSection,
+  IssueSubtasksSection
 } from './components';
 import { TimeTrackingData, CommentsData } from './fixtures';
 import { StyledCenterSectionContainer, StyledRightSectionContainer } from './IssuePage.styled';
+import { ISSUE_DIALOG_MODES, IssueDialog } from '../IssueDialog';
+import { DialogComponent, useDialog } from '../../Hooks/useDialog';
 
 export const IssuePage = (): Nullable<JSX.Element> => {
   const params = useParams<RouterParams>();
   const [issueData, setIssueData] = React.useState<Nullable<Issue.IssueFullEntity>>(null);
   const [timeTracking, setTimeTracking] = React.useState<Nullable<TimeTrackingData>>(null);
   const [comments, setComments] = React.useState<Nullable<CommentsData>>(null);
+  const issueDialogConfig = useDialog<ISSUE_DIALOG_MODES>(ISSUE_DIALOG_MODES.EDIT);
 
-  React.useEffect(() => {
+  const getIssueDetails = React.useCallback(() => {
     Api.get(`issues/${params.id}/full`)
       .then((response: ApiResponse) => response.json())
       .then((data: Issue.IssueFullEntity) => {
         setIssueData(data);
       });
   }, [params.id]);
+
+  React.useEffect(() => {
+    getIssueDetails();
+  }, [getIssueDetails]);
 
   React.useEffect(() => {
     if (issueData) {
@@ -59,6 +67,17 @@ export const IssuePage = (): Nullable<JSX.Element> => {
     }
   };
 
+  const handleOpeningAddSubtask = async () => {
+    const result = await issueDialogConfig.handleOpen(ISSUE_DIALOG_MODES.ADD_SUBTASK, {
+      parentId: issueData.id,
+      initialSprintId: issueData.sprint?.id
+    });
+
+    if (result) {
+      getIssueDetails();
+    }
+  };
+
   return (
     <VerticalPageWrapper alignItems="unset">
       <StyledFlexContainer>
@@ -79,8 +98,25 @@ export const IssuePage = (): Nullable<JSX.Element> => {
         <StyledRightSectionContainer>
           <IssueRightInfoSection issue={issueData} />
           {timeTracking && <IssueTimeTrackingSection timeTrackingData={timeTracking} />}
+          <IssueSubtasksSection
+            subtasks={issueData.subtasks}
+            handleOpeningAddSubtask={handleOpeningAddSubtask}
+          />
         </StyledRightSectionContainer>
       </StyledHorizontalContainer>
+      <DialogComponent
+        isOpen={issueDialogConfig.isOpen}
+        handleClose={issueDialogConfig.handleClose}
+      >
+        <IssueDialog
+          mode={issueDialogConfig.dialogMode}
+          handleClose={issueDialogConfig.handleClose}
+          handleSubmitting={issueDialogConfig.handleSubmit}
+          issueId={issueDialogConfig.params.issueId}
+          parentId={issueDialogConfig.params.parentId}
+          initialSprintId={issueDialogConfig.params.initialSprintId}
+        />
+      </DialogComponent>
     </VerticalPageWrapper>
   );
 };

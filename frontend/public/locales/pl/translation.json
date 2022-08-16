@@ -128,6 +128,7 @@
     "estimateStoryPoints": "Oszacowanie (punkty story)",
     "header": {
       "add": "Dodaj zadanie",
+      "add_subtask": "Dodaj podzadanie",
       "edit": "Edytuj zadanie"
     },
     "priority": "Priorytet",
@@ -183,6 +184,11 @@
       "title": "Czas i osoby",
       "unassigned": "Nie przypisano",
       "updatedAt": "Zaktualizowano:"
+    },
+    "subtasks": {
+      "addSubtask": "Dodaj podzadanie",
+      "noSubtasks": "Brak podzadań",
+      "title": "Podzadania"
     },
     "timeTracking": {
       "estimatedHours": "Oszacowano:",

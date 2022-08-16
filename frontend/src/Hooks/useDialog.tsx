@@ -7,7 +7,7 @@ interface DialogProps {
   children: React.ReactElement;
 }
 
-type DialogModes = 'ADD' | 'EDIT' | 'CONFIRM' | 'START' | 'END';
+type DialogModes = 'ADD' | 'EDIT' | 'ADD_SUBTASK' | 'CONFIRM' | 'START' | 'END';
 type Params = { [x: string]: any };
 
 let resolve: (value: boolean | PromiseLike<boolean>) => void;

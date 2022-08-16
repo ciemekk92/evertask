@@ -3,3 +3,4 @@ export { IssueDescriptionSection } from './IssueDescriptionSection/IssueDescript
 export { IssueCommentsSection } from './IssueCommentsSection/IssueCommentsSection';
 export { IssueRightInfoSection } from './IssueRightInfoSection/IssueRightInfoSection';
 export { IssueTimeTrackingSection } from './IssueTimeTrackingSection/IssueTimeTrackingSection';
+export { IssueSubtasksSection } from './IssueSubtasksSection/IssueSubtasksSection';

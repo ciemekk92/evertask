@@ -52,6 +52,7 @@ export const StyledSectionHeaderRow = styled(StyledFlexContainerAlignCenterSpace
 export const StyledSectionWrapper = styled(StyledFlexColumnContainer)`
   background-color: ${(props) => props.theme.surface};
   padding: 1.6rem;
+  font-size: 1.6rem;
 
   & ${StyledLink} {
     &:not(:last-child) {
@@ -68,7 +69,6 @@ export const StyledSectionWrapper = styled(StyledFlexColumnContainer)`
   }
 
   & > p {
-    font-size: 1.6rem;
     padding: 1rem;
   }
 `;

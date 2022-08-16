@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.OffsetDateTime;
 import java.util.*;
 
 @Getter
@@ -25,8 +26,8 @@ public class Sprint extends BaseEntity implements Serializable {
 
     @Length(max = 1000)
     private String description;
-    private Date startDate;
-    private Date finishDate;
+    private OffsetDateTime startDate;
+    private OffsetDateTime finishDate;
 
     @Column(name = "is_completed")
     @NotNull

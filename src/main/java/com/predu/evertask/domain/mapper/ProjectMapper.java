@@ -9,7 +9,7 @@ import com.predu.evertask.repository.IssueRepository;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 @Mapper(uses = UUIDMapper.class, componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -42,15 +42,15 @@ public abstract class ProjectMapper {
         if (topByOrderByUpdatedAtDesc.isEmpty() || topByOrderByCreatedAtDesc.isEmpty()) {
             dto.setLastUpdatedAt(project.getUpdatedAt());
         } else {
-            Date lastUpdatedIssueDate = topByOrderByUpdatedAtDesc.get().getUpdatedAt();
-            Date lastCreatedIssueDate = topByOrderByCreatedAtDesc.get().getCreatedAt();
+            OffsetDateTime lastUpdatedIssueDate = topByOrderByUpdatedAtDesc.get().getUpdatedAt();
+            OffsetDateTime lastCreatedIssueDate = topByOrderByCreatedAtDesc.get().getCreatedAt();
 
             if (lastUpdatedIssueDate != null) {
-                if (lastUpdatedIssueDate.after(lastCreatedIssueDate)) {
+                if (lastUpdatedIssueDate.isAfter(lastCreatedIssueDate)) {
                     dto.setLastUpdatedAt(lastUpdatedIssueDate);
                 }
             } else if (project.getUpdatedAt() != null) {
-                if (lastCreatedIssueDate.after(project.getUpdatedAt())) {
+                if (lastCreatedIssueDate.isAfter(project.getUpdatedAt())) {
                     dto.setLastUpdatedAt(lastCreatedIssueDate);
                 } else {
                     dto.setLastUpdatedAt(project.getUpdatedAt());

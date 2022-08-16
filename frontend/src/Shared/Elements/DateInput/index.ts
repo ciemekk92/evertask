@@ -1,1 +1,1 @@
-export { DateInput } from './DateInput.styled';
+export { FormikDateInput, HTMLDateInput } from './DateInput.styled';

@@ -6,6 +6,10 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
@@ -39,13 +43,13 @@ public class VerificationToken {
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     private User user;
 
-    private Date expiryDate;
+    private OffsetDateTime expiryDate;
 
-    private Date calculateExpiryDate(int expiryTimeInMinutes) {
+    private OffsetDateTime calculateExpiryDate(int expiryTimeInMinutes) {
         final Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(new Date().getTime());
         cal.add(Calendar.MINUTE, expiryTimeInMinutes);
 
-        return new Date(cal.getTime().getTime());
+        return OffsetDateTime.from(ZonedDateTime.ofInstant(Instant.ofEpochMilli(cal.getTime().getTime()), ZoneId.systemDefault()));
     }
 }

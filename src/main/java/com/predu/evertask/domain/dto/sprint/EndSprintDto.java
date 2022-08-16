@@ -3,7 +3,7 @@ package com.predu.evertask.domain.dto.sprint;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 public class EndSprintDto {
@@ -12,7 +12,7 @@ public class EndSprintDto {
     private String sprintId;
 
     @NotNull
-    private Date finishDate;
+    private LocalDate finishDate;
 
     private String sprintIdToMoveTo;
 }

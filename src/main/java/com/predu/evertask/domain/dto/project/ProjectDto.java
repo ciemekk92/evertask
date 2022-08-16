@@ -6,7 +6,7 @@ import com.predu.evertask.domain.dto.sprint.SprintDto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 @Getter
 @Setter
@@ -20,5 +20,5 @@ public class ProjectDto extends BaseDto {
     private SprintDto activeSprint;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private Date lastUpdatedAt;
+    private OffsetDateTime lastUpdatedAt;
 }

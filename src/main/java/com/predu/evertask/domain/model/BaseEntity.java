@@ -16,7 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Getter
@@ -37,10 +37,10 @@ public class BaseEntity implements Serializable {
 
     @Column(updatable = false)
     @CreatedDate
-    private Date createdAt;
+    private OffsetDateTime createdAt;
 
     @LastModifiedDate
-    private Date updatedAt;
+    private OffsetDateTime updatedAt;
 
     @CreatedBy
     @Column(updatable = false)

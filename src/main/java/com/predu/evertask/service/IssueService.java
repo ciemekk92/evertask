@@ -10,7 +10,6 @@ import com.predu.evertask.repository.IssueRepository;
 import com.predu.evertask.repository.IssueWorkLogRepository;
 import com.predu.evertask.repository.ProjectRepository;
 import com.predu.evertask.repository.SprintRepository;
-import com.predu.evertask.service.audit.IssueHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +25,6 @@ public class IssueService {
     private final ProjectRepository projectRepository;
     private final IssueMapper issueMapper;
     private final IssueWorkLogMapper issueWorkLogMapper;
-
-    private final IssueHistoryService issueHistoryService;
 
     public List<IssueDto> findAll() {
         return issueRepository.findAll()

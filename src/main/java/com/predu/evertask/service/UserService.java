@@ -31,6 +31,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ValidationException;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.*;
 
 import static java.lang.String.format;
@@ -94,7 +96,7 @@ public class UserService implements UserDetailsService {
 
         updateRefreshToken(user,
                 refreshToken,
-                new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000L)
+                new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000L).toInstant().atOffset(ZoneOffset.UTC)
         );
 
         ResponseCookie cookie = ResponseCookie.from("refresh", refreshToken)
@@ -315,7 +317,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void updateRefreshToken(User user, String token, Date expiryDate) {
+    public void updateRefreshToken(User user, String token, OffsetDateTime expiryDate) {
         user.setRefreshToken(token);
         user.setRefreshTokenExpiryDate(expiryDate);
 

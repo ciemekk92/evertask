@@ -5,6 +5,7 @@ import com.predu.evertask.domain.dto.project.ProjectDto;
 import com.predu.evertask.domain.dto.project.ProjectUpdateDto;
 import com.predu.evertask.domain.dto.sprint.EndSprintDto;
 import com.predu.evertask.domain.dto.sprint.StartSprintDto;
+import com.predu.evertask.domain.enums.IssueStatus;
 import com.predu.evertask.domain.mapper.ProjectMapper;
 import com.predu.evertask.domain.model.*;
 import com.predu.evertask.exception.InvalidOperationException;
@@ -15,6 +16,7 @@ import com.predu.evertask.repository.SprintRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.ZoneId;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -81,8 +83,8 @@ public class ProjectService {
         Sprint sprint = sprintRepository.findById(UUID.fromString(dto.getSprintId()))
                 .orElseThrow(() -> new NotFoundException(Sprint.class, dto.getSprintId()));
 
-        sprint.setStartDate(dto.getStartDate());
-        sprint.setFinishDate(dto.getFinishDate());
+        sprint.setStartDate(dto.getStartDate().atStartOfDay(ZoneId.systemDefault()).toOffsetDateTime());
+        sprint.setFinishDate(dto.getFinishDate().atStartOfDay(ZoneId.systemDefault()).toOffsetDateTime());
 
         sprint = sprintRepository.save(sprint);
         project.setActiveSprint(sprint);
@@ -103,7 +105,7 @@ public class ProjectService {
                 .orElseThrow(() -> new NotFoundException(Project.class, projectId));
 
         project.setActiveSprint(null);
-        sprint.setFinishDate(dto.getFinishDate());
+        sprint.setFinishDate(dto.getFinishDate().atStartOfDay(ZoneId.systemDefault()).toOffsetDateTime());
         sprint.setCompleted(true);
 
         Optional<Sprint> sprintToMoveTo;
@@ -116,7 +118,9 @@ public class ProjectService {
 
         List<Issue> sprintIssues = sprint.getIssues();
         for (Issue issue : sprintIssues) {
-            issue.setSprint(sprintToMoveTo.orElse(null));
+            if (issue.getStatus() != IssueStatus.ACCEPTED)  {
+                issue.setSprint(sprintToMoveTo.orElse(null));
+            }
         }
 
         issueRepository.saveAll(sprintIssues);

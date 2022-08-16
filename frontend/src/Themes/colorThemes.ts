@@ -19,7 +19,9 @@ export const getLightTheme = (primary: string) => ({
   error: '#D33636',
   surfaceTransparent: 'rgba(243,243,243,0.4)',
   boxShadow: 'rgba(102,102,102,0.4)',
-  textShadow: 'rgba(31,31,31,0.4)'
+  textShadow: 'rgba(31,31,31,0.4)',
+  chartPrimary: '#3FA818',
+  chartSecondary: '#F31818'
 });
 
 export const getDarkTheme = (primary: string) => ({
@@ -41,5 +43,7 @@ export const getDarkTheme = (primary: string) => ({
   error: '#D33636',
   surfaceTransparent: 'rgba(47,47,47,0.4)',
   boxShadow: 'rgba(31,31,31,0.4)',
-  textShadow: 'rgba(0, 0, 0, 0.4)'
+  textShadow: 'rgba(0, 0, 0, 0.4)',
+  chartPrimary: '#3FA818',
+  chartSecondary: '#F31818'
 });

@@ -4,6 +4,7 @@ import com.predu.evertask.domain.dto.sprint.SprintDto;
 import com.predu.evertask.domain.dto.sprint.SprintIssuesDto;
 import com.predu.evertask.domain.dto.sprint.SprintSaveDto;
 import com.predu.evertask.domain.dto.sprint.SprintUpdateDto;
+import com.predu.evertask.domain.enums.IssueType;
 import com.predu.evertask.domain.model.Issue;
 import com.predu.evertask.domain.model.Sprint;
 import com.predu.evertask.repository.ProjectRepository;
@@ -31,9 +32,6 @@ public abstract class SprintMapper {
 
     public abstract Sprint update(@MappingTarget Sprint sprint, SprintUpdateDto sprintUpdateDto);
 
-    @InheritInverseConfiguration(name = "sprintSaveDtoToSprint")
-    public abstract SprintSaveDto sprintToSprintSaveDto(Sprint sprint);
-
     @Mapping(target = "projectId", ignore = true)
     public abstract SprintDto sprintToSprintDto(Sprint sprint);
 
@@ -55,6 +53,7 @@ public abstract class SprintMapper {
 
         target.setIssues(source.getIssues()
                 .stream()
+                .filter(issue -> !issue.getType().equals(IssueType.SUBTASK))
                 .sorted(Comparator.comparingInt(Issue::getKey))
                 .map(issueMapper::issueToIssueDto)
                 .toList());

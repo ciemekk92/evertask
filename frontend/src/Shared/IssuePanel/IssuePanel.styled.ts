@@ -9,7 +9,12 @@ export const StyledIssuePanel = styled(StyledFlexContainerAlignCenter)`
   border-radius: 0.3rem;
   font-size: 1.6rem;
   transition: all 0.4s ease;
-  cursor: pointer;
+
+  &,
+  & > div,
+  & > span {
+    cursor: pointer;
+  }
 
   &:not(:last-child) {
     margin-bottom: 1rem;

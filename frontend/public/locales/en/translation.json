@@ -198,6 +198,17 @@
       "totalReportedHours": "Reported:"
     }
   },
+  "landingPage": {
+    "features": {
+      "boards": "Each project comes with a separate board, which is updated in real time, whenever something changes.",
+      "methodologies": "Agile? Kanban? We've got you covered, each project can be managed with a different methodology,",
+      "organisations": "Join an already existing organisation or create your own to start working on projects.",
+      "projects": "Create and manage multiple projects, all from the single place.",
+      "statistics": "Monitor your team's progress through each sprint and measure its performance with the help of specialized charts.",
+      "title": "Features"
+    },
+    "headline": "Everything you need for successful project management"
+  },
   "login": {
     "title": "Login",
     "validation": {

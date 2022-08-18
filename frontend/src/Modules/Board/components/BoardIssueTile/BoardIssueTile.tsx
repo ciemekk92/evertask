@@ -11,6 +11,7 @@ import {
   StyledIssueCode,
   StyledIssueTitle,
   StyledIssueTitleContainer,
+  StyledMainIssueContainer,
   StyledParentIssueRow,
   StyledTile
 } from './BoardIssueTile.styled';
@@ -49,15 +50,17 @@ export const BoardIssueTile = ({
           {parent && (
             <StyledParentIssueRow>{`${currentProject.code}-${parent.key} ${parent.title}`}</StyledParentIssueRow>
           )}
-          <StyledIssueTitleContainer>
-            <StyledIssueTitle>{issue.title}</StyledIssueTitle>
-            <StyledIssueCode>{`${currentProject.code}-${issue.key}`}</StyledIssueCode>
-          </StyledIssueTitleContainer>
-          <StyledInformationContainer>
-            <IssueTypeIcon type={issue.type} />
-            <PriorityBadge priority={issue.priority} />
-            <StoryPointBadge value={issue.estimateStoryPoints} />
-          </StyledInformationContainer>
+          <StyledMainIssueContainer>
+            <StyledIssueTitleContainer>
+              <StyledIssueTitle>{issue.title}</StyledIssueTitle>
+              <StyledIssueCode>{`${currentProject.code}-${issue.key}`}</StyledIssueCode>
+            </StyledIssueTitleContainer>
+            <StyledInformationContainer>
+              <IssueTypeIcon type={issue.type} />
+              <PriorityBadge priority={issue.priority} />
+              <StoryPointBadge value={issue.estimateStoryPoints} />
+            </StyledInformationContainer>
+          </StyledMainIssueContainer>
         </StyledTile>
       )}
     </Draggable>

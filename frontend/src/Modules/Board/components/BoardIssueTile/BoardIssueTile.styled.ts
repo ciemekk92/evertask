@@ -22,9 +22,7 @@ const getTileWidth = (isSubtask: boolean, isParentInSameColumn: boolean): string
 export const StyledTile = styled(StyledFlexColumnContainer)<DraggableTileProps>`
   width: ${({ isSubtask, isParentInSameColumn }) => getTileWidth(isSubtask, isParentInSameColumn)};
   margin-left: ${(props) => (props.isSubtask ? 'auto' : 0)};
-  padding: 1.4rem 1rem;
   border-radius: 0.3rem;
-  position: relative;
   background-color: ${({ isSubtask, theme }) =>
     isSubtask ? theme.subtaskBackground : theme.surfaceSecondary};
 
@@ -33,14 +31,16 @@ export const StyledTile = styled(StyledFlexColumnContainer)<DraggableTileProps>`
   }
 `;
 
+export const StyledMainIssueContainer = styled.div`
+  padding: 1.2rem 1rem;
+`;
+
 export const StyledParentIssueRow = styled.div`
   background-color: ${(props) => props.theme.primaryDark};
   width: 100%;
-  position: absolute;
   border-radius: 0.3rem;
   padding: 0.1rem 0.5rem;
-  top: 0;
-  left: 0;
+  font-size: 1.3rem;
   ${StyledTextEllipsis}
 `;
 

@@ -19,47 +19,18 @@ import { IssuePage } from 'Modules/IssuePage';
 import { UnassignedUserPage } from 'Modules/UnassignedUserPage';
 import { OrganisationPage } from 'Modules/OrganisationPage';
 import { SprintPage } from 'Modules/SprintPage';
+import { Statistics } from 'Modules/Statistics';
 import { UserProfile } from 'Modules/UserProfile';
-import { IUserModel, UserModel } from 'Models/UserModel';
+import { UserModel } from 'Models/UserModel';
 import { StyledFlexColumnContainer, StyledFlexContainer } from 'Shared/SharedStyles.styled';
-import { INTERFACE_LANGUAGE, NOTIFICATION_TYPES } from 'Shared/constants';
+import { NOTIFICATION_TYPES } from 'Shared/constants';
 import { actionCreators } from 'Stores/User';
 import { PermissionCheck } from 'Utils/PermissionCheck';
 import { AppHeader, AppMainWindow, AppSidebar } from './components';
-import { Statistics } from '../Statistics';
 
 export const MainLayout = (): JSX.Element => {
-  const [currentUser, setCurrentUser] = React.useState<IUserModel>({
-    id: '',
-    email: '',
-    firstName: '',
-    lastName: '',
-    username: '',
-    accessToken: '',
-    bio: null,
-    phoneNumber: null,
-    authorities: [],
-    avatar: '',
-    organisationId: null,
-    mfaEnabled: false,
-    userSettings: {
-      darkMode: false,
-      interfaceLanguage: INTERFACE_LANGUAGE.EN,
-      interfaceColor: '#3F51B5'
-    }
-  });
-
+  const currentUser = UserModel.currentUserValue;
   const dispatch = useDispatch();
-
-  React.useEffect(() => {
-    const subscription = UserModel.currentUser.subscribe((user: IUserModel) => {
-      setCurrentUser(user);
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
 
   React.useEffect(() => {
     if (!currentUser.accessToken) {

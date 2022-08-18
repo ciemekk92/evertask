@@ -198,6 +198,17 @@
       "totalReportedHours": "Zaraportowano:"
     }
   },
+  "landingPage": {
+    "features": {
+      "boards": "Każdy projekt pozwala na korzystanie z tablicy aktualizowanej w czasie rzeczywistym, w momencie każdej zmiany.",
+      "methodologies": "Agile? Kanban? Jesteśmy z Tobą, każdy projekt może być zarządzany za pomocą innej metodologii.",
+      "organisations": "Dołącz do istniejącej organizacji lub stwórz własną, aby rozpocząć pracę nad projektami.",
+      "projects": "Stwórz i zarządzaj wieloma projektami jednocześnie, wszystko z jednego miejsca.",
+      "statistics": "Monitoruj postęp prac swojego zespołu w każdym sprincie oraz mierz jego wydajność za pomocą wyspecjalizowanych wykresów.",
+      "title": "Funkcjonalności"
+    },
+    "headline": "Wszystko, czego potrzebujesz do zarządzania swoim projektem"
+  },
   "login": {
     "title": "Logowanie",
     "validation": {

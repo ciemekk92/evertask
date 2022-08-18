@@ -210,6 +210,9 @@ export const IssueDialog = ({
               {currentProject.methodology === PROJECT_METHODOLOGIES.AGILE && (
                 <FormField label={t('issueDialog.estimateStoryPoints')} name="estimateStoryPoints">
                   <TextInput
+                    disabled={
+                      values.type === ISSUE_TYPE.SUBTASK || mode === ISSUE_DIALOG_MODES.ADD_SUBTASK
+                    }
                     valid={!errors.estimateStoryPoints && touched.estimateStoryPoints}
                     error={errors.estimateStoryPoints && touched.estimateStoryPoints}
                     name="estimateStoryPoints"

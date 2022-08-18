@@ -155,6 +155,7 @@
   },
   "issuePage": {
     "center": {
+      "editIssue": "Edytuj zadanie",
       "priority": "Priorytet:",
       "pullRequestUrl": "Adres pull requesta:",
       "sprint": "Sprint:",

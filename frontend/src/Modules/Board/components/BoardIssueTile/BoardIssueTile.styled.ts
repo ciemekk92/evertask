@@ -5,22 +5,43 @@ import { StyledBadge } from 'Shared/StoryPointBadge/StoryPointBadge.styled';
 import { StyledIcon } from 'Shared/Elements/Icons/Shared.styled';
 import {
   StyledFlexColumnContainer,
-  StyledFlexContainerAlignCenter
+  StyledFlexContainerAlignCenter,
+  StyledTextEllipsis
 } from 'Shared/SharedStyles.styled';
 
 interface DraggableTileProps extends React.HTMLAttributes<HTMLDivElement> {
   readonly snapshot: DraggableStateSnapshot;
+  readonly isSubtask: boolean;
+  readonly isParentInSameColumn: boolean;
 }
 
+const getTileWidth = (isSubtask: boolean, isParentInSameColumn: boolean): string => {
+  return isSubtask ? (isParentInSameColumn ? '95%' : '100%') : '100%';
+};
+
 export const StyledTile = styled(StyledFlexColumnContainer)<DraggableTileProps>`
-  width: 100%;
-  padding: 1rem;
+  width: ${({ isSubtask, isParentInSameColumn }) => getTileWidth(isSubtask, isParentInSameColumn)};
+  margin-left: ${(props) => (props.isSubtask ? 'auto' : 0)};
+  padding: 1.4rem 1rem;
   border-radius: 0.3rem;
-  background-color: ${(props) => props.theme.surfaceSecondary};
+  position: relative;
+  background-color: ${({ isSubtask, theme }) =>
+    isSubtask ? theme.subtaskBackground : theme.surfaceSecondary};
 
   &:not(:last-child) {
     margin-bottom: 0.8rem;
   }
+`;
+
+export const StyledParentIssueRow = styled.div`
+  background-color: ${(props) => props.theme.primaryDark};
+  width: 100%;
+  position: absolute;
+  border-radius: 0.3rem;
+  padding: 0.1rem 0.5rem;
+  top: 0;
+  left: 0;
+  ${StyledTextEllipsis}
 `;
 
 export const StyledIssueTitleContainer = styled(StyledFlexColumnContainer)`

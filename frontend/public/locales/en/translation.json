@@ -155,6 +155,7 @@
   },
   "issuePage": {
     "center": {
+      "editIssue": "Edit issue",
       "priority": "Priority:",
       "pullRequestUrl": "Pull request URL",
       "sprint": "Sprint:",

@@ -8,16 +8,17 @@ import { ApiResponse } from 'Types/Response';
 import { Api } from 'Utils/Api';
 import {
   IssueCenterInfoSection,
-  IssueDescriptionSection,
   IssueCommentsSection,
+  IssueDescriptionSection,
   IssueRightInfoSection,
-  IssueTimeTrackingSection,
-  IssueSubtasksSection
+  IssueSubtasksSection,
+  IssueTimeTrackingSection
 } from './components';
-import { TimeTrackingData, CommentsData } from './fixtures';
+import { CommentsData, TimeTrackingData } from './fixtures';
 import { StyledCenterSectionContainer, StyledRightSectionContainer } from './IssuePage.styled';
 import { ISSUE_DIALOG_MODES, IssueDialog } from '../IssueDialog';
 import { DialogComponent, useDialog } from '../../Hooks/useDialog';
+import { ISSUE_TYPE } from '../../Shared/constants';
 
 export const IssuePage = (): Nullable<JSX.Element> => {
   const params = useParams<RouterParams>();
@@ -78,6 +79,16 @@ export const IssuePage = (): Nullable<JSX.Element> => {
     }
   };
 
+  const handleOpeningEditIssue = async () => {
+    const result = await issueDialogConfig.handleOpen(ISSUE_DIALOG_MODES.EDIT, {
+      issueId: issueData.id
+    });
+
+    if (result) {
+      getIssueDetails();
+    }
+  };
+
   return (
     <VerticalPageWrapper alignItems="unset">
       <StyledFlexContainer>
@@ -85,7 +96,10 @@ export const IssuePage = (): Nullable<JSX.Element> => {
       </StyledFlexContainer>
       <StyledHorizontalContainer>
         <StyledCenterSectionContainer>
-          <IssueCenterInfoSection issue={issueData} />
+          <IssueCenterInfoSection
+            issue={issueData}
+            handleOpeningEditIssue={handleOpeningEditIssue}
+          />
           <IssueDescriptionSection description={issueData.description} />
           {comments && (
             <IssueCommentsSection
@@ -98,10 +112,12 @@ export const IssuePage = (): Nullable<JSX.Element> => {
         <StyledRightSectionContainer>
           <IssueRightInfoSection issue={issueData} />
           {timeTracking && <IssueTimeTrackingSection timeTrackingData={timeTracking} />}
-          <IssueSubtasksSection
-            subtasks={issueData.subtasks}
-            handleOpeningAddSubtask={handleOpeningAddSubtask}
-          />
+          {issueData.type !== ISSUE_TYPE.SUBTASK && (
+            <IssueSubtasksSection
+              subtasks={issueData.subtasks}
+              handleOpeningAddSubtask={handleOpeningAddSubtask}
+            />
+          )}
         </StyledRightSectionContainer>
       </StyledHorizontalContainer>
       <DialogComponent

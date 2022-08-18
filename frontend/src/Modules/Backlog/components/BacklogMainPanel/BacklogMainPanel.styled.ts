@@ -47,6 +47,10 @@ export const StyledIssueContainer = styled(StyledFlexContainerAlignCenter)`
 export const StyledSubtasksContainer = styled(StyledFlexColumnContainer)`
   margin: 1rem 0 0 auto;
   width: 98.5%;
+
+  & ${StyledIssueContainer}:not(:last-child) {
+    margin-bottom: 1rem;
+  }
 `;
 
 export const StyledIconsContainer = styled(StyledFlexContainerAlignCenter)`

@@ -21,6 +21,10 @@ export const TextInput = styled(InputField)<TextInputProps>`
     color: ${(props) => props.theme.secondaryText};
   }
 
+  &:disabled {
+    border-color: ${(props) => props.theme.disabled};
+  }
+
   ${({ error }) => error && errorBorderCss}
 `;
 

@@ -61,6 +61,7 @@ public abstract class IssueMapper {
 
     @Mapping(source = "project.id", target = "projectId")
     @Mapping(source = "sprint.id", target = "sprintId")
+    @Mapping(source = "parentIssue.id", target = "parentId")
     @Mapping(target = "assignee", ignore = true)
     public abstract IssueDto issueToIssueDto(Issue issue);
 

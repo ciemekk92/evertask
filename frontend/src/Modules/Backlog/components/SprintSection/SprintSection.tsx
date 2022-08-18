@@ -5,7 +5,7 @@ import { Heading6 } from 'Shared/Typography';
 import { IconButton } from 'Shared/Elements/Buttons';
 import { Sprint } from 'Types/Sprint';
 import { Issue } from 'Types/Issue';
-import { BacklogIssuePanel, EmptySection } from '..';
+import { EmptySection, BacklogMainPanel } from '..';
 import { StyledDroppableWrapper, StyledHeaderWrapper } from '../Shared.styled';
 
 interface Props {
@@ -33,7 +33,7 @@ export const SprintSection = ({
     }
 
     return sprint.issues.map((issue: Issue.IssueEntity, index: number) => (
-      <BacklogIssuePanel
+      <BacklogMainPanel
         handleOpeningEditIssue={handleOpeningEditIssue}
         handleViewingIssue={handleViewingIssue}
         issue={issue}

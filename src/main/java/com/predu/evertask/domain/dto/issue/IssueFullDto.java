@@ -1,7 +1,6 @@
 package com.predu.evertask.domain.dto.issue;
 
 import com.predu.evertask.domain.dto.BaseDto;
-import com.predu.evertask.domain.dto.issuecomment.IssueCommentDto;
 import com.predu.evertask.domain.dto.project.ProjectInfoDto;
 import com.predu.evertask.domain.dto.sprint.SprintInfoDto;
 import com.predu.evertask.domain.dto.user.UserIssueDto;

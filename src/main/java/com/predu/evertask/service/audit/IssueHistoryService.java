@@ -1,6 +1,7 @@
 package com.predu.evertask.service.audit;
 
 import com.predu.evertask.domain.enums.IssueStatus;
+import com.predu.evertask.domain.enums.IssueType;
 import com.predu.evertask.domain.history.BaseHistory;
 import com.predu.evertask.domain.history.IssueHistory;
 import com.predu.evertask.domain.model.Issue;
@@ -63,6 +64,7 @@ public class IssueHistoryService implements AbstractHistoryService<IssueHistory>
         return getIssueHistories(auditQuery);
     }
 
+    @Transactional(readOnly = true)
     public List<IssueHistory> findRevisionsByProjectId(UUID projectId) {
 
         AuditReader auditReader = AuditReaderFactory.get(entityManager);
@@ -89,6 +91,7 @@ public class IssueHistoryService implements AbstractHistoryService<IssueHistory>
         try {
             return revisions
                     .stream()
+                    .filter(rev -> !rev.getIssue().getType().equals(IssueType.SUBTASK))
                     .filter(rev -> borderDate.isAfter(rev.getRevisionDate().toLocalDate())
                             && (shouldFilterOnlyAccepted == rev.getIssue().getStatus().equals(IssueStatus.ACCEPTED)))
                     .collect(Collectors.groupingBy(rev -> rev.getIssue().getId()))

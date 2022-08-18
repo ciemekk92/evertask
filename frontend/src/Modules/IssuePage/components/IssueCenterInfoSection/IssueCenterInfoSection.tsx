@@ -11,18 +11,23 @@ import { StyledFlexContainerSpaceBetween } from 'Shared/SharedStyles.styled';
 import { Issue } from 'Types/Issue';
 import { StyledField, StyledFieldLabel } from '../Shared.styled';
 import { StyledColumn } from './IssueCenterInfoSection.styled';
+import { IconButton } from '../../../../Shared/Elements/Buttons';
 
 interface Props {
   issue: Issue.IssueFullEntity;
+  handleOpeningEditIssue: () => Promise<void>;
 }
 
-export const IssueCenterInfoSection = ({ issue }: Props): JSX.Element => {
+export const IssueCenterInfoSection = ({ issue, handleOpeningEditIssue }: Props): JSX.Element => {
   const { t } = useTranslation();
 
   return (
     <StyledSectionWrapper>
       <StyledSectionHeaderRow>
         <Heading6>{t('issuePage.center.title')}</Heading6>
+        <IconButton iconName="edit" onClick={handleOpeningEditIssue}>
+          {t('issuePage.center.editIssue')}
+        </IconButton>
       </StyledSectionHeaderRow>
       <StyledFlexContainerSpaceBetween>
         <StyledColumn>

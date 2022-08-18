@@ -128,6 +128,7 @@
     "estimateStoryPoints": "Estimate (story points)",
     "header": {
       "add": "Add new issue",
+      "add_subtask": "Add subtask",
       "edit": "Edit issue"
     },
     "priority": "Priority",
@@ -154,6 +155,7 @@
   },
   "issuePage": {
     "center": {
+      "editIssue": "Edit issue",
       "priority": "Priority:",
       "pullRequestUrl": "Pull request URL",
       "sprint": "Sprint:",
@@ -183,6 +185,11 @@
       "title": "People and time",
       "unassigned": "Unassigned",
       "updatedAt": "Last updated at:"
+    },
+    "subtasks": {
+      "addSubtask": "Add subtask",
+      "noSubtasks": "No subtasks",
+      "title": "Subtasks"
     },
     "timeTracking": {
       "estimatedHours": "Estimated:",

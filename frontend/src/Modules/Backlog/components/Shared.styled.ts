@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { StyledFlexContainerAlignCenterSpaceBetween } from 'Shared/SharedStyles.styled';
 
 export const StyledDroppableWrapper = styled.div`
-  padding: 1rem;
+  padding: 0.6rem 1rem;
   border-radius: 0.3rem;
   background-color: ${(props) => props.theme.surface};
 

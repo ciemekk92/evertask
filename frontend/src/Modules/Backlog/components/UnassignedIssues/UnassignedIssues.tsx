@@ -6,7 +6,7 @@ import { IconButton } from 'Shared/Elements/Buttons';
 import { Heading6 } from 'Shared/Typography';
 import { PROJECT_METHODOLOGIES } from 'Shared/constants';
 import { Issue } from 'Types/Issue';
-import { BacklogIssuePanel, EmptySection } from '..';
+import { BacklogMainPanel, EmptySection } from '..';
 import { StyledDroppableWrapper, StyledHeaderWrapper } from '../Shared.styled';
 
 interface Props {
@@ -50,7 +50,7 @@ export const UnassignedIssues = ({
     }
 
     return issues.map((issue: Issue.IssueEntity, index: number) => (
-      <BacklogIssuePanel
+      <BacklogMainPanel
         issue={issue}
         index={index}
         key={issue.id}

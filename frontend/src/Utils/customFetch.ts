@@ -28,17 +28,19 @@ export const customFetch = async (url: string, init: RequestInit): Promise<Unres
 
     setTimeout(() => LoadingModel.decreaseActiveCalls(), 100);
 
-    if (result.status === 403) {
-      history.push('/forbidden');
-      return;
+    switch (result.status) {
+      case 401:
+        history.push('/unauthorized');
+        return;
+      case 403:
+        history.push('/forbidden');
+        return;
+      case 404:
+        history.push('/not_found');
+        return;
+      default:
+        return result;
     }
-
-    if (result.status === 404) {
-      history.push('/not_found');
-      return;
-    }
-
-    return result;
   } catch (e: any) {
     LoadingModel.decreaseActiveCalls();
 

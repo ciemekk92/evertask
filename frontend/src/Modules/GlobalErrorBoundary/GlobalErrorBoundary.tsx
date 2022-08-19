@@ -32,9 +32,9 @@ export class GlobalErrorBoundary extends React.Component<Props, State> {
             <BoundaryWrapper>
               <HorizontalPageWrapper>
                 <IconOutline iconName="warning" iconSize={ICON_SIZE.XXL} />
-                <Heading4>{t('error.title')}</Heading4>
+                <Heading4>{t('error.globalTitle')}</Heading4>
               </HorizontalPageWrapper>
-              <p>{t('error.content')}</p>
+              <p>{t('error.globalContent')}</p>
             </BoundaryWrapper>
           )}
         </Translation>

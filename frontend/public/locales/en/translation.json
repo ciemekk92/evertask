@@ -39,8 +39,20 @@
     }
   },
   "error": {
-    "content": "Try refreshing the page, if it doesn't help, please contact page administrator.",
-    "title": "Oops! Something went wrong! :("
+    "FORBIDDEN": {
+      "content": "You don't have permission to access this resource.",
+      "title": "403 Forbidden"
+    },
+    "NOT_FOUND": {
+      "content": "Content you're looking for cannot be found.",
+      "title": "404 Not found"
+    },
+    "UNAUTHORIZED": {
+      "content": "You need to be logged in to access this resource.",
+      "title": "401 Unauthorized"
+    },
+    "globalContent": "Try refreshing the page, if it doesn't help, please contact page administrator.",
+    "globalTitle": "Oops! Something went wrong! :("
   },
   "general": {
     "accept": "Accept",

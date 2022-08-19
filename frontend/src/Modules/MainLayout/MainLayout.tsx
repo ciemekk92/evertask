@@ -6,20 +6,21 @@ import { GlobalErrorBoundary } from 'Modules/GlobalErrorBoundary';
 import { LandingPage } from 'Modules/LandingPage';
 import {
   Login,
+  MultifactorAuth,
   Signup,
   SignupConfirmation,
-  SuccessNotification,
-  MultifactorAuth
+  SuccessNotification
 } from 'Modules/Auth';
-import { Dashboard } from 'Modules/Dashboard';
-import { ProjectPage } from 'Modules/ProjectPage';
-import { Board } from 'Modules/Board';
 import { Backlog } from 'Modules/Backlog';
+import { Board } from 'Modules/Board';
+import { Dashboard } from 'Modules/Dashboard';
+import { ERROR_TYPE, ErrorPage } from 'Modules/ErrorPage';
 import { IssuePage } from 'Modules/IssuePage';
-import { UnassignedUserPage } from 'Modules/UnassignedUserPage';
 import { OrganisationPage } from 'Modules/OrganisationPage';
+import { ProjectPage } from 'Modules/ProjectPage';
 import { SprintPage } from 'Modules/SprintPage';
 import { Statistics } from 'Modules/Statistics';
+import { UnassignedUserPage } from 'Modules/UnassignedUserPage';
 import { UserProfile } from 'Modules/UserProfile';
 import { UserModel } from 'Models/UserModel';
 import { StyledFlexColumnContainer, StyledFlexContainer } from 'Shared/SharedStyles.styled';
@@ -38,6 +39,14 @@ export const MainLayout = (): JSX.Element => {
     }
   }, [dispatch, currentUser.accessToken]);
 
+  const renderErrorPageRoutes = () => (
+    <React.Fragment>
+      <Route path={'/forbidden'} element={<ErrorPage type={ERROR_TYPE.FORBIDDEN} />} />
+      <Route path={'/not_found'} element={<ErrorPage type={ERROR_TYPE.NOT_FOUND} />} />
+      <Route path={'/unauthorized'} element={<ErrorPage type={ERROR_TYPE.UNAUTHORIZED} />} />
+    </React.Fragment>
+  );
+
   const renderForAssignedUser = (): JSX.Element => (
     <React.Fragment>
       <AppSidebar />
@@ -53,6 +62,7 @@ export const MainLayout = (): JSX.Element => {
             <Route path={'/organisation'} element={<OrganisationPage />} />
             <Route path={'/statistics'} element={<Statistics />} />
             <Route path={'/profile'} element={<UserProfile />} />
+            {renderErrorPageRoutes()}
           </ReactRoutes>
         </GlobalErrorBoundary>
       </AppMainWindow>
@@ -65,6 +75,7 @@ export const MainLayout = (): JSX.Element => {
         <ReactRoutes>
           <Route path={'/'} element={<UnassignedUserPage />} />
           <Route path={'/profile'} element={<UserProfile />} />
+          {renderErrorPageRoutes()}
         </ReactRoutes>
       </GlobalErrorBoundary>
     </AppMainWindow>
@@ -88,6 +99,7 @@ export const MainLayout = (): JSX.Element => {
           element={<SuccessNotification type={NOTIFICATION_TYPES.SIGNUP} />}
         />
         <Route path={'/mfa'} element={<MultifactorAuth />} />
+        {renderErrorPageRoutes()}
       </ReactRoutes>
     </GlobalErrorBoundary>
   );

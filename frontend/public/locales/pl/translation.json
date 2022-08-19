@@ -39,8 +39,20 @@
     }
   },
   "error": {
-    "content": "Spróbuj odświeżyć stronę, jeśli to nie pomoże, skontaktuj się z administratorem strony.",
-    "title": "Ups! Coś poszło nie tak :("
+    "FORBIDDEN": {
+      "content": "Nie masz wystarczających uprawnień, aby uzyskać dostęp do tego zasobu.",
+      "title": "403 Brak uprawnień"
+    },
+    "NOT_FOUND": {
+      "content": "Zawartość, którą próbujesz znaleźć nie może być znaleziona.",
+      "title": "Nie znaleziono"
+    },
+    "UNAUTHORIZED": {
+      "content": "Musisz się zalogować aby uzyskać dostęp do tego zasobu.",
+      "title": "401 Użytkownik nieautoryzowany"
+    },
+    "globalContent": "Spróbuj odświeżyć stronę, jeśli to nie pomoże, skontaktuj się z administratorem strony.",
+    "globalTitle": "Ups! Coś poszło nie tak :("
   },
   "general": {
     "accept": "Zaakceptuj",

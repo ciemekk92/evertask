@@ -80,7 +80,8 @@ public class SprintController {
      * @throws URISyntaxException in case of incorrect sprint id
      */
     @PostMapping
-    public ResponseEntity<SprintSaveDto> createSprint(@RequestBody @Valid SprintSaveDto toCreate) throws URISyntaxException {
+    public ResponseEntity<SprintSaveDto> createSprint(@RequestBody @Valid SprintSaveDto toCreate)
+            throws URISyntaxException {
         Sprint created = sprintService.create(toCreate);
 
         return ResponseEntity.created(new URI("http://localhost:8080/api/sprints/" + created.getId())).body(toCreate);
@@ -93,7 +94,8 @@ public class SprintController {
      * @return Response with status 204 if updated or 404 if sprint was not found
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateSprint(@RequestBody @Valid SprintUpdateDto toUpdate, @PathVariable UUID id) {
+    public ResponseEntity<Void> updateSprint(@RequestBody @Valid SprintUpdateDto toUpdate,
+                                             @PathVariable UUID id) {
         if (!sprintService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

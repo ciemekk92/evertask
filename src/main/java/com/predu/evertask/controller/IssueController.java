@@ -113,7 +113,8 @@ public class IssueController {
     }
 
     @PostMapping
-    public ResponseEntity<IssueSaveDto> createIssue(@RequestBody @Valid IssueSaveDto toCreate, Authentication authentication)
+    public ResponseEntity<IssueSaveDto> createIssue(@RequestBody @Valid IssueSaveDto toCreate,
+                                                    Authentication authentication)
             throws URISyntaxException {
 
         User reporter = (User) authentication.getPrincipal();

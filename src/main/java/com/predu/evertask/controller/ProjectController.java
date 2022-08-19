@@ -144,7 +144,8 @@ public class ProjectController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateProject(@RequestBody @Valid ProjectUpdateDto toUpdate, @PathVariable UUID id) {
+    public ResponseEntity<Void> updateProject(@RequestBody @Valid ProjectUpdateDto toUpdate,
+                                              @PathVariable UUID id) {
         if (!projectService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

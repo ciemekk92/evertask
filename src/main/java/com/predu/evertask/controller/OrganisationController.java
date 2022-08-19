@@ -4,6 +4,7 @@ import com.predu.evertask.annotation.IsAdmin;
 import com.predu.evertask.annotation.IsCurrentOrganisationAdminOrAdmin;
 import com.predu.evertask.annotation.IsUnassignedUser;
 import com.predu.evertask.annotation.IsUnassignedUserOrAdmin;
+import com.predu.evertask.config.security.CurrentUserId;
 import com.predu.evertask.domain.dto.organisation.*;
 import com.predu.evertask.domain.mapper.OrganisationMapper;
 import com.predu.evertask.domain.model.Organisation;
@@ -82,11 +83,9 @@ public class OrganisationController {
     @IsUnassignedUser
     @PostMapping("/{organisationId}/accept_invitation")
     public ResponseEntity<Void> acceptInvitation(@PathVariable UUID organisationId,
-                                                 Authentication authentication) {
+                                                 @CurrentUserId UUID userId) {
 
-        User user = (User) authentication.getPrincipal();
-
-        invitationService.acceptInvitation(organisationId, user.getId());
+        invitationService.acceptInvitation(organisationId, userId);
 
         return ResponseEntity.ok().build();
     }
@@ -94,10 +93,9 @@ public class OrganisationController {
     @IsUnassignedUser
     @PostMapping("/{organisationId}/decline_invitation")
     public ResponseEntity<Void> declineInvitation(@PathVariable UUID organisationId,
-                                                  Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
+                                                  @CurrentUserId UUID userId) {
 
-        invitationService.declineInvitation(organisationId, user.getId());
+        invitationService.declineInvitation(organisationId, userId);
 
         return ResponseEntity.ok().build();
     }

@@ -1,5 +1,6 @@
 package com.predu.evertask.service;
 
+import com.predu.evertask.domain.dto.issue.IssueReportTimeDto;
 import com.predu.evertask.domain.model.*;
 import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.*;
@@ -19,48 +20,42 @@ public class AuthenticatedUserService {
     private final ProjectRepository projectRepository;
     private final IssueRepository issueRepository;
     private final IssueCommentRepository issueCommentRepository;
+    private final SprintRepository sprintRepository;
 
     public boolean isOrganisationAdmin(UUID id) {
-        String username = ((User) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal())
-                .getUsername();
 
-        Optional<User> user = userRepository.findByUsername(username);
+        UUID userId = getCurrentUserId();
+
+        Optional<User> user = userRepository.findById(userId);
         Organisation organisation = organisationRepository.getById(id);
 
         return user.filter(value -> organisation
-                .getOrganisationAdmins()
-                .contains(value))
+                        .getOrganisationAdmins()
+                        .contains(value))
                 .isPresent();
     }
 
     public boolean isProjectAdmin(UUID id) {
-        String username =  ((User)SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal())
-                .getUsername();
 
-        Optional<User> user = userRepository.findByUsername(username);
-        Project project = projectRepository.getById(id);
+        UUID userId = getCurrentUserId();
+
+        Optional<User> user = userRepository.findById(userId);
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(Project.class, id));
 
         return user.filter(value -> project
-                .getProjectAdmins()
-                .contains(value))
+                        .getProjectAdmins()
+                        .contains(value))
                 .isPresent();
     }
 
     public boolean isOrganisationMember(UUID id) {
-        String username = ((User)SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal())
-                .getUsername();
 
-        Optional<User> user = userRepository.findByUsername(username);
-        Organisation organisation = organisationRepository.getById(id);
+        UUID userId = getCurrentUserId();
+
+        Optional<User> user = userRepository.findById(userId);
+        Organisation organisation = organisationRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(Organisation.class, id));
 
         return user.filter(value -> organisation
                         .getMembers()
@@ -68,16 +63,28 @@ public class AuthenticatedUserService {
                 .isPresent();
     }
 
+    public boolean isProjectMember(UUID id) {
+
+        UUID userId = getCurrentUserId();
+
+        Optional<User> user = userRepository.findById(userId);
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(Project.class, id));
+
+        return user.filter(value -> project
+                        .getMembers()
+                        .contains(value))
+                .isPresent();
+    }
+
     public boolean isAllowedToIssue(UUID id) {
-        String username = ((User) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal())
-                .getUsername();
 
-        Issue issue = issueRepository.findById(id).orElseThrow(() -> new NotFoundException(Issue.class, id));
+        UUID userId = getCurrentUserId();
 
-        Optional<User> user = userRepository.findByUsername(username);
+        Optional<User> user = userRepository.findById(userId);
+
+        Issue issue = issueRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(Issue.class, id));
 
         return user.filter(value -> issue
                         .getProject()
@@ -87,17 +94,58 @@ public class AuthenticatedUserService {
                 .isPresent();
     }
 
+    public boolean isAllowedToSprint(UUID id) {
+
+        UUID userId = getCurrentUserId();
+
+        Optional<User> user = userRepository.findById(userId);
+
+        Sprint sprint = sprintRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(Sprint.class, id));
+
+        return user.filter(value -> sprint
+                        .getProject()
+                        .getMembers()
+                        .contains(value))
+                .isPresent();
+    }
+
+    public boolean isAllowedToUpdateUser(UUID id) {
+        return getCurrentUserId().equals(id);
+    }
+
     public boolean isCommentAuthor(UUID id) {
 
-        UUID userId = ((User) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal())
-                .getId();
+        UUID userId = getCurrentUserId();
 
         IssueComment comment = issueCommentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(IssueComment.class, id));
 
         return comment.getCreatedBy().equals(userId);
+    }
+
+    public boolean isAllowedToLogWorkOnIssue(IssueReportTimeDto dto) {
+
+        UUID userId = getCurrentUserId();
+        Optional<User> user = userRepository.findById(userId);
+
+        Issue issue = issueRepository.findById(UUID.fromString(dto.getIssueId()))
+                .orElseThrow(() -> new NotFoundException(Issue.class, dto.getIssueId()));
+
+        return user.filter(value -> issue
+                        .getProject()
+                        .getOrganisation()
+                        .getId()
+                        .equals(value.getOrganisation().getId()))
+                .isPresent();
+    }
+
+    private UUID getCurrentUserId() {
+
+        return ((User) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal())
+                .getId();
     }
 }

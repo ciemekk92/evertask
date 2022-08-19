@@ -3,6 +3,7 @@ package com.predu.evertask.controller;
 import com.predu.evertask.annotation.IsNotUnassignedUser;
 import com.predu.evertask.annotation.IsOrganisationAdminOrAdmin;
 import com.predu.evertask.annotation.IsUnassignedUser;
+import com.predu.evertask.annotation.IsUserAllowedToUpdateUser;
 import com.predu.evertask.config.security.CurrentUserId;
 import com.predu.evertask.domain.dto.organisation.OrganisationDto;
 import com.predu.evertask.domain.dto.organisation.OrganisationInvitationDto;
@@ -32,6 +33,7 @@ public class UserController {
     private final OrganisationService organisationService;
     private final UserService userService;
 
+    @IsUserAllowedToUpdateUser
     @PutMapping("/{id}/update_details")
     public ResponseEntity<UserDto> updateUserDetails(@PathVariable UUID id,
                                                      @RequestBody @Valid UserDetailsUpdateDto dto) {
@@ -41,6 +43,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @IsUserAllowedToUpdateUser
     @PutMapping("/update_interface")
     public ResponseEntity<Void> updateUserSettings(@RequestBody @Valid UserSettingsDto dto,
                                                    @CurrentUserId UUID userId) {

@@ -40,7 +40,8 @@ public class OrganisationService {
 
     @Transactional
     public OrganisationDto getUserOrganisation(UUID id) {
-        User user = userRepository.getById(id);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(User.class, id));
 
         return organisationMapper.organisationToOrganisationDto(user.getOrganisation());
     }

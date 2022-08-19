@@ -1,15 +1,12 @@
 package com.predu.evertask.domain.mapper;
 
 import com.predu.evertask.domain.dto.auth.CreateUserRequest;
-import com.predu.evertask.domain.dto.auth.UpdateUserRequest;
 import com.predu.evertask.domain.dto.user.UserDetailsUpdateDto;
-import com.predu.evertask.domain.model.Role;
 import com.predu.evertask.domain.model.User;
-import org.mapstruct.*;
-
-import static java.util.stream.Collectors.toSet;
-import static org.mapstruct.NullValueCheckStrategy.ALWAYS;
-import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", uses = UUIDMapper.class, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public abstract class UserEditMapper {
@@ -17,22 +14,5 @@ public abstract class UserEditMapper {
     @Mapping(target = "authorities", ignore = true)
     public abstract User create(CreateUserRequest request);
 
-    @BeanMapping(nullValueCheckStrategy = ALWAYS, nullValuePropertyMappingStrategy = IGNORE)
-    @Mapping(target = "authorities", ignore = true)
-    public abstract void update(UpdateUserRequest request, @MappingTarget User user);
-
-
     public abstract void updateDetails(UserDetailsUpdateDto source, @MappingTarget User user);
-
-    @AfterMapping
-    protected void afterUpdate(UpdateUserRequest request, @MappingTarget User user) {
-        if (request.getAuthorities() != null) {
-            user.setAuthorities(
-                    request.getAuthorities()
-                            .stream()
-                            .map(Role::new)
-                            .collect(toSet())
-            );
-        }
-    }
 }

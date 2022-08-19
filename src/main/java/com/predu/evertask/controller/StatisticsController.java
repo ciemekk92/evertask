@@ -1,5 +1,7 @@
 package com.predu.evertask.controller;
 
+import com.predu.evertask.annotation.IsProjectMember;
+import com.predu.evertask.annotation.IsUserAllowedToSprint;
 import com.predu.evertask.domain.dto.statistics.AverageAgeChartPointDto;
 import com.predu.evertask.domain.dto.statistics.BurndownChartPointDto;
 import com.predu.evertask.domain.dto.statistics.CreatedVsResolvedChartPointDto;
@@ -26,34 +28,38 @@ public class StatisticsController {
 
     private final StatisticsService statisticsService;
 
-    @GetMapping("/burndown/{sprintId}")
-    public ResponseEntity<List<BurndownChartPointDto>> getBurndownChartData(@PathVariable UUID sprintId)
+    @IsUserAllowedToSprint
+    @GetMapping("/burndown/{id}")
+    public ResponseEntity<List<BurndownChartPointDto>> getBurndownChartData(@PathVariable UUID id)
             throws NoChartsDataException {
 
-        return ResponseEntity.ok(statisticsService.getBurndownData(sprintId));
+        return ResponseEntity.ok(statisticsService.getBurndownData(id));
     }
 
-    @GetMapping("/velocity/{projectId}")
-    public ResponseEntity<List<VelocityChartPointDto>> getVelocityChartData(@PathVariable UUID projectId)
+    @IsProjectMember
+    @GetMapping("/velocity/{id}")
+    public ResponseEntity<List<VelocityChartPointDto>> getVelocityChartData(@PathVariable UUID id)
             throws NoChartsDataException {
 
-        return ResponseEntity.ok(statisticsService.getVelocityData(projectId));
+        return ResponseEntity.ok(statisticsService.getVelocityData(id));
     }
 
-    @GetMapping("/created_resolved/{projectId}")
-    public ResponseEntity<List<CreatedVsResolvedChartPointDto>> getCreatedVsResolvedChartData(@PathVariable UUID projectId,
+    @IsProjectMember
+    @GetMapping("/created_resolved/{id}")
+    public ResponseEntity<List<CreatedVsResolvedChartPointDto>> getCreatedVsResolvedChartData(@PathVariable UUID id,
                                                                                               @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                                                                               @RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate finishDate) {
 
-        return ResponseEntity.ok(statisticsService.getCreatedVsResolvedData(projectId, startDate, finishDate));
+        return ResponseEntity.ok(statisticsService.getCreatedVsResolvedData(id, startDate, finishDate));
     }
 
-    @GetMapping("/average_age/{projectId}")
-    public ResponseEntity<List<AverageAgeChartPointDto>> getAverageAgeChartData(@PathVariable UUID projectId,
+    @IsProjectMember
+    @GetMapping("/average_age/{id}")
+    public ResponseEntity<List<AverageAgeChartPointDto>> getAverageAgeChartData(@PathVariable UUID id,
                                                                                 @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                                                                 @RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate finishDate)
             throws NoChartsDataException {
 
-        return ResponseEntity.ok(statisticsService.getAverageAgeData(projectId, startDate, finishDate));
+        return ResponseEntity.ok(statisticsService.getAverageAgeData(id, startDate, finishDate));
     }
 }

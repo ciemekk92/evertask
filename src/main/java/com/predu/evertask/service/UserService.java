@@ -255,18 +255,6 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public UserDto update(UUID id, UpdateUserRequest request) {
-        // TODO: remove or merge with updateUserDetails
-
-        User user = userRepository.getById(id);
-        userEditMapper.update(request, user);
-
-        user = userRepository.save(user);
-
-        return userViewMapper.toUserDto(user);
-    }
-
-    @Transactional
     public void updateUserDetails(UUID id, UserDetailsUpdateDto dto) {
 
         User user = userRepository.getById(id);

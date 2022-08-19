@@ -1,9 +1,6 @@
 package com.predu.evertask.controller;
 
-import com.predu.evertask.annotation.IsAdmin;
-import com.predu.evertask.annotation.IsCurrentOrganisationAdminOrAdmin;
-import com.predu.evertask.annotation.IsUnassignedUser;
-import com.predu.evertask.annotation.IsUnassignedUserOrAdmin;
+import com.predu.evertask.annotation.*;
 import com.predu.evertask.config.security.CurrentUserId;
 import com.predu.evertask.domain.dto.organisation.*;
 import com.predu.evertask.domain.mapper.OrganisationMapper;
@@ -39,6 +36,7 @@ public class OrganisationController {
         return ResponseEntity.ok(organisationService.findAll());
     }
 
+    @IsOrganisationMember
     @GetMapping("/{id}")
     public ResponseEntity<OrganisationDto> getOrganisation(@PathVariable UUID id) {
         return organisationService.findById(id)

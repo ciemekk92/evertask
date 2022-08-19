@@ -1,10 +1,13 @@
 package com.predu.evertask.controller;
 
+import com.predu.evertask.annotation.IsAdmin;
+import com.predu.evertask.annotation.IsProjectAdmin;
+import com.predu.evertask.annotation.IsUserAllowedToSprint;
 import com.predu.evertask.domain.dto.issue.IssueDto;
-import com.predu.evertask.domain.dto.user.UserDto;
 import com.predu.evertask.domain.dto.sprint.SprintDto;
 import com.predu.evertask.domain.dto.sprint.SprintSaveDto;
 import com.predu.evertask.domain.dto.sprint.SprintUpdateDto;
+import com.predu.evertask.domain.dto.user.UserDto;
 import com.predu.evertask.domain.model.Sprint;
 import com.predu.evertask.service.IssueService;
 import com.predu.evertask.service.SprintService;
@@ -36,6 +39,7 @@ public class SprintController {
      * <p>Endpoint returning a list of all sprints in the database mapped to SprintDTOs</p>
      * @return list of all sprints
      */
+    @IsAdmin
     @GetMapping
     public ResponseEntity<List<SprintDto>> getAllSprints() {
         return ResponseEntity.ok(sprintService.findAll());
@@ -46,6 +50,7 @@ public class SprintController {
      * @param id id of searched sprint
      * @return found sprint mapped to DTO or 404 response
      */
+    @IsUserAllowedToSprint
     @GetMapping("/{id}")
     public ResponseEntity<SprintDto> getSprint(@PathVariable UUID id) {
         return sprintService.findById(id)
@@ -58,6 +63,7 @@ public class SprintController {
      * @param id id of sprint
      * @return list of issues mapped to IssueDTOs
      */
+    @IsUserAllowedToSprint
     @GetMapping("/{id}/issues")
     public ResponseEntity<List<IssueDto>> getSprintIssues(@PathVariable UUID id) {
         return ResponseEntity.ok(issueService.findAllBySprintId(id));
@@ -68,6 +74,7 @@ public class SprintController {
      * @param id id of sprint
      * @return list of users mapped to UserDTOs
      */
+    @IsUserAllowedToSprint
     @GetMapping("/{id}/active_members")
     public ResponseEntity<List<UserDto>> getSprintActiveMembers(@PathVariable UUID id) {
         return ResponseEntity.ok(userService.getSprintActiveMembers(id));
@@ -79,6 +86,8 @@ public class SprintController {
      * @return body of request
      * @throws URISyntaxException in case of incorrect sprint id
      */
+
+    @IsProjectAdmin
     @PostMapping
     public ResponseEntity<SprintSaveDto> createSprint(@RequestBody @Valid SprintSaveDto toCreate)
             throws URISyntaxException {
@@ -93,6 +102,7 @@ public class SprintController {
      * @param id sprint id
      * @return Response with status 204 if updated or 404 if sprint was not found
      */
+    @IsProjectAdmin
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateSprint(@RequestBody @Valid SprintUpdateDto toUpdate,
                                              @PathVariable UUID id) {

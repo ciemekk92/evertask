@@ -255,18 +255,6 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public UserDto update(UUID id, UpdateUserRequest request) {
-        // TODO: remove or merge with updateUserDetails
-
-        User user = userRepository.getById(id);
-        userEditMapper.update(request, user);
-
-        user = userRepository.save(user);
-
-        return userViewMapper.toUserDto(user);
-    }
-
-    @Transactional
     public void updateUserDetails(UUID id, UserDetailsUpdateDto dto) {
 
         User user = userRepository.getById(id);
@@ -304,8 +292,8 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void removeAvatar(UUID id) {
-        User user = userRepository.getById(id);
+    public void removeAvatar(UUID userId) {
+        User user = userRepository.getById(userId);
         UUID avatarId = user.getAvatar().getId();
 
         if (user.getAvatar() != null) {
@@ -317,7 +305,20 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
+    public void updateRefreshToken(UUID userId, String token, OffsetDateTime expiryDate) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(User.class, userId));
+
+        user.setRefreshToken(token);
+        user.setRefreshTokenExpiryDate(expiryDate);
+
+        userRepository.save(user);
+    }
+
+    @Transactional
     public void updateRefreshToken(User user, String token, OffsetDateTime expiryDate) {
+
         user.setRefreshToken(token);
         user.setRefreshTokenExpiryDate(expiryDate);
 
@@ -337,22 +338,6 @@ public class UserService implements UserDetailsService {
         user = userRepository.save(user);
 
         return userViewMapper.toUserDto(user);
-    }
-
-    @Transactional
-    public UserDto upsert(CreateUserRequest request) {
-        // TODO: remove if won't be needed
-        Optional<User> optionalUser = userRepository.findByUsername(request.getUsername());
-
-        if (optionalUser.isEmpty()) {
-            return userViewMapper.toUserDto(create(request));
-        } else {
-            UpdateUserRequest updateUserRequest = new UpdateUserRequest();
-            updateUserRequest.setFirstName(request.getFirstName());
-            updateUserRequest.setLastName(request.getLastName());
-
-            return update(optionalUser.get().getId(), updateUserRequest);
-        }
     }
 
     @Transactional

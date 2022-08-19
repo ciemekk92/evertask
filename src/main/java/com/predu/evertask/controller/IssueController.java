@@ -1,5 +1,7 @@
 package com.predu.evertask.controller;
 
+import com.predu.evertask.annotation.IsUserAllowedToLogWorkOnIssue;
+import com.predu.evertask.annotation.IsNotUnassignedUser;
 import com.predu.evertask.annotation.IsUserAllowedToIssue;
 import com.predu.evertask.annotation.IsUserAllowedToIssueComment;
 import com.predu.evertask.config.security.CurrentUserId;
@@ -106,29 +108,33 @@ public class IssueController {
         return ResponseEntity.noContent().build();
     }
 
+    @IsNotUnassignedUser
     @GetMapping("/assigned_to_me")
     public ResponseEntity<List<IssueDto>> getAssignedIssuesToUser(@CurrentUserId UUID userId) {
 
         return ResponseEntity.ok(issueService.findAllByAssigneeId(userId));
     }
 
+    @IsNotUnassignedUser
     @PostMapping
-    public ResponseEntity<IssueSaveDto> createIssue(@RequestBody @Valid IssueSaveDto toCreate, Authentication authentication)
+    public ResponseEntity<IssueSaveDto> createIssue(@RequestBody @Valid IssueSaveDto toCreate,
+                                                    Authentication authentication)
             throws URISyntaxException {
 
         User reporter = (User) authentication.getPrincipal();
-
         IssueSaveDto created = issueService.create(toCreate, reporter);
 
         return ResponseEntity.created(new URI("http://localhost:8080/api/issues/" + created.getId())).body(created);
     }
 
+    @IsNotUnassignedUser
     @GetMapping("/{id}/time_tracking")
     public ResponseEntity<IssueTimeTrackingDto> getIssueTimeTrackingDetails(@PathVariable UUID id) {
 
         return ResponseEntity.ok(issueService.getIssueTimeTrackingDetails(id));
     }
 
+    @IsUserAllowedToLogWorkOnIssue
     @PostMapping("/log_work")
     public ResponseEntity<Void> logWorkOnIssue(@RequestBody @Valid IssueReportTimeDto dto) {
 
@@ -166,6 +172,7 @@ public class IssueController {
         return ResponseEntity.noContent().build();
     }
 
+    @IsUserAllowedToIssue
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteIssue(@PathVariable UUID id) {
         if (!issueService.existsById(id)) {

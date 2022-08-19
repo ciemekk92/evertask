@@ -2,7 +2,8 @@ package com.predu.evertask.controller;
 
 import com.predu.evertask.annotation.IsNotUnassignedUser;
 import com.predu.evertask.annotation.IsOrganisationAdminOrAdmin;
-import com.predu.evertask.annotation.IsProjectAdminOrAdmin;
+import com.predu.evertask.annotation.IsCurrentProjectAdminOrAdmin;
+import com.predu.evertask.annotation.IsProjectMember;
 import com.predu.evertask.domain.dto.issue.IssueDto;
 import com.predu.evertask.domain.dto.user.UserDto;
 import com.predu.evertask.domain.dto.project.ProjectCreateDto;
@@ -42,11 +43,14 @@ public class ProjectController {
     private final SprintService sprintService;
     private final UserService userService;
 
+
+    @IsCurrentProjectAdminOrAdmin
     @GetMapping
     public ResponseEntity<List<ProjectDto>> getAllProjects() {
         return ResponseEntity.ok(projectService.findAll());
     }
 
+    @IsProjectMember
     @GetMapping("/{id}")
     public ResponseEntity<ProjectDto> getProject(@PathVariable UUID id) {
         return projectService.findById(id)
@@ -64,14 +68,14 @@ public class ProjectController {
                 .findAllByOrganisation(user.getOrganisation().getId()));
     }
 
-    @IsNotUnassignedUser
+    @IsProjectMember
     @GetMapping("/{id}/active_members")
     public ResponseEntity<List<UserDto>> getProjectActiveMembers(@PathVariable UUID id) {
         var members = userService.getProjectActiveMembers(id);
         return ResponseEntity.ok(members);
     }
 
-    @IsNotUnassignedUser
+    @IsProjectMember
     @GetMapping("/{id}/sprints")
     public ResponseEntity<List<SprintDto>> getProjectSprints(@PathVariable UUID id) {
         var sprints = sprintService.getProjectSprints(id);
@@ -79,7 +83,7 @@ public class ProjectController {
         return ResponseEntity.ok(sprints);
     }
 
-    @IsNotUnassignedUser
+    @IsProjectMember
     @GetMapping("/{id}/sprints_not_completed")
     public ResponseEntity<List<SprintIssuesDto>> getProjectsNotCompletedSprints(@PathVariable UUID id) {
         var sprints = sprintService.getProjectsNotCompletedSprints(id);
@@ -87,7 +91,7 @@ public class ProjectController {
         return ResponseEntity.ok(sprints);
     }
 
-    @IsNotUnassignedUser
+    @IsProjectMember
     @GetMapping("/{id}/last_issues")
     public ResponseEntity<List<IssueDto>> getProjectLastIssues(@PathVariable UUID id) {
         var issues = issueService.findProjectLastIssues(id);
@@ -95,7 +99,7 @@ public class ProjectController {
         return ResponseEntity.ok(issues);
     }
 
-    @IsNotUnassignedUser
+    @IsProjectMember
     @GetMapping("/{id}/current_issues")
     public ResponseEntity<Map<String, List<IssueDto>>> getProjectCurrentIssues(@PathVariable UUID id) {
         var issues = issueService.mapIssuesByStatus(issueService.findProjectsCurrentIssues(id));
@@ -103,7 +107,7 @@ public class ProjectController {
         return ResponseEntity.ok(issues);
     }
 
-    @IsNotUnassignedUser
+    @IsProjectMember
     @GetMapping("/{id}/unassigned_issues")
     public ResponseEntity<List<IssueDto>> getIssuesUnassignedToSprint(@PathVariable UUID id) {
         var issues = issueService.findAllUnassignedByProjectId(id);
@@ -111,7 +115,7 @@ public class ProjectController {
         return ResponseEntity.ok(issues);
     }
 
-    @IsProjectAdminOrAdmin
+    @IsCurrentProjectAdminOrAdmin
     @PutMapping("/{id}/start_sprint")
     public ResponseEntity<Void> startSprint(@PathVariable UUID id,
                                             @RequestBody @Valid StartSprintDto dto) {
@@ -120,7 +124,7 @@ public class ProjectController {
         return ResponseEntity.noContent().build();
     }
 
-    @IsProjectAdminOrAdmin
+    @IsCurrentProjectAdminOrAdmin
     @PutMapping("/{id}/end_sprint")
     public ResponseEntity<Void> endSprint(@PathVariable UUID id,
                                           @RequestBody @Valid EndSprintDto dto) throws InvalidOperationException {
@@ -143,8 +147,10 @@ public class ProjectController {
                 .body(toCreate);
     }
 
+    @IsCurrentProjectAdminOrAdmin
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateProject(@RequestBody @Valid ProjectUpdateDto toUpdate, @PathVariable UUID id) {
+    public ResponseEntity<Void> updateProject(@RequestBody @Valid ProjectUpdateDto toUpdate,
+                                              @PathVariable UUID id) {
         if (!projectService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
@@ -154,6 +160,7 @@ public class ProjectController {
         return ResponseEntity.noContent().build();
     }
 
+    @IsCurrentProjectAdminOrAdmin
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProject(@PathVariable UUID id) {
         if (!projectService.existsById(id)) {

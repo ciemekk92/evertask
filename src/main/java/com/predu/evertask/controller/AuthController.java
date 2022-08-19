@@ -46,13 +46,12 @@ public class AuthController {
     public ResponseEntity<AuthResponseDto> login(@RequestBody @Valid AuthRequest request,
                                                  HttpServletResponse response) {
 
-        Authentication authenticate = authenticationManager
+        Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
-        User user = (User) authenticate.getPrincipal();
-        AuthResponseDto responseDto = userService.loginUser(user.getId(), response);
+        User user = (User) authentication.getPrincipal();
 
-        return ResponseEntity.ok().body(responseDto);
+        return ResponseEntity.ok(userService.loginUser(user.getId(), response));
     }
 
     @PostMapping("/verify")
@@ -61,18 +60,14 @@ public class AuthController {
                                                       @CurrentUserId UUID userId,
                                                       HttpServletResponse response) throws InvalidMFACodeException {
 
-        AuthResponseDto responseDto = userService.verifyMFA(userId, dto, response);
-
-        return ResponseEntity.ok(responseDto);
+        return ResponseEntity.ok(userService.verifyMFA(userId, dto, response));
     }
 
     @PostMapping("/update_mfa")
     public ResponseEntity<MfaUpdateResponseDto> updateMfa(@RequestBody @Valid MfaUpdateRequestDto request,
                                                           @CurrentUserId UUID userID) throws QrGenerationException {
 
-        MfaUpdateResponseDto responseDto = userService.updateMfa(userID, request);
-
-        return ResponseEntity.ok(responseDto);
+        return ResponseEntity.ok(userService.updateMfa(userID, request));
     }
 
     @PutMapping("/change_password")
@@ -141,14 +136,9 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(Authentication authentication) throws IllegalAccessException {
-        if (authentication == null) {
-            throw new IllegalAccessException("No user logged in.");
-        }
+    public ResponseEntity<String> logout(@CurrentUserId UUID userId) {
 
-        User user = (User) authentication.getPrincipal();
-
-        userService.updateRefreshToken(user, null, null);
+        userService.updateRefreshToken(userId, null, null);
 
         return ResponseEntity.status(200).build();
     }

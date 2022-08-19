@@ -3,19 +3,18 @@ package com.predu.evertask.controller;
 import com.predu.evertask.annotation.IsNotUnassignedUser;
 import com.predu.evertask.annotation.IsOrganisationAdminOrAdmin;
 import com.predu.evertask.annotation.IsUnassignedUser;
-import com.predu.evertask.domain.dto.user.UserDetailsUpdateDto;
-import com.predu.evertask.domain.dto.user.UserDto;
+import com.predu.evertask.annotation.IsUserAllowedToUpdateUser;
+import com.predu.evertask.config.security.CurrentUserId;
 import com.predu.evertask.domain.dto.organisation.OrganisationDto;
 import com.predu.evertask.domain.dto.organisation.OrganisationInvitationDto;
+import com.predu.evertask.domain.dto.user.UserDetailsUpdateDto;
+import com.predu.evertask.domain.dto.user.UserDto;
 import com.predu.evertask.domain.dto.user.UserSettingsDto;
-import com.predu.evertask.domain.model.User;
-import com.predu.evertask.domain.model.UserSettings;
 import com.predu.evertask.service.OrganisationInvitationService;
 import com.predu.evertask.service.OrganisationService;
 import com.predu.evertask.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +33,7 @@ public class UserController {
     private final OrganisationService organisationService;
     private final UserService userService;
 
+    @IsUserAllowedToUpdateUser
     @PutMapping("/{id}/update_details")
     public ResponseEntity<UserDto> updateUserDetails(@PathVariable UUID id,
                                                      @RequestBody @Valid UserDetailsUpdateDto dto) {
@@ -43,66 +43,50 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @IsUserAllowedToUpdateUser
     @PutMapping("/update_interface")
     public ResponseEntity<Void> updateUserSettings(@RequestBody @Valid UserSettingsDto dto,
-                                                   Authentication authentication) {
+                                                   @CurrentUserId UUID userId) {
 
-        User user = (User) authentication.getPrincipal();
-
-        userService.updateUserSettings(user.getId(), dto);
+        userService.updateUserSettings(userId, dto);
 
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/upload_avatar")
     public ResponseEntity<UserDto> uploadAvatar(@RequestParam("imageFile") MultipartFile file,
-                                                Authentication authentication) throws IOException {
+                                                @CurrentUserId UUID userId)
+            throws IOException {
 
-        User user = (User) authentication.getPrincipal();
-
-        return ResponseEntity.ok(userService.uploadAvatar(user.getId(), file));
+        return ResponseEntity.ok(userService.uploadAvatar(userId, file));
     }
 
     @DeleteMapping("/remove_avatar")
-    public ResponseEntity<Void> removeAvatar(Authentication authentication) {
+    public ResponseEntity<Void> removeAvatar(@CurrentUserId UUID userId) {
 
-        User user = (User) authentication.getPrincipal();
-
-        userService.removeAvatar(user.getId());
+        userService.removeAvatar(userId);
 
         return ResponseEntity.noContent().build();
     }
 
     @IsUnassignedUser
     @GetMapping("/organisation_invitations")
-    public ResponseEntity<List<OrganisationInvitationDto>> getUserOrganisationInvitations(Authentication authentication) {
-
-
-        UUID userId = ((User) authentication.getPrincipal()).getId();
+    public ResponseEntity<List<OrganisationInvitationDto>> getUserOrganisationInvitations(@CurrentUserId UUID userId) {
 
         return ResponseEntity.ok(organisationInvitationService.findAllByUser(userId));
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserDto> getCurrentUserDetails(Authentication authentication)
-            throws IllegalAccessException {
+    public ResponseEntity<UserDto> getCurrentUserDetails(@CurrentUserId UUID userId) {
 
-        if (authentication == null) {
-            throw new IllegalAccessException("No user logged in.");
-        }
-
-        User user = (User) authentication.getPrincipal();
-
-        return ResponseEntity.ok(userService.getUser(user.getId()));
+        return ResponseEntity.ok(userService.getUser(userId));
     }
 
     @IsNotUnassignedUser
     @GetMapping("/organisation")
-    public ResponseEntity<OrganisationDto> getUserOrganisation(Authentication authentication) {
+    public ResponseEntity<OrganisationDto> getUserOrganisation(@CurrentUserId UUID userId) {
 
-        User user = (User) authentication.getPrincipal();
-
-        return ResponseEntity.ok(organisationService.getUserOrganisation(user.getId()));
+        return ResponseEntity.ok(organisationService.getUserOrganisation(userId));
     }
 
     @IsOrganisationAdminOrAdmin

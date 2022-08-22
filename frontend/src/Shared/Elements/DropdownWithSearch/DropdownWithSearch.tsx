@@ -30,10 +30,14 @@ export const DropdownWithSearch = ({
 
   useOutsideClick(containerRef, () => setIsOpen(false));
 
-  const toggleOpen = () => setIsOpen(!isOpen);
   const onClickFactory = (id: Nullable<Id>) => () => {
     onChange(id);
     setIsOpen(false);
+  };
+
+  const toggleOpen = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsOpen(!isOpen);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

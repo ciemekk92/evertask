@@ -1,9 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { UserCircle } from 'Shared/UserCircle';
 import { StyledFlexContainerAlignCenter, StyledTextEllipsis } from 'Shared/SharedStyles.styled';
 import { User } from 'Types/User';
-import { useTranslation } from 'react-i18next';
 
 interface Props {
   user: Nullable<User.UserEntity>;
@@ -16,9 +16,9 @@ const StyledLabelContainer = styled(StyledFlexContainerAlignCenter)`
   }
 `;
 
-export const AssigneeLabel = ({ user }: Props): JSX.Element => {
+export const UserDropdownLabel = ({ user }: Props): JSX.Element => {
   const { t } = useTranslation();
-  const fullName = user ? `${user.firstName} ${user.lastName}` : t('issuePage.right.unassigned');
+  const fullName = user ? `${user.firstName} ${user.lastName}` : t('general.unassigned');
 
   return (
     <StyledLabelContainer>

@@ -17,6 +17,7 @@ export const StyledDropdownWithSearchContainer = styled(StyledDropdownContainer)
 export const StyledSearchInput = styled.input`
   ${InputStyles};
   margin: 1rem;
+  width: unset !important;
 `;
 
 export const StyledDropdownListWithSearchContainer = styled(StyledDropdownOptionsList)`
@@ -26,5 +27,9 @@ export const StyledDropdownListWithSearchContainer = styled(StyledDropdownOption
   & button {
     width: 27rem;
     height: 3.8rem;
+
+    &:first-of-type {
+      margin-top: 1rem;
+    }
   }
 `;

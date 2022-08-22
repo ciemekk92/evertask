@@ -13,8 +13,8 @@ import { Issue } from 'Types/Issue';
 import { User } from 'Types/User';
 import { Api } from 'Utils/Api';
 import { formatDateForDisplayWithTime } from 'Utils/formatDate';
+import { mapUsersToDropdownOptions } from 'Utils/mapUsersToDropdownOptions';
 import { StyledField, StyledFieldLabel } from '../Shared.styled';
-import { AssigneeLabel } from './components';
 import {
   StyledAssigneeContainer,
   StyledUserContainer,
@@ -30,7 +30,7 @@ export const IssueRightInfoSection = ({ issue, handleRefreshing }: Props): JSX.E
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const currentProject = CurrentProjectModel.currentProjectValue;
-  const organisationMembersState = useSelector(
+  const organisationMembers = useSelector(
     (state: ApplicationState) => (state.organisation ? state.organisation.organisationMembers : []),
     shallowEqual
   );
@@ -47,30 +47,11 @@ export const IssueRightInfoSection = ({ issue, handleRefreshing }: Props): JSX.E
     }
   };
 
-  const getOrganisationMembers = (): Util.MenuOptionWithSearch[] => {
-    const emptyOption = {
-      searchable: t('issuePage.right.unassigned'),
-      label: <AssigneeLabel user={null} />,
-      value: null
-    };
-    const members = organisationMembersState.map((user: User.UserEntity) => {
-      const fullName = `${user.firstName} ${user.lastName}`;
-
-      return {
-        searchable: fullName,
-        label: <AssigneeLabel user={user} />,
-        value: user.id
-      };
-    });
-
-    return [emptyOption, ...members];
-  };
-
   const renderUserField = (
     user: Nullable<User.UserBasicEntity>,
     fieldKey: 'assignee' | 'reporter'
   ): JSX.Element => {
-    const fullName = user ? `${user.firstName} ${user.lastName}` : t('issuePage.right.unassigned');
+    const fullName = user ? `${user.firstName} ${user.lastName}` : t('general.unassigned');
 
     if (fieldKey === 'assignee') {
       return (
@@ -82,7 +63,7 @@ export const IssueRightInfoSection = ({ issue, handleRefreshing }: Props): JSX.E
             <DropdownWithSearch
               position={DROPDOWN_MENU_POSITION.BOTTOM_LEFT}
               onChange={handleSelectingAssignee}
-              options={getOrganisationMembers()}
+              options={mapUsersToDropdownOptions(organisationMembers)}
             />
           </StyledAssigneeContainer>
         </StyledField>

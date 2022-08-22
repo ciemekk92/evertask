@@ -122,6 +122,7 @@
     "startSprint": "Start sprint",
     "storyPoints": "Story points",
     "submit": "Submit",
+    "unassigned": "Unassigned",
     "updatedAt": "Updated at",
     "upload": "Upload",
     "username": "Username",
@@ -136,6 +137,7 @@
     "title": "Invite organisation member"
   },
   "issueDialog": {
+    "assignee": "Assignee",
     "description": "Description",
     "estimateHours": "Estimate (hours)",
     "estimateStoryPoints": "Estimate (story points)",
@@ -196,7 +198,6 @@
       "createdAt": "Reported at:",
       "reporter": "Reporter:",
       "title": "People and time",
-      "unassigned": "Unassigned",
       "updatedAt": "Last updated at:"
     },
     "subtasks": {

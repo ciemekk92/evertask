@@ -1,8 +1,10 @@
 import React from 'react';
 import { useParams } from 'react-router';
+import { DialogComponent, useDialog } from 'Hooks/useDialog';
 import { StyledHorizontalContainer, VerticalPageWrapper } from 'Shared/PageWrappers';
 import { Heading5 } from 'Shared/Typography';
 import { StyledFlexContainer } from 'Shared/SharedStyles.styled';
+import { ISSUE_TYPE } from 'Shared/constants';
 import { Issue } from 'Types/Issue';
 import { ApiResponse } from 'Types/Response';
 import { Api } from 'Utils/Api';
@@ -15,10 +17,8 @@ import {
   IssueTimeTrackingSection
 } from './components';
 import { CommentsData, TimeTrackingData } from './fixtures';
-import { StyledCenterSectionContainer, StyledRightSectionContainer } from './IssuePage.styled';
 import { ISSUE_DIALOG_MODES, IssueDialog } from '../IssueDialog';
-import { DialogComponent, useDialog } from '../../Hooks/useDialog';
-import { ISSUE_TYPE } from '../../Shared/constants';
+import { StyledCenterSectionContainer, StyledRightSectionContainer } from './IssuePage.styled';
 
 export const IssuePage = (): Nullable<JSX.Element> => {
   const params = useParams<RouterParams>();
@@ -110,7 +110,7 @@ export const IssuePage = (): Nullable<JSX.Element> => {
           )}
         </StyledCenterSectionContainer>
         <StyledRightSectionContainer>
-          <IssueRightInfoSection issue={issueData} />
+          <IssueRightInfoSection issue={issueData} handleRefreshing={getIssueDetails} />
           {timeTracking && <IssueTimeTrackingSection timeTrackingData={timeTracking} />}
           {issueData.type !== ISSUE_TYPE.SUBTASK && (
             <IssueSubtasksSection

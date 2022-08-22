@@ -14,7 +14,7 @@ import {
 
 interface Props {
   issue: Issue.IssueEntity;
-  dropdownOptions: Util.MenuOption[];
+  dropdownOptions: Util.MenuOptionWithOnClick[];
 }
 
 export const BacklogPanel = ({ issue, dropdownOptions }: Props): JSX.Element => {

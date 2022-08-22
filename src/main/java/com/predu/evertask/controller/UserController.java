@@ -46,9 +46,9 @@ public class UserController {
     @IsUserAllowedToUpdateUser
     @PutMapping("/update_interface")
     public ResponseEntity<Void> updateUserSettings(@RequestBody @Valid UserSettingsDto dto,
-                                                   @CurrentUserId UUID userId) {
+                                                   @CurrentUserId UUID id) {
 
-        userService.updateUserSettings(userId, dto);
+        userService.updateUserSettings(id, dto);
 
         return ResponseEntity.noContent().build();
     }

@@ -20,7 +20,7 @@ export const BacklogMainPanel = ({
 }: Props): JSX.Element => {
   const { t } = useTranslation();
 
-  const mapDropdownOptions = (issueId: Id): Util.MenuOption[] => [
+  const mapDropdownOptions = (issueId: Id): Util.MenuOptionWithOnClick[] => [
     {
       label: t('general.view'),
       onClick: handleViewingIssue(issueId),

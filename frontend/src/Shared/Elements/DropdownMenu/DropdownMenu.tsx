@@ -6,7 +6,7 @@ import { StyledDropdownContainer, StyledDropdownOptionsList } from './DropdownMe
 import { StyledDropdownOption } from '../SingleSelectDropdown/SingleSelectDropdown.styled';
 
 interface Props {
-  options: Util.MenuOption[];
+  options: Util.MenuOptionWithOnClick[];
   iconName?: string;
   position?: DROPDOWN_MENU_POSITION;
 }
@@ -31,11 +31,11 @@ export const DropdownMenu = ({ options, iconName, position }: Props): JSX.Elemen
       <IconButton iconName={iconName || 'more_horiz'} onClick={toggleOpen} />
       {isOpen && (
         <StyledDropdownOptionsList position={position}>
-          {options.map((option: Util.MenuOption) => (
+          {options.map((option: Util.MenuOptionWithOnClick, index: number) => (
             <StyledDropdownOption
-              key={option.label}
+              key={index}
               isOpen={isOpen}
-              title={option.label}
+              title={typeof option.label === 'string' ? option.label : undefined}
               onClick={onClickFactory(option.onClick)}
             >
               {option.label}

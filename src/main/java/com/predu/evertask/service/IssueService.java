@@ -6,10 +6,7 @@ import com.predu.evertask.domain.mapper.IssueMapper;
 import com.predu.evertask.domain.mapper.IssueWorkLogMapper;
 import com.predu.evertask.domain.model.*;
 import com.predu.evertask.exception.NotFoundException;
-import com.predu.evertask.repository.IssueRepository;
-import com.predu.evertask.repository.IssueWorkLogRepository;
-import com.predu.evertask.repository.ProjectRepository;
-import com.predu.evertask.repository.SprintRepository;
+import com.predu.evertask.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +22,7 @@ public class IssueService {
     private final ProjectRepository projectRepository;
     private final IssueMapper issueMapper;
     private final IssueWorkLogMapper issueWorkLogMapper;
+    private final UserRepository userRepository;
 
     public List<IssueDto> findAll() {
         return issueRepository.findAll()
@@ -104,6 +102,24 @@ public class IssueService {
         issueRepository.save(issue);
 
         return toSave;
+    }
+
+    public void assignUserToIssue(UUID issueId, AssignUserToIssueDto dto) {
+
+        Issue issue = issueRepository.findById(issueId)
+                .orElseThrow(() -> new NotFoundException(Issue.class, issueId));
+        User assignee;
+
+        if (dto.getAssigneeId() != null) {
+            UUID userId = UUID.fromString(dto.getAssigneeId());
+            assignee = userRepository.findById(userId)
+                    .orElseThrow(() -> new NotFoundException(User.class, userId));
+        } else {
+            assignee = null;
+        }
+
+        issue.setAssignee(assignee);
+        issueRepository.save(issue);
     }
 
     public void reportTimeOnIssue(IssueReportTimeDto toSave) {

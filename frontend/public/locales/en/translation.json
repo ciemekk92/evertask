@@ -72,6 +72,7 @@
     "enable": "Enable",
     "endSprint": "End sprint",
     "firstName": "First name",
+    "inputPlaceholder": "Start typing to filter",
     "issueCount": "Issue count",
     "issuePriority": {
       "ASAP": "ASAP",

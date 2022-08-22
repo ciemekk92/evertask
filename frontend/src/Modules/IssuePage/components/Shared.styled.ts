@@ -27,6 +27,6 @@ export const StyledField = styled(StyledFlexContainerAlignCenter)`
 `;
 
 export const StyledFieldLabel = styled.strong`
-  width: 50%;
+  width: 40%;
   ${StyledTextEllipsis};
 `;

@@ -1,1 +1,1 @@
-export { TextInput, TextInputErrorMessage } from './TextInput.styled';
+export { TextInput, TextInputErrorMessage, InputStyles } from './TextInput.styled';

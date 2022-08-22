@@ -3,6 +3,7 @@ package com.predu.evertask.controller;
 import com.predu.evertask.annotation.*;
 import com.predu.evertask.config.security.CurrentUserId;
 import com.predu.evertask.domain.dto.organisation.*;
+import com.predu.evertask.domain.dto.user.UserDto;
 import com.predu.evertask.domain.mapper.OrganisationMapper;
 import com.predu.evertask.domain.model.Organisation;
 import com.predu.evertask.domain.model.User;
@@ -49,6 +50,12 @@ public class OrganisationController {
     @GetMapping("/{id}/invitations")
     public ResponseEntity<List<OrganisationInvitationDto>> getInvitationsForOrganisation(@PathVariable UUID id) {
         return ResponseEntity.ok(invitationService.findAllByOrganisation(id));
+    }
+
+    @IsOrganisationMember
+    @GetMapping("/{id}/members")
+    public ResponseEntity<List<UserDto>> getOrganisationMembers(@PathVariable UUID id) {
+        return ResponseEntity.ok(organisationService.getOrganisationMembers(id));
     }
 
     @IsUnassignedUserOrAdmin

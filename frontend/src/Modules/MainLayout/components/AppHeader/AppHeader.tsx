@@ -23,7 +23,7 @@ export const AppHeader = (): JSX.Element => {
     dispatch(actionCreators.logout());
   };
 
-  const dropdownOptions: Util.MenuOption[] = [
+  const dropdownOptions: Util.MenuOptionWithOnClick[] = [
     {
       label: t('general.profile'),
       onClick: () => navigate('/profile')

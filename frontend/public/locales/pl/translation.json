@@ -72,6 +72,7 @@
     "enable": "Włącz",
     "endSprint": "Zakończ sprint",
     "firstName": "Imię",
+    "inputPlaceholder": "Zacznij pisać, aby filtrować",
     "issueCount": "Liczba zadań",
     "issuePriority": {
       "ASAP": "ASAP",

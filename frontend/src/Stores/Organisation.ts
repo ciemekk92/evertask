@@ -7,6 +7,7 @@ import { AppThunkAction } from './store';
 
 export interface OrganisationState {
   unassignedUsers: User.UserEntity[];
+  organisationMembers: User.UserEntity[];
 }
 
 interface SetUnassignedUsersAction {
@@ -14,7 +15,12 @@ interface SetUnassignedUsersAction {
   unassignedUsers: User.UserEntity[];
 }
 
-export type OrganisationActionTypes = SetUnassignedUsersAction;
+interface SetOrganisationMembersAction {
+  type: typeof ActionTypes.SET_ORGANISATION_MEMBERS;
+  organisationMembers: User.UserEntity[];
+}
+
+export type OrganisationActionTypes = SetUnassignedUsersAction | SetOrganisationMembersAction;
 
 export const actionCreators = {
   getUnassignedUsers:
@@ -34,11 +40,30 @@ export const actionCreators = {
           });
         }
       }
+    },
+  getOrganisationMembers:
+    (id: Id): AppThunkAction<OrganisationActionTypes> =>
+    async (dispatch, getState) => {
+      const appState = getState();
+
+      if (appState && appState.organisation) {
+        const result = await Api.get(`organisations/${id}/members`);
+
+        if (result.status === 200) {
+          const json = await result.json();
+
+          dispatch({
+            type: ActionTypes.SET_ORGANISATION_MEMBERS,
+            organisationMembers: json
+          });
+        }
+      }
     }
 };
 
 const initialState: OrganisationState = {
-  unassignedUsers: []
+  unassignedUsers: [],
+  organisationMembers: []
 };
 
 export const reducer: Reducer<OrganisationState> = (
@@ -56,6 +81,11 @@ export const reducer: Reducer<OrganisationState> = (
       return {
         ...state,
         unassignedUsers: action.unassignedUsers
+      };
+    case ActionTypes.SET_ORGANISATION_MEMBERS:
+      return {
+        ...state,
+        organisationMembers: action.organisationMembers
       };
     default:
       return state;

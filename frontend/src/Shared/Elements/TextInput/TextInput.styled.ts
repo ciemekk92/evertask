@@ -1,21 +1,19 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { errorBorderCss } from 'Themes';
 import { StyledFlexContainerAlignCenter } from 'Shared/SharedStyles.styled';
 import { InputField } from './InputField';
 
 interface TextInputProps extends React.HTMLAttributes<HTMLInputElement> {}
 
-export const TextInput = styled(InputField)<TextInputProps>`
-  height: 4.8rem;
-  min-width: 24rem;
+export const InputStyles = css`
   border: 1px solid ${(props) => props.theme.primary};
   background-color: ${(props) => props.theme.surface};
   color: ${(props) => props.theme.primaryText};
   border-radius: 0.3rem;
-  padding: 0.5rem 1rem;
-  font-size: 1.6rem;
   outline: none;
+  font-size: 1.6rem;
+  padding: 0.5rem 1rem;
 
   &::placeholder {
     color: ${(props) => props.theme.secondaryText};
@@ -24,6 +22,12 @@ export const TextInput = styled(InputField)<TextInputProps>`
   &:disabled {
     border-color: ${(props) => props.theme.disabled};
   }
+`;
+
+export const TextInput = styled(InputField)<TextInputProps>`
+  height: 4.8rem;
+  min-width: 24rem;
+  ${InputStyles};
 
   ${({ error }) => error && errorBorderCss}
 `;

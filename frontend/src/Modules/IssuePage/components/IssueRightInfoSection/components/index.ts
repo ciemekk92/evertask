@@ -1,0 +1,1 @@
+export { AssigneeLabel } from './AssigneeLabel';

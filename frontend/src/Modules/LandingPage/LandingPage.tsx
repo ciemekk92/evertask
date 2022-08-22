@@ -11,6 +11,7 @@ import {
   StyledButtonsContainer,
   StyledFeaturesContainer,
   StyledFeatureTile,
+  StyledFooterContainer,
   StyledHeadlineContainer,
   StyledHeroContainer,
   StyledLandingContainer,
@@ -52,6 +53,7 @@ export const LandingPage = (): JSX.Element => {
             ))}
           </StyledTilesContainer>
         </StyledFeaturesContainer>
+        <StyledFooterContainer>&copy;2022 Przemysław Reducha</StyledFooterContainer>
       </StyledLandingContainer>
     </VerticalPageWrapper>
   );

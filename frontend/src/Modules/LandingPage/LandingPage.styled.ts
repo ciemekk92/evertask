@@ -11,8 +11,7 @@ export const StyledLandingContainer = styled.section`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 3rem;
-  margin-top: 1rem;
+  padding: 2rem 3rem;
   text-align: start;
   background-color: ${(props) => props.theme.surface};
   color: inherit;
@@ -74,4 +73,11 @@ export const StyledFeatureTile = styled(StyledFlexContainer)`
   & ${StyledIcon} {
     margin-right: 2.6rem;
   }
+`;
+
+export const StyledFooterContainer = styled.footer`
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  font-size: 1.6rem;
 `;

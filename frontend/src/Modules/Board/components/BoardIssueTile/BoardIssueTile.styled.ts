@@ -42,6 +42,7 @@ export const StyledMainIssueContainer = styled.div`
 
 export const StyledParentIssueRow = styled.div`
   background-color: ${(props) => props.theme.primaryDark};
+  color: ${(props) => props.theme.textOnPrimary};
   width: 100%;
   border-radius: 0.3rem;
   padding: 0.1rem 0.5rem;

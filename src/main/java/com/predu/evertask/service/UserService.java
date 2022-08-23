@@ -4,6 +4,7 @@ import com.predu.evertask.config.security.JwtTokenUtil;
 import com.predu.evertask.domain.dto.auth.*;
 import com.predu.evertask.domain.dto.user.UserDetailsUpdateDto;
 import com.predu.evertask.domain.dto.user.UserDto;
+import com.predu.evertask.domain.dto.user.UserForInvitationDto;
 import com.predu.evertask.domain.dto.user.UserSettingsDto;
 import com.predu.evertask.domain.mapper.UserEditMapper;
 import com.predu.evertask.domain.mapper.UserSettingsMapper;
@@ -210,7 +211,7 @@ public class UserService implements UserDetailsService {
      * @return list of users not assigned to any organisation
      */
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
-    public List<UserDto> getUnassignedUsers(String query) {
+    public List<UserForInvitationDto> getUnassignedUsers(String query) {
         List<User> userList;
         if (query == null) {
             userList = userRepository.findUnassigned();
@@ -219,7 +220,7 @@ public class UserService implements UserDetailsService {
         }
 
         return userList.stream()
-                .map(userViewMapper::toUserDto)
+                .map(userViewMapper::toUserForInvitationDto)
                 .toList();
     }
 

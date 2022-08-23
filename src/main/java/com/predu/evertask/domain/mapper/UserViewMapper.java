@@ -1,6 +1,7 @@
 package com.predu.evertask.domain.mapper;
 
 import com.predu.evertask.domain.dto.user.UserDto;
+import com.predu.evertask.domain.dto.user.UserForInvitationDto;
 import com.predu.evertask.domain.dto.user.UserIssueDto;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.repository.UserRepository;
@@ -17,6 +18,8 @@ public abstract class UserViewMapper {
     private UserRepository userRepository;
 
     public abstract UserDto toUserDto(User user);
+
+    public abstract UserForInvitationDto toUserForInvitationDto(User user);
 
     public abstract UserIssueDto toUserIssueDto(User user);
 

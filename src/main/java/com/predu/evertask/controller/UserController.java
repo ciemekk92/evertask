@@ -9,6 +9,7 @@ import com.predu.evertask.domain.dto.organisation.OrganisationDto;
 import com.predu.evertask.domain.dto.organisation.OrganisationInvitationDto;
 import com.predu.evertask.domain.dto.user.UserDetailsUpdateDto;
 import com.predu.evertask.domain.dto.user.UserDto;
+import com.predu.evertask.domain.dto.user.UserForInvitationDto;
 import com.predu.evertask.domain.dto.user.UserSettingsDto;
 import com.predu.evertask.service.OrganisationInvitationService;
 import com.predu.evertask.service.OrganisationService;
@@ -91,7 +92,7 @@ public class UserController {
 
     @IsOrganisationAdminOrAdmin
     @GetMapping("/unassigned")
-    public ResponseEntity<List<UserDto>> getUnassignedUsersByUsernameOrEmail(@RequestParam(required = false) String query) {
+    public ResponseEntity<List<UserForInvitationDto>> getUnassignedUsersByUsernameOrEmail(@RequestParam(required = false) String query) {
 
         return ResponseEntity.ok(userService.getUnassignedUsers(query));
     }

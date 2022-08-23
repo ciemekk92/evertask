@@ -52,7 +52,7 @@ public class OrganisationInvitationService {
 
         invitation.setOrganisation(organisationService
                 .findById(organisationId)
-                .orElseThrow(() -> new NotFoundException("Organisation not found")));
+                .orElseThrow(() -> new NotFoundException(Organisation.class, organisationId)));
         invitation.setUser(user);
 
         invitation = invitationRepository.save(invitation);
@@ -66,7 +66,7 @@ public class OrganisationInvitationService {
                 .orElseThrow(() -> new NotFoundException("Invitation not found"));
 
         Organisation organisation = organisationService.findById(invitation.getOrganisation().getId())
-                .orElseThrow(() -> new NotFoundException("Organisation not found"));
+                .orElseThrow(() -> new NotFoundException(Organisation.class, invitation.getOrganisation().getId()));
 
         User user = userRepository.getById(userId);
 

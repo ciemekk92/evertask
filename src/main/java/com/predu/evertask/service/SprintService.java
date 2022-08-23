@@ -57,13 +57,10 @@ public class SprintService {
     }
 
     public Sprint update(UUID id, SprintUpdateDto toUpdate) {
-        Optional<Sprint> optionalSprint = sprintRepository.findById(id);
+        Sprint source = sprintRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Sprint not found"));
 
-        if (optionalSprint.isEmpty()) {
-            throw new NotFoundException("Sprint not found");
-        }
-
-        Sprint result = sprintMapper.update(optionalSprint.get(), toUpdate);
+        Sprint result = sprintMapper.update(source, toUpdate);
 
         return sprintRepository.save(result);
     }

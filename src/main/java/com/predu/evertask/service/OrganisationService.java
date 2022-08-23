@@ -82,13 +82,10 @@ public class OrganisationService {
     }
 
     public Organisation update(UUID id, OrganisationDto toUpdate) {
-        Optional<Organisation> optionalOrganisation = organisationRepository.findById(id);
+        Organisation source = organisationRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(Organisation.class, id));
 
-        if (optionalOrganisation.isEmpty()) {
-            throw new NotFoundException("Organisation not found");
-        }
-
-        Organisation result = organisationMapper.organisationDtoToOrganisation(toUpdate);
+        Organisation result = organisationMapper.update(source, toUpdate);
 
         return organisationRepository.save(result);
     }

@@ -32,13 +32,9 @@ public class IssueService {
     }
 
     public List<IssueDto> findProjectsCurrentIssues(UUID projectId) {
-        Optional<Project> optionalProject = projectRepository.findById(projectId);
 
-        if (optionalProject.isEmpty()) {
-            throw new NotFoundException(Project.class, projectId);
-        }
-
-        Project project = optionalProject.get();
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new NotFoundException(Project.class, projectId));
         List<Issue> issues;
 
         if (project.getMethodology() == ProjectMethodology.KANBAN) {

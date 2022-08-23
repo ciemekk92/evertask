@@ -26,6 +26,8 @@ public abstract class OrganisationMapper {
     @Mapping(target = "projects", ignore = true)
     public abstract Organisation organisationDtoToOrganisation(OrganisationDto organisationDto);
 
+    public abstract Organisation update(@MappingTarget Organisation target, OrganisationDto source);
+
     @InheritInverseConfiguration(name = "organisationDtoToOrganisation")
     public abstract OrganisationDto organisationToOrganisationDto(Organisation organisation);
 

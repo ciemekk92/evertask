@@ -6,6 +6,7 @@ import { PriorityBadge } from 'Shared/PriorityBadge';
 import { StatusBadge } from 'Shared/StatusBadge';
 import { StoryPointBadge } from 'Shared/StoryPointBadge';
 import { Issue } from 'Types/Issue';
+import { renderUserCircle } from 'Utils/renderUserCircle';
 import {
   StyledIconsContainer,
   StyledIssueContainer,
@@ -31,6 +32,7 @@ export const BacklogPanel = ({ issue, dropdownOptions }: Props): JSX.Element => 
       <StyledIconsContainer>
         <StoryPointBadge value={issue.estimateStoryPoints} />
         <StatusBadge status={issue.status} />
+        {renderUserCircle(issue.assignee)}
         <DropdownMenu options={dropdownOptions} position={DROPDOWN_MENU_POSITION.BOTTOM_LEFT} />
       </StyledIconsContainer>
     </StyledIssueContainer>

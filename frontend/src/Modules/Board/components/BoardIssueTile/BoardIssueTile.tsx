@@ -5,7 +5,9 @@ import { Issue } from 'Types/Issue';
 import { IssueTypeIcon } from 'Shared/IssueTypeIcon';
 import { StoryPointBadge } from 'Shared/StoryPointBadge';
 import { PriorityBadge } from 'Shared/PriorityBadge';
+import { StyledFlexContainerSpaceBetween } from 'Shared/SharedStyles.styled';
 import { isDefined } from 'Utils/isDefined';
+import { renderUserCircle } from 'Utils/renderUserCircle';
 import {
   StyledInformationContainer,
   StyledIssueCode,
@@ -54,7 +56,10 @@ export const BoardIssueTile = ({
           <StyledMainIssueContainer>
             <StyledIssueTitleContainer>
               <StyledIssueTitle>{issue.title}</StyledIssueTitle>
-              <StyledIssueCode>{`${currentProject.code}-${issue.key}`}</StyledIssueCode>
+              <StyledFlexContainerSpaceBetween>
+                <StyledIssueCode>{`${currentProject.code}-${issue.key}`}</StyledIssueCode>
+                {renderUserCircle(issue.assignee)}
+              </StyledFlexContainerSpaceBetween>
             </StyledIssueTitleContainer>
             <StyledInformationContainer>
               <IssueTypeIcon type={issue.type} />

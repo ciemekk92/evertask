@@ -187,8 +187,10 @@ public class IssueService {
         if (targetSprintId != null) {
             sprint = sprintRepository.findById(targetSprintId).orElse(null);
         }
+        Sprint finalSprint = sprint;
 
-        issue.setSprint(sprint);
+        issue.setSprint(finalSprint);
+        issue.getSubtasks().forEach(subtask -> subtask.setSprint(finalSprint));
         issueRepository.save(issue);
     }
 

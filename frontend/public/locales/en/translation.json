@@ -129,6 +129,9 @@
     "view": "View",
     "yes": "Yes"
   },
+  "pagination": {
+    "page": "Page {{page}} of {{of}}"
+  },
   "header": {
     "currentProject": "Current project"
   },

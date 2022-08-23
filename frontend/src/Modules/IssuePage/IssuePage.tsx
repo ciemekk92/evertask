@@ -59,8 +59,8 @@ export const IssuePage = (): Nullable<JSX.Element> => {
     return `[${issueData.project.code}-${issueData.key}] ${issueData.title}`;
   };
 
-  const handleRefreshingComments = async (): Promise<void> => {
-    const result = await Api.get(`issues/${issueData.id}/comments`);
+  const handleRefreshingComments = async (page?: number): Promise<void> => {
+    const result = await Api.get(`issues/${issueData.id}/comments`, { page });
 
     if (result.status === 200) {
       const json = await result.json();

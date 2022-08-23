@@ -10,4 +10,10 @@ declare namespace Util {
     label: string | JSX.Element;
     value: Nullable<Id>;
   };
+
+  export interface PaginationProps {
+    currentPage: number;
+    totalItems: number;
+    totalPages: number;
+  }
 }

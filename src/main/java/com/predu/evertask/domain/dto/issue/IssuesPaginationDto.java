@@ -1,4 +1,4 @@
-package com.predu.evertask.domain.dto.issuecomment;
+package com.predu.evertask.domain.dto.issue;
 
 import com.predu.evertask.domain.dto.BasePaginationDto;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @SuperBuilder
-public class IssueCommentsPaginationDto extends BasePaginationDto {
+public class IssuesPaginationDto extends BasePaginationDto {
 
-    private List<IssueCommentDto> comments;
+    List<IssueDto> issues;
 }

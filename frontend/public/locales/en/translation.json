@@ -198,6 +198,7 @@
       "createdAt": "Reported at:",
       "reporter": "Reporter:",
       "title": "People and time",
+      "unassigned": "Unassigned",
       "updatedAt": "Last updated at:"
     },
     "subtasks": {
@@ -280,6 +281,9 @@
     "projects": "Projects",
     "revokeInvitation": "Revoke invitation",
     "title": "My organisation"
+  },
+  "pagination": {
+    "page": "Page {{page}} of {{of}}"
   },
   "priorityBadge": {
     "label": {

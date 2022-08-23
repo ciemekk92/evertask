@@ -10,15 +10,16 @@ import { Api } from 'Utils/Api';
 import { CommentFormData, CommentsData } from '../../fixtures';
 import { IssueCommentForm, IssueCommentPanel } from './components';
 import { StyledCommentsSectionWrapper } from './IssueCommentsSection.styled';
+import { Pagination } from '../../../../Shared/Pagination';
 
 interface Props {
   issueComments: CommentsData;
   issueId: Id;
-  handleRefreshingComments: () => Promise<void>;
+  handleRefreshingComments: (page?: number) => Promise<void>;
 }
 
 export const IssueCommentsSection = ({
-  issueComments,
+  issueComments: { currentPage, comments, totalPages, totalItems },
   issueId,
   handleRefreshingComments
 }: Props): JSX.Element => {
@@ -40,8 +41,6 @@ export const IssueCommentsSection = ({
     }
   };
 
-  const handleEditingComment = () => {};
-
   const handleConfirmingDelete = (commentId: Id) => async (): Promise<void> => {
     await confirmationDialogConfig.handleOpen(CONFIRMATION_DIALOG_MODES.CONFIRM, { commentId });
   };
@@ -60,7 +59,6 @@ export const IssueCommentsSection = ({
     <IssueCommentPanel
       handleShowingMoreComments={handleShowingMoreComments}
       handleRefreshingComments={handleRefreshingComments}
-      handleEditingComment={handleEditingComment}
       handleConfirmingDelete={handleConfirmingDelete}
       key={value.id}
       comment={value}
@@ -99,7 +97,6 @@ export const IssueCommentsSection = ({
         <IssueCommentPanel
           comment={commentBeingShown}
           issueId={issueId}
-          handleEditingComment={handleEditingComment}
           handleConfirmingDelete={handleConfirmingDelete}
           handleShowingMoreComments={handleShowingMoreComments}
           handleRefreshingComments={handleRefreshingComments}
@@ -110,7 +107,7 @@ export const IssueCommentsSection = ({
   };
 
   const renderComments = (): JSX.Element | JSX.Element[] => {
-    if (!issueComments.comments.length) {
+    if (!comments.length) {
       return <p>{t('issuePage.comments.noComments')}</p>;
     }
 
@@ -118,7 +115,7 @@ export const IssueCommentsSection = ({
       return repliesData.comments.map(mapCommentsToPanels);
     }
 
-    return issueComments.comments.map(mapCommentsToPanels);
+    return comments.map(mapCommentsToPanels);
   };
 
   const onSubmit = async (values: CommentFormData): Promise<void> => {
@@ -140,6 +137,10 @@ export const IssueCommentsSection = ({
       {renderCommentForm()}
       {renderCommentBeingShown()}
       {renderComments()}
+      <Pagination
+        paginationProps={{ currentPage: currentPage, totalPages, totalItems }}
+        onPageChange={handleRefreshingComments}
+      />
       <DialogComponent
         isOpen={confirmationDialogConfig.isOpen}
         handleClose={confirmationDialogConfig.handleClose}

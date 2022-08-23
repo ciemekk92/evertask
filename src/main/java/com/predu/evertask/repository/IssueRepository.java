@@ -1,6 +1,8 @@
 package com.predu.evertask.repository;
 
 import com.predu.evertask.domain.model.Issue;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.OffsetDateTime;
@@ -19,7 +21,7 @@ public interface IssueRepository extends BaseRepository<Issue, UUID>,
 
     List<Issue> findAllBySprintId(UUID sprintId);
 
-    List<Issue> findAllByProjectIdAndSprintIsNull(UUID projectId);
+    Page<Issue> findAllByProjectIdAndSprintIsNullOrderByKeyDesc(UUID projectId, Pageable pageable);
 
     List<Issue> findTop10ByProjectIdOrderByCreatedAtDesc(UUID projectId);
 

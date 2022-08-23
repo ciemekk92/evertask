@@ -24,7 +24,6 @@ interface Props {
   handleShowingMoreComments: (comment: Issue.IssueComment) => VoidFunctionNoArgs;
   handleRefreshingComments: () => Promise<void>;
   handleConfirmingDelete: (id: Id) => () => Promise<void>;
-  handleEditingComment: VoidFunctionNoArgs;
   isChildPanel?: boolean;
   isExpanded?: boolean;
   isReply?: boolean;

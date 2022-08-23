@@ -6,11 +6,8 @@ export interface TimeTrackingData {
   remainingHours: number;
 }
 
-export interface CommentsData {
+export interface CommentsData extends Util.PaginationProps {
   comments: Issue.IssueComment[];
-  currentPage: number;
-  totalItems: number;
-  totalPages: number;
 }
 
 export interface CommentFormData {

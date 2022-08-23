@@ -8,6 +8,8 @@ import com.predu.evertask.domain.model.*;
 import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -64,12 +66,19 @@ public class IssueService {
                 .toList();
     }
 
-    public List<IssueDto> findAllUnassignedByProjectId(UUID projectId) {
-        return issueRepository.findAllByProjectIdAndSprintIsNull(projectId)
+    public IssuesPaginationDto findAllUnassignedByProjectId(UUID projectId, Pageable paging) {
+        Page<Issue> pagedIssues = issueRepository.findAllByProjectIdAndSprintIsNullOrderByKeyDesc(projectId, paging);
+        List<IssueDto> issues = pagedIssues
                 .stream()
-                .sorted(Comparator.comparingInt(Issue::getKey))
                 .map(issueMapper::issueToIssueDto)
                 .toList();
+
+        return IssuesPaginationDto.builder()
+                .currentPage(pagedIssues.getNumber())
+                .totalItems(pagedIssues.getTotalElements())
+                .totalPages(pagedIssues.getTotalPages())
+                .issues(issues)
+                .build();
     }
 
     public Optional<IssueDto> findById(UUID id) {

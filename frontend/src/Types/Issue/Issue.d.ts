@@ -39,4 +39,8 @@ declare namespace Issue {
     assignee: Nullable<User.UserBasicEntity>;
     reporter: User.UserBasicEntity;
   }
+
+  interface PaginatedUnassignedIssues extends Util.PaginationProps {
+    issues: Issue.IssueFullEntity[];
+  }
 }

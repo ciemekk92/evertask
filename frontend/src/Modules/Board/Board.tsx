@@ -20,7 +20,7 @@ import { isEmpty } from 'Utils/isEmpty';
 import { BoardColumn } from './components';
 import { StyledDragDropContextContainer, StyledMessageContainer } from './Board.styled';
 
-export const Board = () => {
+export const Board = (): JSX.Element => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -47,9 +47,17 @@ export const Board = () => {
     };
   }, [dispatch]);
 
-  const boardTitle = t('board.title', {
-    methodology: capitalizeFirstLetter(currentProject.methodology)
-  });
+  const getBoardTitle = (): string => {
+    const mainTitle = t('board.title', {
+      methodology: capitalizeFirstLetter(currentProject.methodology)
+    });
+
+    if (currentProject.activeSprint) {
+      return `${mainTitle} - Sprint ${currentProject.activeSprint.ordinal}`;
+    }
+
+    return mainTitle;
+  };
 
   const onDragEnd = async (result: DropResult): Promise<void> => {
     if (currentIssues) {
@@ -154,7 +162,7 @@ export const Board = () => {
 
   return (
     <VerticalPageWrapper alignItems="unset">
-      <Heading5>{boardTitle}</Heading5>
+      <Heading5>{getBoardTitle()}</Heading5>
       {renderContent()}
       <DialogComponent
         isOpen={issueDialogConfig.isOpen}

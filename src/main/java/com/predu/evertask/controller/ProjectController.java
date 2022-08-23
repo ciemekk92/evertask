@@ -5,6 +5,7 @@ import com.predu.evertask.annotation.IsOrganisationAdminOrAdmin;
 import com.predu.evertask.annotation.IsCurrentProjectAdminOrAdmin;
 import com.predu.evertask.annotation.IsProjectMember;
 import com.predu.evertask.domain.dto.issue.IssueDto;
+import com.predu.evertask.domain.dto.issue.IssuesPaginationDto;
 import com.predu.evertask.domain.dto.user.UserDto;
 import com.predu.evertask.domain.dto.project.ProjectCreateDto;
 import com.predu.evertask.domain.dto.project.ProjectDto;
@@ -21,6 +22,8 @@ import com.predu.evertask.service.ProjectService;
 import com.predu.evertask.service.SprintService;
 import com.predu.evertask.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -109,8 +112,12 @@ public class ProjectController {
 
     @IsProjectMember
     @GetMapping("/{id}/unassigned_issues")
-    public ResponseEntity<List<IssueDto>> getIssuesUnassignedToSprint(@PathVariable UUID id) {
-        var issues = issueService.findAllUnassignedByProjectId(id);
+    public ResponseEntity<IssuesPaginationDto> getIssuesUnassignedToSprint(@PathVariable UUID id,
+                                                                           @RequestParam(defaultValue = "0") int page,
+                                                                           @RequestParam(defaultValue = "10") int size) {
+
+        Pageable paging = PageRequest.of(page, size);
+        var issues = issueService.findAllUnassignedByProjectId(id, paging);
 
         return ResponseEntity.ok(issues);
     }

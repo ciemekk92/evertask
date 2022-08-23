@@ -8,7 +8,7 @@ import { ActionTypes } from './constants';
 
 export interface IssueState {
   assignedIssues: Issue.IssueEntity[];
-  issuesUnassignedToSprint: Issue.IssueFullEntity[];
+  issuesUnassignedToSprint: Issue.PaginatedUnassignedIssues;
   boardIssues: PartialRecord<ISSUE_STATUS, Issue.IssueFullEntity[]>;
 }
 
@@ -19,7 +19,7 @@ interface SetAssignedIssuesAction {
 
 interface SetIssuesUnassignedToSprintAction {
   type: typeof ActionTypes.SET_ISSUES_UNASSIGNED_TO_SPRINT;
-  issuesUnassignedToSprint: Issue.IssueFullEntity[];
+  issuesUnassignedToSprint: Issue.PaginatedUnassignedIssues;
 }
 
 interface SetBoardIssuesAction {
@@ -68,12 +68,12 @@ export const actionCreators = {
       }
     },
   getIssuesUnassignedToSprint:
-    (projectId: Id): AppThunkAction<IssueActionTypes> =>
+    (projectId: Id, page?: number): AppThunkAction<IssueActionTypes> =>
     async (dispatch, getState) => {
       const appState = getState();
 
       if (appState && appState.issue) {
-        const result = await Api.get(`projects/${projectId}/unassigned_issues`);
+        const result = await Api.get(`projects/${projectId}/unassigned_issues`, { page });
 
         if (result.status === 200) {
           const json = await result.json();
@@ -89,7 +89,12 @@ export const actionCreators = {
 
 const initialState: IssueState = {
   assignedIssues: [],
-  issuesUnassignedToSprint: [],
+  issuesUnassignedToSprint: {
+    issues: [],
+    currentPage: 0,
+    totalPages: 0,
+    totalItems: 0
+  },
   boardIssues: {}
 };
 

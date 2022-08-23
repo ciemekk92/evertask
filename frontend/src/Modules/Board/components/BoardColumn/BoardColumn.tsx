@@ -42,9 +42,8 @@ export const BoardColumn = ({ label, elements, handleViewingIssue }: Props): JSX
   const mapIssues = (issues: Issue.IssueFullEntity[]): JSX.Element[] => {
     return issues.map((issue, index) => {
       return (
-        <React.Fragment>
+        <React.Fragment key={issue.id}>
           <BoardIssueTile
-            key={issue.id}
             issue={issue}
             index={getCurrentIssueIndex(index, issues)}
             isSubtask={issue.type === ISSUE_TYPE.SUBTASK}
@@ -68,8 +67,8 @@ export const BoardColumn = ({ label, elements, handleViewingIssue }: Props): JSX
     });
   };
 
-  const renderTilesWithSubtasks = (): Nullable<JSX.Element[]> => {
-    if (!elements) return null;
+  const renderTilesWithSubtasks = (): JSX.Element[] => {
+    if (!elements) return [];
 
     const filteredIssuesWithoutSubtasks = elements.filter((el) => el.type !== ISSUE_TYPE.SUBTASK);
 

@@ -36,9 +36,10 @@ export const BoardIssueTile = ({
   const currentProject = CurrentProjectModel.currentProjectValue;
 
   return (
-    <Draggable draggableId={issue.id} index={index} isDragDisabled={isDragDisabled}>
+    <Draggable key={issue.id} draggableId={issue.id} index={index} isDragDisabled={isDragDisabled}>
       {(provided, snapshot) => (
         <StyledTile
+          key={issue.id}
           ref={provided.innerRef}
           isSubtask={isSubtask}
           isParentInSameColumn={!isDefined(parent)}

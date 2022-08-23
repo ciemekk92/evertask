@@ -129,7 +129,7 @@ export const Backlog = (): Nullable<JSX.Element> => {
         <DragDropContext onDragEnd={onDragEnd}>
           {renderSprints()}
           <UnassignedIssues
-            issues={issueState.issuesUnassignedToSprint}
+            paginatedIssues={issueState.issuesUnassignedToSprint}
             handleOpeningAddIssue={handleOpeningAddIssue}
             handleOpeningEditIssue={handleOpeningEditIssue}
             handleViewingIssue={handleViewingIssue}

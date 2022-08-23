@@ -1,28 +1,32 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Droppable, DroppableProvided } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
 import { CurrentProjectModel } from 'Models/CurrentProjectModel';
 import { IconButton } from 'Shared/Elements/Buttons';
+import { Pagination } from 'Shared/Pagination';
 import { Heading6 } from 'Shared/Typography';
 import { PROJECT_METHODOLOGIES } from 'Shared/constants';
+import { actionCreators } from 'Stores/Issue';
 import { Issue } from 'Types/Issue';
 import { BacklogMainPanel, EmptySection } from '..';
 import { StyledDroppableWrapper, StyledHeaderWrapper } from '../Shared.styled';
 
 interface Props {
-  issues: Issue.IssueFullEntity[];
+  paginatedIssues: Issue.PaginatedUnassignedIssues;
   handleOpeningAddIssue: (sprintId: Nullable<Id>) => void;
   handleOpeningEditIssue: (issueId: Id) => VoidFunctionNoArgs;
   handleViewingIssue: (issueId: Id) => VoidFunctionNoArgs;
 }
 
 export const UnassignedIssues = ({
-  issues,
+  paginatedIssues: { issues, totalPages, totalItems, currentPage },
   handleOpeningAddIssue,
   handleOpeningEditIssue,
   handleViewingIssue
 }: Props): JSX.Element => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const handleAddingNewIssue = (): void => {
     handleOpeningAddIssue(null);
@@ -60,6 +64,10 @@ export const UnassignedIssues = ({
     ));
   };
 
+  const onPageChange = (page: number): void => {
+    dispatch(actionCreators.getIssuesUnassignedToSprint(currentProject.id, page));
+  };
+
   return (
     <StyledDroppableWrapper>
       {renderHeading()}
@@ -71,6 +79,10 @@ export const UnassignedIssues = ({
           </div>
         )}
       </Droppable>
+      <Pagination
+        paginationProps={{ totalItems, totalPages, currentPage }}
+        onPageChange={onPageChange}
+      />
     </StyledDroppableWrapper>
   );
 };

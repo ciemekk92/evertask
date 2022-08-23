@@ -129,9 +129,6 @@
     "view": "Zobacz",
     "yes": "Tak"
   },
-  "pagination": {
-    "page": "Strona {{page}} z {{of}}"
-  },
   "header": {
     "currentProject": "Wybrany projekt"
   },
@@ -201,6 +198,7 @@
       "createdAt": "Zgłoszono:",
       "reporter": "Osoba raportująca:",
       "title": "Czas i osoby",
+      "unassigned": "Nie przypisano",
       "updatedAt": "Zaktualizowano:"
     },
     "subtasks": {
@@ -283,6 +281,9 @@
     "projects": "Projekty",
     "revokeInvitation": "Anuluj zaproszenie",
     "title": "Moja organizacja"
+  },
+  "pagination": {
+    "page": "Strona {{page}} z {{of}}"
   },
   "priorityBadge": {
     "label": {

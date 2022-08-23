@@ -72,6 +72,7 @@
     "enable": "Włącz",
     "endSprint": "Zakończ sprint",
     "firstName": "Imię",
+    "inputPlaceholder": "Zacznij pisać, aby filtrować",
     "issueCount": "Liczba zadań",
     "issuePriority": {
       "ASAP": "ASAP",
@@ -121,6 +122,7 @@
     "startSprint": "Rozpocznij sprint",
     "storyPoints": "Punkty story",
     "submit": "Wyślij",
+    "unassigned": "Nie przypisano",
     "updatedAt": "Zaktualizowany",
     "upload": "Wgraj",
     "username": "Nazwa użytkownika",
@@ -135,6 +137,7 @@
     "title": "Zaproś użytkownika do organizacji"
   },
   "issueDialog": {
+    "assignee": "Osoba przypisana",
     "description": "Opis zadania",
     "estimateHours": "Oszacowanie (godziny)",
     "estimateStoryPoints": "Oszacowanie (punkty story)",
@@ -195,7 +198,6 @@
       "createdAt": "Zgłoszono:",
       "reporter": "Osoba raportująca:",
       "title": "Czas i osoby",
-      "unassigned": "Nie przypisano",
       "updatedAt": "Zaktualizowano:"
     },
     "subtasks": {

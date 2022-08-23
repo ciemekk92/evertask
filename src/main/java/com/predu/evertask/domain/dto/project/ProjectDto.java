@@ -16,6 +16,7 @@ public class ProjectDto extends BaseDto {
     private String description;
     private String code;
     private String methodology;
+    private String organisationId;
 
     private SprintDto activeSprint;
 

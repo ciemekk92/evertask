@@ -3,7 +3,7 @@ import userPlaceholder from 'Assets/user_placeholder.png';
 import { StyledCircleContainer, StyledUserImage } from './UserCircle.styled';
 
 interface Props {
-  label: string;
+  label?: string;
   isBigImage?: boolean;
   imageSrc?: Nullable<string>;
 }

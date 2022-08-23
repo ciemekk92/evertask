@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { StyledBadge } from 'Shared/StoryPointBadge/StoryPointBadge.styled';
 import { StyledIcon } from 'Shared/Elements/Icons/Shared.styled';
+import { StyledCircleContainer } from 'Shared/UserCircle/UserCircle.styled';
 import {
   StyledFlexColumnContainer,
   StyledFlexContainerAlignCenter,
@@ -16,7 +17,7 @@ interface DraggableTileProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const getTileWidth = (isSubtask: boolean, isParentInSameColumn: boolean): string => {
-  return isSubtask ? (isParentInSameColumn ? '95%' : '100%') : '100%';
+  return isSubtask && isParentInSameColumn ? '95%' : '100%';
 };
 
 export const StyledTile = styled(StyledFlexColumnContainer)<DraggableTileProps>`
@@ -28,6 +29,10 @@ export const StyledTile = styled(StyledFlexColumnContainer)<DraggableTileProps>`
 
   &:not(:last-child) {
     margin-bottom: 0.8rem;
+  }
+
+  & ${StyledCircleContainer} {
+    margin-left: 1rem;
   }
 `;
 

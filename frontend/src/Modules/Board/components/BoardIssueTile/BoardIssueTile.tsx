@@ -5,7 +5,9 @@ import { Issue } from 'Types/Issue';
 import { IssueTypeIcon } from 'Shared/IssueTypeIcon';
 import { StoryPointBadge } from 'Shared/StoryPointBadge';
 import { PriorityBadge } from 'Shared/PriorityBadge';
+import { StyledFlexContainerSpaceBetween } from 'Shared/SharedStyles.styled';
 import { isDefined } from 'Utils/isDefined';
+import { renderUserCircle } from 'Utils/renderUserCircle';
 import {
   StyledInformationContainer,
   StyledIssueCode,
@@ -17,10 +19,10 @@ import {
 } from './BoardIssueTile.styled';
 
 interface Props {
-  issue: Issue.IssueEntity;
+  issue: Issue.IssueFullEntity;
+  parent?: Issue.IssueFullEntity;
   index: number;
   isSubtask: boolean;
-  parent?: Issue.IssueEntity;
   isDragDisabled: boolean;
   handleViewingIssue: (id: Id) => VoidFunctionNoArgs;
 }
@@ -36,9 +38,10 @@ export const BoardIssueTile = ({
   const currentProject = CurrentProjectModel.currentProjectValue;
 
   return (
-    <Draggable draggableId={issue.id} index={index} isDragDisabled={isDragDisabled}>
+    <Draggable key={issue.id} draggableId={issue.id} index={index} isDragDisabled={isDragDisabled}>
       {(provided, snapshot) => (
         <StyledTile
+          key={issue.id}
           ref={provided.innerRef}
           isSubtask={isSubtask}
           isParentInSameColumn={!isDefined(parent)}
@@ -53,7 +56,10 @@ export const BoardIssueTile = ({
           <StyledMainIssueContainer>
             <StyledIssueTitleContainer>
               <StyledIssueTitle>{issue.title}</StyledIssueTitle>
-              <StyledIssueCode>{`${currentProject.code}-${issue.key}`}</StyledIssueCode>
+              <StyledFlexContainerSpaceBetween>
+                <StyledIssueCode>{`${currentProject.code}-${issue.key}`}</StyledIssueCode>
+                {renderUserCircle(issue.assignee)}
+              </StyledFlexContainerSpaceBetween>
             </StyledIssueTitleContainer>
             <StyledInformationContainer>
               <IssueTypeIcon type={issue.type} />

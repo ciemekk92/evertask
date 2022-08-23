@@ -63,7 +63,7 @@ public class AuthenticatedUserService {
                 .isPresent();
     }
 
-    public boolean isProjectMember(UUID id) {
+    public boolean isAllowedToProject(UUID id) {
 
         UUID userId = getCurrentUserId();
 
@@ -72,6 +72,7 @@ public class AuthenticatedUserService {
                 .orElseThrow(() -> new NotFoundException(Project.class, id));
 
         return user.filter(value -> project
+                        .getOrganisation()
                         .getMembers()
                         .contains(value))
                 .isPresent();
@@ -105,6 +106,7 @@ public class AuthenticatedUserService {
 
         return user.filter(value -> sprint
                         .getProject()
+                        .getOrganisation()
                         .getMembers()
                         .contains(value))
                 .isPresent();

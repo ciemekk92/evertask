@@ -8,7 +8,7 @@ import { Issue } from 'Types/Issue';
 import { StyledIssueTitle, StyledPanelContainer } from './SubtaskPanel.styled';
 
 interface Props {
-  subtask: Issue.IssueEntity;
+  subtask: Issue.IssueFullEntity;
 }
 
 export const SubtaskPanel = ({ subtask }: Props): JSX.Element => {

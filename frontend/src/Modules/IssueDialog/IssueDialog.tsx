@@ -2,27 +2,36 @@ import React from 'react';
 import * as Yup from 'yup';
 import { Formik, FormikProps } from 'formik';
 import { useTranslation } from 'react-i18next';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { CurrentProjectModel } from 'Models/CurrentProjectModel';
-import { Form, FormField } from 'Shared/Elements/Form';
-import { TextInput } from 'Shared/Elements/TextInput';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
+import { DROPDOWN_MENU_POSITION } from 'Shared/Elements/DropdownMenu';
+import { DropdownWithSearch } from 'Shared/Elements/DropdownWithSearch';
+import { Form, FormField } from 'Shared/Elements/Form';
 import { SingleSelectDropdown } from 'Shared/Elements/SingleSelectDropdown';
+import { TextInput } from 'Shared/Elements/TextInput';
 import { ModalDialog } from 'Shared/ModalDialog';
+import { UserCircle } from 'Shared/UserCircle';
 import { WysiwygEditor } from 'Shared/WysiwygEditor';
 import { ISSUE_PRIORITY, ISSUE_STATUS, ISSUE_TYPE, PROJECT_METHODOLOGIES } from 'Shared/constants';
 import { StyledFlexContainerSpaceBetween } from 'Shared/SharedStyles.styled';
 import { ApplicationState } from 'Stores/store';
+import { actionCreators } from 'Stores/Organisation';
 import { ApiResponse } from 'Types/Response';
 import { Api } from 'Utils/Api';
 import { convertNullFieldsToEmptyString } from 'Utils/convertNullFieldsToEmptyString';
+import { mapUsersToDropdownOptions } from 'Utils/mapUsersToDropdownOptions';
 import { ISSUE_DIALOG_MODES } from './fixtures';
 import {
   mapIssuePrioritiesToDropdownOptions,
   mapIssueTypesToDropdownOptions,
   mapSprintsToDropdownOptions
 } from './helpers';
-import { StyledDialogContent } from './IssueDialog.styled';
+import {
+  StyledAssigneeField,
+  StyledAssigneeLabel,
+  StyledDialogContent
+} from './IssueDialog.styled';
 
 interface Props {
   mode: ISSUE_DIALOG_MODES;
@@ -43,6 +52,7 @@ interface IssueData {
   pullRequestUrl: string;
   sprintId: Nullable<Id>;
   parentId: Nullable<Id>;
+  assigneeId: Nullable<Id>;
   status: ISSUE_STATUS;
   type: ISSUE_TYPE;
   priority: ISSUE_PRIORITY;
@@ -64,6 +74,7 @@ export const IssueDialog = ({
     estimateStoryPoints: '',
     estimateHours: '',
     pullRequestUrl: '',
+    assigneeId: null,
     sprintId: typeof initialSprintId !== 'undefined' ? initialSprintId : null,
     status: ISSUE_STATUS.TO_DO,
     type: mode === ISSUE_DIALOG_MODES.ADD_SUBTASK ? ISSUE_TYPE.SUBTASK : ISSUE_TYPE.TASK,
@@ -72,11 +83,20 @@ export const IssueDialog = ({
   });
 
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const notCompletedSprints = useSelector(
     (state: ApplicationState) => (state.project ? state.project.notCompletedSprints : []),
     shallowEqual
   );
+  const organisationMembers = useSelector(
+    (state: ApplicationState) => (state.organisation ? state.organisation.organisationMembers : []),
+    shallowEqual
+  );
   const currentProject = CurrentProjectModel.currentProjectValue;
+
+  React.useEffect(() => {
+    dispatch(actionCreators.getOrganisationMembers(currentProject.organisationId));
+  }, [currentProject.organisationId, dispatch]);
 
   React.useEffect(() => {
     if (issueId && issueId !== initialData.id && mode === ISSUE_DIALOG_MODES.EDIT) {
@@ -101,6 +121,7 @@ export const IssueDialog = ({
       .max(50, t('issueDialog.validation.title.maxLength'))
       .required(t('issueDialog.validation.title.required')),
     description: Yup.string().required(t('issueDialog.validation.description.required')),
+    assigneeId: Yup.string().nullable(),
     sprintId: Yup.string().nullable(),
     estimateStoryPoints: Yup.string().nullable(),
     estimateHours: Yup.string().nullable(),
@@ -149,6 +170,21 @@ export const IssueDialog = ({
         changeCb(fieldName, e.target.value);
       }
     };
+
+  const renderAssigneeField = (assigneeId: Nullable<Id>): JSX.Element => {
+    const selectedAssignee = organisationMembers.find((member) => member.id === assigneeId);
+
+    return (
+      <StyledAssigneeField>
+        <UserCircle imageSrc={selectedAssignee?.avatar} />
+        <StyledAssigneeLabel>
+          {selectedAssignee
+            ? `${selectedAssignee.firstName} ${selectedAssignee.lastName}`
+            : t('general.unassigned')}
+        </StyledAssigneeLabel>
+      </StyledAssigneeField>
+    );
+  };
 
   const renderFooter = (isSubmitDisabled: boolean): JSX.Element => (
     <React.Fragment>
@@ -207,6 +243,14 @@ export const IssueDialog = ({
                   />
                 </FormField>
               </StyledFlexContainerSpaceBetween>
+              <FormField alignItems="center" label={t('issueDialog.assignee')} name="assignee">
+                {renderAssigneeField(values.assigneeId)}
+                <DropdownWithSearch
+                  onChange={(value: Nullable<Id>) => setFieldValue('assigneeId', value)}
+                  options={mapUsersToDropdownOptions(organisationMembers)}
+                  position={DROPDOWN_MENU_POSITION.BOTTOM_LEFT}
+                />
+              </FormField>
               {currentProject.methodology === PROJECT_METHODOLOGIES.AGILE && (
                 <FormField label={t('issueDialog.estimateStoryPoints')} name="estimateStoryPoints">
                   <TextInput

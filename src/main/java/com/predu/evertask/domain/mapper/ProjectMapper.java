@@ -32,6 +32,7 @@ public abstract class ProjectMapper {
     public abstract ProjectCreateDto projectToProjectCreateDto(Project project);
 
     @Mapping(target = "lastUpdatedAt", ignore = true)
+    @Mapping(target = "organisationId", source = "organisation.id")
     public abstract ProjectDto projectToProjectDto(Project project);
 
     @AfterMapping

@@ -98,6 +98,16 @@ public class IssueController {
         return ResponseEntity.noContent().build();
     }
 
+    @IsUserAllowedToIssue
+    @PutMapping("/{id}/assign_user")
+    public ResponseEntity<Void> assignUserToIssue(@PathVariable UUID id,
+                                                  @RequestBody @Valid AssignUserToIssueDto dto) {
+
+        issueService.assignUserToIssue(id, dto);
+
+        return ResponseEntity.noContent().build();
+    }
+
     @IsUserAllowedToIssueComment
     @DeleteMapping("/{issueId}/comments/{id}")
     public ResponseEntity<Void> deleteComment(@PathVariable UUID issueId,

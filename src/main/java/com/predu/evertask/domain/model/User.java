@@ -117,13 +117,6 @@ public class User implements UserDetails, Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private Set<OrganisationInvitation> organisationInvitations = new HashSet<>();
 
-    @NotAudited
-    @ManyToMany
-    @JoinTable(name = "user_projects",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id"))
-    private Set<Project> projects = new HashSet<>();
-
     @Override
     public boolean isAccountNonExpired() {
         return enabled;

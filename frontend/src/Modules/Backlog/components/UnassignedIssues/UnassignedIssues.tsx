@@ -10,7 +10,7 @@ import { BacklogMainPanel, EmptySection } from '..';
 import { StyledDroppableWrapper, StyledHeaderWrapper } from '../Shared.styled';
 
 interface Props {
-  issues: Issue.IssueEntity[];
+  issues: Issue.IssueFullEntity[];
   handleOpeningAddIssue: (sprintId: Nullable<Id>) => void;
   handleOpeningEditIssue: (issueId: Id) => VoidFunctionNoArgs;
   handleViewingIssue: (issueId: Id) => VoidFunctionNoArgs;
@@ -49,7 +49,7 @@ export const UnassignedIssues = ({
       return <EmptySection />;
     }
 
-    return issues.map((issue: Issue.IssueEntity, index: number) => (
+    return issues.map((issue: Issue.IssueFullEntity, index: number) => (
       <BacklogMainPanel
         issue={issue}
         index={index}

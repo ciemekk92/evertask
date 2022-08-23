@@ -9,6 +9,7 @@ declare namespace Project {
     code: string;
     methodology: PROJECT_METHODOLOGIES;
     activeSprint: Nullable<Sprint.SprintEntity>;
+    organisationId: Id;
   };
 
   export interface ProjectInfoEntity extends IdentifiedEntity {

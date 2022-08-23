@@ -40,7 +40,7 @@ export const StyledTextEllipsis = css`
 `;
 
 export const StyledBadge = css`
-  width: 5.4rem;
+  width: 6.2rem;
   height: 2rem;
   padding: 0.3rem 0.5rem;
   font-size: 1rem;

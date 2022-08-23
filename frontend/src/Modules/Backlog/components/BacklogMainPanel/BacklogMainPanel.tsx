@@ -6,7 +6,7 @@ import { BacklogPanel } from '..';
 import { StyledDraggablePanel, StyledSubtasksContainer } from './BacklogMainPanel.styled';
 
 interface Props {
-  issue: Issue.IssueEntity;
+  issue: Issue.IssueFullEntity;
   index: number;
   handleOpeningEditIssue: (issueId: Id) => VoidFunctionNoArgs;
   handleViewingIssue: (issueId: Id) => VoidFunctionNoArgs;
@@ -20,7 +20,7 @@ export const BacklogMainPanel = ({
 }: Props): JSX.Element => {
   const { t } = useTranslation();
 
-  const mapDropdownOptions = (issueId: Id): Util.MenuOption[] => [
+  const mapDropdownOptions = (issueId: Id): Util.MenuOptionWithOnClick[] => [
     {
       label: t('general.view'),
       onClick: handleViewingIssue(issueId),
@@ -37,7 +37,7 @@ export const BacklogMainPanel = ({
     if (issue.subtasks.length) {
       return (
         <StyledSubtasksContainer>
-          {issue.subtasks.map((subtask: Issue.IssueEntity) => (
+          {issue.subtasks.map((subtask: Issue.IssueFullEntity) => (
             <BacklogPanel
               key={subtask.id}
               issue={subtask}

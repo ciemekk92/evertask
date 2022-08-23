@@ -190,7 +190,8 @@ const initialState: ProjectState = {
     updatedAt: null,
     lastUpdatedAt: '',
     activeSprint: null,
-    id: ''
+    id: '',
+    organisationId: ''
   },
   organisationProjects: [],
   activeMembers: [],

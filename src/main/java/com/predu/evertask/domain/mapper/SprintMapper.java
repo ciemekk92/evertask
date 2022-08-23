@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Comparator;
 
-@Mapper(uses = {UUIDMapper.class, ImageMapper.class}, componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(uses = {UUIDMapper.class, ImageMapper.class, DateMapper.class}, componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public abstract class SprintMapper {
 
     @Autowired

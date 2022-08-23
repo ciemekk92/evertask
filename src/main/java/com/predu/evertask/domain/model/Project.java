@@ -41,9 +41,6 @@ public class Project extends BaseEntity {
     @NotNull
     private ProjectMethodology methodology;
 
-    @ManyToMany(mappedBy = "projects")
-    private Set<User> members = new HashSet<>();
-
     @OneToMany(mappedBy = "project")
     private Set<Issue> issues = new HashSet<>();
 

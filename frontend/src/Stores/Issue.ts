@@ -8,8 +8,8 @@ import { ActionTypes } from './constants';
 
 export interface IssueState {
   assignedIssues: Issue.IssueEntity[];
-  issuesUnassignedToSprint: Issue.IssueEntity[];
-  boardIssues: PartialRecord<ISSUE_STATUS, Issue.IssueEntity[]>;
+  issuesUnassignedToSprint: Issue.IssueFullEntity[];
+  boardIssues: PartialRecord<ISSUE_STATUS, Issue.IssueFullEntity[]>;
 }
 
 interface SetAssignedIssuesAction {
@@ -19,12 +19,12 @@ interface SetAssignedIssuesAction {
 
 interface SetIssuesUnassignedToSprintAction {
   type: typeof ActionTypes.SET_ISSUES_UNASSIGNED_TO_SPRINT;
-  issuesUnassignedToSprint: Issue.IssueEntity[];
+  issuesUnassignedToSprint: Issue.IssueFullEntity[];
 }
 
 interface SetBoardIssuesAction {
   type: typeof ActionTypes.SET_BOARD_ISSUES;
-  boardIssues: PartialRecord<ISSUE_STATUS, Issue.IssueEntity[]>;
+  boardIssues: PartialRecord<ISSUE_STATUS, Issue.IssueFullEntity[]>;
 }
 
 export type IssueActionTypes =

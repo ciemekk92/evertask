@@ -15,19 +15,19 @@ import {
 
 interface Props {
   label: ISSUE_STATUS;
-  elements?: Issue.IssueEntity[];
+  elements?: Issue.IssueFullEntity[];
   handleViewingIssue: (id: Id) => VoidFunctionNoArgs;
 }
 
 export const BoardColumn = ({ label, elements, handleViewingIssue }: Props): JSX.Element => {
   const { t } = useTranslation();
 
-  const currentIssues: Nullable<PartialRecord<ISSUE_STATUS, Issue.IssueEntity[]>> = useSelector(
+  const currentIssues: Nullable<PartialRecord<ISSUE_STATUS, Issue.IssueFullEntity[]>> = useSelector(
     (state: ApplicationState) => (state.issue ? state.issue.boardIssues : null),
     shallowEqual
   );
 
-  const getCurrentIssueIndex = (initialIndex: number, issues: Issue.IssueEntity[]): number => {
+  const getCurrentIssueIndex = (initialIndex: number, issues: Issue.IssueFullEntity[]): number => {
     let currentIndex;
 
     if (initialIndex === 0 || initialIndex - issues[initialIndex - 1].subtasks.length < 0) {
@@ -39,7 +39,7 @@ export const BoardColumn = ({ label, elements, handleViewingIssue }: Props): JSX
     return currentIndex;
   };
 
-  const mapIssues = (issues: Issue.IssueEntity[]): JSX.Element[] => {
+  const mapIssues = (issues: Issue.IssueFullEntity[]): JSX.Element[] => {
     return issues.map((issue, index) => {
       return (
         <React.Fragment>
@@ -84,7 +84,7 @@ export const BoardColumn = ({ label, elements, handleViewingIssue }: Props): JSX
       ...subtasksWithoutParents.map((issue, index) => {
         const currentIndex = index + filteredIssuesWithoutSubtasks.length;
         const parent = currentIssues
-          ? ([] as Issue.IssueEntity[])
+          ? ([] as Issue.IssueFullEntity[])
               .concat(...Object.values(currentIssues))
               .find((el) => el.id === issue.parentId)
           : undefined;

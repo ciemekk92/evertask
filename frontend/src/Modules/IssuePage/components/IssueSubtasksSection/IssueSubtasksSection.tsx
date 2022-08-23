@@ -9,7 +9,7 @@ import { SubtaskPanel } from './components';
 import { StyledMessage } from './IssueSubtasksSection.styled';
 
 interface Props {
-  subtasks: Issue.IssueEntity[];
+  subtasks: Issue.IssueFullEntity[];
   handleOpeningAddSubtask: () => Promise<void>;
 }
 
@@ -18,7 +18,7 @@ export const IssueSubtasksSection = ({ subtasks, handleOpeningAddSubtask }: Prop
 
   const renderSubtasks = (): JSX.Element | JSX.Element[] => {
     if (subtasks.length) {
-      return subtasks.map((subtask: Issue.IssueEntity) => (
+      return subtasks.map((subtask: Issue.IssueFullEntity) => (
         <SubtaskPanel subtask={subtask} key={subtask.id} />
       ));
     }

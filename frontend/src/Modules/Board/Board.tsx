@@ -26,7 +26,7 @@ export const Board = () => {
   const dispatch = useDispatch();
   const issueDialogConfig = useDialog<ISSUE_DIALOG_MODES>(ISSUE_DIALOG_MODES.ADD);
 
-  const currentIssues: Nullable<PartialRecord<ISSUE_STATUS, Issue.IssueEntity[]>> = useSelector(
+  const currentIssues: Nullable<PartialRecord<ISSUE_STATUS, Issue.IssueFullEntity[]>> = useSelector(
     (state: ApplicationState) => (state.issue ? state.issue.boardIssues : null),
     shallowEqual
   );
@@ -73,8 +73,8 @@ export const Board = () => {
         }
       } else {
         const issue = currentIssues[sourceStatus]?.find(
-          (el: Issue.IssueEntity) => el.id === result.draggableId
-        ) as Issue.IssueEntity;
+          (el: Issue.IssueFullEntity) => el.id === result.draggableId
+        ) as Issue.IssueFullEntity;
 
         const req = await Api.put(`issues/${issue.id}`, {
           ...issue,

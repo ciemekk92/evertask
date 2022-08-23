@@ -68,7 +68,7 @@ export const IssuePage = (): Nullable<JSX.Element> => {
     }
   };
 
-  const handleOpeningAddSubtask = async () => {
+  const handleOpeningAddSubtask = async (): Promise<void> => {
     const result = await issueDialogConfig.handleOpen(ISSUE_DIALOG_MODES.ADD_SUBTASK, {
       parentId: issueData.id,
       initialSprintId: issueData.sprint?.id
@@ -79,7 +79,7 @@ export const IssuePage = (): Nullable<JSX.Element> => {
     }
   };
 
-  const handleOpeningEditIssue = async () => {
+  const handleOpeningEditIssue = async (): Promise<void> => {
     const result = await issueDialogConfig.handleOpen(ISSUE_DIALOG_MODES.EDIT, {
       issueId: issueData.id
     });

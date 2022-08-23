@@ -13,7 +13,7 @@ import {
 } from '../BacklogMainPanel/BacklogMainPanel.styled';
 
 interface Props {
-  issue: Issue.IssueEntity;
+  issue: Issue.IssueFullEntity;
   dropdownOptions: Util.MenuOptionWithOnClick[];
 }
 

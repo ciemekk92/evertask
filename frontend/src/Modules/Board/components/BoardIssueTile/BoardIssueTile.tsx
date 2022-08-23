@@ -17,10 +17,10 @@ import {
 } from './BoardIssueTile.styled';
 
 interface Props {
-  issue: Issue.IssueEntity;
+  issue: Issue.IssueFullEntity;
+  parent?: Issue.IssueFullEntity;
   index: number;
   isSubtask: boolean;
-  parent?: Issue.IssueEntity;
   isDragDisabled: boolean;
   handleViewingIssue: (id: Id) => VoidFunctionNoArgs;
 }

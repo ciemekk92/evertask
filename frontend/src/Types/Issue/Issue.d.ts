@@ -15,7 +15,7 @@ declare namespace Issue {
     type: ISSUE_TYPE;
     parentId: Nullable<Id>;
     priority: ISSUE_PRIORITY;
-    subtasks: Issue.IssueEntity[];
+    subtasks: Issue.IssueFullEntity[];
   }
 
   interface IssueComment extends AuditedEntity {

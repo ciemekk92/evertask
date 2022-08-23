@@ -32,7 +32,7 @@ export const SprintSection = ({
       return <EmptySection />;
     }
 
-    return sprint.issues.map((issue: Issue.IssueEntity, index: number) => (
+    return sprint.issues.map((issue: Issue.IssueFullEntity, index: number) => (
       <BacklogMainPanel
         handleOpeningEditIssue={handleOpeningEditIssue}
         handleViewingIssue={handleViewingIssue}

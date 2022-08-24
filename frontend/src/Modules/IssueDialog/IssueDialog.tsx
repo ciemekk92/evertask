@@ -136,12 +136,12 @@ export const IssueDialog = ({
     })
   });
 
-  const onCancel = (e: React.MouseEvent) => {
+  const onCancel = (e: React.MouseEvent): void => {
     e.preventDefault();
     handleClose();
   };
 
-  const onSubmit = async (values: IssueData) => {
+  const onSubmit = async (values: IssueData): Promise<void> => {
     let result: Response;
 
     if (!issueId && [ISSUE_DIALOG_MODES.ADD, ISSUE_DIALOG_MODES.ADD_SUBTASK].includes(mode)) {
@@ -163,7 +163,7 @@ export const IssueDialog = ({
       fieldName: 'estimateStoryPoints' | 'estimateHours',
       changeCb: (field: string, value: Unrestricted, shouldValidate?: boolean) => void
     ) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    (e: React.ChangeEvent<HTMLInputElement>): void => {
       e.preventDefault();
 
       if (e.target.validity.valid) {

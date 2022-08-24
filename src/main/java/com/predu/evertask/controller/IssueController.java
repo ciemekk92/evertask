@@ -145,8 +145,9 @@ public class IssueController {
     }
 
     @IsUserAllowedToLogWorkOnIssue
-    @PostMapping("/log_work")
-    public ResponseEntity<Void> logWorkOnIssue(@RequestBody @Valid IssueReportTimeDto dto) {
+    @PostMapping("/{id}/time_tracking")
+    public ResponseEntity<Void> logWorkOnIssue(@PathVariable UUID id,
+                                               @RequestBody @Valid IssueReportTimeDto dto) {
 
         issueService.reportTimeOnIssue(dto);
 

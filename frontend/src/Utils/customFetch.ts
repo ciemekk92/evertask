@@ -1,7 +1,7 @@
 import { UserModel } from 'Models/UserModel';
 import { LoadingModel } from 'Models/LoadingModel';
 import { history } from 'Routes';
-import { INTERFACE_LANGUAGE } from '../Shared/constants';
+import { INTERFACE_LANGUAGE } from 'Shared/constants';
 
 export const customFetch = async (url: string, init: RequestInit): Promise<Unrestricted> => {
   const { accessToken, userSettings } = UserModel.currentUserValue;

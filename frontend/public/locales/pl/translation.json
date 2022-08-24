@@ -209,6 +209,7 @@
     "timeTracking": {
       "estimatedHours": "Oszacowano:",
       "remainingHours": "Pozostało:",
+      "report": "Zaraportuj czas",
       "title": "Śledzenie czasu",
       "totalReportedHours": "Zaraportowano:"
     }
@@ -372,6 +373,13 @@
     "noSprints": "Brak stworzonych sprintów.",
     "setActiveSprintConfirmation": "Czy na pewno chcesz ustawić ten sprint jako aktywny? Ta operacja zmieni zawartość tablicy.",
     "sprints": "Sprinty"
+  },
+  "reportTimeDialog": {
+    "days": "Dni",
+    "header": "Zaraportuj czas",
+    "hours": "Godziny",
+    "numbersExplanation": "Jeden tydzień odpowiada pięciu dniom, zaś jeden dzień odpowiada ośmiu godzinom.",
+    "weeks": "Tygodnie"
   },
   "sidebar": {
     "link": {

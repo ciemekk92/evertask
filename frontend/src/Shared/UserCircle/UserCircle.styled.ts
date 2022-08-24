@@ -6,6 +6,7 @@ interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const StyledCircleContainer = styled.div<ContainerProps>`
+  min-width: ${(props) => (props.isBigImage ? '20rem' : '3rem')};
   width: ${(props) => (props.isBigImage ? '20rem' : '3rem')};
   height: ${(props) => (props.isBigImage ? '20rem' : '3rem')};
   border-radius: 50%;

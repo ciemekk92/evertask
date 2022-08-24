@@ -68,6 +68,15 @@ export const IssuePage = (): Nullable<JSX.Element> => {
     }
   };
 
+  const handleRefreshingTimeTrackingData = async (): Promise<void> => {
+    const result = await Api.get(`issues/${issueData.id}/time_tracking`);
+
+    if (result.status === 200) {
+      const json = await result.json();
+      setTimeTracking(json);
+    }
+  };
+
   const handleOpeningAddSubtask = async (): Promise<void> => {
     const result = await issueDialogConfig.handleOpen(ISSUE_DIALOG_MODES.ADD_SUBTASK, {
       parentId: issueData.id,
@@ -111,7 +120,13 @@ export const IssuePage = (): Nullable<JSX.Element> => {
         </StyledCenterSectionContainer>
         <StyledRightSectionContainer>
           <IssueRightInfoSection issue={issueData} handleRefreshing={getIssueDetails} />
-          {timeTracking && <IssueTimeTrackingSection timeTrackingData={timeTracking} />}
+          {timeTracking && (
+            <IssueTimeTrackingSection
+              issueId={issueData.id}
+              timeTrackingData={timeTracking}
+              refreshTimeTrackingData={handleRefreshingTimeTrackingData}
+            />
+          )}
           {issueData.type !== ISSUE_TYPE.SUBTASK && (
             <IssueSubtasksSection
               subtasks={issueData.subtasks}

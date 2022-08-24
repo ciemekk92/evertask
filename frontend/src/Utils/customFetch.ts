@@ -1,9 +1,10 @@
 import { UserModel } from 'Models/UserModel';
 import { LoadingModel } from 'Models/LoadingModel';
 import { history } from 'Routes';
+import { INTERFACE_LANGUAGE } from '../Shared/constants';
 
 export const customFetch = async (url: string, init: RequestInit): Promise<Unrestricted> => {
-  const token = UserModel.currentUserValue.accessToken;
+  const { accessToken, userSettings } = UserModel.currentUserValue;
 
   LoadingModel.increaseActiveCalls();
 
@@ -15,13 +16,15 @@ export const customFetch = async (url: string, init: RequestInit): Promise<Unres
 
     const result = await fetch(
       `${baseUrl}/${url}`,
-      !token
+      !accessToken
         ? init
         : {
             ...init,
             headers: {
               ...init.headers,
-              Authorization: `Bearer ${token}`
+              Authorization: `Bearer ${accessToken}`,
+              'Accept-Language':
+                userSettings.interfaceLanguage === INTERFACE_LANGUAGE.EN ? 'en-GB, en-US' : 'pl-PL'
             }
           }
     );

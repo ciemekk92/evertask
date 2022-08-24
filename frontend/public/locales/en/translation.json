@@ -209,6 +209,7 @@
     "timeTracking": {
       "estimatedHours": "Estimated:",
       "remainingHours": "Remaining:",
+      "report": "Report time",
       "title": "Time tracking",
       "totalReportedHours": "Reported:"
     }
@@ -372,6 +373,13 @@
     "noSprints": "No sprints created yet.",
     "setActiveSprintConfirmation": "Are you sure you want to set this sprint as current? This operation will change the content of the board.",
     "sprints": "Sprints"
+  },
+  "reportTimeDialog": {
+    "days": "Days",
+    "header": "Report time",
+    "hours": "Hours",
+    "numbersExplanation": "One week is equal to five days, and one day is equal to eight hours.",
+    "weeks": "Weeks"
   },
   "sidebar": {
     "link": {

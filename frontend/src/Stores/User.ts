@@ -158,45 +158,41 @@ export const actionCreators = {
         if (storedRefreshToken) {
           const result = await Api.post(`auth/refresh?refreshToken=${storedRefreshToken}`);
 
-          if (result.status === 401) {
-            // TODO: handle 401?
-          } else {
-            const {
+          const {
+            accessToken,
+            authorities,
+            message,
+            refreshToken,
+            organisationId,
+            ...rest
+          }: UserDetailsFullResponse = await result.json();
+          if (result.status === 200) {
+            UserModel.currentUserSubject.next({
               accessToken,
               authorities,
-              message,
-              refreshToken,
               organisationId,
               ...rest
-            }: UserDetailsFullResponse = await result.json();
-            if (result.status === 200) {
-              UserModel.currentUserSubject.next({
-                accessToken,
-                authorities,
-                organisationId,
+            });
+
+            dispatch({
+              type: ActionTypes.SET_USER_INFO,
+              userInfo: {
                 ...rest
-              });
-
-              dispatch({
-                type: ActionTypes.SET_USER_INFO,
-                userInfo: {
-                  ...rest
-                }
-              });
-
-              if (organisationId) {
-                dispatch(projectActionCreators.getOrganisationsProjects());
               }
+            });
 
-              setTimeout(() => {
-                dispatch(actionCreators.refresh());
-              }, 0.9 * 60 * 60 * 1000);
-            } else {
-              dispatch({
-                type: ActionTypes.SET_USER_ERRORS,
-                errors: message
-              });
+            if (organisationId) {
+              dispatch(projectActionCreators.getOrganisationsProjects());
             }
+
+            setTimeout(() => {
+              dispatch(actionCreators.refresh());
+            }, 0.9 * 60 * 60 * 1000);
+          } else {
+            dispatch({
+              type: ActionTypes.SET_USER_ERRORS,
+              errors: message
+            });
           }
         }
       }

@@ -19,6 +19,7 @@ import { IssuePage } from 'Modules/IssuePage';
 import { OrganisationPage } from 'Modules/OrganisationPage';
 import { ProjectPage } from 'Modules/ProjectPage';
 import { SprintPage } from 'Modules/SprintPage';
+import { SprintsPage } from 'Modules/SprintsPage';
 import { Statistics } from 'Modules/Statistics';
 import { UnassignedUserPage } from 'Modules/UnassignedUserPage';
 import { UserProfile } from 'Modules/UserProfile';
@@ -60,9 +61,11 @@ export const MainLayout = (): JSX.Element => {
             <Route path={'/board'} element={<Board />} />
             <Route path={'/backlog'} element={<Backlog />} />
             <Route path={'/organisation'} element={<OrganisationPage />} />
+            <Route path={'/sprints'} element={<SprintsPage />} />
             <Route path={'/statistics'} element={<Statistics />} />
             <Route path={'/profile'} element={<UserProfile />} />
             {renderErrorPageRoutes()}
+            <Route path="*" element={<ErrorPage type={ERROR_TYPE.NOT_FOUND} />} />
           </ReactRoutes>
         </GlobalErrorBoundary>
       </AppMainWindow>
@@ -76,6 +79,7 @@ export const MainLayout = (): JSX.Element => {
           <Route path={'/'} element={<UnassignedUserPage />} />
           <Route path={'/profile'} element={<UserProfile />} />
           {renderErrorPageRoutes()}
+          <Route path="*" element={<ErrorPage type={ERROR_TYPE.NOT_FOUND} />} />
         </ReactRoutes>
       </GlobalErrorBoundary>
     </AppMainWindow>
@@ -100,6 +104,7 @@ export const MainLayout = (): JSX.Element => {
         />
         <Route path={'/mfa'} element={<MultifactorAuth />} />
         {renderErrorPageRoutes()}
+        <Route path="*" element={<ErrorPage type={ERROR_TYPE.NOT_FOUND} />} />
       </ReactRoutes>
     </GlobalErrorBoundary>
   );

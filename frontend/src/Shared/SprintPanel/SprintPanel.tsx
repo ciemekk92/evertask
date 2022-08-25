@@ -2,11 +2,11 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { LabelBadge } from 'Shared/LabelBadge';
-import { DropdownMenu } from 'Shared/Elements/DropdownMenu';
+import { DROPDOWN_MENU_POSITION, DropdownMenu } from 'Shared/Elements/DropdownMenu';
 import { formatDateForDisplay } from 'Utils/formatDate';
 import { Sprint } from 'Types/Sprint';
 import { START_END_SPRINT_DIALOG_MODES } from 'Modules/StartEndSprintDialog';
-import { StyledDateLabel, StyledSprintPanel } from './ProjectSprintPanel.styled';
+import { StyledDateLabel, StyledSprintPanel } from './SprintPanel.styled';
 
 interface Props {
   sprint: Sprint.SprintEntity;
@@ -16,7 +16,7 @@ interface Props {
   handleOpeningStartEndSprintDialog: (mode: START_END_SPRINT_DIALOG_MODES) => Promise<void>;
 }
 
-export const ProjectSprintPanel = ({
+export const SprintPanel = ({
   sprint,
   isActive,
   canBeStarted,
@@ -38,7 +38,7 @@ export const ProjectSprintPanel = ({
     return <StyledDateLabel>{t('general.notUpdated')}</StyledDateLabel>;
   };
 
-  const getDropdownOptions = () => {
+  const getDropdownOptions = (): Util.MenuOptionWithOnClick[] => {
     let dropdownOptions = [
       {
         label: t('general.view'),
@@ -76,7 +76,7 @@ export const ProjectSprintPanel = ({
       <p>{`Sprint ${sprint.ordinal}`}</p>
       {isActive && <LabelBadge label={t('general.active')} />}
       {renderUpdatedAtDate(sprint.updatedAt)}
-      <DropdownMenu options={getDropdownOptions()} />
+      <DropdownMenu options={getDropdownOptions()} position={DROPDOWN_MENU_POSITION.BOTTOM_LEFT} />
     </StyledSprintPanel>
   );
 };

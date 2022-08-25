@@ -16,9 +16,9 @@ export const SIDEBAR_ROUTES: SidebarRoute[] = [
     route: '/organisation'
   },
   {
-    name: 'projects',
+    name: 'sprints',
     iconName: 'description',
-    route: '/projects'
+    route: '/sprints'
   },
   {
     name: 'board',

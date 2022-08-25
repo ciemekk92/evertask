@@ -4,10 +4,10 @@ import { DialogComponent, useDialog } from 'Hooks/useDialog';
 import { START_END_SPRINT_DIALOG_MODES, StartEndSprintDialog } from 'Modules/StartEndSprintDialog';
 import { IconButton } from 'Shared/Elements/Buttons';
 import { StyledSectionHeaderRow, StyledSectionWrapper } from 'Shared/PageWrappers';
+import { SprintPanel } from 'Shared/SprintPanel';
 import { Heading6 } from 'Shared/Typography';
 import { Sprint } from 'Types/Sprint';
 import { PermissionCheck } from 'Utils/PermissionCheck';
-import { ProjectSprintPanel } from '..';
 
 interface Props {
   sprintsData: Sprint.SprintEntity[];
@@ -85,7 +85,7 @@ export const ProjectSprintsSection = ({
     }
 
     return sprintsData.map((sprint: Sprint.SprintEntity) => (
-      <ProjectSprintPanel
+      <SprintPanel
         key={sprint.id}
         sprint={sprint}
         isActive={sprint.id === activeSprintId}
@@ -100,7 +100,7 @@ export const ProjectSprintsSection = ({
     if (PermissionCheck.isProjectAdmin) {
       return (
         <IconButton iconName="add" onClick={handleOpeningAddSprint}>
-          {t('projectPage.addSprint')}
+          {t('general.addSprint')}
         </IconButton>
       );
     }

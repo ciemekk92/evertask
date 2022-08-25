@@ -35,8 +35,12 @@ export const SprintPage = (): Nullable<JSX.Element> => {
     return null;
   }
 
-  const handleEditingSprint = (): void => {
-    sprintDialogConfig.handleOpen(SPRINT_DIALOG_MODES.EDIT);
+  const handleEditingSprint = async (): Promise<void> => {
+    const result = await sprintDialogConfig.handleOpen(SPRINT_DIALOG_MODES.EDIT);
+
+    if (params.id && result) {
+      dispatch(actionCreators.getSelectedSprint(params.id));
+    }
   };
 
   return (
@@ -63,6 +67,7 @@ export const SprintPage = (): Nullable<JSX.Element> => {
         <SprintDialog
           mode={SPRINT_DIALOG_MODES.EDIT}
           handleClose={sprintDialogConfig.handleClose}
+          handleSubmitting={sprintDialogConfig.handleSubmit}
           sprintId={params.id}
           projectId={sprintState.selectedSprint.projectId}
         />

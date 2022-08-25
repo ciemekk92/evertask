@@ -50,12 +50,20 @@ export const ProjectPage = (): Nullable<JSX.Element> => {
     return null;
   }
 
-  const handleOpeningAddSprint = (): void => {
-    sprintDialogConfig.handleOpen(SPRINT_DIALOG_MODES.ADD);
+  const handleOpeningAddSprint = async (): Promise<void> => {
+    const result = await sprintDialogConfig.handleOpen(SPRINT_DIALOG_MODES.ADD);
+
+    if (params.id && result) {
+      dispatch(actionCreators.getNotCompletedSprints(params.id));
+    }
   };
 
-  const handleOpeningEditSprint = (id: Id) => (): void => {
-    sprintDialogConfig.handleOpen(SPRINT_DIALOG_MODES.EDIT, { sprintId: id });
+  const handleOpeningEditSprint = (id: Id) => async (): Promise<void> => {
+    const result = await sprintDialogConfig.handleOpen(SPRINT_DIALOG_MODES.EDIT, { sprintId: id });
+
+    if (params.id && result) {
+      dispatch(actionCreators.getNotCompletedSprints(params.id));
+    }
   };
 
   const renderProjectInfo = (): JSX.Element => (
@@ -103,6 +111,7 @@ export const ProjectPage = (): Nullable<JSX.Element> => {
         <SprintDialog
           mode={sprintDialogConfig.dialogMode}
           handleClose={sprintDialogConfig.handleClose}
+          handleSubmitting={sprintDialogConfig.handleSubmit}
           projectId={params.id}
           sprintId={sprintDialogConfig.params.sprintId}
         />

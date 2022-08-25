@@ -57,6 +57,7 @@
   "general": {
     "accept": "Zaakceptuj",
     "active": "Aktywny",
+    "addSprint": "Dodaj sprint",
     "back": "Wróć",
     "backlog": "Backlog",
     "bio": "Bio",
@@ -361,7 +362,6 @@
   },
   "projectPage": {
     "activeMembers": "Aktywni użytkownicy",
-    "addSprint": "Dodaj sprint",
     "code": "Kod projektu: ",
     "createdAt": "Stworzony: ",
     "description": "Opis projektu: ",
@@ -387,7 +387,7 @@
       "board": "Tablica",
       "dashboard": "Dashboard",
       "myOrganisation": "Moja organizacja",
-      "projects": "Projekty",
+      "sprints": "Sprinty",
       "statistics": "Statystyki"
     }
   },
@@ -453,6 +453,12 @@
     "issuesTitle": "Zadania w tym sprincie",
     "membersTitle": "Aktywni użytkownicy",
     "startDate": "Data rozpoczęcia: "
+  },
+  "sprintsPage": {
+    "completedSprints": "Ukończone sprinty",
+    "currentSprint": "Obecny sprint",
+    "notCompletedSprints": "Przyszłe sprinty",
+    "title": "Sprinty"
   },
   "startEndSprintDialog": {
     "sprintIdToMoveTo": "Przenieś nieukończone zadania do",

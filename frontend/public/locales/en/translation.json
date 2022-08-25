@@ -57,6 +57,7 @@
   "general": {
     "accept": "Accept",
     "active": "Active",
+    "addSprint": "Add sprint",
     "back": "Back",
     "backlog": "Backlog",
     "bio": "Bio",
@@ -361,7 +362,6 @@
   },
   "projectPage": {
     "activeMembers": "Active members",
-    "addSprint": "Add sprint",
     "code": "Project code: ",
     "createdAt": "Created at: ",
     "description": "Description: ",
@@ -387,7 +387,7 @@
       "board": "Board",
       "dashboard": "Dashboard",
       "myOrganisation": "My organisation",
-      "projects": "Projects",
+      "sprints": "Sprints",
       "statistics": "Statistics"
     }
   },
@@ -453,6 +453,12 @@
     "issuesTitle": "Issues in this sprint",
     "membersTitle": "Active users",
     "startDate": "Start date: "
+  },
+  "sprintsPage": {
+    "completedSprints": "Completed sprints",
+    "currentSprint": "Current sprint",
+    "notCompletedSprints": "Future sprints",
+    "title": "Sprints"
   },
   "startEndSprintDialog": {
     "sprintIdToMoveTo": "Move open issues to",

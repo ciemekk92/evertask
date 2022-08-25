@@ -1,6 +1,5 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 import { Formik, FormikProps } from 'formik';
 import * as Yup from 'yup';
 import { ModalDialog } from 'Shared/ModalDialog';
@@ -10,14 +9,13 @@ import { TextArea } from 'Shared/Elements/TextArea';
 import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
 import { Api } from 'Utils/Api';
 import { formatDateForInput } from 'Utils/formatDate';
-import { actionCreators as projectActionCreators } from 'Stores/Project';
-import { actionCreators as sprintActionCreators } from 'Stores/Sprint';
 import { SPRINT_DIALOG_MODES } from './fixtures';
 import { StyledDialogContent } from './SprintDialog.styled';
 
 interface Props {
   mode: SPRINT_DIALOG_MODES;
   handleClose: VoidFunctionNoArgs;
+  handleSubmitting: VoidFunctionNoArgs;
   projectId: Id;
   sprintId?: Id;
 }
@@ -28,7 +26,13 @@ interface SprintData {
   finishDate: string;
 }
 
-export const SprintDialog = ({ mode, handleClose, projectId, sprintId }: Props): JSX.Element => {
+export const SprintDialog = ({
+  mode,
+  handleClose,
+  handleSubmitting,
+  projectId,
+  sprintId
+}: Props): JSX.Element => {
   const [initialData, setInitialData] = React.useState<SprintData>({
     description: '',
     startDate: formatDateForInput(new Date()),
@@ -36,7 +40,6 @@ export const SprintDialog = ({ mode, handleClose, projectId, sprintId }: Props):
   });
 
   const { t } = useTranslation();
-  const dispatch = useDispatch();
 
   React.useEffect(() => {
     if (sprintId && mode === SPRINT_DIALOG_MODES.EDIT) {
@@ -76,9 +79,7 @@ export const SprintDialog = ({ mode, handleClose, projectId, sprintId }: Props):
       }
 
       if ([201, 204].includes(result.status)) {
-        handleClose();
-        dispatch(projectActionCreators.getNotCompletedSprints(projectId));
-        sprintId && dispatch(sprintActionCreators.getSelectedSprint(sprintId));
+        handleSubmitting();
       }
     }
   };

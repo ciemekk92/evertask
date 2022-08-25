@@ -75,32 +75,36 @@ public class ProjectController {
     @IsProjectMember
     @GetMapping("/{id}/active_members")
     public ResponseEntity<List<UserDto>> getProjectActiveMembers(@PathVariable UUID id) {
-        var members = userService.getProjectActiveMembers(id);
-        return ResponseEntity.ok(members);
+
+        return ResponseEntity.ok(userService.getProjectActiveMembers(id));
     }
 
     @IsProjectMember
     @GetMapping("/{id}/sprints")
     public ResponseEntity<List<SprintDto>> getProjectSprints(@PathVariable UUID id) {
-        var sprints = sprintService.getProjectSprints(id);
 
-        return ResponseEntity.ok(sprints);
+        return ResponseEntity.ok(sprintService.getProjectSprints(id));
     }
 
     @IsProjectMember
     @GetMapping("/{id}/sprints_not_completed")
     public ResponseEntity<List<SprintIssuesDto>> getProjectsNotCompletedSprints(@PathVariable UUID id) {
-        var sprints = sprintService.getProjectsNotCompletedSprints(id);
 
-        return ResponseEntity.ok(sprints);
+        return ResponseEntity.ok(sprintService.getProjectsNotCompletedSprints(id));
+    }
+
+    @IsProjectMember
+    @GetMapping("/{id}/sprints_completed")
+    public ResponseEntity<List<SprintIssuesDto>> getProjectsCompletedSprints(@PathVariable UUID id) {
+
+        return ResponseEntity.ok(sprintService.getProjectsCompletedSprints(id));
     }
 
     @IsProjectMember
     @GetMapping("/{id}/last_issues")
     public ResponseEntity<List<IssueFullDto>> getProjectLastIssues(@PathVariable UUID id) {
-        var issues = issueService.findProjectLastIssues(id);
 
-        return ResponseEntity.ok(issues);
+        return ResponseEntity.ok(issueService.findProjectLastIssues(id));
     }
 
     @IsProjectMember
@@ -118,9 +122,8 @@ public class ProjectController {
                                                                            @RequestParam(defaultValue = "10") int size) {
 
         Pageable paging = PageRequest.of(page, size);
-        var issues = issueService.findAllUnassignedByProjectId(id, paging);
 
-        return ResponseEntity.ok(issues);
+        return ResponseEntity.ok(issueService.findAllUnassignedByProjectId(id, paging));
     }
 
     @IsCurrentProjectAdminOrAdmin

@@ -13,6 +13,8 @@ public interface SprintRepository extends JpaRepository<Sprint, UUID>, BaseRepos
 
     List<Sprint> findAllByProjectIdAndCompletedIsFalseOrderByOrdinalAsc(UUID projectId);
 
+    List<Sprint> findAllByProjectIdAndCompletedIsTrueOrderByOrdinalDesc(UUID projectId);
+
     List<Sprint> findTop8ByProjectIdOrderByOrdinalAsc(UUID projectId);
 
     Optional<Sprint> findByIssuesId(UUID id);

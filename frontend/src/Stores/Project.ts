@@ -16,6 +16,7 @@ export interface ProjectState {
   activeMembers: User.UserEntity[];
   sprints: Sprint.SprintEntity[];
   notCompletedSprints: Sprint.SprintIssuesEntity[];
+  completedSprints: Sprint.SprintIssuesEntity[];
   lastIssues: Issue.IssueFullEntity[];
 }
 
@@ -44,6 +45,11 @@ interface SetProjectNotCompletedSprints {
   notCompletedSprints: Sprint.SprintIssuesEntity[];
 }
 
+interface SetProjectCompletedSprints {
+  type: typeof ActionTypes.SET_COMPLETED_SPRINTS;
+  completedSprints: Sprint.SprintIssuesEntity[];
+}
+
 interface SetProjectLastIssues {
   type: typeof ActionTypes.SET_PROJECT_LAST_ISSUES;
   lastIssues: Issue.IssueFullEntity[];
@@ -55,6 +61,7 @@ export type ProjectActionTypes =
   | SetActiveProjectMembersAction
   | SetProjectSprints
   | SetProjectNotCompletedSprints
+  | SetProjectCompletedSprints
   | SetProjectLastIssues;
 
 export const actionCreators = {
@@ -160,6 +167,25 @@ export const actionCreators = {
         }
       }
     },
+  getCompletedSprints:
+    (id: Id): AppThunkAction<ProjectActionTypes> =>
+    async (dispatch, getState) => {
+      const appState = getState();
+
+      if (appState && appState.project) {
+        const result = await Api.get(`projects/${id}/sprints_completed`);
+
+        console.log({ result });
+        if (result.status === 200) {
+          const json = await result.json();
+
+          dispatch({
+            type: ActionTypes.SET_COMPLETED_SPRINTS,
+            completedSprints: json
+          });
+        }
+      }
+    },
   getLastIssues:
     (id: Id): AppThunkAction<ProjectActionTypes> =>
     async (dispatch, getState) => {
@@ -197,6 +223,7 @@ const initialState: ProjectState = {
   activeMembers: [],
   sprints: [],
   notCompletedSprints: [],
+  completedSprints: [],
   lastIssues: []
 };
 
@@ -240,6 +267,11 @@ export const reducer: Reducer<ProjectState> = (
       return {
         ...state,
         notCompletedSprints: action.notCompletedSprints
+      };
+    case ActionTypes.SET_COMPLETED_SPRINTS:
+      return {
+        ...state,
+        completedSprints: action.completedSprints
       };
     default:
       return state;

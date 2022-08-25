@@ -46,6 +46,13 @@ public class SprintService {
                 .toList();
     }
 
+    public List<SprintIssuesDto> getProjectsCompletedSprints(UUID projectId) {
+        return sprintRepository.findAllByProjectIdAndCompletedIsTrueOrderByOrdinalDesc(projectId)
+                .stream()
+                .map(sprintMapper::sprintToSprintIssuesDto)
+                .toList();
+    }
+
     public Optional<SprintDto> findById(UUID id) {
         Optional<Sprint> sprint = sprintRepository.findById(id);
 

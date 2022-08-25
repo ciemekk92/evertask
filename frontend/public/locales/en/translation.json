@@ -450,6 +450,8 @@
     "description": "Description: ",
     "finishDate": "Finish date: ",
     "infoTitle": "Information",
+    "issuesTitle": "Issues in this sprint",
+    "membersTitle": "Active users",
     "startDate": "Start date: "
   },
   "startEndSprintDialog": {

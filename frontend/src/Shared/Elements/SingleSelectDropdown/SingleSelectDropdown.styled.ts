@@ -66,8 +66,10 @@ export const StyledDropdownOptionsList = styled(StyledFlexColumnContainer)`
 export const StyledDropdownOption = styled.button<ButtonProps>`
   ${DropdownButtonStyles};
 
-  &:first-child {
-    border-top: ${({ isOpen, theme }) => (isOpen ? `1px solid ${theme.primary}` : 'none')};
+  border-top: ${({ isOpen, theme }) => (isOpen ? `1px solid ${theme.primary}` : 'none')};
+
+  &:disabled {
+    color: ${(props) => props.theme.disabledText};
   }
 
   &:last-child {

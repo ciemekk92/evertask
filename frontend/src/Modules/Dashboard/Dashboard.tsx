@@ -15,7 +15,7 @@ export const Dashboard = (): JSX.Element => {
     shallowEqual
   );
 
-  const assignedIssues: Issue.IssueEntity[] = useSelector(
+  const assignedIssues: Issue.IssueFullEntity[] = useSelector(
     (state: ApplicationState) => (state.issue ? state.issue.assignedIssues : []),
     shallowEqual
   );

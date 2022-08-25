@@ -230,7 +230,7 @@ export const IssueDialog = ({
                 <FormField label={t('issueDialog.type')} name="type">
                   <SingleSelectDropdown
                     disabled={mode === ISSUE_DIALOG_MODES.ADD_SUBTASK}
-                    options={mapIssueTypesToDropdownOptions()}
+                    options={mapIssueTypesToDropdownOptions(mode)}
                     value={values.type}
                     onChange={(value: Nullable<string>) => setFieldValue('type', value)}
                   />

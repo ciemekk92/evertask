@@ -5,6 +5,7 @@ import com.predu.evertask.annotation.IsOrganisationAdminOrAdmin;
 import com.predu.evertask.annotation.IsCurrentProjectAdminOrAdmin;
 import com.predu.evertask.annotation.IsProjectMember;
 import com.predu.evertask.domain.dto.issue.IssueDto;
+import com.predu.evertask.domain.dto.issue.IssueFullDto;
 import com.predu.evertask.domain.dto.issue.IssuesPaginationDto;
 import com.predu.evertask.domain.dto.user.UserDto;
 import com.predu.evertask.domain.dto.project.ProjectCreateDto;
@@ -96,7 +97,7 @@ public class ProjectController {
 
     @IsProjectMember
     @GetMapping("/{id}/last_issues")
-    public ResponseEntity<List<IssueDto>> getProjectLastIssues(@PathVariable UUID id) {
+    public ResponseEntity<List<IssueFullDto>> getProjectLastIssues(@PathVariable UUID id) {
         var issues = issueService.findProjectLastIssues(id);
 
         return ResponseEntity.ok(issues);

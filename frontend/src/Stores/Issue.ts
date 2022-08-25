@@ -7,14 +7,14 @@ import { AppThunkAction } from './store';
 import { ActionTypes } from './constants';
 
 export interface IssueState {
-  assignedIssues: Issue.IssueEntity[];
+  assignedIssues: Issue.IssueFullEntity[];
   issuesUnassignedToSprint: Issue.PaginatedUnassignedIssues;
   boardIssues: PartialRecord<ISSUE_STATUS, Issue.IssueFullEntity[]>;
 }
 
 interface SetAssignedIssuesAction {
   type: typeof ActionTypes.SET_ASSIGNED_ISSUES;
-  assignedIssues: Issue.IssueEntity[];
+  assignedIssues: Issue.IssueFullEntity[];
 }
 
 interface SetIssuesUnassignedToSprintAction {

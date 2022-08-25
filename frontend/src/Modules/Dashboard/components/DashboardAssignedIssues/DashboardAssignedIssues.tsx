@@ -7,7 +7,7 @@ import { StyledHeaderRow, StyledSectionWrapper } from 'Modules/Dashboard/Dashboa
 import { StyledEmptyListMessage } from './DashboardAssignedIssues.styled';
 
 interface Props {
-  data: Issue.IssueEntity[];
+  data: Issue.IssueFullEntity[];
 }
 
 export const DashboardAssignedIssues = ({ data }: Props): JSX.Element => {
@@ -18,7 +18,7 @@ export const DashboardAssignedIssues = ({ data }: Props): JSX.Element => {
   );
 
   const renderIssues = () =>
-    data.map((issue: Issue.IssueEntity) => <IssuePanel key={issue.id} issue={issue} />);
+    data.map((issue: Issue.IssueFullEntity) => <IssuePanel key={issue.id} issue={issue} />);
 
   const renderData = (): JSX.Element | JSX.Element[] =>
     data.length ? renderIssues() : renderNoIssuesMessage();

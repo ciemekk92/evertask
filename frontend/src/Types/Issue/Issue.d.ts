@@ -26,13 +26,6 @@ declare namespace Issue {
     hasMoreReplies: boolean;
   }
 
-  export interface IssueEntity extends IssueBase {
-    projectId: Id;
-    assigneeId: Id;
-    reporterId: Id;
-    sprintId: Id;
-  }
-
   export interface IssueFullEntity extends IssueBase {
     project: Project.ProjectInfoEntity;
     sprint: Nullable<Sprint.SprintInfoEntity>;

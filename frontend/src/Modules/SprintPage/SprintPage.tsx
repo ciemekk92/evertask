@@ -8,7 +8,7 @@ import { StyledFlexContainer } from 'Shared/SharedStyles.styled';
 import { ApplicationState } from 'Stores/store';
 import { actionCreators, SprintState } from 'Stores/Sprint';
 import { isDefined } from 'Utils/isDefined';
-import { SprintInfoSection } from './components';
+import { SprintActiveMembersSection, SprintInfoSection, SprintIssuesSection } from './components';
 import { SprintDialog, SPRINT_DIALOG_MODES } from '../SprintDialog';
 import { StyledLargeSectionContainer, StyledSmallSectionContainer } from './SprintPage.styled';
 
@@ -35,13 +35,9 @@ export const SprintPage = (): Nullable<JSX.Element> => {
     return null;
   }
 
-  const handleEditingSprint = () => {
+  const handleEditingSprint = (): void => {
     sprintDialogConfig.handleOpen(SPRINT_DIALOG_MODES.EDIT);
   };
-
-  const renderSprintInfo = (): JSX.Element => (
-    <SprintInfoSection onEditClick={handleEditingSprint} sprint={sprintState.selectedSprint} />
-  );
 
   return (
     <VerticalPageWrapper alignItems="unset">
@@ -49,8 +45,16 @@ export const SprintPage = (): Nullable<JSX.Element> => {
         <Heading5>{`Sprint ${sprintState.selectedSprint.ordinal}`}</Heading5>
       </StyledFlexContainer>
       <StyledHorizontalContainer>
-        <StyledSmallSectionContainer>{renderSprintInfo()}</StyledSmallSectionContainer>
-        <StyledLargeSectionContainer></StyledLargeSectionContainer>
+        <StyledSmallSectionContainer>
+          <SprintInfoSection
+            onEditClick={handleEditingSprint}
+            sprint={sprintState.selectedSprint}
+          />
+          <SprintActiveMembersSection activeMembers={sprintState.activeMembers} />
+        </StyledSmallSectionContainer>
+        <StyledLargeSectionContainer>
+          <SprintIssuesSection issues={sprintState.sprintIssues} />
+        </StyledLargeSectionContainer>
       </StyledHorizontalContainer>
       <DialogComponent
         isOpen={sprintDialogConfig.isOpen}

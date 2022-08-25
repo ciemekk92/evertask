@@ -120,7 +120,7 @@ public class IssueController {
 
     @IsNotUnassignedUser
     @GetMapping("/assigned_to_me")
-    public ResponseEntity<List<IssueDto>> getAssignedIssuesToUser(@CurrentUserId UUID userId) {
+    public ResponseEntity<List<IssueFullDto>> getAssignedIssuesToUser(@CurrentUserId UUID userId) {
 
         return ResponseEntity.ok(issueService.findAllByAssigneeId(userId));
     }

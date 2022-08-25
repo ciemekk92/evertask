@@ -3,7 +3,7 @@ package com.predu.evertask.controller;
 import com.predu.evertask.annotation.IsAdmin;
 import com.predu.evertask.annotation.IsProjectAdmin;
 import com.predu.evertask.annotation.IsUserAllowedToSprint;
-import com.predu.evertask.domain.dto.issue.IssueDto;
+import com.predu.evertask.domain.dto.issue.IssueFullDto;
 import com.predu.evertask.domain.dto.sprint.SprintDto;
 import com.predu.evertask.domain.dto.sprint.SprintSaveDto;
 import com.predu.evertask.domain.dto.sprint.SprintUpdateDto;
@@ -65,7 +65,7 @@ public class SprintController {
      */
     @IsUserAllowedToSprint
     @GetMapping("/{id}/issues")
-    public ResponseEntity<List<IssueDto>> getSprintIssues(@PathVariable UUID id) {
+    public ResponseEntity<List<IssueFullDto>> getSprintIssues(@PathVariable UUID id) {
         return ResponseEntity.ok(issueService.findAllBySprintId(id));
     }
 

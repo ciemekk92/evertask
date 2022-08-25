@@ -10,7 +10,7 @@ import { AppThunkAction } from './store';
 export interface SprintState {
   selectedSprint: Sprint.SprintEntity;
   activeMembers: User.UserEntity[];
-  sprintIssues: Issue.IssueEntity[];
+  sprintIssues: Issue.IssueFullEntity[];
 }
 
 interface SetSelectedSprintAction {
@@ -20,7 +20,7 @@ interface SetSelectedSprintAction {
 
 interface SetSprintIssuesAction {
   type: typeof ActionTypes.SET_SPRINT_ISSUES;
-  sprintIssues: Issue.IssueEntity[];
+  sprintIssues: Issue.IssueFullEntity[];
 }
 
 interface SetSprintActiveMembersAction {

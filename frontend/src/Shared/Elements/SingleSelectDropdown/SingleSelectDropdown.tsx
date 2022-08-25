@@ -38,11 +38,13 @@ export const SingleSelectDropdown = ({
     setIsOpen(!isOpen);
   };
 
-  const handleSelectingOption = (option: DropdownOption) => () => {
-    onChange(option.value);
-    setSelectedLabel(option.label);
+  const handleSelectingOption = (option: DropdownOption) => (): void => {
+    if (!option.disabled) {
+      onChange(option.value);
+      setSelectedLabel(option.label);
 
-    setIsOpen(false);
+      setIsOpen(false);
+    }
   };
 
   useOutsideClick(containerRef, () => setIsOpen(false));
@@ -65,6 +67,7 @@ export const SingleSelectDropdown = ({
               title={option.label}
               isOpen={isOpen}
               key={option.value}
+              disabled={option.disabled}
               onClick={handleSelectingOption(option)}
             >
               {option.label}

@@ -6,7 +6,7 @@ import { IssuePanel } from 'Shared/IssuePanel';
 import { Issue } from 'Types/Issue';
 
 interface Props {
-  issuesData: Issue.IssueEntity[];
+  issuesData: Issue.IssueFullEntity[];
 }
 
 export const ProjectLastIssuesSection = ({ issuesData }: Props): JSX.Element => {
@@ -17,7 +17,7 @@ export const ProjectLastIssuesSection = ({ issuesData }: Props): JSX.Element => 
       return <p>{t('projectPage.noIssues')}</p>;
     }
 
-    return issuesData.map((issue: Issue.IssueEntity) => (
+    return issuesData.map((issue: Issue.IssueFullEntity) => (
       <IssuePanel key={issue.id} issue={issue} />
     ));
   }, [issuesData, t]);

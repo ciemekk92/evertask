@@ -52,17 +52,17 @@ public class IssueService {
                 .toList();
     }
 
-    public List<IssueDto> findProjectLastIssues(UUID projectId) {
+    public List<IssueFullDto> findProjectLastIssues(UUID projectId) {
         return issueRepository.findTop10ByProjectIdOrderByCreatedAtDesc(projectId)
                 .stream()
-                .map(issueMapper::issueToIssueDto)
+                .map(issueMapper::issueToIssueFullDto)
                 .toList();
     }
 
-    public List<IssueDto> findAllBySprintId(UUID sprintId) {
-        return issueRepository.findAllBySprintId(sprintId)
+    public List<IssueFullDto> findAllBySprintId(UUID sprintId) {
+        return issueRepository.findAllBySprintIdAndIsNotSubtask(sprintId)
                 .stream()
-                .map(issueMapper::issueToIssueDto)
+                .map(issueMapper::issueToIssueFullDto)
                 .toList();
     }
 
@@ -93,10 +93,10 @@ public class IssueService {
         return issue.map(issueMapper::issueToIssueFullDto);
     }
 
-    public List<IssueDto> findAllByAssigneeId(UUID id) {
+    public List<IssueFullDto> findAllByAssigneeId(UUID id) {
         return issueRepository.findAllByAssigneeId(id)
                 .stream()
-                .map(issueMapper::issueToIssueDto)
+                .map(issueMapper::issueToIssueFullDto)
                 .toList();
     }
 

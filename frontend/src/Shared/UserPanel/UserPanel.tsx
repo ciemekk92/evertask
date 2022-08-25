@@ -1,13 +1,13 @@
 import React from 'react';
 import { UserCircle } from 'Shared/UserCircle';
 import { User } from 'Types/User';
-import { StyledNameLabel, StyledPanelContainer } from './OrganisationMemberPanel.styled';
+import { StyledNameLabel, StyledPanelContainer } from './UserPanel.styled';
 
 interface Props {
-  user: User.UserBasicEntity;
+  user: User.UserBasicEntity | User.UserEntity;
 }
 
-export const OrganisationMemberPanel = ({ user }: Props): JSX.Element => {
+export const UserPanel = ({ user }: Props): JSX.Element => {
   const renderName = () => `${user.firstName} ${user.lastName}`;
 
   return (

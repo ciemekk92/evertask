@@ -24,6 +24,7 @@ declare global {
   export type DropdownOption = {
     value: Nullable<string>;
     label: string;
+    disabled?: boolean;
   };
 }
 

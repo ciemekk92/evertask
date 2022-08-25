@@ -450,6 +450,8 @@
     "description": "Opis: ",
     "finishDate": "Data zakończenia: ",
     "infoTitle": "Informacje",
+    "issuesTitle": "Zadania w tym sprincie",
+    "membersTitle": "Aktywni użytkownicy",
     "startDate": "Data rozpoczęcia: "
   },
   "startEndSprintDialog": {

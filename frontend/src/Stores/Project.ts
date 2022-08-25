@@ -16,7 +16,7 @@ export interface ProjectState {
   activeMembers: User.UserEntity[];
   sprints: Sprint.SprintEntity[];
   notCompletedSprints: Sprint.SprintIssuesEntity[];
-  lastIssues: Issue.IssueEntity[];
+  lastIssues: Issue.IssueFullEntity[];
 }
 
 interface SetOrganisationProjectsAction {
@@ -46,7 +46,7 @@ interface SetProjectNotCompletedSprints {
 
 interface SetProjectLastIssues {
   type: typeof ActionTypes.SET_PROJECT_LAST_ISSUES;
-  lastIssues: Issue.IssueEntity[];
+  lastIssues: Issue.IssueFullEntity[];
 }
 
 export type ProjectActionTypes =

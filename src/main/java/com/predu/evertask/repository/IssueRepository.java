@@ -28,7 +28,17 @@ public interface IssueRepository extends BaseRepository<Issue, UUID>,
 
     List<Issue> findAllBySprintId(UUID sprintId);
 
-    Page<Issue> findAllByProjectIdAndSprintIsNullOrderByKeyDesc(UUID projectId, Pageable pageable);
+    @Query(value = "SELECT * FROM issues i " +
+            "WHERE i.project_id = ?1 " +
+            "AND i.sprint_id IS NULL " +
+            "AND (i.title ~ ?2 OR i.description ~ ?2 OR cast(i.key as varchar(255)) ~ ?2) " +
+            "ORDER BY i.key DESC",
+            countQuery = "SELECT count(*) FROM issues i " +
+                    "WHERE i.project_id = ?1 " +
+                    "AND i.sprint_id IS NULL " +
+                    "AND (i.title ~ ?2 OR i.description ~ ?2 OR cast(i.key as varchar(255)) ~ ?2)",
+            nativeQuery = true)
+    Page<Issue> findAllByProjectIdAndSprintIsNullOrderByKeyDesc(UUID projectId, String query, Pageable pageable);
 
     List<Issue> findTop10ByProjectIdOrderByCreatedAtDesc(UUID projectId);
 

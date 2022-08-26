@@ -66,8 +66,8 @@ public class IssueService {
                 .toList();
     }
 
-    public IssuesPaginationDto findAllUnassignedByProjectId(UUID projectId, Pageable paging) {
-        Page<Issue> pagedIssues = issueRepository.findAllByProjectIdAndSprintIsNullOrderByKeyDesc(projectId, paging);
+    public IssuesPaginationDto findAllUnassignedByProjectId(UUID projectId, String query, Pageable paging) {
+        Page<Issue> pagedIssues = issueRepository.findAllByProjectIdAndSprintIsNullOrderByKeyDesc(projectId, query, paging);
         List<IssueDto> issues = pagedIssues
                 .stream()
                 .map(issueMapper::issueToIssueDto)

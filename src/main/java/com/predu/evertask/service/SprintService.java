@@ -39,10 +39,28 @@ public class SprintService {
                 .toList();
     }
 
-    public List<SprintIssuesDto> getProjectsNotCompletedSprints(UUID projectId) {
-        return sprintRepository.findAllByProjectIdAndCompletedIsFalseOrderByOrdinalAsc(projectId)
+    public List<SprintIssuesDto> getProjectsNotCompletedSprints(UUID projectId, String query) {
+        List<SprintIssuesDto> sprints = sprintRepository.findAllByProjectIdAndCompletedIsFalseOrderByOrdinalAsc(projectId)
                 .stream()
                 .map(sprintMapper::sprintToSprintIssuesDto)
+                .toList();
+
+        if (query.equals("")) {
+            return sprints;
+        }
+
+        return sprints.stream()
+                .map(sprint -> {
+                    sprint.setIssues(
+                            sprint.getIssues()
+                                    .stream()
+                                    .filter(issue -> issue.getTitle().contains(query)
+                                            || issue.getDescription().contains(query)
+                                            || issue.getKey().toString().contains(query))
+                                    .toList());
+
+                    return sprint;
+                })
                 .toList();
     }
 

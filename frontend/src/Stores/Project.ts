@@ -150,12 +150,12 @@ export const actionCreators = {
       }
     },
   getNotCompletedSprints:
-    (id: Id): AppThunkAction<ProjectActionTypes> =>
+    (id: Id, query?: string): AppThunkAction<ProjectActionTypes> =>
     async (dispatch, getState) => {
       const appState = getState();
 
       if (appState && appState.project) {
-        const result = await Api.get(`projects/${id}/sprints_not_completed`);
+        const result = await Api.get(`projects/${id}/sprints_not_completed`, { query });
 
         if (result.status === 200) {
           const json = await result.json();

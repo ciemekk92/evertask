@@ -2,7 +2,9 @@
   "backlog": {
     "addIssue": "Add issue",
     "allIssues": "All issues",
+    "clearSearch": "Clear",
     "emptySection": "No issues",
+    "searchPlaceholder": "Search by title, description, code...",
     "sprint": {
       "title": "Sprint {{ordinal}}"
     },

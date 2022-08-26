@@ -68,12 +68,12 @@ export const actionCreators = {
       }
     },
   getIssuesUnassignedToSprint:
-    (projectId: Id, page?: number): AppThunkAction<IssueActionTypes> =>
+    (projectId: Id, page?: number, query?: string): AppThunkAction<IssueActionTypes> =>
     async (dispatch, getState) => {
       const appState = getState();
 
       if (appState && appState.issue) {
-        const result = await Api.get(`projects/${projectId}/unassigned_issues`, { page });
+        const result = await Api.get(`projects/${projectId}/unassigned_issues`, { page, query });
 
         if (result.status === 200) {
           const json = await result.json();

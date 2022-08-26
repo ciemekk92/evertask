@@ -22,8 +22,12 @@ export const StyledButton = styled.button`
     margin-left: 1rem;
   }
 
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: ${(props) => props.theme.primaryDark};
     color: ${(props) => props.theme.textOnPrimary};
+  }
+
+  &:disabled {
+    color: ${(props) => props.theme.disabledText};
   }
 `;

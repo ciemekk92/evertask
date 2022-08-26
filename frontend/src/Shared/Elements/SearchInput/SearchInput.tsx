@@ -8,18 +8,29 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   onIconClick?: (event: React.MouseEvent) => void;
 }
 
-export const SearchInput = ({ onChange, onIconClick, ...restProps }: Props): JSX.Element => {
-  const onClick = (e: React.MouseEvent) => {
+export const SearchInput = ({
+  onChange,
+  onIconClick,
+  onKeyDown,
+  ...restProps
+}: Props): JSX.Element => {
+  const onClick = (e: React.MouseEvent): void => {
     e.preventDefault();
     if (onIconClick) {
       onIconClick(e);
     }
   };
 
+  const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (onKeyDown && e.key === 'Enter') {
+      onKeyDown(e);
+    }
+  };
+
   return (
     <StyledInputContainer>
       <IconOutline onClick={onClick} iconName="search" iconSize={ICON_SIZE.LARGE} />
-      <StyledInput type="text" onChange={onChange} {...restProps} />
+      <StyledInput type="text" onKeyDown={handleEnter} onChange={onChange} {...restProps} />
     </StyledInputContainer>
   );
 };

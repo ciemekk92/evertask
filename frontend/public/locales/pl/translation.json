@@ -2,7 +2,9 @@
   "backlog": {
     "addIssue": "Dodaj zadanie",
     "allIssues": "Wszystkie zadania",
+    "clearSearch": "Wyczyść",
     "emptySection": "Brak zadań",
+    "searchPlaceholder": "Wyszukaj po nazwie, opisie, kodzie...",
     "sprint": {
       "title": "Sprint {{ordinal}}"
     },

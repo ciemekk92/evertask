@@ -88,9 +88,10 @@ public class ProjectController {
 
     @IsProjectMember
     @GetMapping("/{id}/sprints_not_completed")
-    public ResponseEntity<List<SprintIssuesDto>> getProjectsNotCompletedSprints(@PathVariable UUID id) {
+    public ResponseEntity<List<SprintIssuesDto>> getProjectsNotCompletedSprints(@PathVariable UUID id,
+                                                                                @RequestParam(defaultValue = "") String query) {
 
-        return ResponseEntity.ok(sprintService.getProjectsNotCompletedSprints(id));
+        return ResponseEntity.ok(sprintService.getProjectsNotCompletedSprints(id, query));
     }
 
     @IsProjectMember
@@ -118,12 +119,13 @@ public class ProjectController {
     @IsProjectMember
     @GetMapping("/{id}/unassigned_issues")
     public ResponseEntity<IssuesPaginationDto> getIssuesUnassignedToSprint(@PathVariable UUID id,
+                                                                           @RequestParam(defaultValue = "") String query,
                                                                            @RequestParam(defaultValue = "0") int page,
                                                                            @RequestParam(defaultValue = "10") int size) {
 
         Pageable paging = PageRequest.of(page, size);
 
-        return ResponseEntity.ok(issueService.findAllUnassignedByProjectId(id, paging));
+        return ResponseEntity.ok(issueService.findAllUnassignedByProjectId(id, query, paging));
     }
 
     @IsCurrentProjectAdminOrAdmin

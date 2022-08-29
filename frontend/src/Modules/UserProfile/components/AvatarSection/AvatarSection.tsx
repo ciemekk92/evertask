@@ -34,7 +34,7 @@ export const AvatarSection = ({ onUpdate }: Props): JSX.Element => {
 
       const result = await Api.post('user/upload_avatar', formData);
 
-      if (result.status === 200) {
+      if (result.status === 201) {
         onUpdate();
       }
 

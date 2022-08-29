@@ -1,7 +1,9 @@
 package com.predu.evertask.domain.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.envers.AuditOverride;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
@@ -15,6 +17,8 @@ import java.util.Set;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@SuperBuilder
 @Entity
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @AuditOverride(forClass = BaseEntity.class)

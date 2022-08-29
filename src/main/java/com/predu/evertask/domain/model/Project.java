@@ -4,6 +4,7 @@ import com.predu.evertask.domain.enums.ProjectMethodology;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.*;
 import org.hibernate.validator.constraints.Length;
@@ -19,6 +20,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@SuperBuilder
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @AuditOverride(forClass = BaseEntity.class)
 @Entity

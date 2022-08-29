@@ -3,13 +3,17 @@ package com.predu.evertask.domain.dto.issue;
 import com.predu.evertask.domain.dto.BaseDto;
 import com.predu.evertask.domain.dto.user.UserIssueDto;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@SuperBuilder
 public class IssueDto extends BaseDto {
 
     private String title;

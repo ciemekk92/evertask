@@ -1,75 +1,60 @@
 package com.predu.evertask.repository;
 
-import com.predu.evertask.domain.model.Role;
 import com.predu.evertask.domain.model.User;
-import org.junit.jupiter.api.BeforeEach;
+import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.event.annotation.AfterTestClass;
+import org.springframework.test.context.event.annotation.BeforeTestClass;
 import org.springframework.test.context.jdbc.Sql;
 
 import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 import java.util.List;
-import java.util.Set;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @DataJpaTest
-@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
-@Sql("populateRoles.sql")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Sql("populate.sql")
 class UserRepositoryTest {
 
-    @Autowired private DataSource dataSource;
-    @Autowired private JdbcTemplate jdbcTemplate;
-    @Autowired private EntityManager entityManager;
-    @Autowired private UserRepository userRepository;
-    @Autowired private RoleRepository roleRepository;
+    private static final String PROJECT_ID = "39718ff6-80cd-4163-bc5f-0fd7f0f502c3";
+    private static final String SPRINT_ID = "71e107a2-374d-48df-bdd3-008a99089c9c";
 
-    @BeforeEach
-    void setUp(TestInfo testInfo) {
+    @Autowired
+    private DataSource dataSource;
 
-        if (testInfo.getDisplayName().equals("injectedComponentsAreNotNull")) {
-            return; // skip @BeforeEach in injectedComponentsAreNotNull test
-        }
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
-        Role unassignedRole = roleRepository.findByAuthority(Role.ROLE_UNASSIGNED_USER);
-        Role assignedRole = roleRepository.findByAuthority(Role.ROLE_USER);
-        User unassignedUser1 = User.builder()
-                .username("testuser")
-                .password("password")
-                .firstName("Test")
-                .lastName("User")
-                .email("test_email@test.com")
-                .authorities(Set.of(unassignedRole))
-                .build();
+    @Autowired
+    private EntityManager entityManager;
 
-        User unassignedUser2 = User.builder()
-                .username("other2")
-                .password("password")
-                .firstName("Test2")
-                .lastName("User2")
-                .email("other_email2@other.com")
-                .authorities(Set.of(unassignedRole))
-                .build();
+    @Autowired
+    private UserRepository userRepository;
 
-        User assignedUser = User.builder()
-                .username("testuser3")
-                .password("password123")
-                .firstName("Test3")
-                .lastName("User3")
-                .email("test_email3@test.com")
-                .authorities(Set.of(assignedRole))
-                .build();
+    @Autowired
+    private RoleRepository roleRepository;
 
-        userRepository.save(unassignedUser1);
-        userRepository.save(unassignedUser2);
-        userRepository.save(assignedUser);
+    @Autowired
+    private Flyway flyway;
+
+    @BeforeTestClass
+    public void init() {
+        flyway.clean();
+        flyway.migrate();
+    }
+
+    @AfterTestClass
+    public void cleanUp() {
+        flyway.clean();
     }
 
     @Test
@@ -103,9 +88,21 @@ class UserRepositoryTest {
 
     @Test
     void findActiveProjectMembers() {
+        //given
+        //when
+        List<User> users = userRepository.findActiveProjectMembers(UUID.fromString(PROJECT_ID));
+        //then
+
+        assertThat(users).hasSize(1);
     }
 
     @Test
     void findActiveSprintMembers() {
+        //given
+        //when
+        List<User> users = userRepository.findActiveSprintMembers(UUID.fromString(SPRINT_ID));
+        //then
+
+        assertThat(users).hasSize(1);
     }
 }

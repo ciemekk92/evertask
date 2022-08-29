@@ -6,8 +6,8 @@ import com.predu.evertask.domain.dto.user.UserIssueDto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,6 +15,6 @@ public class OrganisationDto extends BaseDto {
 
     private String name;
     private String description;
-    private Set<UserIssueDto> members = new HashSet<>();
-    private Set<ProjectDto> projects = new HashSet<>();
+    private List<UserIssueDto> members = new ArrayList<>();
+    private List<ProjectDto> projects = new ArrayList<>();
 }

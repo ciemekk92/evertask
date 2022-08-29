@@ -12,7 +12,9 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -32,7 +34,7 @@ public class Organisation extends BaseEntity {
     private String description;
 
     @OneToMany(mappedBy = "organisation")
-    private Set<User> members = new HashSet<>();
+    private List<User> members = new ArrayList<>();
 
     @NotAudited
     @OneToMany(mappedBy = "organisation", cascade = CascadeType.REMOVE)

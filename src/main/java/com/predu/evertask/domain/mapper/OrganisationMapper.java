@@ -8,8 +8,6 @@ import com.predu.evertask.repository.OrganisationRepository;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.stream.Collectors;
-
 @Mapper(uses = {UUIDMapper.class, ImageMapper.class}, componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public abstract class OrganisationMapper {
 
@@ -40,11 +38,11 @@ public abstract class OrganisationMapper {
         target.setMembers(source.getMembers()
                 .stream()
                 .map(userViewMapper::toUserIssueDto)
-                .collect(Collectors.toSet()));
+                .toList());
 
         target.setProjects(source.getProjects()
                 .stream()
                 .map(projectMapper::projectToProjectDto)
-                .collect(Collectors.toSet()));
+                .toList());
     }
 }

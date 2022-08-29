@@ -120,7 +120,7 @@ export const IssueCommentsSection = ({
 
   const onSubmit = async (values: CommentFormData): Promise<void> => {
     const result = await Api.post(`issues/${issueId}/comments`, { ...values });
-    if (result.status === 200) {
+    if (result.status === 201) {
       await handleRefreshingComments();
       setIsAddingComment(false);
     }

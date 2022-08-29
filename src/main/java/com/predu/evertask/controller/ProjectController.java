@@ -168,7 +168,8 @@ public class ProjectController {
             return ResponseEntity.notFound().build();
         }
 
-        projectService.findById(id).ifPresent(project -> projectService.update(id, toUpdate));
+        projectService.findById(id)
+                .ifPresent(project -> projectService.update(id, toUpdate));
 
         return ResponseEntity.noContent().build();
     }

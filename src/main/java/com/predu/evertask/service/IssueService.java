@@ -182,7 +182,13 @@ public class IssueService {
         return issueRepository.existsById(id);
     }
 
-    public void moveIssue(UUID issueId, UUID targetSprintId) {
+    public void moveIssue(UUID issueId, MoveIssueDto dto) {
+
+        UUID targetSprintId = null;
+
+        if (dto.getTargetSprintId() != null) {
+            targetSprintId = UUID.fromString(dto.getTargetSprintId());
+        }
 
         Issue issue = issueRepository.findById(issueId)
                 .orElseThrow(() -> new NotFoundException(Issue.class, issueId));
@@ -190,8 +196,10 @@ public class IssueService {
         Sprint sprint = null;
 
         if (targetSprintId != null) {
-            sprint = sprintRepository.findById(targetSprintId).orElse(null);
+            sprint = sprintRepository.findById(targetSprintId)
+                    .orElse(null);
         }
+
         Sprint finalSprint = sprint;
 
         issue.setSprint(finalSprint);

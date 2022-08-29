@@ -84,7 +84,7 @@ public class IssueController {
 
         issueCommentService.create(toSave, id);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(201).build();
     }
 
     @IsUserAllowedToIssueComment
@@ -151,7 +151,7 @@ public class IssueController {
 
         issueService.reportTimeOnIssue(dto);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(201).build();
     }
 
     @IsUserAllowedToIssue
@@ -159,13 +159,7 @@ public class IssueController {
     public ResponseEntity<Void> moveIssue(@RequestBody @Valid MoveIssueDto dto,
                                           @PathVariable UUID id) {
 
-        UUID targetSprintId = null;
-
-        if (dto.getTargetSprintId() != null) {
-            targetSprintId = UUID.fromString(dto.getTargetSprintId());
-        }
-
-        issueService.moveIssue(id, targetSprintId);
+        issueService.moveIssue(id, dto);
 
         return ResponseEntity.noContent().build();
     }

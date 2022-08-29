@@ -59,7 +59,9 @@ public class UserController {
                                                 @CurrentUserId UUID userId)
             throws IOException {
 
-        return ResponseEntity.ok(userService.uploadAvatar(userId, file));
+        return ResponseEntity
+                .status(201)
+                .body(userService.uploadAvatar(userId, file));
     }
 
     @DeleteMapping("/remove_avatar")

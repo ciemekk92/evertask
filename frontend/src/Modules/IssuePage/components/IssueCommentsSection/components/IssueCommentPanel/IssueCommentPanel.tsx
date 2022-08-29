@@ -67,7 +67,7 @@ export const IssueCommentPanel = ({
       result = await Api.put(`issues/${rest.issueId}/comments/${comment.id}`, { ...values });
     }
 
-    if ([200, 204].includes(result.status)) {
+    if ([201, 204].includes(result.status)) {
       await rest.handleRefreshingComments();
       setIsEditorOpen(false);
     }

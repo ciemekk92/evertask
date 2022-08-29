@@ -93,7 +93,9 @@ public class SprintController {
             throws URISyntaxException {
         Sprint created = sprintService.create(toCreate);
 
-        return ResponseEntity.created(new URI("http://localhost:8080/api/sprints/" + created.getId())).body(toCreate);
+        return ResponseEntity
+                .created(new URI("http://localhost:8080/api/sprints/" + created.getId()))
+                .body(toCreate);
     }
 
     /**
@@ -110,7 +112,8 @@ public class SprintController {
             return ResponseEntity.notFound().build();
         }
 
-        sprintService.findById(id).ifPresent(sprint -> sprintService.update(id, toUpdate));
+        sprintService.findById(id)
+                .ifPresent(sprint -> sprintService.update(id, toUpdate));
 
         return ResponseEntity.noContent().build();
     }

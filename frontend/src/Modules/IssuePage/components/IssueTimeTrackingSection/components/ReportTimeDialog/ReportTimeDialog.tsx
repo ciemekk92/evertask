@@ -87,7 +87,7 @@ export const ReportTimeDialog = ({
     const reportedHours = (values.weeks * 5 + values.days) * 8 + values.hours;
     const result = await Api.post(`issues/${issueId}/time_tracking`, { issueId, reportedHours });
 
-    if (result.status === 200) {
+    if (result.status === 201) {
       handleSubmitting();
     }
   };

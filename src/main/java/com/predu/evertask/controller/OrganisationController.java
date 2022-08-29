@@ -122,7 +122,8 @@ public class OrganisationController {
             return ResponseEntity.notFound().build();
         }
 
-        organisationService.findById(id).ifPresent(org -> organisationService.update(id, toUpdate));
+        organisationService.findById(id)
+                .ifPresent(org -> organisationService.update(id, toUpdate));
 
         return ResponseEntity.noContent().build();
     }

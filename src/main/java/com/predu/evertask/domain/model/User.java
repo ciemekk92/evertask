@@ -1,7 +1,9 @@
 package com.predu.evertask.domain.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
@@ -23,6 +25,8 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@SuperBuilder
 @Table(name = "users")
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @EntityListeners(AuditingEntityListener.class)

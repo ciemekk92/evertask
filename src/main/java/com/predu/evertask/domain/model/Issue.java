@@ -5,10 +5,15 @@ import com.predu.evertask.domain.enums.IssueStatus;
 import com.predu.evertask.domain.enums.IssueType;
 import com.predu.evertask.util.EnumTypePgSql;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
-import org.hibernate.envers.*;
+import org.hibernate.envers.AuditOverride;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -20,6 +25,8 @@ import java.util.List;
 
 @Getter
 @Setter
+@SuperBuilder
+@NoArgsConstructor
 @Table(name = "issues")
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @AuditOverride(forClass = BaseEntity.class)

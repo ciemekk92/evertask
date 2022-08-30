@@ -30,19 +30,6 @@ public class ImageService {
         return decompressedImage;
     }
 
-    public Image findByName(String name) {
-        Image compressedImage = imageRepository
-                .findByName(name)
-                .orElseThrow(() -> new NotFoundException(Image.class, name));
-
-        Image decompressedImage = new Image();
-        decompressedImage.setName(compressedImage.getName());
-        decompressedImage.setType(compressedImage.getType());
-        decompressedImage.setPicByte(ImageUtil.decompressBytes(compressedImage.getPicByte()));
-
-        return decompressedImage;
-    }
-
     public Image saveImage(MultipartFile file) throws IOException {
         Image image = new Image();
         image.setName(file.getOriginalFilename());

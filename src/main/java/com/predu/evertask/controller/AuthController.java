@@ -55,7 +55,7 @@ public class AuthController {
     }
 
     @PostMapping("/verify")
-    @PreAuthorize("hasRole('ROLE_PRE_VERIFICATION_USER')")
+    @PreAuthorize("hasAnyRole({'ROLE_PRE_VERIFICATION_USER', 'ROLE_ADMIN'})")
     public ResponseEntity<AuthResponseDto> verifyCode(@RequestBody @Valid VerifyCodeDto dto,
                                                       @CurrentUserId UUID userId,
                                                       HttpServletResponse response) throws InvalidMFACodeException {
@@ -96,10 +96,6 @@ public class AuthController {
     public ResponseEntity<UserDto> confirmSignup(@RequestParam("token") String token) throws InvalidTokenException {
         VerificationToken verificationToken = userService.getVerificationToken(token);
 
-        if (verificationToken == null) {
-            throw new InvalidTokenException("tokenInvalid");
-        }
-
         User user = verificationToken.getUser();
 
         if ((verificationToken.getExpiryDate().toEpochSecond() - OffsetDateTime.now().toEpochSecond()) <= 0) {
@@ -113,10 +109,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<UserAuthDto> refresh(@RequestParam("refreshToken") String refreshToken) throws InvalidTokenException {
-        if (refreshToken == null) {
-            throw new InvalidTokenException("tokenInvalid");
-        }
+    public ResponseEntity<UserAuthDto> refresh(@RequestParam(name = "refreshToken") String refreshToken) throws InvalidTokenException {
 
         User user = userService.findByRefreshToken(refreshToken);
 

@@ -33,6 +33,13 @@ import java.util.UUID;
 @Entity
 public class User implements UserDetails, Serializable {
 
+    public User(UUID id, String username, String firstName, Set<Role> authorities) {
+        this.id = id;
+        this.username = username;
+        this.firstName = firstName;
+        this.authorities = authorities;
+    }
+
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(

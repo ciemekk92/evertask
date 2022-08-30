@@ -66,7 +66,7 @@ class IssueControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    void when_findById_getIssue_returns_issue_dto() throws Exception {
+    void getIssue() throws Exception {
         //given
         //when
         when(issueRepository.findById(any(UUID.class)))
@@ -76,5 +76,20 @@ class IssueControllerTest {
         mockMvc.perform(get("/api/issues/72dbe1ce-3e8c-4a4a-aff4-6c0cbf002d6b"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().string(containsString("e7a6949f-15fc-4a75-9512-556cf383a0a6")));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void getFullIssueInfo() throws Exception {
+
+        //given
+        //when
+        when(issueRepository.findById(any(UUID.class)))
+                .thenReturn(Optional.of(mockIssue));
+
+        //then - Issue DTO must contain full project
+        mockMvc.perform(get("/api/issues/72dbe1ce-3e8c-4a4a-aff4-6c0cbf002d6b/full"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().string(containsString("Test project")));
     }
 }

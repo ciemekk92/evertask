@@ -71,8 +71,8 @@ class IssueRepositoryTest {
         //given
         //when
         List<Issue> issues = issueRepository.findAllBySprintIdAndIsNotSubtask(UUID.fromString(SPRINT_ID));
-        //then
 
+        //then
         assertThat(issues).hasSize(2);
     }
 
@@ -82,8 +82,8 @@ class IssueRepositoryTest {
         Pageable paging = PageRequest.of(0, 10);
         //when
         Page<Issue> issues = issueRepository.findAllByProjectIdAndSprintIsNullOrderByKeyDesc(UUID.fromString(PROJECT_ID), "", paging);
-        //then
 
+        //then
         assertEquals(2L, issues.getTotalElements());
     }
 }

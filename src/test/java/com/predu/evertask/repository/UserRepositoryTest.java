@@ -91,8 +91,8 @@ class UserRepositoryTest {
         //given
         //when
         List<User> users = userRepository.findActiveProjectMembers(UUID.fromString(PROJECT_ID));
-        //then
 
+        //then
         assertThat(users).hasSize(1);
     }
 
@@ -101,8 +101,8 @@ class UserRepositoryTest {
         //given
         //when
         List<User> users = userRepository.findActiveSprintMembers(UUID.fromString(SPRINT_ID));
-        //then
 
+        //then
         assertThat(users).hasSize(1);
     }
 }

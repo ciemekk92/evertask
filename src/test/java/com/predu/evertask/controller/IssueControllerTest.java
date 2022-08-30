@@ -67,6 +67,7 @@ class IssueControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void getIssue() throws Exception {
+
         //given
         //when
         when(issueRepository.findById(any(UUID.class)))

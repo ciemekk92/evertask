@@ -1,22 +1,21 @@
 package com.predu.evertask.controller;
 
-import com.predu.evertask.annotation.IsUserAllowedToLogWorkOnIssue;
 import com.predu.evertask.annotation.IsNotUnassignedUser;
 import com.predu.evertask.annotation.IsUserAllowedToIssue;
 import com.predu.evertask.annotation.IsUserAllowedToIssueComment;
+import com.predu.evertask.annotation.IsUserAllowedToLogWorkOnIssue;
 import com.predu.evertask.config.security.CurrentUserId;
 import com.predu.evertask.domain.dto.issue.*;
 import com.predu.evertask.domain.dto.issuecomment.IssueCommentSaveDto;
 import com.predu.evertask.domain.dto.issuecomment.IssueCommentUpdateDto;
 import com.predu.evertask.domain.dto.issuecomment.IssueCommentsPaginationDto;
-import com.predu.evertask.domain.model.User;
+import com.predu.evertask.domain.model.Issue;
 import com.predu.evertask.service.IssueCommentService;
 import com.predu.evertask.service.IssueService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -128,13 +127,12 @@ public class IssueController {
     @IsNotUnassignedUser
     @PostMapping
     public ResponseEntity<IssueSaveDto> createIssue(@RequestBody @Valid IssueSaveDto toCreate,
-                                                    Authentication authentication)
+                                                    @CurrentUserId UUID userId)
             throws URISyntaxException {
 
-        User reporter = (User) authentication.getPrincipal();
-        IssueSaveDto created = issueService.create(toCreate, reporter);
+        Issue created = issueService.create(toCreate, userId);
 
-        return ResponseEntity.created(new URI("http://localhost:8080/api/issues/" + created.getId())).body(created);
+        return ResponseEntity.created(new URI("http://localhost:8080/api/issues/" + created.getId())).body(toCreate);
     }
 
     @IsNotUnassignedUser

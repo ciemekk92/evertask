@@ -4,6 +4,7 @@ import com.predu.evertask.annotation.RequiredWhenStatus;
 import com.predu.evertask.annotation.UUID;
 import com.predu.evertask.domain.dto.BaseDto;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
@@ -12,6 +13,9 @@ import java.util.List;
 
 @Getter
 @Setter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @RequiredWhenStatus(selected = "status", values = {"CODE_REVIEW"}, required = "pullRequestUrl")
 public class IssueSaveDto extends BaseDto {
 

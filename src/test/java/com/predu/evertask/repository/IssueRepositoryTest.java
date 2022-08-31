@@ -1,18 +1,18 @@
 package com.predu.evertask.repository;
 
+import com.predu.evertask.config.FlywayMigrationConfig;
 import com.predu.evertask.domain.model.Issue;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.event.annotation.AfterTestClass;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
 import org.springframework.test.context.jdbc.Sql;
 
 import javax.persistence.EntityManager;
@@ -25,8 +25,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ActiveProfiles("test")
 @DataJpaTest
+@Import(FlywayMigrationConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Sql("populate.sql")
+@Sql("classpath:populate.sql")
 class IssueRepositoryTest {
 
     private static final String PROJECT_ID = "39718ff6-80cd-4163-bc5f-0fd7f0f502c3";
@@ -47,23 +48,13 @@ class IssueRepositoryTest {
     @Autowired
     private Flyway flyway;
 
-    @BeforeTestClass
-    public void init() {
-        flyway.clean();
-        flyway.migrate();
-    }
-
-    @AfterTestClass
-    public void cleanUp() {
-        flyway.clean();
-    }
-
     @Test
     void injectedComponentsAreNotNull() {
         assertThat(dataSource).isNotNull();
         assertThat(jdbcTemplate).isNotNull();
         assertThat(entityManager).isNotNull();
         assertThat(issueRepository).isNotNull();
+        assertThat(flyway).isNotNull();
     }
 
     @Test

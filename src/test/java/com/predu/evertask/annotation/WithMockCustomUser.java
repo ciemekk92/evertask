@@ -12,5 +12,5 @@ public @interface WithMockCustomUser {
 
     String username() default "testUser";
     String firstName() default "Test";
-    String authority() default "ROLE_USER";
+    String authority() default "ROLE_PROJECT_ADMIN";
 }

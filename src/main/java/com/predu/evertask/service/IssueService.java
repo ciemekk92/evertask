@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -66,7 +67,10 @@ public class IssueService {
                 .toList();
     }
 
-    public IssuesPaginationDto findAllUnassignedByProjectId(UUID projectId, String query, Pageable paging) {
+    @Transactional
+    public IssuesPaginationDto findAllUnassignedByProjectId(UUID projectId,
+                                                            String query,
+                                                            Pageable paging) {
         Page<Issue> pagedIssues = issueRepository.findAllByProjectIdAndSprintIsNullOrderByKeyDesc(projectId, query, paging);
         List<IssueDto> issues = pagedIssues
                 .stream()
@@ -100,13 +104,15 @@ public class IssueService {
                 .toList();
     }
 
-    public IssueSaveDto create(IssueSaveDto toSave, User reporter) {
+    public Issue create(IssueSaveDto toSave, UUID reporterId) {
+
+        User reporter = userRepository.findById(reporterId)
+                .orElseThrow(() -> new NotFoundException(User.class, reporterId));
+
         Issue issue = issueMapper.issueSaveDtoToIssue(toSave);
         issue.setReporter(reporter);
 
-        issueRepository.save(issue);
-
-        return toSave;
+        return issueRepository.save(issue);
     }
 
     public void assignUserToIssue(UUID issueId, AssignUserToIssueDto dto) {

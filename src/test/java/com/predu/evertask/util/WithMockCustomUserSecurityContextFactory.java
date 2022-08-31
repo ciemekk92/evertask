@@ -17,12 +17,14 @@ import java.util.UUID;
  */
 public class WithMockCustomUserSecurityContextFactory implements WithSecurityContextFactory<WithMockCustomUser> {
 
+    private static final UUID USER_ID = UUID.fromString("57191890-ff22-4386-a2ea-869c9f6a3ea8");
+
     @Override
     public SecurityContext createSecurityContext(WithMockCustomUser customUser) {
 
         SecurityContext context = SecurityContextHolder.createEmptyContext();
 
-        User principal = new User(UUID.randomUUID(), customUser.username(), customUser.firstName(), Set.of(new Role(customUser.authority())));
+        User principal = new User(USER_ID, customUser.username(), customUser.firstName(), Set.of(new Role(customUser.authority())));
 
         Authentication auth = new UsernamePasswordAuthenticationToken(principal, "password", principal.getAuthorities());
         context.setAuthentication(auth);

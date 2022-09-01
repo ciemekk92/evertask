@@ -12,7 +12,8 @@ import { TextInput } from 'Shared/Elements/TextInput';
 import { TextArea } from 'Shared/Elements/TextArea';
 import { FormikRadio } from 'Shared/Elements/RadioField/RadioField';
 import { Api } from 'Utils/Api';
-import { actionCreators } from 'Stores/User';
+import { actionCreators as userActionCreators } from 'Stores/User';
+import { actionCreators as projectActionCreators } from 'Stores/Project';
 import { StyledDialogContent } from './ProjectDialog.styled';
 
 interface Props {
@@ -57,12 +58,13 @@ export const ProjectDialog = ({ mode, handleClose }: Props): JSX.Element => {
     handleClose();
   };
 
-  const onSubmit = async (values: ProjectData) => {
+  const onSubmit = async (values: ProjectData): Promise<void> => {
     const result = await Api.post('projects', { ...values });
 
     if (result.status === 201) {
       handleClose();
-      dispatch(actionCreators.getOrganisation());
+      dispatch(userActionCreators.getOrganisation());
+      dispatch(projectActionCreators.getOrganisationsProjects());
     }
   };
 

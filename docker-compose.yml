@@ -53,6 +53,7 @@ services:
   test_db:
     image: postgres:14.2
     restart: always
+    command: [ "postgres", "-c", "log_statement=all" ]
     environment:
       - POSTGRES_USER=postgres_test
       - POSTGRES_PASSWORD=test

@@ -69,6 +69,7 @@ class IssueRepositoryTest {
 
     @Test
     void findAllByProjectIdAndSprintIsNullOrderByKeyDesc() {
+
         //given
         Pageable paging = PageRequest.of(0, 10);
         //when

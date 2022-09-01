@@ -1,7 +1,7 @@
-TRUNCATE TABLE issues CASCADE;
-TRUNCATE TABLE users CASCADE;
-TRUNCATE TABLE organisations CASCADE;
-TRUNCATE TABLE sprints CASCADE;
+TRUNCATE TABLE postgres_test_db.public.issues CASCADE;
+TRUNCATE TABLE postgres_test_db.public.users CASCADE;
+TRUNCATE TABLE postgres_test_db.public.organisations CASCADE;
+TRUNCATE TABLE postgres_test_db.public.sprints CASCADE;
 
 INSERT INTO organisations (id, created_at, updated_at, created_by, modified_by, name, description)
 VALUES ('b70946b7-4971-4a1c-bb89-2f811b759d27', '2022-08-23 09:26:16.580552 +00:00', null,

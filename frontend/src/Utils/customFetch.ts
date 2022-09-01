@@ -33,7 +33,9 @@ export const customFetch = async (url: string, init: RequestInit): Promise<Unres
 
     switch (result.status) {
       case 401:
-        history.push('/unauthorized');
+        if (!url.includes('auth/refresh')) {
+          history.push('/unauthorized');
+        }
         return;
       case 403:
         history.push('/forbidden');

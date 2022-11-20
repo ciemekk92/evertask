@@ -85,14 +85,18 @@ public class IssueHistoryService implements AbstractHistoryService<IssueHistory>
     }
 
     public List<IssueHistory> filterIssuesRevisions(Collection<IssueHistory> revisions,
-                                                     LocalDate borderDate,
-                                                     boolean shouldFilterOnlyAccepted) throws NoChartsDataException {
+                                                    LocalDate borderDate,
+                                                    boolean shouldFilterOnlyAccepted) throws NoChartsDataException {
 
         try {
             return revisions
                     .stream()
-                    .filter(rev -> !rev.getIssue().getType().equals(IssueType.SUBTASK))
-                    .filter(rev -> borderDate.isAfter(rev.getRevisionDate().toLocalDate())
+                    .filter(rev -> !rev.getIssue()
+                            .getType()
+                            .equals(IssueType.SUBTASK))
+                    .filter(rev -> (shouldFilterOnlyAccepted ?
+                            borderDate.isAfter(rev.getRevisionDate().toLocalDate()) :
+                            borderDate.isBefore(rev.getRevisionDate().toLocalDate()))
                             && (shouldFilterOnlyAccepted == rev.getIssue().getStatus().equals(IssueStatus.ACCEPTED)))
                     .collect(Collectors.groupingBy(rev -> rev.getIssue().getId()))
                     .values().stream()

@@ -5,6 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface UserSettingsRepository extends BaseRepository<UserSettings, UUID>,
-        JpaRepository<UserSettings, UUID> {
+public interface UserSettingsRepository extends JpaRepository<UserSettings, UUID> {
 }

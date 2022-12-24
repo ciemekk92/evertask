@@ -11,8 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface IssueRepository extends BaseRepository<Issue, UUID>,
-        JpaRepository<Issue, UUID> {
+public interface IssueRepository extends JpaRepository<Issue, UUID> {
 
     List<Issue> findAllByAssigneeId(UUID assigneeId);
 

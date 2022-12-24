@@ -7,9 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ProjectRepository extends BaseRepository<Project, UUID>, JpaRepository<Project, UUID> {
-
-    Project getById(UUID id);
+public interface ProjectRepository extends  JpaRepository<Project, UUID> {
 
     List<Project> findAllByOrganisationId(UUID id);
 

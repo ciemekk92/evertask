@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface OrganisationInvitationRepository extends BaseRepository<OrganisationInvitation, UUID>,
-        JpaRepository<OrganisationInvitation, UUID> {
+public interface OrganisationInvitationRepository extends JpaRepository<OrganisationInvitation, UUID> {
 
     Optional<OrganisationInvitation> findByUserIdAndOrganisationId(UUID userId, UUID organisationId);
 

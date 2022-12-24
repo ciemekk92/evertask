@@ -7,8 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface IssueCommentRepository extends BaseRepository<IssueComment, UUID>,
-        JpaRepository<IssueComment, UUID> {
+public interface IssueCommentRepository extends JpaRepository<IssueComment, UUID> {
 
     Page<IssueComment> findAllByIssueIdAndParentIsNullOrderByCreatedAtAsc(UUID id, Pageable pageable);
 

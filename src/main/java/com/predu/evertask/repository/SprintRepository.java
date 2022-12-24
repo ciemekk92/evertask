@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface SprintRepository extends JpaRepository<Sprint, UUID>, BaseRepository<Sprint, UUID> {
+public interface SprintRepository extends JpaRepository<Sprint, UUID> {
 
     List<Sprint> findAllByProjectIdOrderByOrdinalDesc(UUID projectId);
 

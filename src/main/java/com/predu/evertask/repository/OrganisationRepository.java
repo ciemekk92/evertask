@@ -5,8 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface OrganisationRepository extends BaseRepository<Organisation, UUID>,
-        JpaRepository<Organisation, UUID> {
+public interface OrganisationRepository extends JpaRepository<Organisation, UUID> {
 
     Organisation getById(UUID id);
 }

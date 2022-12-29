@@ -4,7 +4,7 @@ import com.predu.evertask.annotation.IsNotUnassignedUser;
 import com.predu.evertask.annotation.IsUserAllowedToIssue;
 import com.predu.evertask.annotation.IsUserAllowedToIssueComment;
 import com.predu.evertask.annotation.IsUserAllowedToLogWorkOnIssue;
-import com.predu.evertask.config.security.CurrentUserId;
+import com.predu.evertask.annotation.CurrentUserId;
 import com.predu.evertask.domain.dto.issue.*;
 import com.predu.evertask.domain.dto.issuecomment.IssueCommentSaveDto;
 import com.predu.evertask.domain.dto.issuecomment.IssueCommentUpdateDto;

@@ -1,7 +1,7 @@
 package com.predu.evertask.controller;
 
 import com.predu.evertask.annotation.*;
-import com.predu.evertask.config.security.CurrentUserId;
+import com.predu.evertask.annotation.CurrentUserId;
 import com.predu.evertask.domain.dto.organisation.*;
 import com.predu.evertask.domain.dto.user.UserDto;
 import com.predu.evertask.domain.mapper.OrganisationMapper;

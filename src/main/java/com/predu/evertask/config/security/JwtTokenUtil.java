@@ -1,6 +1,5 @@
 package com.predu.evertask.config.security;
 
-import com.predu.evertask.JwtConfigurationProperties;
 import com.predu.evertask.domain.model.User;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;

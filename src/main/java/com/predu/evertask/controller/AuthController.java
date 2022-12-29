@@ -1,6 +1,6 @@
 package com.predu.evertask.controller;
 
-import com.predu.evertask.config.security.CurrentUserId;
+import com.predu.evertask.annotation.CurrentUserId;
 import com.predu.evertask.config.security.JwtTokenUtil;
 import com.predu.evertask.domain.dto.auth.*;
 import com.predu.evertask.domain.dto.user.UserAuthDto;

@@ -1,4 +1,4 @@
-package com.predu.evertask.config.security;
+package com.predu.evertask.annotation;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 

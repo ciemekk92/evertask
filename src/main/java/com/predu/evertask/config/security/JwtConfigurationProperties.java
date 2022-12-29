@@ -1,4 +1,4 @@
-package com.predu.evertask;
+package com.predu.evertask.config.security;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

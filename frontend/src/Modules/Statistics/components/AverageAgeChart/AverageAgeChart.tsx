@@ -52,6 +52,12 @@ export const AverageAgeChart = ({ projectId }: Props): JSX.Element => {
     }
   }, [projectId, handleDateChange]);
 
+  const tooltipFormatter = React.useCallback(
+    (value: string | number, name: string) => formatTooltipText(value, name, t),
+    [t]
+  );
+  const legendFormatter = React.useCallback((value: string) => formatLegendText(value, t), [t]);
+
   const renderChart = (): JSX.Element => (
     <ResponsiveContainer width="90%" height={600}>
       <BarChart
@@ -71,10 +77,8 @@ export const AverageAgeChart = ({ projectId }: Props): JSX.Element => {
           label={{ value: t('general.days'), angle: -90, position: 'insideLeft' }}
           allowDecimals={false}
         />
-        <Tooltip
-          formatter={(value: string | number, name: string) => formatTooltipText(value, name, t)}
-        />
-        <Legend formatter={(value: string) => formatLegendText(value, t)} />
+        <Tooltip formatter={tooltipFormatter} />
+        <Legend formatter={legendFormatter} />
         <Bar dataKey="averageAge" fill={theme.chartPrimary} />
       </BarChart>
     </ResponsiveContainer>

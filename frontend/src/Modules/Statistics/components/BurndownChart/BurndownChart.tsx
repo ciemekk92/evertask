@@ -13,6 +13,7 @@ import {
   YAxis
 } from 'recharts';
 import { SingleSelectDropdown } from 'Shared/Elements/SingleSelectDropdown';
+import { Heading6 } from 'Shared/Typography';
 import { ApplicationState } from 'Stores/store';
 import { getDarkTheme } from 'Themes';
 import { Sprint } from 'Types/Sprint';
@@ -20,7 +21,6 @@ import { Api } from 'Utils/Api';
 import { BurndownChartData } from '../../fixtures';
 import { formatLegendText, formatTooltipText } from '../../helpers';
 import { StyledChartContainer } from '../Shared.styled';
-import { Heading6 } from 'Shared/Typography';
 
 export const BurndownChart = (): JSX.Element => {
   const { t } = useTranslation();
@@ -68,9 +68,15 @@ export const BurndownChart = (): JSX.Element => {
     [emptyDropdownOption, sprints]
   );
 
-  const handleSprintChange = (value: Id): void => {
+  const handleSprintChange = React.useCallback((value: Id): void => {
     setSelectedSprint(value);
-  };
+  }, []);
+
+  const tooltipFormatter = React.useCallback(
+    (value: string | number, name: string) => formatTooltipText(value, name, t),
+    [t]
+  );
+  const legendFormatter = React.useCallback((value: string) => formatLegendText(value, t), [t]);
 
   const renderChart = (): JSX.Element => (
     <ResponsiveContainer width="90%" height={600}>
@@ -88,10 +94,8 @@ export const BurndownChart = (): JSX.Element => {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" interval={chartData.length > 8 ? 2 : 1} />
         <YAxis />
-        <Tooltip
-          formatter={(value: string | number, name: string) => formatTooltipText(value, name, t)}
-        />
-        <Legend formatter={(value) => formatLegendText(value, t)} />
+        <Tooltip formatter={tooltipFormatter} />
+        <Legend formatter={legendFormatter} />
         <Line dataKey="remaining" activeDot={{ r: 6 }} stroke={theme.chartSecondary} />
         <Line dataKey="trend" stroke={theme.chartPrimary} />
       </LineChart>

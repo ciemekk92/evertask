@@ -12,14 +12,13 @@ import {
   XAxis,
   YAxis
 } from 'recharts';
-import { HTMLDateInput } from 'Shared/Elements/DateInput';
 import { getDarkTheme } from 'Themes';
 import { Api } from 'Utils/Api';
 import { getISODateStringFromDate } from 'Utils/getISODateStringFromDate';
 import { CreatedVsResolvedChartData, DateRangeData } from '../../fixtures';
 import { formatLegendText, formatTooltipText } from '../../helpers';
+import { DateRangeSelect } from '..';
 import { StyledChartContainer } from '../Shared.styled';
-import { DateRangeSelect } from '../DateRangeSelect/DateRangeSelect';
 
 interface Props {
   projectId: Id;
@@ -50,6 +49,12 @@ export const CreatedVsResolvedChart = ({ projectId }: Props): JSX.Element => {
     });
   }, [handleDateChange]);
 
+  const tooltipFormatter = React.useCallback(
+    (value: string | number, name: string) => formatTooltipText(value, name, t),
+    [t]
+  );
+  const legendFormatter = React.useCallback((value: string) => formatLegendText(value, t), [t]);
+
   return (
     <StyledChartContainer>
       <DateRangeSelect handleDateChange={handleDateChange} />
@@ -71,10 +76,8 @@ export const CreatedVsResolvedChart = ({ projectId }: Props): JSX.Element => {
             label={{ value: t('general.issueCount'), angle: -90, position: 'insideLeft' }}
             allowDecimals={false}
           />
-          <Tooltip
-            formatter={(value: string | number, name: string) => formatTooltipText(value, name, t)}
-          />
-          <Legend formatter={(value) => formatLegendText(value, t)} />
+          <Tooltip formatter={tooltipFormatter} />
+          <Legend formatter={legendFormatter} />
           <Bar dataKey="created" fill={theme.chartPrimary} />
           <Bar dataKey="resolved" fill={theme.chartSecondary} />
         </BarChart>

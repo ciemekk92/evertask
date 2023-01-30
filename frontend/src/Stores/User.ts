@@ -102,6 +102,19 @@ export const actionCreators = {
         return message;
       }
     },
+  resetPassword:
+    (email: string): AppThunkAction<UserActionTypes> =>
+    async (dispatch, getState) => {
+      const appState = getState();
+
+      if (appState && appState.user) {
+        const result = await Api.put('auth/reset_password', { email });
+
+        if (result.status === 204) {
+          history.push('/reset_success');
+        }
+      }
+    },
   verifyMfa:
     (code: string): AppThunkAction<UserActionTypes | ProjectActionTypes> | string =>
     async (dispatch, getState) => {

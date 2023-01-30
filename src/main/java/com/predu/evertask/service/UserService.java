@@ -142,7 +142,7 @@ public class UserService implements UserDetailsService {
     }
 
     /**
-     * Method allowing to change the status of MFA an current user's account
+     * Method allowing to change the status of MFA on current user's account
      *
      * @param userId  current user ID
      * @param request request DTO containing whether MFA should be enabled or not
@@ -222,6 +222,25 @@ public class UserService implements UserDetailsService {
         return userList.stream()
                 .map(userViewMapper::toUserForInvitationDto)
                 .toList();
+    }
+
+    public Optional<String> resetPassword(ResetPasswordRequest request) {
+
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElse(null);
+
+        Optional<String> tempPassword;
+
+        if (user != null) {
+            tempPassword = Optional.of(RandomToken.generateRandomToken(12));
+
+            user.setPassword(passwordEncoder.encode(tempPassword.get()));
+            userRepository.save(user);
+        } else {
+            tempPassword = Optional.empty();
+        }
+
+        return tempPassword;
     }
 
     /**

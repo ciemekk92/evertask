@@ -8,6 +8,7 @@ import com.predu.evertask.domain.dto.user.UserDto;
 import com.predu.evertask.domain.mapper.UserViewMapper;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.domain.model.VerificationToken;
+import com.predu.evertask.event.OnResetPasswordCompleteEvent;
 import com.predu.evertask.event.OnSignupCompleteEvent;
 import com.predu.evertask.exception.InvalidMFACodeException;
 import com.predu.evertask.exception.InvalidTokenException;
@@ -28,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.ValidationException;
 import java.time.OffsetDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -75,6 +77,16 @@ public class AuthController {
                                                @CurrentUserId UUID userId) {
 
         userService.changePassword(userId, request);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/reset_password")
+    public ResponseEntity<Void> resetPassword(@RequestBody @Valid ResetPasswordRequest request, HttpServletRequest servletRequest) {
+
+        Optional<String> tempPassword = userService.resetPassword(request);
+
+        tempPassword.ifPresent(s -> eventPublisher.publishEvent(new OnResetPasswordCompleteEvent(request.getEmail(), servletRequest.getLocale(), s)));
 
         return ResponseEntity.noContent().build();
     }

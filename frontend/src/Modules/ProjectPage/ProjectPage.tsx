@@ -12,13 +12,15 @@ import { StyledFlexContainer } from 'Shared/SharedStyles.styled';
 import { ApplicationState } from 'Stores/store';
 import { actionCreators, ProjectState } from 'Stores/Project';
 import { isDefined } from 'Utils/isDefined';
-import { SprintDialog, SPRINT_DIALOG_MODES } from '../SprintDialog';
+import { SPRINT_DIALOG_MODES, SprintDialog } from '../SprintDialog';
 import {
   ProjectActiveMembersSection,
   ProjectInfoSection,
   ProjectLastIssuesSection,
   ProjectSprintsSection
 } from './components';
+import { ProjectDialog } from '../ProjectDialog';
+import { PROJECT_DIALOG_MODES } from '../ProjectDialog/fixtures';
 
 export const ProjectPage = (): Nullable<JSX.Element> => {
   const params = useParams<RouterParams>();
@@ -29,6 +31,7 @@ export const ProjectPage = (): Nullable<JSX.Element> => {
   );
 
   const sprintDialogConfig = useDialog<SPRINT_DIALOG_MODES>(SPRINT_DIALOG_MODES.ADD);
+  const projectDialogConfig = useDialog<PROJECT_DIALOG_MODES>(PROJECT_DIALOG_MODES.EDIT);
 
   const handleRefreshingProjectState = React.useCallback(
     (id: Id) => {
@@ -66,8 +69,21 @@ export const ProjectPage = (): Nullable<JSX.Element> => {
     }
   };
 
+  const handleOpeningEditProject = async (): Promise<void> => {
+    const result = await projectDialogConfig.handleOpen(PROJECT_DIALOG_MODES.EDIT, {
+      projectId: params.id
+    });
+
+    if (params.id && result) {
+      handleRefreshingProjectState(params.id);
+    }
+  };
+
   const renderProjectInfo = (): JSX.Element => (
-    <ProjectInfoSection project={projectState.selectedProject} />
+    <ProjectInfoSection
+      project={projectState.selectedProject}
+      handleOpeningEditProject={handleOpeningEditProject}
+    />
   );
 
   const renderMembersSection = (): JSX.Element => (
@@ -114,6 +130,16 @@ export const ProjectPage = (): Nullable<JSX.Element> => {
           handleSubmitting={sprintDialogConfig.handleSubmit}
           projectId={params.id}
           sprintId={sprintDialogConfig.params.sprintId}
+        />
+      </DialogComponent>
+      <DialogComponent
+        isOpen={projectDialogConfig.isOpen}
+        handleClose={projectDialogConfig.handleClose}
+      >
+        <ProjectDialog
+          mode={projectDialogConfig.dialogMode}
+          handleClose={projectDialogConfig.handleClose}
+          projectId={projectDialogConfig.params.projectId}
         />
       </DialogComponent>
     </VerticalPageWrapper>

@@ -29,6 +29,7 @@ import { NOTIFICATION_TYPES } from 'Shared/constants';
 import { actionCreators } from 'Stores/User';
 import { PermissionCheck } from 'Utils/PermissionCheck';
 import { AppHeader, AppMainWindow, AppSidebar } from './components';
+import { ResetPassword } from '../Auth/ResetPassword/ResetPassword';
 
 export const MainLayout = (): JSX.Element => {
   const currentUser = UserModel.currentUserValue;
@@ -97,6 +98,11 @@ export const MainLayout = (): JSX.Element => {
         <Route path={'/'} element={<LandingPage />} />
         <Route path={'/login'} element={<Login />} />
         <Route path={'/signup'} element={<Signup />} />
+        <Route path={'/reset_password'} element={<ResetPassword />} />
+        <Route
+          path={'/reset_success'}
+          element={<SuccessNotification type={NOTIFICATION_TYPES.RESET_PASSWORD} />}
+        />
         <Route path={'/signup_confirmation'} element={<SignupConfirmation />} />
         <Route
           path={'/signup_success'}

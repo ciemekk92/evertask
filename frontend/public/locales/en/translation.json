@@ -243,6 +243,15 @@
       }
     }
   },
+  "resetPassword": {
+    "title": "Reset password",
+    "validation": {
+      "email": {
+        "isValidEmail": "Value must be a valid e-mail address.",
+        "required": "E-mail is required"
+      }
+    }
+  },
   "mfa": {
     "title": "Two factor authentication",
     "validation": {
@@ -397,7 +406,8 @@
     "submit": "Sign up",
     "successNotification": {
       "password": "If provided e-mail was correct, your password should have been reset. Please check your inbox for a link allowing you to set a new password.",
-      "signup": "Your signup has completed successfully. Please check your e-mail inbox, and use the activation link sent to you, to finish the registration process."
+      "signup": "Your signup has completed successfully. Please check your e-mail inbox, and use the activation link sent to you, to finish the registration process.",
+      "resetPassword": "Your password was reset successfully! Please check your e-mail inbox for a new, temporary password. Please change it as soon as possible."
     },
     "title": "Sign up",
     "validation": {

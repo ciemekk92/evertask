@@ -18,7 +18,8 @@ export enum PROJECT_METHODOLOGIES {
 
 export enum NOTIFICATION_TYPES {
   SIGNUP = 'signup',
-  PASSWORD = 'password'
+  PASSWORD = 'password',
+  RESET_PASSWORD = 'resetPassword'
 }
 
 export enum ISSUE_STATUS {

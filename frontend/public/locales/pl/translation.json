@@ -243,6 +243,15 @@
       }
     }
   },
+  "resetPassword": {
+    "title": "Resetuj hasło",
+    "validation": {
+      "email": {
+        "isValidEmail": "Wartość musi być poprawnym adresem e-mail.",
+        "required": "E-mail jest wymagany"
+      }
+    }
+  },
   "mfa": {
     "title": "Weryfikacja dwuetapowa",
     "validation": {
@@ -397,7 +406,8 @@
     "submit": "Zarejestruj się",
     "successNotification": {
       "password": "Jeżeli podany adres e-mail był prawidłowy, to Twoje hasło zostało zresetowane. Sprawdź skrzynkę odbiorczą, znajdziesz tam link pozwalający ustawić nowe hasło.",
-      "signup": "Rejestracja zakończona powodzeniem! Pod podany adres e-mail został wysłany link aktywacyjny, użyj go, aby aktywować swoje konto."
+      "signup": "Rejestracja zakończona powodzeniem! Pod podany adres e-mail został wysłany link aktywacyjny, użyj go, aby aktywować swoje konto.",
+      "resetPassword": "Resetowanie hasła zakończone powodzeniem! Pod podany adres e-mail zostało wysłane nowe, tymczasowe hasło. Prosimy o jego zmianę najszybciej, jak to będzie możliwe."
     },
     "title": "Rejestracja",
     "validation": {

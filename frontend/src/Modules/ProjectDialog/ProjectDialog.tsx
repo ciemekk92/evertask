@@ -14,11 +14,13 @@ import { FormikRadio } from 'Shared/Elements/RadioField/RadioField';
 import { Api } from 'Utils/Api';
 import { actionCreators as userActionCreators } from 'Stores/User';
 import { actionCreators as projectActionCreators } from 'Stores/Project';
+import { PROJECT_DIALOG_MODES } from './fixtures';
 import { StyledDialogContent } from './ProjectDialog.styled';
 
 interface Props {
-  mode: 'ADD' | 'EDIT';
+  mode: PROJECT_DIALOG_MODES;
   handleClose: VoidFunctionNoArgs;
+  projectId?: Id;
 }
 
 interface ProjectData {
@@ -28,16 +30,24 @@ interface ProjectData {
   methodology: PROJECT_METHODOLOGIES;
 }
 
-export const ProjectDialog = ({ mode, handleClose }: Props): JSX.Element => {
-  const initialData: ProjectData = {
+export const ProjectDialog = ({ mode, handleClose, projectId }: Props): JSX.Element => {
+  const [initialData, setInitialData] = React.useState<ProjectData>({
     name: '',
     description: '',
     code: '',
     methodology: PROJECT_METHODOLOGIES.KANBAN
-  };
+  });
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    if (projectId && mode === PROJECT_DIALOG_MODES.EDIT) {
+      Api.get(`projects/${projectId}`)
+        .then((response) => response.json())
+        .then((data: ProjectData) => setInitialData(data));
+    }
+  }, [projectId, mode]);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -59,9 +69,15 @@ export const ProjectDialog = ({ mode, handleClose }: Props): JSX.Element => {
   };
 
   const onSubmit = async (values: ProjectData): Promise<void> => {
-    const result = await Api.post('projects', { ...values });
+    let result: Response;
 
-    if (result.status === 201) {
+    if (!projectId && mode === PROJECT_DIALOG_MODES.ADD) {
+      result = await Api.post('projects', { ...values });
+    } else {
+      result = await Api.put(`projects/${projectId}`, { ...values });
+    }
+
+    if ([201, 204].includes(result.status)) {
       handleClose();
       dispatch(userActionCreators.getOrganisation());
       dispatch(projectActionCreators.getOrganisationsProjects());
@@ -83,6 +99,7 @@ export const ProjectDialog = ({ mode, handleClose }: Props): JSX.Element => {
       validationSchema={validationSchema}
       initialValues={initialData}
       onSubmit={onSubmit}
+      enableReinitialize
     >
       {({ errors, touched, handleSubmit, isValid, setFieldValue }: FormikProps<ProjectData>) => (
         <Form name="project" method="POST" onSubmit={handleSubmit}>
@@ -113,12 +130,14 @@ export const ProjectDialog = ({ mode, handleClose }: Props): JSX.Element => {
                   value={PROJECT_METHODOLOGIES.KANBAN}
                   label={t('projectDialog.kanban')}
                   handleClick={setFieldValue}
+                  disabled={mode === PROJECT_DIALOG_MODES.EDIT}
                 />
                 <FormikRadio
                   name="methodology"
                   value={PROJECT_METHODOLOGIES.AGILE}
                   label={t('projectDialog.agile')}
                   handleClick={setFieldValue}
+                  disabled={mode === PROJECT_DIALOG_MODES.EDIT}
                 />
               </FormField>
               <FormField name="description" label={t('projectDialog.description')}>

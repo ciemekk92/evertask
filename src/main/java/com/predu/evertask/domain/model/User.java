@@ -103,7 +103,7 @@ public class User implements UserDetails, Serializable {
     private UserSettings userSettings;
 
     @NotAudited
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "avatar_id")
     private Image avatar;
 

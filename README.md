@@ -14,7 +14,7 @@ zarządzanie projektami w metodologiach Agile i Kanban.
 - Redux
 - PostgreSQL 14
 
-## Wymagane do uruchomienia (w przypadku nie używania Dockera)
+## Wymagane do uruchomienia (w przypadku nieużywania Dockera)
 
 - JDK v >= 17 (polecane: Amazon Corretto)
 - Node.js v >= 16.13

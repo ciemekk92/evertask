@@ -82,7 +82,7 @@ export const Login = (): JSX.Element => {
               {renderInput(errors, touched, 'username')}
               {renderInput(errors, touched, 'password')}
               <ButtonLikeLink>
-                <StyledLink to="/reset-password">{t('general.resetPassword')}</StyledLink>
+                <StyledLink to="/reset_password">{t('general.resetPassword')}</StyledLink>
               </ButtonLikeLink>
               <StyledValidationMessage>{validationErrors.get('message')}</StyledValidationMessage>
               <ButtonsContainer>

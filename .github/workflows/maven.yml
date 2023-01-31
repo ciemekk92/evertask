@@ -27,9 +27,9 @@ jobs:
         working-directory: ${{env.working-directory}}
     services:
       postgres:
-        image: postgres
+        image: postgres:14.2
         ports:
-          - 5434:5432
+          - 5432:5432
         env:
           POSTGRES_PASSWORD: test
           POSTGRES_USER: postgres_test

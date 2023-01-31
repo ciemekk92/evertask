@@ -29,7 +29,7 @@ public class MfaTokenManager {
         QrData data = new QrData.Builder().label("MFA")
                 .secret(secret)
                 .issuer("Evertask")
-                .algorithm(HashingAlgorithm.SHA256)
+                .algorithm(HashingAlgorithm.SHA1)
                 .digits(6)
                 .period(30)
                 .build();

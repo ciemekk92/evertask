@@ -49,7 +49,7 @@ export const OrganisationPage = (): JSX.Element => {
     if (organisationData && organisationData.id && PermissionCheck.isOrganisationAdmin) {
       dispatch(invitationActionCreators.getAllInvitationsForOrganisation(organisationData.id));
     }
-  }, [dispatch, organisationData?.id]);
+  }, [dispatch, organisationData, organisationData?.id]);
 
   const handleOpeningInviteDialog = (): void => {
     inviteDialogConfig.handleOpen(INVITE_MEMBER_DIALOG_MODES.ADD);

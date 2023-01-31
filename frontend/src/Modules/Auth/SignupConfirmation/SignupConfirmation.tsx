@@ -30,7 +30,7 @@ export const SignupConfirmation = (): Nullable<JSX.Element> => {
         }
       });
     }
-  }, []);
+  }, [searchParams]);
 
   if (error.length) {
     return (

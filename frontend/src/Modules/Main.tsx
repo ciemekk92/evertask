@@ -35,7 +35,7 @@ export const Main = (): JSX.Element => {
       userSubscription.unsubscribe();
       loadingSubscription.unsubscribe();
     };
-  }, []);
+  }, [i18n]);
 
   const muiTheme = createTheme({
     palette: {

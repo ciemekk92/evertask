@@ -18,12 +18,27 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    
+    container: node:16-bullseye
+
     env:
       working-directory: './'
     defaults:
       run:
         working-directory: ${{env.working-directory}}
+    services:
+      postgres:
+        image: postgres
+        ports:
+          - 5434:5432
+        env:
+          POSTGRES_PASSWORD: test
+          POSTGRES_USER: postgres_test
+          POSTGRES_DB: postgres_test_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
     - uses: actions/checkout@v3
@@ -33,6 +48,7 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+
     - name: Test
       run: mvn clean test
     - name: Build with Maven

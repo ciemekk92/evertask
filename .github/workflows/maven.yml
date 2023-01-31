@@ -34,6 +34,7 @@ jobs:
           POSTGRES_PASSWORD: test
           POSTGRES_USER: postgres_test
           POSTGRES_DB: postgres_test_db
+        command: [ "postgres", "-c", "log_statement=all" ]
         options: >-
           --health-cmd pg_isready
           --health-interval 10s

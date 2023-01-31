@@ -26,8 +26,8 @@ jobs:
     steps:
     - uses: szenius/set-timezone@v1.0
       with:
-        timezoneLinux: "Central European Standard Time"
-        timezoneMacos: "Central European Standard Time"
+        timezoneLinux: "Europe/Warsaw"
+        timezoneMacos: "Europe/Warsaw"
         timezoneWindows: "Central European Standard Time"
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}

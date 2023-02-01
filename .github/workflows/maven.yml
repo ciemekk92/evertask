@@ -48,6 +48,8 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
+    - name: Create config.properties
+      run: cd src/main/resources && cp example_config.properties config.properties
     - name: Test
       run: ./mvnw clean test
     - name: Build with Maven

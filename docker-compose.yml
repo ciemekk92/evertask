@@ -61,7 +61,7 @@ services:
     volumes:
       - postgres_test_database:/var/lib/postgresql/data:Z
     ports:
-      - "5432:5432"
+      - "5434:5432"
     networks:
       - dev
 

@@ -7,10 +7,11 @@ import {
 describe('formatDateForInput', () => {
   test('should format date from timestamp', () => {
     expect(formatDateForInput(1652988491836)).toEqual('2022-05-19');
+    console.log('test');
   });
 
   test('should format date from string', () => {
-    expect(formatDateForInput('Thu May 19 2022')).toEqual('20522-05-19');
+    expect(formatDateForInput('Thu May 19 2022')).toEqual('2022-05-19');
   });
 });
 

@@ -37,7 +37,7 @@ export const OrganisationForm = ({ handleSubmit, editModeConfig }: Props): JSX.E
           setInitialData({ name: data.name, description: data.description })
         );
     }
-  }, [editModeConfig?.organisationId]);
+  }, [editModeConfig, editModeConfig?.organisationId]);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()

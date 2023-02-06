@@ -30,14 +30,14 @@ export const OrganisationForm = ({ handleSubmit, editModeConfig }: Props): JSX.E
   });
 
   React.useEffect(() => {
-    if (editModeConfig) {
+    if (editModeConfig?.organisationId) {
       Api.get(`organisations/${editModeConfig.organisationId}`)
         .then((response) => response.json())
         .then((data: Organisation.OrganisationPayload) =>
           setInitialData({ name: data.name, description: data.description })
         );
     }
-  }, [editModeConfig, editModeConfig?.organisationId]);
+  }, [editModeConfig?.organisationId]);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()

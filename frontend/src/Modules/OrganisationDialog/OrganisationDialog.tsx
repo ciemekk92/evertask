@@ -30,12 +30,16 @@ export const OrganisationDialog = ({ organisationId, handleClose }: Props): JSX.
     }
   };
 
+  const onClose = React.useCallback(() => {
+    handleClose();
+  }, [handleClose]);
+
   return (
     <ModalDialog header={t('organisationDialog.title')}>
       <StyledDialogContent>
         <OrganisationForm
           handleSubmit={onSubmit}
-          editModeConfig={{ organisationId, handleClose }}
+          editModeConfig={{ organisationId, handleClose: onClose }}
         />
       </StyledDialogContent>
     </ModalDialog>

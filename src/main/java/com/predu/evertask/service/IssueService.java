@@ -53,10 +53,10 @@ public class IssueService {
                 .toList();
     }
 
-    public List<IssueFullDto> findProjectLastIssues(UUID projectId) {
+    public List<IssueLastDto> findProjectLastIssues(UUID projectId) {
         return issueRepository.findTop10ByProjectIdOrderByCreatedAtDesc(projectId)
                 .stream()
-                .map(issueMapper::issueToIssueFullDto)
+                .map(issueMapper::issueToIssueLastDto)
                 .toList();
     }
 

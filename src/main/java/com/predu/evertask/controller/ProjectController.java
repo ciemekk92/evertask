@@ -1,13 +1,9 @@
 package com.predu.evertask.controller;
 
-import com.predu.evertask.annotation.IsNotUnassignedUser;
-import com.predu.evertask.annotation.IsOrganisationAdminOrAdmin;
-import com.predu.evertask.annotation.IsCurrentProjectAdminOrAdmin;
-import com.predu.evertask.annotation.IsProjectMember;
+import com.predu.evertask.annotation.*;
 import com.predu.evertask.domain.dto.issue.IssueDto;
-import com.predu.evertask.domain.dto.issue.IssueFullDto;
+import com.predu.evertask.domain.dto.issue.IssueLastDto;
 import com.predu.evertask.domain.dto.issue.IssuesPaginationDto;
-import com.predu.evertask.domain.dto.user.UserDto;
 import com.predu.evertask.domain.dto.project.ProjectCreateDto;
 import com.predu.evertask.domain.dto.project.ProjectDto;
 import com.predu.evertask.domain.dto.project.ProjectUpdateDto;
@@ -15,6 +11,7 @@ import com.predu.evertask.domain.dto.sprint.EndSprintDto;
 import com.predu.evertask.domain.dto.sprint.SprintDto;
 import com.predu.evertask.domain.dto.sprint.SprintIssuesDto;
 import com.predu.evertask.domain.dto.sprint.StartSprintDto;
+import com.predu.evertask.domain.dto.user.UserDto;
 import com.predu.evertask.domain.model.Project;
 import com.predu.evertask.domain.model.User;
 import com.predu.evertask.exception.InvalidOperationException;
@@ -103,7 +100,7 @@ public class ProjectController {
 
     @IsProjectMember
     @GetMapping("/{id}/last_issues")
-    public ResponseEntity<List<IssueFullDto>> getProjectLastIssues(@PathVariable UUID id) {
+    public ResponseEntity<List<IssueLastDto>> getProjectLastIssues(@PathVariable UUID id) {
 
         return ResponseEntity.ok(issueService.findProjectLastIssues(id));
     }
@@ -146,7 +143,7 @@ public class ProjectController {
         return ResponseEntity.noContent().build();
     }
 
-    @IsOrganisationAdminOrAdmin
+    @IsNotUnassignedUser
     @PostMapping
     public ResponseEntity<ProjectCreateDto> createProject(@RequestBody @Valid ProjectCreateDto toCreate,
                                                           Authentication authentication) throws URISyntaxException {

@@ -269,6 +269,9 @@
     "qrCode": "Zeskanuj poniższy kod QR używając aplikacji autoryzacyjnej (Google Authenticator, Microsoft Authenticator).",
     "qrWarning": "Uwaga: zamknięcie tego okna spowoduje wylogowanie z aplikacji, więc upewnij się, że aplikacja autoryzacyjna jest skonfigurowana poprawnie."
   },
+  "organisationDialog": {
+    "title": "Edytuj organizację"
+  },
   "organisationForm": {
     "description": "Opis",
     "name": "Nazwa organizacji",
@@ -284,6 +287,7 @@
     "addProject": "Dodaj projekt",
     "info": {
       "createdAt": "Stworzono:",
+      "editOrganisation": "Edytuj organizację",
       "updatedAt": "Zaktualizowano:"
     },
     "invitations": "Oczekujące zaproszenia",

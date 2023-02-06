@@ -67,6 +67,8 @@ public abstract class IssueMapper {
 
     public abstract IssueFullDto issueToIssueFullDto(Issue issue);
 
+    public abstract IssueLastDto issueToIssueLastDto(Issue issue);
+
     @Mapping(target = "description", ignore = true)
     @Mapping(source = "sprintId", target = "sprint.id")
     public abstract Issue update(@MappingTarget Issue issue, IssueUpdateDto issueUpdateDto);
@@ -139,6 +141,12 @@ public abstract class IssueMapper {
 
         if (source.getSprintId() == null) {
             target.setSprint(null);
+        }
+
+        if (source.getAssigneeId() != null) {
+            target.setAssignee(userRepository
+                    .findById(uuidMapper.stringToUUID(source.getAssigneeId()))
+                    .orElse(null));
         }
     }
 

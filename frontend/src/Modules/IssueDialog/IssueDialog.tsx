@@ -107,8 +107,8 @@ export const IssueDialog = ({
             data
           ) as IssueData;
           const adjustedData = targetStatus
-            ? { ...dataWithRemovedNullValues, status: targetStatus }
-            : dataWithRemovedNullValues;
+            ? { ...dataWithRemovedNullValues, status: targetStatus, sprintId: data.sprintId }
+            : { ...dataWithRemovedNullValues, sprintId: data.sprintId };
 
           setInitialData({ ...adjustedData });
         });

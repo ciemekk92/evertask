@@ -76,8 +76,6 @@ export const actionCreators = {
           const localProject = localStorage.getItem(CURRENT_PROJECT_KEY) as Nullable<Id>;
           const json = await result.json();
 
-          console.log({ json });
-
           if (json.length && !CurrentProjectModel.currentProjectValue.id) {
             if (localProject) {
               const project = json.find((el: Project.ProjectEntity) => localProject === el.id);
@@ -86,7 +84,6 @@ export const actionCreators = {
                 CurrentProjectModel.currentProjectSubject.next(project);
               }
             } else {
-              console.log('test');
               CurrentProjectModel.currentProjectSubject.next(json[0]);
             }
           }

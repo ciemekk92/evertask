@@ -26,7 +26,7 @@ export const ProjectsSection = ({ projectsData, handleOpeningAddProject }: Props
   };
 
   const renderAddProjectButton = (): Nullable<JSX.Element> => {
-    if (PermissionCheck.isOrganisationAdmin) {
+    if (PermissionCheck.isAssignedUser) {
       return (
         <IconButton iconName="add" onClick={handleOpeningAddProject}>
           {t('organisationPage.addProject')}

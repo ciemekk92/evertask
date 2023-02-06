@@ -13,6 +13,7 @@ import com.predu.evertask.exception.NotFoundException;
 import com.predu.evertask.repository.IssueRepository;
 import com.predu.evertask.repository.ProjectRepository;
 import com.predu.evertask.repository.SprintRepository;
+import com.predu.evertask.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ public class ProjectService {
     private final RoleService roleService;
     private final SprintRepository sprintRepository;
     private final IssueRepository issueRepository;
+    private final UserRepository userRepository;
 
     public List<ProjectDto> findAll() {
         return projectRepository.findAll()
@@ -51,6 +53,10 @@ public class ProjectService {
                 .stream()
                 .map(projectMapper::projectToProjectDto)
                 .toList();
+    }
+
+    public List<UUID> getProjectAdmins(UUID id) {
+        return userRepository.findProjectAdmins(id);
     }
 
     public Project create(ProjectCreateDto toSave, User user) {

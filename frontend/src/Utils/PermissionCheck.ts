@@ -1,5 +1,6 @@
-import { USER_ROLES } from 'Shared/constants';
 import { UserModel } from 'Models/UserModel';
+import { USER_ROLES } from 'Shared/constants';
+import { store } from 'Stores/store';
 
 type RoleCallback = (role: USER_ROLES) => boolean;
 
@@ -14,14 +15,19 @@ export class PermissionCheck {
     );
   }
 
-  public static get isProjectAdmin(): boolean {
-    return this.checkCurrentUserAuthorities((role: USER_ROLES) =>
-      [
-        USER_ROLES.ROLE_PROJECT_ADMIN,
-        USER_ROLES.ROLE_ORGANISATION_ADMIN,
-        USER_ROLES.ROLE_ADMIN
-      ].includes(role)
-    );
+  public static get isCurrentProjectAdmin(): boolean {
+    return this.checkCurrentUserAuthorities((role: USER_ROLES) => {
+      const state = store.getState();
+
+      console.log({ project: state.project });
+      return (
+        [
+          USER_ROLES.ROLE_PROJECT_ADMIN,
+          USER_ROLES.ROLE_ORGANISATION_ADMIN,
+          USER_ROLES.ROLE_ADMIN
+        ].includes(role) && state.project.projectAdminsIds.includes(this.getCurrentUserId())
+      );
+    });
   }
 
   public static get isAssignedUser(): boolean {
@@ -38,5 +44,9 @@ export class PermissionCheck {
 
   private static checkCurrentUserAuthorities(cb: RoleCallback): boolean {
     return UserModel.currentUserValue.authorities.some(cb);
+  }
+
+  private static getCurrentUserId(): Id {
+    return UserModel.currentUserValue.id;
   }
 }

@@ -125,6 +125,13 @@ public class ProjectController {
         return ResponseEntity.ok(issueService.findAllUnassignedByProjectId(id, query, paging));
     }
 
+    @IsProjectMember
+    @GetMapping("/{id}/admins")
+    public ResponseEntity<List<UUID>> getProjectAdmins(@PathVariable UUID id) {
+
+        return ResponseEntity.ok(projectService.getProjectAdmins(id));
+    }
+
     @IsCurrentProjectAdminOrAdmin
     @PutMapping("/{id}/start_sprint")
     public ResponseEntity<Void> startSprint(@PathVariable UUID id,

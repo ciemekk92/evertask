@@ -39,6 +39,7 @@ export const ProjectPage = (): Nullable<JSX.Element> => {
       dispatch(actionCreators.getActiveMembers(id));
       dispatch(actionCreators.getNotCompletedSprints(id));
       dispatch(actionCreators.getLastIssues(id));
+      dispatch(actionCreators.getProjectAdmins(id));
     },
     [dispatch]
   );

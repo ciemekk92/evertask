@@ -17,7 +17,7 @@ export const ProjectInfoSection = ({ project, handleOpeningEditProject }: Props)
   const { t } = useTranslation();
 
   const renderEditProjectInfoButton = (): Nullable<JSX.Element> => {
-    if (PermissionCheck.isProjectAdmin) {
+    if (PermissionCheck.isCurrentProjectAdmin) {
       return (
         <IconButton iconName="edit" onClick={handleOpeningEditProject}>
           {t('general.edit')}

@@ -97,7 +97,7 @@ export const ProjectSprintsSection = ({
   };
 
   const renderAddSprintButton = (): Nullable<JSX.Element> => {
-    if (PermissionCheck.isProjectAdmin) {
+    if (PermissionCheck.isCurrentProjectAdmin) {
       return (
         <IconButton iconName="add" onClick={handleOpeningAddSprint}>
           {t('general.addSprint')}

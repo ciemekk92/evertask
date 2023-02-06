@@ -18,6 +18,7 @@ export interface ProjectState {
   notCompletedSprints: Sprint.SprintIssuesEntity[];
   completedSprints: Sprint.SprintIssuesEntity[];
   lastIssues: Issue.IssueFullEntity[];
+  projectAdminsIds: Id[];
 }
 
 interface SetOrganisationProjectsAction {
@@ -33,6 +34,11 @@ interface SetSelectedProjectAction {
 interface SetActiveProjectMembersAction {
   type: typeof ActionTypes.SET_PROJECT_ACTIVE_MEMBERS;
   activeMembers: User.UserEntity[];
+}
+
+interface SetProjectAdminsIds {
+  type: typeof ActionTypes.SET_PROJECT_ADMINS_IDS;
+  projectAdminsIds: Id[];
 }
 
 interface SetProjectSprints {
@@ -62,9 +68,28 @@ export type ProjectActionTypes =
   | SetProjectSprints
   | SetProjectNotCompletedSprints
   | SetProjectCompletedSprints
-  | SetProjectLastIssues;
+  | SetProjectLastIssues
+  | SetProjectAdminsIds;
 
 export const actionCreators = {
+  getProjectAdmins:
+    (id: Id): AppThunkAction<ProjectActionTypes> =>
+    async (dispatch, getState) => {
+      const appState = getState();
+
+      if (appState && appState.project) {
+        const result = await Api.get(`projects/${id}/admins`);
+
+        if (result.status === 200) {
+          const json = await result.json();
+
+          dispatch({
+            type: ActionTypes.SET_PROJECT_ADMINS_IDS,
+            projectAdminsIds: json
+          });
+        }
+      }
+    },
   getOrganisationsProjects:
     (): AppThunkAction<ProjectActionTypes> => async (dispatch, getState) => {
       const appState = getState();
@@ -224,7 +249,8 @@ const initialState: ProjectState = {
   sprints: [],
   notCompletedSprints: [],
   completedSprints: [],
-  lastIssues: []
+  lastIssues: [],
+  projectAdminsIds: []
 };
 
 export const reducer: Reducer<ProjectState> = (
@@ -272,6 +298,11 @@ export const reducer: Reducer<ProjectState> = (
       return {
         ...state,
         completedSprints: action.completedSprints
+      };
+    case ActionTypes.SET_PROJECT_ADMINS_IDS:
+      return {
+        ...state,
+        projectAdminsIds: action.projectAdminsIds
       };
     default:
       return state;

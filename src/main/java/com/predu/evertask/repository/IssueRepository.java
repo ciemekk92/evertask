@@ -31,13 +31,17 @@ public interface IssueRepository extends JpaRepository<Issue, UUID> {
             "WHERE i.project_id = ?1 " +
             "AND i.sprint_id IS NULL " +
             "AND i.type != 'SUBTASK'" +
-            "AND (i.title ~ ?2 OR i.description ~ ?2 OR cast(i.key as varchar(255)) ~ ?2) " +
+            "AND (LOWER(i.title) ~ LOWER(?2) " +
+            "OR LOWER(i.description) ~ LOWER(?2) " +
+            "OR cast(i.key as varchar(255)) ~ LOWER(?2)) " +
             "ORDER BY i.key DESC",
             countQuery = "SELECT count(*) FROM issues i " +
                     "WHERE i.project_id = ?1 " +
                     "AND i.sprint_id IS NULL " +
                     "AND i.type != 'SUBTASK'" +
-                    "AND (i.title ~ ?2 OR i.description ~ ?2 OR cast(i.key as varchar(255)) ~ ?2)",
+                    "AND (LOWER(i.title) ~ LOWER(?2) " +
+                    "OR LOWER(i.description) ~ LOWER(?2) " +
+                    "OR cast(i.key as varchar(255)) ~ LOWER(?2))",
             nativeQuery = true)
     Page<Issue> findAllByProjectIdAndSprintIsNullOrderByKeyDesc(UUID projectId, String query, Pageable pageable);
 

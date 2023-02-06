@@ -37,7 +37,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
             "AND r.authority = 'ROLE_UNASSIGNED_USER' " +
             "AND u.id NOT IN " +
             "(SELECT DISTINCT oi.user_id " +
-            "FROM organisation_invitations oi)", nativeQuery = true)
+            "FROM organisation_invitations oi)",
+            nativeQuery = true)
     List<User> findUnassignedByUsernameOrEmail(String username);
 
     @Query(value = "SELECT * FROM users u " +
@@ -46,7 +47,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
             "WHERE r.authority = 'ROLE_UNASSIGNED_USER' " +
             "AND u.id NOT IN " +
             "(SELECT DISTINCT oi.user_id " +
-            "FROM organisation_invitations oi)", nativeQuery = true)
+            "FROM organisation_invitations oi)",
+            nativeQuery = true)
     List<User> findUnassigned();
 
     @Query(value = "SELECT DISTINCT ON(u.id) * FROM users u " +
@@ -57,7 +59,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
             "SELECT p.modified_by FROM projects p UNION ALL " +
             "SELECT i.assignee_id FROM issues i UNION ALL " +
             "SELECT i.created_by FROM issues i UNION ALL " +
-            "SELECT i.modified_by FROM issues i)", nativeQuery = true)
+            "SELECT i.modified_by FROM issues i)",
+            nativeQuery = true)
     List<User> findActiveProjectMembers(UUID projectId);
 
     @Query(value = "SELECT DISTINCT ON(u.id) * FROM users u " +
@@ -69,8 +72,15 @@ public interface UserRepository extends JpaRepository<User, UUID> {
             "SELECT s.modified_by FROM sprints s UNION ALL " +
             "SELECT i.assignee_id FROM issues i UNION ALL " +
             "SELECT i.created_by FROM issues i UNION ALL " +
-            "SELECT i.modified_by FROM issues i)", nativeQuery = true)
+            "SELECT i.modified_by FROM issues i)",
+            nativeQuery = true)
     List<User> findActiveSprintMembers(UUID sprintId);
+
+    @Query(value = "SELECT cast(id AS VARCHAR) id FROM users u " +
+            "INNER JOIN project_admins pa ON u.id = pa.user_id " +
+            "WHERE pa.project_id = ?1",
+            nativeQuery = true)
+    List<UUID> findProjectAdmins(UUID projectId);
 
     @NonNull
     default User getById(@NonNull UUID id) {

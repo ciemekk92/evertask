@@ -19,7 +19,6 @@ export class PermissionCheck {
     return this.checkCurrentUserAuthorities((role: USER_ROLES) => {
       const state = store.getState();
 
-      console.log({ project: state.project });
       return (
         [
           USER_ROLES.ROLE_PROJECT_ADMIN,

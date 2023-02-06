@@ -2,6 +2,7 @@ package com.predu.evertask.service;
 
 import com.predu.evertask.domain.dto.organisation.OrganisationCreateDto;
 import com.predu.evertask.domain.dto.organisation.OrganisationDto;
+import com.predu.evertask.domain.dto.organisation.OrganisationUpdateDto;
 import com.predu.evertask.domain.dto.user.UserDto;
 import com.predu.evertask.domain.mapper.OrganisationMapper;
 import com.predu.evertask.domain.mapper.UserViewMapper;
@@ -81,13 +82,12 @@ public class OrganisationService {
         return organisation;
     }
 
-    public Organisation update(UUID id, OrganisationDto toUpdate) {
+    public Organisation update(UUID id, OrganisationUpdateDto toUpdate) {
 
-        if (!organisationRepository.existsById(id)) {
-            throw new NotFoundException(Organisation.class, id);
-        }
+        Organisation organisation = organisationRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(Organisation.class, id));
 
-        Organisation result = organisationMapper.organisationDtoToOrganisation(toUpdate);
+        Organisation result = organisationMapper.update(organisation, toUpdate);
 
         return organisationRepository.save(result);
     }

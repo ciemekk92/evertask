@@ -284,6 +284,7 @@
     "addProject": "Dodaj projekt",
     "info": {
       "createdAt": "Stworzono:",
+      "editOrganisation": "Edytuj organizację",
       "updatedAt": "Zaktualizowano:"
     },
     "invitations": "Oczekujące zaproszenia",

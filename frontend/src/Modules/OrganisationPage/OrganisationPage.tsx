@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { DialogComponent, useDialog } from 'Hooks/useDialog';
 import {
-  VerticalPageWrapper,
   StyledHorizontalContainer,
-  StyledSectionContainer
+  StyledSectionContainer,
+  VerticalPageWrapper
 } from 'Shared/PageWrappers';
 import { Heading5 } from 'Shared/Typography';
 import { ApplicationState } from 'Stores/store';
@@ -15,11 +15,12 @@ import { Api } from 'Utils/Api';
 import { Organisation } from 'Types/Organisation';
 import { PermissionCheck } from 'Utils/PermissionCheck';
 import { ProjectDialog } from 'Modules/ProjectDialog';
+import { OrganisationDialog, ORGANISATION_DIALOG_MODES } from 'Modules/OrganisationDialog';
 import { PROJECT_DIALOG_MODES } from '../ProjectDialog/fixtures';
 import {
+  InviteMemberDialog,
   OrganisationInfoSection,
   OrganisationInvitationsSection,
-  InviteMemberDialog,
   OrganisationMembersSection,
   ProjectsSection
 } from './components';
@@ -31,6 +32,9 @@ export const OrganisationPage = (): JSX.Element => {
 
   const inviteDialogConfig = useDialog<INVITE_MEMBER_DIALOG_MODES>(INVITE_MEMBER_DIALOG_MODES.ADD);
   const projectDialogConfig = useDialog<PROJECT_DIALOG_MODES>(PROJECT_DIALOG_MODES.ADD);
+  const organisationDialogConfig = useDialog<ORGANISATION_DIALOG_MODES>(
+    ORGANISATION_DIALOG_MODES.EDIT
+  );
 
   React.useEffect(() => {
     dispatch(userActionCreators.getOrganisation());
@@ -55,6 +59,10 @@ export const OrganisationPage = (): JSX.Element => {
     inviteDialogConfig.handleOpen(INVITE_MEMBER_DIALOG_MODES.ADD);
   };
 
+  const handleOpenEditOrganisationInfo = (): void => {
+    organisationDialogConfig.handleOpen(ORGANISATION_DIALOG_MODES.EDIT);
+  };
+
   const handleOpeningAddProject = () => {
     projectDialogConfig.handleOpen(PROJECT_DIALOG_MODES.ADD);
   };
@@ -73,7 +81,12 @@ export const OrganisationPage = (): JSX.Element => {
 
   const renderOrganisationInfo = (): Nullable<JSX.Element> => {
     if (organisationData) {
-      return <OrganisationInfoSection organisationData={organisationData} />;
+      return (
+        <OrganisationInfoSection
+          organisationData={organisationData}
+          handleOpenEditOrganisationInfo={handleOpenEditOrganisationInfo}
+        />
+      );
     }
 
     return null;
@@ -133,6 +146,15 @@ export const OrganisationPage = (): JSX.Element => {
         <ProjectDialog
           mode={projectDialogConfig.dialogMode}
           handleClose={projectDialogConfig.handleClose}
+        />
+      </DialogComponent>
+      <DialogComponent
+        isOpen={organisationDialogConfig.isOpen}
+        handleClose={organisationDialogConfig.handleClose}
+      >
+        <OrganisationDialog
+          organisationId={organisationData?.id}
+          handleClose={organisationDialogConfig.handleClose}
         />
       </DialogComponent>
     </React.Fragment>

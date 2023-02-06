@@ -13,7 +13,7 @@ import {
 import { StyledFlexColumnContainer } from '../SharedStyles.styled';
 
 interface Props {
-  issue: Issue.IssueFullEntity;
+  issue: Issue.IssueFullEntity | Issue.IssueLastEntity;
 }
 
 export const IssuePanel = ({ issue }: Props): JSX.Element => {
@@ -26,7 +26,7 @@ export const IssuePanel = ({ issue }: Props): JSX.Element => {
   };
 
   const renderSubtasks = (): Nullable<JSX.Element> => {
-    if (!issue.subtasks.length) {
+    if (!('subtasks' in issue) || !issue.subtasks.length) {
       return null;
     }
 

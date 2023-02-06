@@ -5,21 +5,39 @@ import { useTranslation } from 'react-i18next';
 
 import { TextInput } from 'Shared/Elements/TextInput';
 import { TextArea } from 'Shared/Elements/TextArea';
-import { ButtonFilled } from 'Shared/Elements/Buttons';
+import { ButtonFilled, ButtonOutline } from 'Shared/Elements/Buttons';
 import { FormField } from 'Shared/Elements/Form';
 import { Organisation } from 'Types/Organisation';
+import { Api } from 'Utils/Api';
+import { StyledFooterButtonContainer } from './OrganisationForm.styled';
+
+interface EditModeConfig {
+  organisationId?: Id;
+  handleClose: VoidFunctionNoArgs;
+}
 
 interface Props {
   handleSubmit: (values: Organisation.OrganisationPayload) => Promise<void>;
+  editModeConfig?: EditModeConfig;
 }
 
-export const OrganisationForm = ({ handleSubmit }: Props): JSX.Element => {
+export const OrganisationForm = ({ handleSubmit, editModeConfig }: Props): JSX.Element => {
   const { t } = useTranslation();
 
-  const initialData: Organisation.OrganisationPayload = {
+  const [initialData, setInitialData] = React.useState<Organisation.OrganisationPayload>({
     name: '',
     description: ''
-  };
+  });
+
+  React.useEffect(() => {
+    if (editModeConfig) {
+      Api.get(`organisations/${editModeConfig.organisationId}`)
+        .then((response) => response.json())
+        .then((data: Organisation.OrganisationPayload) =>
+          setInitialData({ name: data.name, description: data.description })
+        );
+    }
+  }, [editModeConfig?.organisationId]);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -29,12 +47,26 @@ export const OrganisationForm = ({ handleSubmit }: Props): JSX.Element => {
     description: Yup.string()
   });
 
+  const renderFooter = (): Nullable<JSX.Element> => {
+    if (editModeConfig) {
+      return (
+        <StyledFooterButtonContainer>
+          <ButtonOutline onClick={editModeConfig.handleClose}>{t('general.cancel')}</ButtonOutline>
+          <ButtonFilled type="submit">{t('general.submit')}</ButtonFilled>
+        </StyledFooterButtonContainer>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <Formik
       validateOnMount
       validationSchema={validationSchema}
       initialValues={initialData}
       onSubmit={handleSubmit}
+      enableReinitialize
     >
       {({
         errors,
@@ -58,9 +90,13 @@ export const OrganisationForm = ({ handleSubmit }: Props): JSX.Element => {
               name="description"
             />
           </FormField>
-          <ButtonFilled type="submit" disabled={!isValid}>
-            {t('general.submit')}
-          </ButtonFilled>
+          {!editModeConfig ? (
+            <ButtonFilled type="submit" disabled={!isValid}>
+              {t('general.submit')}
+            </ButtonFilled>
+          ) : (
+            renderFooter()
+          )}
         </Form>
       )}
     </Formik>

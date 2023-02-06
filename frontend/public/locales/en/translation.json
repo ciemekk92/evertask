@@ -269,6 +269,9 @@
     "qrCode": "Scan below QR code using your authenticator application (Google Authenticator, Microsoft Authenticator).",
     "qrWarning": "Warning: closing this dialog will result in logging you out of the application, so make sure that authenticator is set up correctly."
   },
+  "organisationDialog": {
+    "title": "Edit organisation"
+  },
   "organisationForm": {
     "description": "Description",
     "name": "Organisation name",
@@ -284,6 +287,7 @@
     "addProject": "Add new project",
     "info": {
       "createdAt": "Created at:",
+      "editOrganisation": "Edit organisation",
       "updatedAt": "Updated at:"
     },
     "invitations": "Pending invitations",

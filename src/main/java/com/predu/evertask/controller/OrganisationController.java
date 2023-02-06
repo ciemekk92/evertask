@@ -117,7 +117,7 @@ public class OrganisationController {
 
     @IsCurrentOrganisationAdminOrAdmin
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateOrganisation(@RequestBody @Valid OrganisationDto toUpdate, @PathVariable UUID id) {
+    public ResponseEntity<Void> updateOrganisation(@RequestBody @Valid OrganisationUpdateDto toUpdate, @PathVariable UUID id) {
         if (!organisationService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

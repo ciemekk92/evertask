@@ -9,7 +9,7 @@ import {
 
 interface Props {
   header: JSX.Element | string;
-  footer: JSX.Element;
+  footer?: JSX.Element;
   children: React.ReactNode;
 }
 
@@ -27,7 +27,7 @@ export const ModalDialog = ({ header, footer, children }: Props): JSX.Element =>
       <StyledDialogWrapper>
         <StyledHeaderWrapper>{renderHeader()}</StyledHeaderWrapper>
         {children}
-        <StyledFooterWrapper>{footer}</StyledFooterWrapper>
+        {footer && <StyledFooterWrapper>{footer}</StyledFooterWrapper>}
       </StyledDialogWrapper>
     </React.Fragment>
   );

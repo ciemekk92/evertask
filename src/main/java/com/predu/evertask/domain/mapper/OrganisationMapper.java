@@ -3,6 +3,7 @@ package com.predu.evertask.domain.mapper;
 import com.predu.evertask.domain.dto.organisation.OrganisationCreateDto;
 import com.predu.evertask.domain.dto.organisation.OrganisationDto;
 import com.predu.evertask.domain.dto.organisation.OrganisationInfoDto;
+import com.predu.evertask.domain.dto.organisation.OrganisationUpdateDto;
 import com.predu.evertask.domain.model.Organisation;
 import com.predu.evertask.repository.OrganisationRepository;
 import org.mapstruct.*;
@@ -32,6 +33,8 @@ public abstract class OrganisationMapper {
     public abstract Organisation organisationCreateDtoToOrganisation(OrganisationCreateDto organisationCreateDto);
 
     public abstract OrganisationInfoDto organisationToOrganisationInfoDto(Organisation organisation);
+
+    public abstract Organisation update(@MappingTarget Organisation organisation, OrganisationUpdateDto organisationUpdateDto);
 
     @AfterMapping
     public void afterOrganisationToOrganisationDto(Organisation source, @MappingTarget OrganisationDto target) {

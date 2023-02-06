@@ -15,7 +15,6 @@ declare namespace Issue {
     type: ISSUE_TYPE;
     parentId: Nullable<Id>;
     priority: ISSUE_PRIORITY;
-    subtasks: Issue.IssueFullEntity[];
   }
 
   interface IssueComment extends AuditedEntity {
@@ -27,6 +26,14 @@ declare namespace Issue {
   }
 
   export interface IssueFullEntity extends IssueBase {
+    project: Project.ProjectInfoEntity;
+    sprint: Nullable<Sprint.SprintInfoEntity>;
+    assignee: Nullable<User.UserBasicEntity>;
+    reporter: User.UserBasicEntity;
+    subtasks: Issue.IssueFullEntity[];
+  }
+
+  export interface IssueLastEntity extends IssueBase {
     project: Project.ProjectInfoEntity;
     sprint: Nullable<Sprint.SprintInfoEntity>;
     assignee: Nullable<User.UserBasicEntity>;

@@ -34,7 +34,7 @@ export const BacklogMainPanel = ({
   ];
 
   const renderSubtasks = (): Nullable<JSX.Element> => {
-    if (issue.subtasks.length) {
+    if (issue.subtasks && issue.subtasks.length) {
       return (
         <StyledSubtasksContainer>
           {issue.subtasks.map((subtask: Issue.IssueFullEntity) => (

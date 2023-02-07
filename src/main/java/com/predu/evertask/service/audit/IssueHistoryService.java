@@ -84,6 +84,20 @@ public class IssueHistoryService implements AbstractHistoryService<IssueHistory>
                 .values();
     }
 
+    private boolean isBorderDateAfterOrEqualToRevisionDate (LocalDate borderDate, IssueHistory rev) {
+        return borderDate.isAfter(rev.getRevisionDate().toLocalDate())
+                || borderDate.isEqual(rev.getRevisionDate().toLocalDate());
+    }
+
+    private boolean isBorderDateBeforeOrEqualToRevisionDate (LocalDate borderDate, IssueHistory rev) {
+        return borderDate.isBefore(rev.getRevisionDate().toLocalDate())
+                || borderDate.isEqual(rev.getRevisionDate().toLocalDate());
+    }
+
+    private boolean isIssueStatusFilterable (boolean shouldFilterOnlyAccepted, IssueHistory rev) {
+        return shouldFilterOnlyAccepted == rev.getIssue().getStatus().equals(IssueStatus.ACCEPTED);
+    }
+
     public List<IssueHistory> filterIssuesRevisions(Collection<IssueHistory> revisions,
                                                     LocalDate borderDate,
                                                     boolean shouldFilterOnlyAccepted) throws NoChartsDataException {
@@ -95,9 +109,9 @@ public class IssueHistoryService implements AbstractHistoryService<IssueHistory>
                             .getType()
                             .equals(IssueType.SUBTASK))
                     .filter(rev -> (shouldFilterOnlyAccepted ?
-                            borderDate.isAfter(rev.getRevisionDate().toLocalDate()) :
-                            borderDate.isBefore(rev.getRevisionDate().toLocalDate()))
-                            && (shouldFilterOnlyAccepted == rev.getIssue().getStatus().equals(IssueStatus.ACCEPTED)))
+                            this.isBorderDateAfterOrEqualToRevisionDate(borderDate, rev) :
+                            this.isBorderDateBeforeOrEqualToRevisionDate(borderDate, rev))
+                            && this.isIssueStatusFilterable(shouldFilterOnlyAccepted, rev))
                     .collect(Collectors.groupingBy(rev -> rev.getIssue().getId()))
                     .values().stream()
                     .map(list -> list

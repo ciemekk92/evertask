@@ -5,8 +5,12 @@ const given = {
   fieldTwo: null,
   fieldThree: 3,
   fieldFour: {
-    subField: null
-  }
+    subFieldOne: null,
+    subFieldTwo: {
+      subSubField: null
+    }
+  },
+  fieldFive: ['array value']
 };
 
 const expected = {
@@ -14,8 +18,12 @@ const expected = {
   fieldTwo: '',
   fieldThree: 3,
   fieldFour: {
-    subField: ''
-  }
+    subFieldOne: '',
+    subFieldTwo: {
+      subSubField: ''
+    }
+  },
+  fieldFive: ['array value']
 };
 
 describe('convertNullFieldsToEmptyString', () => {

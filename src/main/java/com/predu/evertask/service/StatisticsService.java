@@ -24,6 +24,7 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -54,7 +55,7 @@ public class StatisticsService {
         long weekendDaysCount = 0;
 
         for (long i = 0; i <= sprintLengthInDaysWithWeekends; i++) {
-            double remainingStoryPoints = storyPointsTotal - getStoryPointsForAcceptedIssues(issueRevisions, startDate, finishDate);
+            double remainingStoryPoints = storyPointsTotal - getStoryPointsForAcceptedIssues(issueRevisions, startDate, startDate.plusDays(i));
             long trendMultiplier = getTrendMultiplierForDate(startDate, i, weekendDaysCount);
             double trendValue = BigDecimal.valueOf(storyPointsTotal - trendPerDay * trendMultiplier).setScale(2, RoundingMode.FLOOR).doubleValue();
             DayOfWeek currentDayOfWeek = startDate.plusDays(i).getDayOfWeek();
@@ -219,7 +220,8 @@ public class StatisticsService {
 
     private double getStoryPointsForAcceptedIssues(List<IssueHistory> revisions, LocalDate startDate, LocalDate finishDate) {
 
-        List<IssueHistory> filteredRevisions = revisions
+        List<IssueHistory> filteredRevisions = new ArrayList<>();
+        Collection<List<IssueHistory>> groupedRevisions = revisions
                 .stream()
                 .filter(rev -> {
                     var revisionDate = rev.getRevisionDate().toLocalDate();
@@ -229,7 +231,12 @@ public class StatisticsService {
                     return isRevisionDateInRange
                             && (rev.getIssue().getStatus() == IssueStatus.ACCEPTED);
                 })
-                .toList();
+                .collect(Collectors.groupingBy(rev -> rev.getIssue().getId()))
+                .values();
+
+        groupedRevisions
+                .forEach(list -> filteredRevisions
+                        .add(Collections.max(list, Comparator.comparing(IssueHistory::getRevisionDate))));
 
         return issueHistoryService.sumRevisionStoryPoints(filteredRevisions);
     }

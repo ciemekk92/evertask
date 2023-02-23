@@ -58,7 +58,7 @@ export const StyledEditorWrapper = styled.div`
 
     & .rdw-editor-toolbar {
       border: none;
-      border-bottom: 1px solid #cc8a22;
+      border-bottom: 1px solid ${(props) => props.theme.primary};
       background: ${(props) => props.theme.surfaceSecondary};
     }
 

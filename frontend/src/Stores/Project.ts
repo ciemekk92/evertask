@@ -200,7 +200,6 @@ export const actionCreators = {
       if (appState && appState.project) {
         const result = await Api.get(`projects/${id}/sprints_completed`);
 
-        console.log({ result });
         if (result.status === 200) {
           const json = await result.json();
 

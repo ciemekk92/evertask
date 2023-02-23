@@ -90,5 +90,6 @@ public class Issue extends BaseEntity {
     private List<IssueComment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "parentIssue")
+    @OrderBy("key")
     private List<Issue> subtasks = new ArrayList<>();
 }

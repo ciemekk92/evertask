@@ -271,7 +271,9 @@ export const IssueDialog = ({
                   valid={!errors.estimateHours && touched.estimateHours}
                   error={errors.estimateHours && touched.estimateHours}
                   name="estimateHours"
+                  pattern="[0-9]*"
                   type="text"
+                  onChange={handleEstimateChangeFactory('estimateHours', setFieldValue)}
                 />
               </FormField>
               <FormField

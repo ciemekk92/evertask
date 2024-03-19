@@ -16,7 +16,7 @@ zarządzanie projektami w metodologiach Agile i Kanban.
 
 ## Wymagane do uruchomienia (w przypadku nieużywania Dockera)
 
-- JDK v >= 17
+- JDK v >= 17 (pref. Amazon Corretto)
 - Node.js v >= 16.13
 - PostgreSQL 14
 
